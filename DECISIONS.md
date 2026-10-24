@@ -29,3 +29,9 @@ The agent decided: this is triage row T1, and it replaces the brief's auto-battl
 > land pile is good, reshuffle grabeyard back int olibrary for half your health, hand size of 6, the 3d summoning terrain should still work and when you attack the enemies should not turn on their sides, they should instead have a tired animation and be greyed out. the summoning view should be rotatable so you can see the front side of your own minions. when your minions attack, they should have an attack animation, like from POTS / take ability animations from pots if you dont want to remake them
 
 The agent decided: triage rows T2 to T7. "Half your health" is half the life you have when the library runs out, rounded up so it always costs something. "Hand size of 6" is both the opening hand and the cleanup limit. "The 3d summoning terrain should still work" was read as keeping the fight's 3D table as it is, and nothing about it changed; if it meant something else, that is a new row. The animations are ported from Protection of the Spheres (MIT, the person's own code).
+
+## 2026-10-24, MVP 2 deploy
+
+> push to live
+
+The agent decided: push `main` and publish MVP 2 (commit e3c6958, build e8d5a5f9f04d) to GitHub Pages, under the standing grant. `scripts/publish.sh` still cannot commit without `git config user.name` (R2.17), so its last steps were run by hand as before.

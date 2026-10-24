@@ -4,7 +4,7 @@ Stage 9, written by the agent. `C5 Consolidate in your own words`. A fresh sessi
 
 ## What this is
 
-Tenth District (a working title): a Hand of Fate–style deck-building adventure on Ravnica's grid with 108 Return to Ravnica cards, for the browser. This MVP is the first region, from a new game in the Tenth District to the fight with Niv-Mizzet in Nivix. Since MVP 2 (TRIAGE T1) every fight is a game of Magic the player plays against a computer opponent, with a land pile instead of lands in the deck. MVP 1 is public at https://sgilson7.github.io/mtg-hand-of-fate/, source at https://github.com/sgilson7/mtg-hand-of-fate. MVP 2 is committed locally and not pushed or published.
+Tenth District (a working title): a Hand of Fate–style deck-building adventure on Ravnica's grid with 108 Return to Ravnica cards, for the browser. This MVP is the first region, from a new game in the Tenth District to the fight with Niv-Mizzet in Nivix. Since MVP 2 (TRIAGE T1) every fight is a game of Magic the player plays against a computer opponent, with a land pile instead of lands in the deck. MVP 2 is public at https://sgilson7.github.io/mtg-hand-of-fate/ (built from e3c6958), source at https://github.com/sgilson7/mtg-hand-of-fate.
 
 ## Rules that hold it up
 
@@ -63,7 +63,6 @@ The rules in `CLAUDE.md` under "Rules agreed for this project" (MTG-1 to MTG-11)
 - R4.3: what "the 3d summoning terrain should still work" meant.
 - R3.10: armour and ability rules carried over to Magic.
 - R3.12: read the fight's new strings.
-- Whether to publish MVP 2: the grant stands, but this request did not ask for a deploy.
 - R2.16: the repository's name, `mtg-hand-of-fate`, chosen by the agent from the project folder.
 
 ## Mistakes so far
@@ -82,6 +81,8 @@ The rules in `CLAUDE.md` under "Rules agreed for this project" (MTG-1 to MTG-11)
 
 2026-10-24, T2 to T7: `./scripts/check.sh` ended `BUILDER CHECK PASSED` (browser check in chromium, firefox, webkit); `./scripts/count-tests.sh`: 135 passed, 0 failed; `scripts/break_tests.py`: 36 of 36 caught.
 
+2026-10-24, MVP 2 deploy: `BUILDER_ORIGIN=https://sgilson7.github.io/mtg-hand-of-fate python3 tests/browser/check.py` ended `BROWSER CHECK PASSED in chromium, firefox, webkit`; the live `build.txt` reads `e8d5a5f9f04d e3c6958`.
+
 ## The next action
 
-The person plays MVP 2's fights, says whether to publish it, and answers MTG-Q2 and Q3; their requests become `TRIAGE.md` rows.
+The person plays MVP 2's fights on the live page and answers MTG-Q2 and Q3; their requests become `TRIAGE.md` rows.
