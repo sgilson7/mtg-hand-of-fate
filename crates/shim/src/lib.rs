@@ -61,6 +61,12 @@ impl Game {
     pub fn pick(&mut self, x: u32, y: u32) -> String {
         self.inner.pick(x as i32, y as i32)
     }
+    pub fn hover(&mut self, x: u32, y: u32) {
+        self.inner.hover(x as i32, y as i32)
+    }
+    pub fn unhover(&mut self) {
+        self.inner.hover(i32::MIN / 2, i32::MIN / 2)
+    }
 }
 
 #[wasm_bindgen]

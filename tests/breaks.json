@@ -34,5 +34,6 @@
   {"name": "exile instead catches a sacrifice", "file": "crates/core/src/duel.rs", "find": "        if p.exile_if_dies {\n            self.exile(id);\n            return;\n        }\n        let creature", "replace": "        let creature", "test": "a_creature_damaged_by_annihilating_fire_is_exiled_even_when_sacrificed"},
   {"name": "no payment for an uncounterable spell", "file": "crates/core/src/duel.rs", "find": "                        if uncounterable {\n                            continue;\n                        }", "replace": "", "test": "izzet_charm_asks_no_payment_for_a_spell_that_cannot_be_countered"},
   {"name": "a tired model is greyed", "file": "crates/core/src/look.rs", "find": "crate::render::mix(part.rgb, [grey, grey, grey * 21 / 20], TIRED_GREY)", "replace": "part.rgb", "test": "a_tired_model_keeps_its_facing_and_is_greyed"},
-  {"name": "an attack strikes forward", "file": "crates/core/src/look.rs", "find": "back + fx::mul(fx::mul(u, u), strike - back)", "replace": "back", "test": "an_attack_leans_back_then_strikes_forward_and_comes_home"}
+  {"name": "an attack strikes forward", "file": "crates/core/src/look.rs", "find": "back + fx::mul(fx::mul(u, u), strike - back)", "replace": "back", "test": "an_attack_leans_back_then_strikes_forward_and_comes_home"},
+  {"name": "hovering shows what is under the pointer", "file": "crates/core/src/session.rs", "find": "            self.hovered = h;\n", "replace": "            self.hovered = None;\n", "test": "hovering_a_creature_in_a_fight_shows_its_card_and_moving_off_hides_it"}
 ]

@@ -542,14 +542,20 @@ fn battle_panels(s: &Session, f: &crate::session::Fight) -> Vec<Value> {
                 .collect(),
         )
     };
-    let whose = if snap.active as usize == P {
+    // caught up, the heading names the step the game is in now
+    let (active, step) = if f.caught_up() {
+        (d.active, d.step)
+    } else {
+        (snap.active as usize, snap.step)
+    };
+    let whose = if active == P {
         s.s("duel.your_turn")
     } else {
         s.s("duel.its_turn")
     };
     let mut panels = vec![json!({
         "id": "sides", "place": "tl",
-        "heading": s.f("duel.turn_heading", &[("n", ev.turn.div_ceil(2).to_string()), ("whose", whose), ("step", s.s(snap.step.key()))]),
+        "heading": s.f("duel.turn_heading", &[("n", ev.turn.div_ceil(2).to_string()), ("whose", whose), ("step", s.s(step.key()))]),
         "rows": [
             [s.s("battle.you"), s.f("battle.life", &[("n", snap.life[0].to_string())])],
             [s.s("duel.your_cards"), s.f("duel.cards_n", &[("hand", snap.hand[0].to_string()), ("library", snap.library[0].to_string()), ("pile", snap.pile[0].to_string())])],
@@ -627,7 +633,76 @@ fn battle_panels(s: &Session, f: &crate::session::Fight) -> Vec<Value> {
         .collect();
     panels.push(json!({"id": "hand", "place": "bottom", "cards": hand}));
     panels.push(controls(s, f, ask, &acts));
+    if let Some(p) = s.hovered.and_then(|id| snap.perms.iter().find(|p| p.id == id)) {
+        panels.push(peek(s, p));
+    }
     panels
+}
+
+/// The permanent under the pointer, full size: its card, verbatim, and how
+/// it stands now.
+fn peek(s: &Session, p: &crate::duel::PermSnap) -> Value {
+    let mut lines = vec![s.s(if p.side as usize == P {
+        "duel.yours_cap"
+    } else {
+        "duel.theirs_cap"
+    })];
+    if p.creature {
+        lines.push(s.f(
+            "duel.peek_pt",
+            &[
+                ("power", p.power.to_string()),
+                ("toughness", p.toughness.to_string()),
+            ],
+        ));
+    }
+    if p.damage > 0 {
+        lines.push(s.f("duel.peek_damage", &[("n", p.damage.to_string())]));
+    }
+    if p.counters > 0 {
+        lines.push(s.f("duel.peek_counters", &[("n", p.counters.to_string())]));
+    }
+    for (flag, key) in [
+        (p.tapped, "duel.peek_tapped"),
+        (p.detained, "duel.peek_detained"),
+        (p.attacking, "duel.peek_attacking"),
+        (p.blocking >= 0, "duel.peek_blocking"),
+        (p.fresh && p.creature, "duel.peek_fresh"),
+    ] {
+        if flag {
+            lines.push(s.s(key));
+        }
+    }
+    if p.card >= 0 {
+        return json!({"id": "peek", "place": "peek", "cards": [face(s, p.card as usize, "md")], "lines": lines});
+    }
+    // a token: its name, size and keywords
+    let token = [
+        crate::rules::Token::Bird,
+        crate::rules::Token::Soldier,
+        crate::rules::Token::Goblin,
+        crate::rules::Token::Centaur,
+        crate::rules::Token::Rhino,
+        crate::rules::Token::Knight,
+    ]
+    .into_iter()
+    .find(|t| t.model() == p.token);
+    let text = match token {
+        Some(t) => {
+            let (pw, tg, k, _, _) = t.stats();
+            let kws = kw_names(s, k);
+            if kws.is_empty() {
+                s.f("duel.token_text", &[("pt", format!("{pw}/{tg}"))])
+            } else {
+                s.f(
+                    "duel.token_text_kw",
+                    &[("pt", format!("{pw}/{tg}")), ("kw", kws.join(", "))],
+                )
+            }
+        }
+        None => String::new(),
+    };
+    json!({"id": "peek", "place": "peek", "heading": p.name, "text": text, "lines": lines})
 }
 
 fn controls(s: &Session, f: &crate::session::Fight, ask: Option<&Ask>, acts: &[Action]) -> Value {

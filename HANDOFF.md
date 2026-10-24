@@ -83,6 +83,8 @@ The rules in `CLAUDE.md` under "Rules agreed for this project" (MTG-1 to MTG-11)
 
 2026-10-24, MVP 2 deploy: `BUILDER_ORIGIN=https://sgilson7.github.io/mtg-hand-of-fate python3 tests/browser/check.py` ended `BROWSER CHECK PASSED in chromium, firefox, webkit`; the live `build.txt` reads `e8d5a5f9f04d e3c6958`.
 
+2026-10-24, T8: `./scripts/check.sh` ended `BUILDER CHECK PASSED` (browser check in chromium, firefox, webkit); 136 tests passed; 37 of 37 breaks caught.
+
 ## The next action
 
 The person plays MVP 2's fights on the live page and answers MTG-Q2 and Q3; their requests become `TRIAGE.md` rows.

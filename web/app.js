@@ -46,7 +46,9 @@ async function main() {
   let moved = false;
   canvas.addEventListener("pointerdown", () => { dragging = true; moved = false; });
   window.addEventListener("pointerup", () => { dragging = false; });
+  canvas.addEventListener("pointerleave", () => game.unhover());
   canvas.addEventListener("pointermove", (e) => {
+    if (!dragging) game.hover(e.offsetX, e.offsetY);
     if (!dragging || !e.movementX) return;
     moved = true;
     game.act("view.drag", `${e.movementX}`);

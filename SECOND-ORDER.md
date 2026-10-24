@@ -54,6 +54,7 @@ One row per assumption, surprise or open item. **Kind** is *divergence* (what wa
 | R4.4 | finding | A tired pose could reuse the dim (detained) look. | Detained creatures are drawn bluish; a tired one needed its own grey so the two read apart. | Tired: 65% toward grey, slumped 12°, sunk 4 cm, breathing at a third the pace; detained stays blue. | `look.rs` | done |
 | R4.5 | finding | PotS's swing could drive our models as it drives its heroes. | PotS turns a weapon-arm joint; this game's models have no arms (body, head, wings, tail). | The lean and the timing are ported onto the whole model about its feet, with a dash toward the target; the weapon-arm strike is not. | `look.rs` `attack_lean`, `attack_reach` | done |
 | R4.6 | finding | The new 6-card hand changed nothing for the tests. | The fizzle test's library was empty after a 6-card hand, so its draw check passed with the rule broken. | The test puts a card in the library first. | `tests/breaks.json` (36 rows) | done |
+| R4.7 | finding | The fight's heading showed the step the game was in. | It showed the step of the last logged event; a step with no event (a quiet first main phase) kept the old name, such as Upkeep. | Once playback has caught up, the heading reads the game's own step. | `view.rs` `battle_panels` | done |
 
 ## Strings written by the agent
 
@@ -71,4 +72,5 @@ Each reader-visible string the agent wrote, with its key, for the person to read
 | data/strings.json | every key: the game's interface, quest names and steps, armour names, effect lines, battle log lines (about 330 strings) |
 | data/strings.json (MVP 2) | `step.*` (twelve step names), `duel.*` (prompts and buttons of a game of Magic), `log.land`, `log.cast_at`, `log.resolve`, `log.fizzle`, `log.animate`, `log.library_top`, `log.returns`, `log.scavenge_cast`, `log.aura_falls`; changed: `effect.start_mana`, `ability.banker`, `battle.your_mana`, `battle.foe_mana`, `reading.tier.creature`, `keys.battle`; and the glossary entry Land pile |
 | data/strings.json (T6) | `duel.turn_left` Turn left, `duel.turn_right` Turn right, `duel.turn_home` Behind you; changed `keys.battle` |
+| data/strings.json (T8) | `duel.yours_cap`, `duel.theirs_cap`, `duel.peek_pt`, `duel.peek_damage`, `duel.peek_counters`, `duel.peek_tapped`, `duel.peek_detained`, `duel.peek_attacking`, `duel.peek_blocking`, `duel.peek_fresh`, `duel.token_text`, `duel.token_text_kw` |
 | data/stories/*.json | 108 card stories written by two agents from each card's name, art, flavour and rules |

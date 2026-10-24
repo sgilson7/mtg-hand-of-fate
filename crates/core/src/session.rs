@@ -191,6 +191,8 @@ pub struct Session {
     pub now: i64,
     /// How far the fight's table is turned from its home view (turns).
     pub view_yaw: i32,
+    /// The permanent under the pointer in a fight, shown full size.
+    pub hovered: Option<u32>,
     /// The step under way: from, to, when it began.
     pub walk: Option<(Pos, Pos, i64)>,
     /// The view's size in CSS pixels, and in device pixels.
@@ -255,6 +257,7 @@ impl Session {
             .filter(|s| s.version == SAVE_VERSION);
         Ok(Session {
             view_yaw: 0,
+            hovered: None,
             cards,
             stories,
             quests,
@@ -1398,20 +1401,42 @@ impl Session {
                     _ => serde_json::json!({"ok": true}).to_string(),
                 }
             }
-            Screen::Battle(ref f) => {
-                let snap = f.event().snap.clone();
-                let best = crate::scene::battle_spots(self, &snap)
-                    .into_iter()
-                    .filter_map(|(pt, p)| {
-                        near(pt.add(crate::geom::v3(0, crate::fx::ONE, 0)), self).map(|d| (d, p.id))
-                    })
-                    .min();
-                match best {
-                    Some((d, id)) if d <= (reach * 2).pow(2) => self.act_json("duel.click", &id.to_string()),
-                    _ => serde_json::json!({"ok": true}).to_string(),
-                }
-            }
+            Screen::Battle(_) => match self.battle_under(x, y) {
+                Some(id) => self.act_json("duel.click", &id.to_string()),
+                None => serde_json::json!({"ok": true}).to_string(),
+            },
             _ => serde_json::json!({"ok": true}).to_string(),
+        }
+    }
+
+    /// The permanent drawn nearest pixel (x, y) in a fight, if one is near.
+    fn battle_under(&self, x: i32, y: i32) -> Option<u32> {
+        let Screen::Battle(f) = &self.screen else {
+            return None;
+        };
+        let m = crate::scene::camera_for(self)
+            .matrix((self.size.0 as i64 * crate::fx::ONE as i64 / self.size.1.max(1) as i64) as i32);
+        let reach = (self.size.1 / 14).max(1) as i64;
+        let snap = &f.event().snap;
+        crate::scene::battle_spots(self, snap)
+            .into_iter()
+            .filter_map(|(pt, p)| {
+                let q = crate::geom::project(&m, pt.add(crate::geom::v3(0, crate::fx::ONE, 0)))?;
+                let (px, py) = (q.0 * self.size.0 / 1000, q.1 * self.size.1 / 1000);
+                Some((((px - x) as i64).pow(2) + ((py - y) as i64).pow(2), p.id))
+            })
+            .filter(|(d, _)| *d <= (reach * 2).pow(2))
+            .min()
+            .map(|(_, id)| id)
+    }
+
+    /// The pointer moved over the 3D view: what lies under it is shown
+    /// full size. The view changes only when that changes.
+    pub fn hover(&mut self, x: i32, y: i32) {
+        let h = self.battle_under(x, y);
+        if h != self.hovered {
+            self.hovered = h;
+            self.changed();
         }
     }
 
@@ -1722,6 +1747,39 @@ mod tests {
         s.player.as_mut().unwrap().quests.insert("dracogenius".into(), 2);
         s.act("lair.climb", "").unwrap();
         assert!(matches!(&s.screen, Screen::Battle(f) if f.guardian));
+    }
+
+    #[test]
+    fn hovering_a_creature_in_a_fight_shows_its_card_and_moving_off_hides_it() {
+        let mut s = started();
+        s.act("resize", "1280,720,1").unwrap();
+        let caracal = s.cards.iter().position(|c| c.name == "Trained Caracal").unwrap();
+        s.world.as_mut().unwrap().tiles.get_mut(&(1, 0)).unwrap().cleared = false;
+        s.screen = Screen::Draw {
+            at: (1, 0),
+            card: caracal,
+        };
+        s.act("draw.fight", "").unwrap();
+        s.act("battle.skip", "").unwrap();
+        let Screen::Battle(f) = &s.screen else {
+            panic!("no fight")
+        };
+        let snap = f.event().snap.clone();
+        let (pt, p) = crate::scene::battle_spots(&s, &snap)
+            .into_iter()
+            .find(|(_, p)| p.creature)
+            .map(|(a, p)| (a, p.clone()))
+            .unwrap();
+        let m = crate::scene::camera_for(&s).matrix(1280 * crate::fx::ONE / 720);
+        let q = crate::geom::project(&m, pt.add(crate::geom::v3(0, crate::fx::ONE, 0))).unwrap();
+        s.hover(q.0 * 1280 / 1000, q.1 * 720 / 1000);
+        assert_eq!(s.hovered, Some(p.id));
+        let ui = s.ui_json();
+        assert!(ui.contains("\"id\":\"peek\""), "no peek panel");
+        assert!(ui.contains("Trained Caracal"));
+        s.hover(-100_000, -100_000);
+        assert_eq!(s.hovered, None);
+        assert!(!s.ui_json().contains("\"id\":\"peek\""));
     }
 
     #[test]

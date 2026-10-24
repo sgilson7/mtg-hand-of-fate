@@ -35,3 +35,9 @@ The agent decided: triage rows T2 to T7. "Half your health" is half the life you
 > push to live
 
 The agent decided: push `main` and publish MVP 2 (commit e3c6958, build e8d5a5f9f04d) to GitHub Pages, under the standing grant. `scripts/publish.sh` still cannot commit without `git config user.name` (R2.17), so its last steps were run by hand as before.
+
+## 2026-10-24, hovering
+
+> you should be able to hover a card and see its full textbox somehow in your hand, same with hovering creatures in the 3d view to see them
+
+The agent decided: triage row T8. The hand card grows in place, done in the page's style sheet alone. What lies under the pointer on the table is found by the core (`Session::hover`), and the view adds a panel for it. The page sends the pointer through two new shim calls, `hover` and `unhover`. Published under the standing grant, as the last round was.

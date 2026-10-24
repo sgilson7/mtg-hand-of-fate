@@ -144,6 +144,13 @@ body[data-screen="battle"] #panel-hand .card.sm + .card.sm { margin-left: -30px;
 body[data-screen="battle"] #panel-hand .card.dim { opacity: 1; filter: saturate(0.45) brightness(0.72); }
 body[data-screen="battle"] #panel-hand .card.sm:hover, body[data-screen="battle"] #panel-hand .card.sm:focus { z-index: 2; translate: 0 -14px; }
 body[data-screen="battle"] .place-br { max-height: 56%; }
+.place-peek { left: calc(min(300px, 40vw) + 28px); top: 14px; width: min(290px, 40vw); pointer-events: none; }
+.place-peek .card.md { width: 100%; }
+/* a card in the fight's hand shows its whole text box, enlarged, under the pointer */
+body[data-screen="battle"] #panel-hand .card.sm { transition: scale 0.12s, translate 0.12s; transform-origin: 50% 100%; }
+body[data-screen="battle"] #panel-hand .card.sm:hover { scale: 2.1; z-index: 3; }
+body[data-screen="battle"] #panel-hand .card.sm:hover .tx { display: block; }
+body[data-screen="battle"] .place-bottom { overflow: visible; }
 body[data-screen="battle"] .place-tr { max-height: 38%; }
 #panel-hand .card.sm { aspect-ratio: auto; grid-template-rows: auto auto auto auto; }
 #panel-deck .cards, #panel-shop .cards { justify-content: flex-start; padding-bottom: 18px; }
@@ -179,3 +186,7 @@ body[data-screen="battle"] .place-tr { max-height: 38%; }
   .card.lg { width: 200px; }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+body[data-screen="battle"] #panel-hand .card.sm:first-child { transform-origin: 0 100%; }
+/* a card shown to be read grows to fit its whole text box */
+.place-peek .card.md, body[data-screen="battle"] #panel-hand .card.sm:hover { aspect-ratio: auto; }
+.place-peek .card .tx, body[data-screen="battle"] #panel-hand .card.sm:hover .tx { overflow: visible; }
