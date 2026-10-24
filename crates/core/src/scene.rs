@@ -6,7 +6,7 @@
 //! with both sides' creatures; a city is a plaza of CHUMWORLD's buildings;
 //! the armourer turns a piece on a stand.
 
-use crate::battle::{Ev, PermSnap, Snap};
+use crate::duel::{Ev, PermSnap, Snap};
 use crate::fx::{self, Fx, ONE};
 use crate::geom::{v3, V3};
 use crate::look::Pose;
@@ -397,8 +397,17 @@ pub fn battle_spots<'a>(s: &Session, snap: &'a Snap) -> Vec<(V3, &'a PermSnap)> 
             .filter(|p| p.side == side && p.attached < 0)
             .collect();
         let creatures: Vec<&&PermSnap> = mine.iter().filter(|p| p.creature).collect();
-        let others: Vec<&&PermSnap> = mine.iter().filter(|p| !p.creature).collect();
+        let others: Vec<&&PermSnap> = mine.iter().filter(|p| !p.creature && !p.land).collect();
+        let lands: Vec<&&PermSnap> = mine.iter().filter(|p| p.land).collect();
         let dir = if side == 0 { 1 } else { -1 };
+        // lands: two columns in the side's left corner, as a player keeps them
+        for (i, p) in lands.iter().enumerate() {
+            let col = (i % 2) as i32;
+            let row = (i / 2) as i32;
+            let x = -dir * (ONE * 53 / 10 - col * ONE * 7 / 10);
+            let z = dir * (ONE * 4 / 10 + row * ONE * 7 / 10);
+            out.push((v3(x, 0, z), **p));
+        }
         let n = creatures.len() as i32;
         for (i, p) in creatures.iter().enumerate() {
             let x = (i as i32 * 2 - (n - 1)) * ONE * 11 / 10;
@@ -448,7 +457,7 @@ fn draw_battle(s: &Session, b: &mut Batch, f: &crate::session::Fight) {
         &upright(60 * ONE, ONE / 2, 60 * ONE),
         hex("#5a3a2a"),
     );
-    let ev = &f.record.events[f.shown];
+    let ev = f.event();
     let phase = (s.now / 1000 % 4000) as i32 * fx::TURN / 4000;
     for (pt, p) in battle_spots(s, &ev.snap) {
         let name = if p.card >= 0 {
@@ -465,6 +474,20 @@ fn draw_battle(s: &Session, b: &mut Batch, f: &crate::session::Fight) {
         let struck =
             matches!(ev.ev, Ev::Hit | Ev::Dies) && ev.focus.last() == Some(&p.id) && !ev.focus.is_empty();
         let yaw = if p.side == 0 { fx::TURN / 2 } else { 0 };
+        if p.land {
+            // a land: a crystal of its colour, sunk when tapped
+            let unit = if p.card >= 0 {
+                crate::rules::land_unit(&s.cards[p.card as usize].name).unwrap_or(0)
+            } else {
+                0
+            };
+            let h = if p.tapped { ONE * 3 / 10 } else { ONE * 7 / 10 };
+            match crystal_name(unit) {
+                Some(n) => model_h(s, b, n, pt, 0, h),
+                None => model_h(s, b, "gate_marker", pt, 0, h),
+            }
+            continue;
+        }
         if name.is_empty() || !p.creature {
             // an enchantment or artifact: a glowing gem in its colours
             b.solid(
@@ -837,16 +860,22 @@ mod tests {
             blocking,
             detained: false,
             creature: true,
+            land: false,
             attached: -1,
+            counters: 0,
+            fresh: false,
         };
         let snap = Snap {
             life: [1, 1],
-            bank: [vec![], vec![]],
             hand: [0, 0],
             library: [0, 0],
             grave: [0, 0],
+            pile: [0, 0],
             player_hand: vec![],
             perms: vec![mk(1, 0, true, -1), mk(2, 1, false, 1)],
+            stack: vec![],
+            step: crate::duel::Step::Damage,
+            active: 0,
         };
         let spots = battle_spots(&s, &snap);
         let a = spots.iter().find(|(_, p)| p.id == 1).unwrap().0;

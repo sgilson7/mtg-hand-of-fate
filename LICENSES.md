@@ -21,6 +21,7 @@ Every file in this repository that is not code written for it: its source, its a
 
 | From | What | Licence |
 | --- | --- | --- |
+| (none) | The Magic rules engine (`duel.rs`, `duel_ai.rs`, `rules.rs`) is written for this game from the Comprehensive Rules and the cards' Oracle text. No code or card script was copied from Forge (GPL-3.0), XMage (MIT), phase.rs or any other engine; the journal's Magic engines tab lists what was read | — |
 | Mage Tower Battle at 557369b (Sam Gilson) | `crates/core/src/{fx,geom,mesh,render,rng}.rs`, `web/gl.js`, `web/store.js`, `data/shaders/scene.*`, `crates/core/tests/no_storage.rs`; changed here: an ink-outline pass in `render.rs`, the shaders and `gl.js` | MIT |
 
 A file with no licence, a likeness, a recording or any third-party picture is a worklist row in `SECOND-ORDER.md` for the person to decide, and stays out of git until they do.

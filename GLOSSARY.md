@@ -4,19 +4,13 @@ The source of truth for what each word in this game means. Strings, tests, the p
 
 Write each entry as a `### Term` heading, then one or two plain sentences, then an optional `Not:` line listing words that must not be used for it. A number a rule decides is a `{placeholder}` the core fills. Keep entries in alphabetical order.
 
-### Bank
-
-The mana a side has saved in a fight. Mana you do not spend stays in the bank for your next turn.
-
-Not: mana pool
-
 ### Charisma
 
 How well you talk your way through Ravnica. It comes from your armour, lowers prices, and opens some story choices.
 
 ### Deck
 
-The cards you fight with, chosen from your collection. Lands are never in it: they live on the map.
+The cards you fight with, chosen from your collection. Lands are never in it: they live on the map and make your land pile.
 
 ### District
 
@@ -40,13 +34,19 @@ How much harm you can take. Your most is the sum of your armour and a base, and 
 
 Not: hit points
 
+### Land pile
+
+The lands a side may play in a fight, face up beside its deck: one a turn, any of them. Yours are the lands within Reach, made up to {pile} with basics of your deck's colours.
+
+Not: land deck, mana deck
+
 ### Pool
 
 The cards a tile can turn up. When you step onto a tile not yet drawn, one card from its pool is drawn.
 
 ### Reach
 
-How far a land may be from a fight and still give you mana in it, counted in steps along the grid.
+How far a land may be from a fight and still be in your land pile for it, counted in steps along the grid.
 
 Not: range
 

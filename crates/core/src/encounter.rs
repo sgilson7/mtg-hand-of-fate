@@ -7,23 +7,29 @@
 //! mana value sets the tier (how much life and mana the foe brings and how
 //! big its deck is), and its abilities are its rules in the fight.
 
-use crate::battle::SideSetup;
 use crate::content::{ty, Card};
-use crate::mana::{self, B, R, U};
+use crate::duel::SideSetup;
+use crate::mana::{self, R, U};
 use crate::player::{Armoury, Player};
 use crate::rng::Rng;
 use crate::rules;
 use crate::world::{City, Guild, Pos, World};
 
 /// Foe life by tier 1, 2, 3.
-pub const FOE_LIFE: [i32; 3] = [6, 9, 13];
+pub const FOE_LIFE: [i32; 3] = [8, 12, 16];
+/// Lands in a foe's land pile by tier 1, 2, 3.
+pub const FOE_LANDS: [usize; 3] = [3, 5, 7];
+/// A land pile holds at least this many lands: when fewer lie within Reach,
+/// basics of the deck's colours make up the rest (the guard against mana
+/// screw; DECISIONS.md, MVP 2).
+pub const PILE_MIN: usize = 5;
+pub const GUARDIAN_LANDS: usize = 7;
 /// Cards in a foe's deck besides the creature you met.
 pub const FOE_DECK: usize = 12;
 /// Gold for a won fight, a tier.
 pub const GOLD_PER_TIER: i32 = 3;
-pub const GUARDIAN_LIFE: i32 = 30;
+pub const GUARDIAN_LIFE: i32 = 16;
 pub const GUARDIAN_DECK: usize = 40;
-pub const GUARDIAN_COPIES: usize = 2;
 pub const STARTER_DECK: usize = 12;
 pub const SHOP_CARDS: usize = 6;
 pub const SELL_DIVISOR: i32 = 3;
@@ -64,46 +70,74 @@ pub fn foe(cards: &[Card], creature: usize, pool: &[usize], rng: &mut Rng) -> Si
         let k = (rng.next_u64() % extra.len() as u64) as usize;
         deck.push(extra.remove(k));
     }
-    let unit = if id == 0 { mana::C } else { id };
-    let income: Vec<u8> = (0..tier).map(|_| unit).collect();
-    let swamps = if id == B { income.len() } else { 0 };
+    let lands = basics_for(cards, if id == 0 { mana::ANY } else { id }, FOE_LANDS[tier - 1]);
     SideSetup {
         name: c.name.clone(),
         life: FOE_LIFE[tier - 1],
         deck,
-        income,
-        swamps,
+        lands,
         in_play: vec![creature],
         perks: 0,
     }
 }
 
-/// Niv-Mizzet, Dracogenius and his deck: two of each blue, red and Izzet
-/// card of the region, dearest first, to forty.
+/// Niv-Mizzet's forty, chosen by hand: an Izzet spells deck with a curve
+/// from one to six, two of each of its best cards (BRIEF: "a sophisticated
+/// deck"). Every name is a blue, red or Izzet card of the region (tested).
+pub const GUARDIAN_LIST: [(&str, usize); 29] = [
+    ("Frostburn Weird", 2),
+    ("Goblin Electromancer", 2),
+    ("Izzet Charm", 2),
+    ("Mizzium Mortars", 2),
+    ("Annihilating Fire", 2),
+    ("Ash Zealot", 2),
+    ("Splatter Thug", 2),
+    ("Stealer of Secrets", 2),
+    ("Cancel", 2),
+    ("Runewing", 2),
+    ("Guttersnipe", 2),
+    ("Gore-House Chainwalker", 1),
+    ("Electrickery", 1),
+    ("Inaction Injunction", 1),
+    ("Cyclonic Rift", 1),
+    ("Hover Barrier", 1),
+    ("Soulsworn Spirit", 1),
+    ("Voidwielder", 1),
+    ("Isperia's Skywatch", 1),
+    ("Skyline Predator", 1),
+    ("Bloodfray Giant", 1),
+    ("Explosive Impact", 1),
+    ("Tenement Crasher", 1),
+    ("Cobblebrute", 1),
+    ("Inspiration", 1),
+    ("Downsize", 1),
+    ("Blustersquall", 1),
+    ("Lobber Crew", 1),
+    ("Goblin Rally", 1),
+];
+
+/// Niv-Mizzet, Dracogenius, in play from the start, and his forty.
 pub fn guardian(cards: &[Card]) -> SideSetup {
     let niv = cards
         .iter()
         .position(|c| c.name == "Niv-Mizzet, Dracogenius")
         .unwrap_or(0);
-    let mut pool: Vec<usize> = (0..cards.len())
-        .filter(|&i| {
-            let k = &cards[i];
-            i != niv && !k.is(ty::LAND) && k.identity != 0 && k.identity & !(U | R) == 0
-        })
-        .collect();
-    pool.sort_by_key(|&i| (std::cmp::Reverse(cards[i].value), cards[i].name.clone()));
     let mut deck = Vec::new();
-    for _ in 0..GUARDIAN_COPIES {
-        deck.extend(pool.iter().copied());
+    for (name, n) in GUARDIAN_LIST {
+        if let Some(i) = cards.iter().position(|c| c.name == name) {
+            deck.extend(std::iter::repeat_n(i, n));
+        }
     }
-    deck.sort_by_key(|&i| (std::cmp::Reverse(cards[i].value), cards[i].name.clone()));
-    deck.truncate(GUARDIAN_DECK);
     SideSetup {
         name: cards[niv].name.clone(),
         life: GUARDIAN_LIFE,
         deck,
-        income: vec![U, R, U, R, U | R],
-        swamps: 0,
+        lands: {
+            let mut l = basics_for(cards, U | R, GUARDIAN_LANDS - 2);
+            let gate = cards.iter().position(|c| c.name == "Izzet Guildgate");
+            l.extend(gate.into_iter().chain(gate));
+            l
+        },
         in_play: vec![niv],
         perks: 0,
     }
@@ -118,21 +152,64 @@ pub fn player_side(
     at: Pos,
     name: &str,
 ) -> SideSetup {
-    let lands = world.lands_in_reach(at, p.reach(armoury));
-    let income: Vec<u8> = lands
-        .iter()
-        .filter_map(|(_, l)| rules::land_unit(&cards[*l].name))
+    let mut lands: Vec<usize> = world
+        .lands_in_reach(at, p.reach(armoury))
+        .into_iter()
+        .map(|(_, l)| l)
         .collect();
-    let swamps = lands.iter().filter(|(_, l)| cards[*l].name == "Swamp").count();
+    lands.sort_unstable();
     SideSetup {
         name: name.to_string(),
         life: p.health,
         deck: p.deck.clone(),
-        income,
-        swamps,
+        lands: fill_pile(cards, &p.deck, lands),
         in_play: Vec::new(),
         perks: p.perks(armoury),
     }
+}
+
+/// `n` basic lands for the colours in `mask`, the colours taking turns.
+pub fn basics_for(cards: &[Card], mask: u8, n: usize) -> Vec<usize> {
+    let names: Vec<usize> = mana::COLOURS
+        .iter()
+        .filter(|c| mask & **c != 0)
+        .filter_map(|c| {
+            cards
+                .iter()
+                .position(|k| k.name == crate::world::Terrain::of_colour(*c).land_name())
+        })
+        .collect();
+    if names.is_empty() {
+        return Vec::new();
+    }
+    (0..n).map(|i| names[i % names.len()]).collect()
+}
+
+/// The player's land pile: the lands within Reach, made up to `PILE_MIN`
+/// with basics of the deck's colours, the colour the pile has least of first.
+pub fn fill_pile(cards: &[Card], deck: &[usize], mut lands: Vec<usize>) -> Vec<usize> {
+    let want: u8 = deck.iter().fold(0, |m, &c| m | cards[c].identity);
+    let want = if want == 0 { mana::ANY } else { want };
+    while lands.len() < PILE_MIN {
+        let count = |colour: u8| {
+            lands
+                .iter()
+                .filter(|&&l| rules::land_unit(&cards[l].name).unwrap_or(0) & colour != 0)
+                .count()
+        };
+        let Some(&least) = mana::COLOURS
+            .iter()
+            .filter(|c| want & **c != 0)
+            .min_by_key(|c| count(**c))
+        else {
+            break;
+        };
+        let Some(&land) = basics_for(cards, least, 1).first() else {
+            break;
+        };
+        lands.push(land);
+    }
+    lands
 }
 
 /// A new game's deck for each guild: five or six of its common and
@@ -292,8 +369,8 @@ pub fn shop_armour(armoury: &Armoury, city: City) -> Vec<String> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::battle::{run, Outcome, Setup};
     use crate::content::for_tests;
+    use crate::duel::{Duel, Outcome, Setup};
     use crate::player::parse_armour;
 
     #[test]
@@ -302,15 +379,16 @@ mod tests {
         let mangler = crate::content::find(&cards, "Dreg Mangler");
         let f = foe(&cards, mangler, &[], &mut Rng::new(1));
         assert_eq!(f.in_play, vec![mangler]);
-        // mana value 3: tier 2, 9 life, two units of black-green
-        assert_eq!(f.life, 9);
-        assert_eq!(f.income, vec![B | crate::mana::G; 2]);
+        // mana value 3: tier 2, 12 life, five lands: Swamps and Forests by turns
+        assert_eq!(f.life, 12);
+        let names: Vec<&str> = f.lands.iter().map(|&l| cards[l].name.as_str()).collect();
+        assert_eq!(names, vec!["Swamp", "Forest", "Swamp", "Forest", "Swamp"]);
         assert_eq!(f.deck.len(), FOE_DECK);
         // twelve cards: enough that a foe does not run out before a fight is decided
         assert!(f
             .deck
             .iter()
-            .all(|&i| cards[i].identity & !(B | crate::mana::G) == 0));
+            .all(|&i| cards[i].identity & !(crate::mana::B | crate::mana::G) == 0));
     }
 
     #[test]
@@ -318,7 +396,8 @@ mod tests {
         let cards = for_tests();
         let g = guardian(&cards);
         assert_eq!(g.deck.len(), 40);
-        assert_eq!(g.life, 30);
+        assert_eq!(g.life, GUARDIAN_LIFE);
+        assert_eq!(g.lands.len(), GUARDIAN_LANDS);
         assert!(g
             .deck
             .iter()
@@ -358,20 +437,38 @@ mod tests {
             let me = SideSetup {
                 name: "you".into(),
                 life: p.health,
+                lands: fill_pile(&cards, &deck, lands),
                 deck,
-                income: lands
-                    .iter()
-                    .filter_map(|&l| rules::land_unit(&cards[l].name))
-                    .collect(),
                 ..SideSetup::default()
             };
             let f = foe(&cards, caracal, &[], &mut Rng::new(seed));
-            let r = run(&cards, &Setup { sides: [me, f], seed });
-            if r.outcome == Outcome::Won {
+            let mut d = Duel::new(
+                std::rc::Rc::new(cards.clone()),
+                &Setup { sides: [me, f], seed },
+                [false, false],
+            );
+            d.run();
+            if d.outcome == Some(Outcome::Won) {
                 wins += 1;
             }
         }
         assert!(wins >= 24, "{wins} of 40");
+    }
+
+    #[test]
+    fn a_short_land_pile_is_made_up_with_the_colour_it_lacks() {
+        let cards = for_tests();
+        let deck = starter_deck(&cards, Guild::Izzet);
+        let gate = crate::content::find(&cards, "Izzet Guildgate");
+        let pile = fill_pile(&cards, &deck, vec![gate]);
+        let names: Vec<&str> = pile.iter().map(|&l| cards[l].name.as_str()).collect();
+        // the gate counts for both; then Island, Mountain, Island, Mountain
+        assert_eq!(
+            names,
+            vec!["Izzet Guildgate", "Island", "Mountain", "Island", "Mountain"]
+        );
+        let six = vec![gate; 6];
+        assert_eq!(fill_pile(&cards, &deck, six.clone()), six);
     }
 
     #[test]

@@ -85,7 +85,7 @@ pub struct Pose {
     pub lunge: Fx,
     /// Struck: drawn white.
     pub flash: bool,
-    /// Tapped: tipped a quarter over, as a tapped card turns sideways.
+    /// Tapped: turned a quarter, as a tapped card turns sideways.
     pub tapped: bool,
     /// Faded toward the haze: detained.
     pub dim: bool,
@@ -190,9 +190,10 @@ impl Look {
         let k = if pose.scale == 0 { ONE } else { pose.scale };
         let s = fx::sin(pose.phase);
         let bob = fx::mul(s.abs(), BOB);
+        // tapped: the whole model turns a quarter about its feet, as a card turns sideways
+        let turn = pose.yaw + if pose.tapped { fx::TURN / 4 } else { 0 };
         let forward = rotate(v3(0, 0, ONE), pose.yaw, 0, 0);
         let shove = forward.scale(pose.lunge);
-        let tip = if pose.tapped { fx::TURN / 4 } else { 0 };
         for part in parts {
             let (mut pitch, mut roll, yaw) = part.tilt;
             let mut at = part.at;
@@ -204,10 +205,8 @@ impl Look {
                 Node::Body => {}
             }
             at.y += bob;
-            // tapped: the whole model tips onto its side about its feet
-            let at = rotate(at, 0, 0, -tip);
-            let at = rotate(at, pose.yaw, 0, 0).scale(k).add(base).add(shove);
-            let f = Frame3::new(pose.yaw + yaw, pitch, roll - tip, part.size.scale(k));
+            let at = rotate(at, turn, 0, 0).scale(k).add(base).add(shove);
+            let f = Frame3::new(turn + yaw, pitch, roll, part.size.scale(k));
             let rgb = if pose.flash {
                 [ONE, ONE, ONE]
             } else if pose.dim {

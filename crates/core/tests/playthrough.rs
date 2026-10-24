@@ -1,7 +1,7 @@
 //! A playthrough: a bot plays the first region through `act()` alone, the
 //! way the page does, from a new game to the fight with Niv-Mizzet. It walks
 //! toward New Prahv for the writ, then to Nivix, takes whatever each tile
-//! draws (fights, the first choice it can make, the first fate card), places
+//! draws (fights, played for it by the computer; the first choice it can make, the first fate card), places
 //! lands near the lair, and rests and buys armour in cities. It shows the
 //! region can be played to its end; it does not show the bot plays well.
 //!
@@ -151,6 +151,11 @@ fn a_bot_can_play_the_first_region_to_the_guardian() {
                     reached_guardian = true;
                 }
                 fights += 1;
+                // the computer plays the bot's side of the game of Magic
+                if let Screen::Battle(f) = &mut s.screen {
+                    f.duel.human = [false, false];
+                    f.duel.run();
+                }
                 s.act("battle.skip", "").unwrap();
                 s.act("battle.done", "").unwrap();
             }

@@ -5,8 +5,8 @@
 
 use serde_json::{json, Value};
 
-use crate::battle::{Outcome, P};
 use crate::content::{ty, Card, Kind};
+use crate::duel::{Action, Ask, Outcome, Target, Then, P};
 use crate::encounter;
 use crate::geom::{self, V3};
 use crate::mana;
@@ -161,7 +161,7 @@ fn readings(s: &Session, c: usize, at: Pos) -> Value {
             &[
                 ("tier", tier.to_string()),
                 ("life", encounter::FOE_LIFE[tier as usize - 1].to_string()),
-                ("mana", tier.to_string()),
+                ("lands", encounter::FOE_LANDS[tier as usize - 1].to_string()),
             ],
         ),
         Kind::Land => s.s("reading.tier.land"),
@@ -173,22 +173,22 @@ fn readings(s: &Session, c: usize, at: Pos) -> Value {
         (r.unleash, "kw.unleash"),
         (r.scavenge.is_some(), "kw.scavenge"),
         (r.overload.is_some(), "kw.overload"),
-        (
-            r.etb.iter().any(|e| matches!(e, crate::rules::Eff::Detain(_))),
-            "kw.detain",
-        ),
-        (
-            r.etb.contains(&crate::rules::Eff::Populate)
-                || r.modes
-                    .iter()
-                    .flatten()
-                    .any(|e| *e == crate::rules::Eff::Populate),
-            "kw.populate",
-        ),
+        (r.detains(), "kw.detain"),
+        (r.populates(), "kw.populate"),
         (!r.activated.is_empty(), "kw.activated"),
-        (!r.etb.is_empty(), "kw.enters"),
-        (!r.dies.is_empty(), "kw.dies"),
-        (!r.statics.is_empty() || r.on_cast.is_some(), "kw.static"),
+        (r.etb.is_some(), "kw.enters"),
+        (r.dies.is_some(), "kw.dies"),
+        (
+            !r.statics.is_empty()
+                || r.on_cast.is_some()
+                || r.hits.is_some()
+                || r.upkeep.is_some()
+                || r.opponent_upkeep.is_some()
+                || r.ally_dies.is_some()
+                || r.attacks.is_some()
+                || r.damages_player.is_some(),
+            "kw.static",
+        ),
     ] {
         if flag {
             abilities.push(s.s(key));
@@ -391,75 +391,433 @@ fn story_panel(s: &Session, card: usize) -> Value {
     json!({"id": "story", "place": "center-right", "kind": "paper", "eyebrow": tag, "heading": st.title, "text": st.text, "choices": choices})
 }
 
+/// A cost as its symbols, "{1}{B}".
+fn cost_text(c: &crate::mana::Cost) -> String {
+    use crate::mana::Sym;
+    c.syms
+        .iter()
+        .map(|x| match x {
+            Sym::Generic(n) => format!("{{{n}}}"),
+            Sym::Colour(k) => format!("{{{}}}", mana::letter_of(*k)),
+            Sym::Hybrid(a, b) => format!("{{{}/{}}}", mana::letter_of(*a), mana::letter_of(*b)),
+        })
+        .collect()
+}
+
+/// What an action is called on a button.
+fn action_label(s: &Session, f: &crate::session::Fight, a: &Action) -> String {
+    let d = &f.duel;
+    match *a {
+        Action::Land(i) => s.f(
+            "duel.play_land",
+            &[("card", s.cards[d.s[P].pile[i]].name.clone())],
+        ),
+        Action::Cast { hand, mode, overload } => {
+            let c = d.s[P].hand[hand];
+            if overload {
+                s.f(
+                    "duel.cast_overload",
+                    &[("cost", cost_text(&d.cast_cost(P, c, true)))],
+                )
+            } else if s.cards[c].rules.modes.len() > 1 {
+                s.f("duel.cast_mode", &[("n", (mode + 1).to_string())])
+            } else {
+                s.f("duel.cast", &[("cost", cost_text(&d.cast_cost(P, c, false)))])
+            }
+        }
+        Action::Activate { perm, n } => {
+            let name = d.name_of(perm);
+            let ab = d
+                .perm(perm)
+                .and_then(|p| p.card)
+                .and_then(|c| s.cards[c].rules.activated.get(n).cloned());
+            let mut cost = ab.as_ref().map(|x| cost_text(&x.cost)).unwrap_or_default();
+            if ab.as_ref().map(|x| x.tap).unwrap_or(false) {
+                cost.push_str("{T}");
+            }
+            if ab.as_ref().map(|x| x.sac).unwrap_or(false) {
+                return s.f("duel.activate_sac", &[("card", name), ("cost", cost)]);
+            }
+            s.f("duel.activate", &[("card", name), ("cost", cost)])
+        }
+        Action::Scavenge { grave } => {
+            let c = d.s[P].grave[grave];
+            let cost = s.cards[c]
+                .rules
+                .scavenge
+                .as_ref()
+                .map(cost_text)
+                .unwrap_or_default();
+            s.f(
+                "duel.scavenge",
+                &[("card", s.cards[c].name.clone()), ("cost", cost)],
+            )
+        }
+        Action::Pass => {
+            let key = if !d.stack.is_empty() {
+                "duel.pass_resolve"
+            } else if d.active == P && d.step == crate::duel::Step::Main1 {
+                "duel.pass_combat"
+            } else if d.active == P && d.step == crate::duel::Step::Main2 {
+                "duel.pass_end"
+            } else {
+                "duel.pass"
+            };
+            s.s(key)
+        }
+    }
+}
+
+fn target_row(s: &Session, f: &crate::session::Fight, t: &Target) -> (String, String) {
+    let d = &f.duel;
+    match t {
+        Target::Perm(id) => {
+            let p = d.perm(*id);
+            let whose = if p.map(|p| p.ctrl == P).unwrap_or(false) {
+                s.s("duel.yours")
+            } else {
+                s.s("duel.theirs")
+            };
+            let sub = match p {
+                Some(p) if d.is_creature(p) => {
+                    format!("{}/{} · {whose}", d.power(p), d.toughness(p) - p.damage)
+                }
+                _ => whose,
+            };
+            (d.name_of(*id), sub)
+        }
+        Target::Player(pl) => (
+            if *pl == P {
+                s.s("battle.you")
+            } else {
+                d.side_name(*pl)
+            },
+            s.f("battle.life", &[("n", d.s[*pl].life.to_string())]),
+        ),
+        Target::Item(i) => (
+            d.target_name(t),
+            s.s(if d.stack.iter().any(|x| x.id == *i && x.ctrl == P) {
+                "duel.your_spell"
+            } else {
+                "duel.their_spell"
+            }),
+        ),
+        Target::Grave(o, _) => (
+            d.target_name(t),
+            s.s(if *o == P {
+                "duel.your_grave"
+            } else {
+                "duel.their_grave"
+            }),
+        ),
+    }
+}
+
 fn battle_panels(s: &Session, f: &crate::session::Fight) -> Vec<Value> {
-    let ev = &f.record.events[f.shown];
+    let ev = f.event();
     let snap = &ev.snap;
-    let bank = |side: usize| -> Value { Value::Array(snap.bank[side].iter().map(|u| json!(u)).collect()) };
+    let d = &f.duel;
     let foe_name = s.cards[f.creature].name.clone();
+    let mana_of = |side: usize| -> Value {
+        if !f.caught_up() {
+            return json!([]);
+        }
+        Value::Array(
+            d.sources(side, None)
+                .iter()
+                .map(|(_, u)| {
+                    let letters: Vec<&str> = mana::COLOURS
+                        .iter()
+                        .filter(|c| *u & **c != 0)
+                        .map(|c| mana::letter_of(*c))
+                        .collect();
+                    json!(if letters.len() == 2 {
+                        letters.join("/")
+                    } else if letters.len() == 1 {
+                        letters[0].to_string()
+                    } else {
+                        "C".to_string()
+                    })
+                })
+                .collect(),
+        )
+    };
+    let whose = if snap.active as usize == P {
+        s.s("duel.your_turn")
+    } else {
+        s.s("duel.its_turn")
+    };
     let mut panels = vec![json!({
-        "id": "sides", "place": "tl", "heading": s.f("battle.turn", &[("n", ev.turn.div_ceil(2).to_string())]),
+        "id": "sides", "place": "tl",
+        "heading": s.f("duel.turn_heading", &[("n", ev.turn.div_ceil(2).to_string()), ("whose", whose), ("step", s.s(snap.step.key()))]),
         "rows": [
             [s.s("battle.you"), s.f("battle.life", &[("n", snap.life[0].to_string())])],
+            [s.s("duel.your_cards"), s.f("duel.cards_n", &[("hand", snap.hand[0].to_string()), ("library", snap.library[0].to_string()), ("pile", snap.pile[0].to_string())])],
             [foe_name, s.f("battle.life", &[("n", snap.life[1].to_string())])],
-            [s.s("battle.cards"), s.f("battle.cards_n", &[("hand", snap.hand[1].to_string()), ("library", snap.library[1].to_string())])],
+            [s.s("battle.cards"), s.f("duel.cards_n", &[("hand", snap.hand[1].to_string()), ("library", snap.library[1].to_string()), ("pile", snap.pile[1].to_string())])],
         ],
-        "pips": [{"label": s.s("battle.your_mana"), "units": bank(0)}, {"label": s.s("battle.foe_mana"), "units": bank(1)}],
+        "pips": [{"label": s.s("battle.your_mana"), "units": mana_of(P)}, {"label": s.s("battle.foe_mana"), "units": mana_of(1)}],
     })];
-    let from = f.shown.saturating_sub(9);
-    let log: Vec<Value> = f.record.events[from..=f.shown]
+    let from = f.shown.saturating_sub(6);
+    let log: Vec<Value> = d.events[from..=f.shown.min(d.events.len().saturating_sub(1))]
         .iter()
         .enumerate()
         .map(|(i, e)| json!({"text": s.f(e.key, &e.args.iter().map(|(k, v)| (*k, v.clone())).collect::<Vec<_>>()), "now": from + i == f.shown, "side": e.side}))
         .collect();
     panels.push(json!({"id": "log", "place": "tr", "heading": s.s("battle.log"), "log": log}));
-    let hand: Vec<Value> = snap.player_hand.iter().map(|&c| face(s, c, "sm")).collect();
-    panels.push(json!({"id": "hand", "place": "bottom", "cards": hand}));
-    let done = f.shown + 1 >= f.record.events.len();
-    let mut actions = vec![
-        action(
-            s.s(if f.paused { "battle.play" } else { "battle.pause" }),
-            "battle.pause",
-            "",
-            !done,
-        ),
-        action(s.s("battle.step"), "battle.step", "", !done),
-        action(
-            s.f("battle.speed", &[("n", f.speed.to_string())]),
-            "battle.speed",
-            "",
-            !done,
-        ),
-        action(s.s("battle.skip"), "battle.skip", "", !done),
-    ];
-    if done {
-        let label = match f.record.outcome {
-            Outcome::Won => s.s("battle.won"),
-            Outcome::Lost => s.s("battle.lost"),
-            Outcome::Withdrew => s.s("battle.withdrew_short"),
-        };
-        actions = vec![action(label, "battle.done", "", true)];
+    if !snap.stack.is_empty() {
+        let lines: Vec<String> = snap
+            .stack
+            .iter()
+            .rev()
+            .map(|(side, name)| {
+                s.f(
+                    if *side as usize == P {
+                        "duel.stack_yours"
+                    } else {
+                        "duel.stack_theirs"
+                    },
+                    &[("card", name.clone())],
+                )
+            })
+            .collect();
+        panels.push(json!({"id": "stack", "place": "left", "heading": s.s("duel.stack"), "lines": lines}));
     }
-    panels.push(json!({"id": "controls", "place": "br", "actions": actions}));
+    let ask = f.asking();
+    let acts = d.actions(P);
+    // the hand: castable cards open their casting buttons
+    let hand: Vec<Value> = snap
+        .player_hand
+        .iter()
+        .enumerate()
+        .map(|(i, &c)| {
+            let mut face = face(s, c, "sm");
+            match ask {
+                Some(Ask::Priority) => {
+                    let mine: Vec<(usize, &Action)> = acts
+                        .iter()
+                        .enumerate()
+                        .filter(|(_, a)| matches!(a, Action::Cast { hand, .. } if *hand == i))
+                        .collect();
+                    if mine.is_empty() {
+                        face["dim"] = json!(true);
+                    } else if mine.len() == 1 {
+                        face["act"] = json!("duel.do");
+                        face["value"] = json!(mine[0].0.to_string());
+                        face["badge"] = json!(action_label(s, f, mine[0].1));
+                    } else {
+                        face["actions"] = Value::Array(
+                            mine.iter()
+                                .map(|(k, a)| action(action_label(s, f, a), "duel.do", &k.to_string(), true))
+                                .collect(),
+                        );
+                    }
+                }
+                Some(Ask::Discard { .. }) => {
+                    face["act"] = json!("duel.pick");
+                    face["value"] = json!(i.to_string());
+                    face["badge"] = json!(s.s("duel.discard_this"));
+                }
+                _ => face["dim"] = json!(true),
+            }
+            face
+        })
+        .collect();
+    panels.push(json!({"id": "hand", "place": "bottom", "cards": hand}));
+    panels.push(controls(s, f, ask, &acts));
     panels
 }
 
+fn controls(s: &Session, f: &crate::session::Fight, ask: Option<&Ask>, acts: &[Action]) -> Value {
+    let d = &f.duel;
+    if f.done() {
+        let label = match d.outcome {
+            Some(Outcome::Won) => s.s("battle.won"),
+            Some(Outcome::Lost) => s.s("battle.lost"),
+            _ => s.s("battle.withdrew_short"),
+        };
+        return json!({"id": "controls", "place": "br", "actions": [action(label, "battle.done", "", true)]});
+    }
+    let Some(ask) = ask else {
+        let actions = vec![
+            action(
+                s.f("battle.speed", &[("n", f.speed.to_string())]),
+                "battle.speed",
+                "",
+                true,
+            ),
+            action(s.s("duel.skip"), "battle.skip", "", true),
+        ];
+        return json!({"id": "controls", "place": "br", "heading": s.s("duel.watching"), "actions": actions});
+    };
+    let ok = |label: String, enabled: bool| action(label, "duel.ok", "", enabled);
+    match ask {
+        Ask::Priority => {
+            let list: Vec<Value> = acts
+                .iter()
+                .enumerate()
+                .filter(|(_, a)| {
+                    matches!(
+                        a,
+                        Action::Land(_) | Action::Activate { .. } | Action::Scavenge { .. }
+                    )
+                })
+                .map(|(i, a)| action(action_label(s, f, a), "duel.do", &i.to_string(), true))
+                .collect();
+            let text = match d.stack.last() {
+                Some(top) if top.ctrl != P => s.f("duel.answer_it", &[("card", top.name.clone())]),
+                Some(_) => s.s("duel.yours_on_stack"),
+                None if d.active == P => s.s("duel.your_move"),
+                None => s.s("duel.its_move"),
+            };
+            let pass = acts.iter().position(|a| *a == Action::Pass).unwrap_or(0);
+            json!({"id": "controls", "place": "br", "heading": s.s(d.step.key()), "text": text, "list": list,
+                "actions": [action(action_label(s, f, &Action::Pass), "duel.do", &pass.to_string(), true)]})
+        }
+        Ask::Targets {
+            legal,
+            chosen,
+            min,
+            max,
+            then,
+            ..
+        } => {
+            let for_what = match &**then {
+                Then::Cast { card, .. } => s.cards[*card].name.clone(),
+                Then::Activate { perm, .. } => d.name_of(*perm),
+                Then::Scavenge { card, .. } => s.cards[*card].name.clone(),
+                Then::Trigger(t) => t.name.clone(),
+            };
+            let list: Vec<Value> = legal
+                .iter()
+                .enumerate()
+                .map(|(i, t)| {
+                    let (label, sub) = target_row(s, f, t);
+                    json!({"label": label, "sub": sub, "act": "duel.pick", "value": i.to_string(), "enabled": true, "hot": chosen.contains(t)})
+                })
+                .collect();
+            let heading = if *max > 1 {
+                s.f("duel.targets_up_to", &[("n", max.to_string())])
+            } else {
+                s.s("duel.target")
+            };
+            let mut actions = Vec::new();
+            if *max > 1 || *min == 0 {
+                actions.push(ok(s.s("duel.done"), chosen.len() >= *min));
+            }
+            if !matches!(**then, Then::Trigger(_)) {
+                actions.push(action(s.s("duel.take_back"), "duel.cancel", "", true));
+            }
+            json!({"id": "controls", "place": "br", "heading": heading, "text": s.f("duel.target_for", &[("card", for_what)]), "list": list, "actions": actions})
+        }
+        Ask::Attackers { legal, chosen } => {
+            let list: Vec<Value> = legal
+                .iter()
+                .enumerate()
+                .map(|(i, id)| {
+                    let p = d.perm(*id);
+                    let sub = p.map(|p| format!("{}/{}", d.power(p), d.toughness(p))).unwrap_or_default();
+                    json!({"label": d.name_of(*id), "sub": sub, "act": "duel.pick", "value": i.to_string(), "enabled": true, "hot": chosen.contains(id)})
+                })
+                .collect();
+            let go = if chosen.is_empty() {
+                s.s("duel.no_attack")
+            } else {
+                s.f("duel.attack_n", &[("n", chosen.len().to_string())])
+            };
+            json!({"id": "controls", "place": "br", "heading": s.s("duel.attack"), "text": s.s("duel.attack_text"), "list": list,
+                "actions": [action(s.s("duel.all"), "duel.all", "", true), ok(go, true)]})
+        }
+        Ask::Blockers {
+            legal,
+            attackers,
+            chosen,
+        } => {
+            let names: Vec<String> = attackers.iter().map(|a| d.name_of(*a)).collect();
+            let list: Vec<Value> = legal
+                .iter()
+                .map(|id| {
+                    let sub = match chosen.iter().find(|(b, _)| b == id) {
+                        Some((_, a)) => s.f("duel.blocks", &[("card", d.name_of(*a))]),
+                        None => s.s("duel.not_blocking"),
+                    };
+                    json!({"label": d.name_of(*id), "sub": sub, "act": "duel.block", "value": id.to_string(), "enabled": true, "hot": chosen.iter().any(|(b, _)| b == id)})
+                })
+                .collect();
+            json!({"id": "controls", "place": "br", "heading": s.s("duel.block"), "text": s.f("duel.block_text", &[("cards", names.join(", "))]), "list": list,
+                "actions": [ok(if chosen.is_empty() { s.s("duel.no_block") } else { s.s("duel.done") }, true)]})
+        }
+        Ask::Unleash { perm } => {
+            json!({"id": "controls", "place": "br", "heading": s.f("duel.unleash", &[("card", d.name_of(*perm))]), "text": s.s("duel.unleash_text"),
+            "actions": [action(s.s("duel.unleash_yes"), "duel.yes", "", true), action(s.s("duel.unleash_no"), "duel.no", "", true)]})
+        }
+        Ask::Discard { n } => {
+            json!({"id": "controls", "place": "br", "heading": s.f("duel.discard", &[("n", n.to_string())]), "text": s.s("duel.discard_text")})
+        }
+        Ask::Sacrifice { legal } => {
+            let list: Vec<Value> = legal
+                .iter()
+                .enumerate()
+                .map(|(i, id)| action(d.name_of(*id), "duel.pick", &i.to_string(), true))
+                .collect();
+            json!({"id": "controls", "place": "br", "heading": s.s("duel.sacrifice"), "text": s.s("duel.sacrifice_text"), "list": list})
+        }
+        Ask::Impostor { legal, .. } => {
+            let list: Vec<Value> = legal
+                .iter()
+                .enumerate()
+                .map(|(i, id)| action(d.name_of(*id), "duel.pick", &i.to_string(), true))
+                .collect();
+            json!({"id": "controls", "place": "br", "heading": s.s("duel.impostor"), "text": s.s("duel.impostor_text"), "list": list,
+                "actions": [action(s.s("duel.impostor_sacrifice"), "duel.none", "", true)]})
+        }
+        Ask::Pay { n, item } => {
+            let name = d
+                .stack
+                .iter()
+                .find(|x| x.id == *item)
+                .map(|x| x.name.clone())
+                .unwrap_or_default();
+            json!({"id": "controls", "place": "br", "heading": s.f("duel.pay", &[("n", n.to_string())]), "text": s.f("duel.pay_text", &[("card", name), ("n", n.to_string())]),
+                "actions": [action(s.s("duel.pay_yes"), "duel.yes", "", true), action(s.s("duel.pay_no"), "duel.no", "", true)]})
+        }
+    }
+}
+
 fn battle_labels(s: &Session, f: &crate::session::Fight) -> Vec<Value> {
-    let ev = &f.record.events[f.shown];
+    let ev = f.event();
+    let chosen: Vec<u32> = match f.asking() {
+        Some(Ask::Targets { chosen, .. }) => chosen
+            .iter()
+            .filter_map(|t| match t {
+                Target::Perm(id) => Some(*id),
+                _ => None,
+            })
+            .collect(),
+        Some(Ask::Attackers { chosen, .. }) => chosen.clone(),
+        Some(Ask::Blockers { chosen, .. }) => chosen.iter().map(|(b, _)| *b).collect(),
+        _ => Vec::new(),
+    };
     let mut out = Vec::new();
     for (pt, p) in scene::battle_spots(s, &ev.snap) {
-        if !p.creature {
+        if p.land {
             continue;
         }
-        let hot = ev.focus.contains(&p.id);
-        let mut sub = format!("{}/{}", p.power, p.toughness - p.damage.min(p.toughness));
+        let hot = ev.focus.contains(&p.id) || chosen.contains(&p.id);
+        let mut sub = if p.creature {
+            format!("{}/{}", p.power, p.toughness - p.damage.min(p.toughness))
+        } else {
+            String::new()
+        };
         if p.detained {
             sub = s.f("battle.detained", &[("pt", sub)]);
+        } else if p.tapped && p.creature {
+            sub = s.f("duel.tapped", &[("pt", sub)]);
         }
         if let Some(v) = place(s, pt, p.name.clone(), sub, hot) {
             out.push(v);
         }
     }
-    let _ = P;
     out
 }
 

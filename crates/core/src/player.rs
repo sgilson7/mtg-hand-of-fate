@@ -8,7 +8,7 @@ use std::collections::BTreeMap;
 
 use serde::{Deserialize, Serialize};
 
-use crate::battle::perk;
+use crate::duel::perk;
 use crate::world::{Guild, Pos, Terrain};
 
 pub const START_SUPPLIES: i32 = 10;

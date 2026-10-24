@@ -199,12 +199,10 @@ impl Bank {
             })
             .collect();
         needs.sort_by_key(|m| count_colours(*m));
-        for need in needs {
-            let best = (0..self.units.len())
-                .filter(|&i| !used[i] && self.units[i] & need != 0)
-                .min_by_key(|&i| (count_colours(self.units[i]), i))?;
-            used[best] = true;
-            picks.push(best);
+        // each need tries the least flexible unit first, and backs off when a
+        // later need is left with nothing (two gates sharing a colour)
+        if !self.assign(&needs, &mut used, &mut picks) {
+            return None;
         }
         let generic: usize = cost
             .syms
@@ -229,6 +227,26 @@ impl Bank {
             picks.push(best);
         }
         Some(picks)
+    }
+
+    fn assign(&self, needs: &[u8], used: &mut [bool], picks: &mut Vec<usize>) -> bool {
+        let Some((&need, rest)) = needs.split_first() else {
+            return true;
+        };
+        let mut options: Vec<usize> = (0..self.units.len())
+            .filter(|&i| !used[i] && self.units[i] & need != 0)
+            .collect();
+        options.sort_by_key(|&i| (count_colours(self.units[i]), i));
+        for i in options {
+            used[i] = true;
+            picks.push(i);
+            if self.assign(rest, used, picks) {
+                return true;
+            }
+            picks.pop();
+            used[i] = false;
+        }
+        false
     }
 
     pub fn can_pay(&self, cost: &Cost) -> bool {
@@ -285,6 +303,21 @@ mod tests {
             units: vec![U | R, B],
         };
         assert_eq!(bank.plan(&Cost::parse("{1}").unwrap()).unwrap(), vec![1]);
+    }
+
+    #[test]
+    fn two_gates_sharing_a_colour_still_pay_both_colours() {
+        // Azorius (W/U) first, Selesnya (G/W), Mountain: {1}{W}{U} is payable
+        // as Selesnya for W, Azorius for U, Mountain for the 1
+        let bank = Bank {
+            units: vec![W | U, G | W, R],
+        };
+        let picks = bank.plan(&Cost::parse("{1}{W}{U}").unwrap()).expect("payable");
+        assert_eq!(picks.len(), 3);
+        let bank = Bank {
+            units: vec![G | W, B | G],
+        };
+        assert!(bank.can_pay(&Cost::parse("{G}{W}").unwrap()));
     }
 
     #[test]

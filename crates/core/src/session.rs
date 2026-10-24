@@ -9,8 +9,8 @@ use std::collections::BTreeMap;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
-use crate::battle::{self, Outcome, Record, Setup};
 use crate::content::{self, Card, Kind};
+use crate::duel::{Answer, Ask, Duel, Ev, Event, Outcome, Pending, Setup, P};
 use crate::encounter;
 use crate::look::Look;
 use crate::player::{self, Armoury, Player};
@@ -20,8 +20,8 @@ use crate::rng::Rng;
 use crate::story::{self, Effect, Face, Outcome as StoryOutcome, Story};
 use crate::world::{City, Feature, Guild, Pos, World};
 
-/// Microseconds a battle event stays on screen at speed one.
-pub const EVENT_US: i64 = 700_000;
+/// Microseconds a fight's event stays on screen at speed one.
+pub const EVENT_US: i64 = 450_000;
 /// Microseconds for a step from tile to tile.
 pub const STEP_US: i64 = 260_000;
 pub const SAVE_VERSION: u32 = 1;
@@ -132,11 +132,33 @@ pub struct Fight {
     /// The story card won with the fight, when a story sent you to it.
     pub prize: Option<usize>,
     pub guardian: bool,
-    pub record: Record,
+    pub duel: Duel,
+    /// The event on screen: playback runs behind the game.
     pub shown: usize,
     pub next_at: i64,
-    pub paused: bool,
     pub speed: i64,
+}
+
+impl Fight {
+    pub fn caught_up(&self) -> bool {
+        self.shown + 1 >= self.duel.events.len()
+    }
+
+    pub fn event(&self) -> &Event {
+        &self.duel.events[self.shown.min(self.duel.events.len().saturating_sub(1))]
+    }
+
+    /// Whether the game waits on the player, with the table shown up to now.
+    pub fn asking(&self) -> Option<&Ask> {
+        match &self.duel.pending {
+            Some(Pending { who: P, ask }) if self.caught_up() && self.duel.outcome.is_none() => Some(ask),
+            _ => None,
+        }
+    }
+
+    pub fn done(&self) -> bool {
+        self.duel.outcome.is_some() && self.caught_up()
+    }
 }
 
 /// What is kept between visits.
@@ -217,7 +239,12 @@ impl Session {
         let hints = crate::glossary::parse(bundle.get("glossary.md").map(|s| s.as_str()).unwrap_or(""))
             .map_err(|e| e.message())?
             .into_iter()
-            .map(|e| (e.term, e.definition))
+            .map(|e| {
+                (
+                    e.term,
+                    e.definition.replace("{pile}", &encounter::PILE_MIN.to_string()),
+                )
+            })
             .collect();
         let saved = serde_json::from_str::<Save>(save)
             .ok()
@@ -731,22 +758,23 @@ impl Session {
             &self.s("battle.your_side"),
         );
         let seed = self.rng.next_u64();
-        let record = battle::run(
-            &self.cards,
+        let mut duel = Duel::new(
+            std::rc::Rc::new(self.cards.clone()),
             &Setup {
                 sides: [me, foe],
                 seed,
             },
+            [true, false],
         );
+        duel.run();
         self.screen = Screen::Battle(Box::new(Fight {
             at,
             creature,
             prize,
             guardian,
-            record,
+            duel,
             shown: 0,
             next_at: self.now,
-            paused: false,
             speed: 1,
         }));
     }
@@ -757,9 +785,12 @@ impl Session {
         };
         let mut lines = Vec::new();
         let story = self.stories.get(&self.cards[f.creature].number).cloned();
-        let life = f.record.life[0];
+        let life = f.duel.s[P].life;
         let armoury = self.armoury.clone();
-        match f.record.outcome {
+        let Some(outcome) = f.duel.outcome else {
+            return;
+        };
+        match outcome {
             Outcome::Won => {
                 {
                     let p = self.player.as_mut().expect("player");
@@ -1083,17 +1114,6 @@ impl Session {
                 }
                 self.statics_dirty = true;
             }
-            "battle.pause" => {
-                if let Screen::Battle(f) = &mut self.screen {
-                    f.paused = !f.paused;
-                }
-            }
-            "battle.step" => {
-                if let Screen::Battle(f) = &mut self.screen {
-                    f.paused = true;
-                    f.shown = (f.shown + 1).min(f.record.events.len().saturating_sub(1));
-                }
-            }
             "battle.speed" => {
                 if let Screen::Battle(f) = &mut self.screen {
                     f.speed = if f.speed >= 4 { 1 } else { f.speed * 2 };
@@ -1101,16 +1121,17 @@ impl Session {
             }
             "battle.skip" => {
                 if let Screen::Battle(f) = &mut self.screen {
-                    f.shown = f.record.events.len().saturating_sub(1);
+                    f.shown = f.duel.events.len().saturating_sub(1);
                 }
             }
             "battle.done" => {
                 if let Screen::Battle(f) = &self.screen {
-                    if f.shown + 1 >= f.record.events.len() {
+                    if f.done() {
                         self.end_fight();
                     }
                 }
             }
+            n if n.starts_with("duel.") => return self.duel_act(n, value),
             "lair.climb" => {
                 if !matches!(self.screen, Screen::Lair) {
                     return Ok(());
@@ -1354,8 +1375,92 @@ impl Session {
                     _ => serde_json::json!({"ok": true}).to_string(),
                 }
             }
+            Screen::Battle(ref f) => {
+                let snap = f.event().snap.clone();
+                let best = crate::scene::battle_spots(self, &snap)
+                    .into_iter()
+                    .filter_map(|(pt, p)| {
+                        near(pt.add(crate::geom::v3(0, crate::fx::ONE, 0)), self).map(|d| (d, p.id))
+                    })
+                    .min();
+                match best {
+                    Some((d, id)) if d <= (reach * 2).pow(2) => self.act_json("duel.click", &id.to_string()),
+                    _ => serde_json::json!({"ok": true}).to_string(),
+                }
+            }
             _ => serde_json::json!({"ok": true}).to_string(),
         }
+    }
+
+    /// A move in a game of Magic. While the table is still being played back,
+    /// any move first shows it up to now.
+    fn duel_act(&mut self, name: &str, value: &str) -> Result<(), String> {
+        let now = self.now;
+        let Screen::Battle(f) = &mut self.screen else {
+            return Err("There is no fight on.".to_string());
+        };
+        if !f.caught_up() {
+            f.shown = f.duel.events.len().saturating_sub(1);
+            return Ok(());
+        }
+        let num = |v: &str| {
+            v.parse::<usize>()
+                .map_err(|_| format!("\"{v}\" is not a number."))
+        };
+        let before = f.duel.events.len();
+        let d = &mut f.duel;
+        let r = match name {
+            "duel.do" => {
+                let acts = d.actions(P);
+                let a = *acts.get(num(value)?).ok_or("That can't be done now.")?;
+                d.answer(P, Answer::Act(a))
+            }
+            "duel.ok" => d.confirm(P),
+            "duel.cancel" => d.cancel(P),
+            "duel.all" => d.toggle_all(P),
+            "duel.yes" => d.answer(P, Answer::Yes(true)),
+            "duel.no" => d.answer(P, Answer::Yes(false)),
+            "duel.none" => d.answer(P, Answer::Pick(None)),
+            "duel.pick" => {
+                let i = num(value)?;
+                match &d.pending {
+                    Some(Pending {
+                        ask: Ask::Targets { .. } | Ask::Attackers { .. },
+                        ..
+                    }) => {
+                        if d.toggle(P, i)? {
+                            d.confirm(P)
+                        } else {
+                            Ok(())
+                        }
+                    }
+                    _ => d.answer(P, Answer::Pick(Some(i))),
+                }
+            }
+            "duel.block" => {
+                let id = value
+                    .parse::<u32>()
+                    .map_err(|_| format!("\"{value}\" is not a number."))?;
+                d.cycle_block(P, id)
+            }
+            "duel.click" => {
+                let id = value
+                    .parse::<u32>()
+                    .map_err(|_| format!("\"{value}\" is not a number."))?;
+                if d.click(P, id)? {
+                    d.confirm(P)
+                } else {
+                    Ok(())
+                }
+            }
+            _ => Err(format!("There is no move \"{name}\".")),
+        };
+        // the player's own move shows at once; what follows plays back
+        if f.duel.events.len() > before {
+            f.shown = before.saturating_sub(1).max(f.shown);
+            f.next_at = now;
+        }
+        r
     }
 
     pub fn act_json(&mut self, name: &str, value: &str) -> String {
@@ -1379,11 +1484,16 @@ impl Session {
             }
         }
         if let Screen::Battle(f) = &mut self.screen {
-            if !f.paused && f.shown + 1 < f.record.events.len() && now_us >= f.next_at {
+            if !f.caught_up() && now_us >= f.next_at {
                 f.shown += 1;
-                let ev = f.record.events[f.shown].ev;
-                let slow = matches!(ev, battle::Ev::Turn | battle::Ev::Attack | battle::Ev::End);
-                f.next_at = now_us + EVENT_US * if slow { 2 } else { 1 } / f.speed;
+                let ev = f.duel.events[f.shown].ev;
+                // the computer's moves at reading pace; the player's own at a glance
+                let slow = matches!(ev, Ev::Turn | Ev::Attack | Ev::Cast | Ev::End)
+                    && f.duel.events[f.shown].side != P as u8;
+                let quick = f.duel.events[f.shown].side == P as u8 && !matches!(ev, Ev::Turn);
+                let k = if slow { 2 } else { 1 };
+                let k_div = if quick { 2 } else { 1 };
+                f.next_at = now_us + EVENT_US * k / k_div / f.speed;
                 self.ui_version += 1;
             }
         }
@@ -1599,11 +1709,26 @@ mod tests {
             card: caracal,
         };
         s.act("draw.fight", "").unwrap();
+        // the game waits on the player's first move
+        let Screen::Battle(f) = &mut s.screen else {
+            panic!("no fight")
+        };
+        assert!(f.duel.pending.as_ref().map(|p| p.who == P).unwrap_or(false));
+        assert!(s.act("battle.done", "").is_ok());
+        assert!(
+            matches!(s.screen, Screen::Battle(_)),
+            "a fight in play does not end on done"
+        );
+        // the computer plays the player's side to the end
+        if let Screen::Battle(f) = &mut s.screen {
+            f.duel.human = [false, false];
+            f.duel.run();
+        }
         s.act("battle.skip", "").unwrap();
         s.act("battle.done", "").unwrap();
         match &s.screen {
             Screen::Result { .. } => {}
-            other => panic!("{other:?}"),
+            other => panic!("{:?}", std::mem::discriminant(other)),
         }
     }
 

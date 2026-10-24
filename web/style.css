@@ -138,6 +138,13 @@ body[data-screen="city"] .place-bl { width: min(460px, 48vw); }
 #panel-hand .cards { flex-wrap: nowrap; gap: 6px; }
 #panel-hand .card.sm { width: 118px; }
 #panel-hand .card.sm .tx { display: none; }
+body[data-screen="battle"] .place-bottom { left: 14px; translate: none; max-width: calc(100% - min(380px, 46vw) - 42px); }
+body[data-screen="battle"] #panel-hand .cards { justify-content: flex-start; gap: 0; }
+body[data-screen="battle"] #panel-hand .card.sm + .card.sm { margin-left: -30px; }
+body[data-screen="battle"] #panel-hand .card.dim { opacity: 1; filter: saturate(0.45) brightness(0.72); }
+body[data-screen="battle"] #panel-hand .card.sm:hover, body[data-screen="battle"] #panel-hand .card.sm:focus { z-index: 2; translate: 0 -14px; }
+body[data-screen="battle"] .place-br { max-height: 56%; }
+body[data-screen="battle"] .place-tr { max-height: 38%; }
 #panel-hand .card.sm { aspect-ratio: auto; grid-template-rows: auto auto auto auto; }
 #panel-deck .cards, #panel-shop .cards { justify-content: flex-start; padding-bottom: 18px; }
 

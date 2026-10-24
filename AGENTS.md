@@ -36,7 +36,7 @@ From the journal's opening entry (rules MTG-1 to MTG-11) and the person's answer
 - MTG-1. Every rule is in the core; the page replays a draw list and lays out cards. (`boundary.rs`)
 - MTG-2. The game is 2D underneath: core state is integer grid cells. (`world.rs`)
 - MTG-3. Card text is shown exactly as `data/cards.json` has it. (`view.rs` test `a_face_keeps_the_card_text_verbatim`; `copy.rs` ALLOWED for its "!")
-- MTG-4. A fight is decided from its seed and both decks. (`battle.rs` test `a_fight_replays_the_same_from_its_seed`)
+- MTG-4. A fight is decided from its seed, both decks and the player's answers. (`duel.rs` test `the_same_seed_and_answers_give_the_same_game`)
 - MTG-5. Every card of the region has rules, or it does not load. (`content.rs`)
 - MTG-6. Reference art is never committed. (`tools/cardart/render.py --check`)
 - MTG-7. First load stays near 2.5 MB before card art; card art loads when a card is shown.
@@ -44,6 +44,8 @@ From the journal's opening entry (rules MTG-1 to MTG-11) and the person's answer
 - MTG-10. three.js stays in the journal's mockups, never in `web/`.
 - MTG-11. Every decision, visible change, divergence and deploy gets a journal entry.
 - Scope (2026-10-24): the first region; 20 cards of each colour (108 with guild cards, gates and artifacts); a 3D model for every creature; TikZ art and rules for every card.
+- MVP 2 (2026-10-24, T1): a fight is a game of Magic the player plays, with the land pile against screw and flood. The engine is `duel.rs`; the computer player `duel_ai.rs`.
+- No subagents in this project unless the person asks (2026-10-24: "no more subagents, its taking wayy too many tokens").
 
 ## Stopping
 

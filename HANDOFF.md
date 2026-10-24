@@ -4,7 +4,7 @@ Stage 9, written by the agent. `C5 Consolidate in your own words`. A fresh sessi
 
 ## What this is
 
-Tenth District (a working title): a Hand of Fate–style deck-building adventure on Ravnica's grid with 108 Return to Ravnica cards, for the browser. This MVP is the first region, from a new game in the Tenth District to the fight with Niv-Mizzet in Nivix. It is public at https://sgilson7.github.io/mtg-hand-of-fate/, source at https://github.com/sgilson7/mtg-hand-of-fate.
+Tenth District (a working title): a Hand of Fate–style deck-building adventure on Ravnica's grid with 108 Return to Ravnica cards, for the browser. This MVP is the first region, from a new game in the Tenth District to the fight with Niv-Mizzet in Nivix. Since MVP 2 (TRIAGE T1) every fight is a game of Magic the player plays against a computer opponent, with a land pile instead of lands in the deck. MVP 1 is public at https://sgilson7.github.io/mtg-hand-of-fate/, source at https://github.com/sgilson7/mtg-hand-of-fate. MVP 2 is committed locally and not pushed or published.
 
 ## Rules that hold it up
 
@@ -14,8 +14,9 @@ The rules in `CLAUDE.md` under "Rules agreed for this project" (MTG-1 to MTG-11)
 
 | Where | What |
 | --- | --- |
-| `crates/core/src/rules.rs` | what each card does in a fight |
-| `crates/core/src/battle.rs` | the auto-battle, recorded as events for playback |
+| `crates/core/src/rules.rs` | what each card does in a game of Magic, as data |
+| `crates/core/src/duel.rs` | the rules engine: turns, priority, the stack, combat, state-based actions; every decision is a `Pending` ask |
+| `crates/core/src/duel_ai.rs` | the computer's answers to those asks |
 | `crates/core/src/world.rs` | chunks, terrain, pools, growth |
 | `crates/core/src/session.rs` | the state of play, `act()`, saving |
 | `crates/core/src/view.rs`, `scene.rs` | the panels and the draw list |
@@ -37,7 +38,9 @@ The rules in `CLAUDE.md` under "Rules agreed for this project" (MTG-1 to MTG-11)
 
 - `cargo fmt` rewraps long lines; a scripted edit written against the old text will not match.
 - The page may hold no number but 0 and 1: sizes and positions come from the core (labels in thousandths of the view, the canvas size from `pixels()`).
-- The bot in `playthrough.rs` reaches Niv-Mizzet but does not beat him (R2.14).
+- The bot in `playthrough.rs` reaches Niv-Mizzet but does not beat him (R2.14); the computer plays its fights for it (`duel.human = [false, false]`).
+- A fight waits on the player: `Session::act("duel.*")` answers the pending ask. Tests that only need a result set both sides to the computer and call `run()`.
+- `cargo fmt` rewraps code that `tests/breaks.json` finds; run `python3 scripts/break_tests.py` after formatting.
 
 ## The journal
 
@@ -54,6 +57,13 @@ The rules in `CLAUDE.md` under "Rules agreed for this project" (MTG-1 to MTG-11)
 - R2.12: read the agent-written strings and the 108 stories.
 - R2.13: decide whether the weaker TikZ pictures get a second pass (MTG-Q12).
 - R2.17: set `git config user.name` (and email) so `scripts/publish.sh` can commit the page.
+- R3.2: the land pile as the guard against screw and flood (made up to 5; no mulligan).
+- R3.3: an empty library reshuffles the graveyard for 1 life, not Magic's loss.
+- R3.4: an opening hand of 5 spells, the cleanup limit 7.
+- R3.5: the four choices the game makes itself.
+- R3.10: armour and ability rules carried over to Magic.
+- R3.12: read the fight's new strings.
+- Whether to publish MVP 2: the grant stands, but this request did not ask for a deploy.
 - R2.16: the repository's name, `mtg-hand-of-fate`, chosen by the agent from the project folder.
 
 ## Mistakes so far
@@ -68,6 +78,8 @@ The rules in `CLAUDE.md` under "Rules agreed for this project" (MTG-1 to MTG-11)
 
 2026-10-24, deploy: `./scripts/check.sh` passed again (`BUILDER CHECK PASSED`); `dist/` built from b39eda7 (build 86992f96dcd0) pushed to gh-pages; `BUILDER_ORIGIN=https://sgilson7.github.io/mtg-hand-of-fate python3 tests/browser/check.py` ended `BROWSER CHECK PASSED in chromium, firefox, webkit`.
 
+2026-10-24, MVP 2: `./scripts/check.sh` ended `BROWSER CHECK PASSED in chromium, firefox, webkit` and `BUILDER CHECK PASSED`; `./scripts/count-tests.sh`: 133 passed, 0 failed; `scripts/break_tests.py`: 34 of 34 caught.
+
 ## The next action
 
-The person plays the first region and answers MTG-Q1, Q2 and Q3; their requests become `TRIAGE.md` rows.
+The person plays MVP 2's fights, says whether to publish it, and answers MTG-Q2 and Q3; their requests become `TRIAGE.md` rows.
