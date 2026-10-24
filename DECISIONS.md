@@ -9,3 +9,9 @@ Dated entries. Each quotes the person's request word for word, then says what th
 > hm 254 cards  is a lot, maybe for this mvp do 20 of each color, with 3d models for creatures, tikz art for every card, rules for every card, tiles types / art per card,
 
 The agent decided: the plan in `PLAN.md` is approved by these messages, and the defaults the journal offered for MTG-Q6 to MTG-Q13 stand. MTG-Q1 (Wizards' content in public), MTG-Q2 (the name), MTG-Q3 (the childhood game) and MTG-Q5 (where to publish) stay open. No grant to publish was given, so nothing is pushed or published.
+
+## 2026-10-24, later
+
+> ok, can you push to a public github repo, and then deploy to a public github pages?
+
+The agent decided: this grants MTG-Q5 and, by asking for a public page, settles MTG-Q1 for now as the person's call; the Fan Content notice stays on the title screen. No repository name was given, so it is the project folder's, `sgilson7/mtg-hand-of-fate`. The grant covers pushing and publishing with `scripts/publish.sh` until withdrawn, and is in `BRIEF.md`'s Autonomy paragraph. The journal stays local, as Builder requires.

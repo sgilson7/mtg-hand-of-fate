@@ -4,7 +4,7 @@ Stage 9, written by the agent. `C5 Consolidate in your own words`. A fresh sessi
 
 ## What this is
 
-Tenth District (a working title): a Hand of Fate–style deck-building adventure on Ravnica's grid with 108 Return to Ravnica cards, for the browser. This MVP is the first region, from a new game in the Tenth District to the fight with Niv-Mizzet in Nivix. It is built and checked on this machine and is not published.
+Tenth District (a working title): a Hand of Fate–style deck-building adventure on Ravnica's grid with 108 Return to Ravnica cards, for the browser. This MVP is the first region, from a new game in the Tenth District to the fight with Niv-Mizzet in Nivix. It is public at https://sgilson7.github.io/mtg-hand-of-fate/, source at https://github.com/sgilson7/mtg-hand-of-fate.
 
 ## Rules that hold it up
 
@@ -53,6 +53,7 @@ The rules in `CLAUDE.md` under "Rules agreed for this project" (MTG-1 to MTG-11)
 - R2.11: the working title "Tenth District" and the Fan Content notice on the title screen.
 - R2.12: read the agent-written strings and the 108 stories.
 - R2.13: decide whether the weaker TikZ pictures get a second pass (MTG-Q12).
+- R2.16: the repository's name, `mtg-hand-of-fate`, chosen by the agent from the project folder.
 
 ## Mistakes so far
 
@@ -66,4 +67,4 @@ The rules in `CLAUDE.md` under "Rules agreed for this project" (MTG-1 to MTG-11)
 
 ## The next action
 
-The person plays the first region and answers MTG-Q1, Q2, Q3 and Q5; their requests become `TRIAGE.md` rows.
+The person plays the first region and answers MTG-Q1, Q2 and Q3; their requests become `TRIAGE.md` rows.

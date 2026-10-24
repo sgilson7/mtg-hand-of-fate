@@ -45,7 +45,7 @@ Magic: The Gathering's own terms keep their Magic meaning (mana, mana value, cre
 
 ## Autonomy
 
-The plan was not approved in advance: the person reviewed the mockup first. On 2026-10-24 the person asked for the MVP of the first region (DECISIONS.md), which approves `PLAN.md` with the journal's defaults. The agent builds stages 4 to 7 and the handoff without stopping. The agent may not loosen a Builder requirement or a boundary test, and may not add a server, an account, analytics or any off-origin request. The agent does not create a repository, push or publish until the person names the repository and grants it (MTG-Q5).
+The plan was not approved in advance: the person reviewed the mockup first. On 2026-10-24 the person asked for the MVP of the first region (DECISIONS.md), which approves `PLAN.md` with the journal's defaults. The agent builds stages 4 to 7 and the handoff without stopping. The agent may not loosen a Builder requirement or a boundary test, and may not add a server, an account, analytics or any off-origin request. On 2026-10-24 the person asked the agent to push to a public GitHub repository and deploy to public GitHub Pages (DECISIONS.md). The agent may create the public repository `sgilson7/mtg-hand-of-fate`, push to it and publish with `scripts/publish.sh`; the grant stands until withdrawn.
 
 ## Journal
 

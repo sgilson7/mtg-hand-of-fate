@@ -33,6 +33,7 @@ One row per assumption, surprise or open item. **Kind** is *divergence* (what wa
 | R2.13 | finding | The TikZ art is even across cards. | Seven agents rated their own 108 pictures: about 20 good, 80 fair, 8 weak (Savage Surge, Death's Presence, Goblin Rally, Skyline Predator, Paralyzing Grasp, Rakdos Cackler and two more). | A second pass is the person's call (MTG-Q12). | `tools/cardart/render.py --check` | person |
 | R2.14 | finding | A bot that takes every fight and the first choice could beat Niv-Mizzet. | It reaches him (43 fights) but loses: it never edits its deck or buys armour. Built decks in `balance.rs` win 35 to 53 of 60. | The playthrough test asserts the guardian is reached, not beaten. | `crates/core/tests/playthrough.rs` | open |
 | R2.15 | finding | Two tests from the first build looked strong. | Breaking detain's length and the per-chunk seed left them passing. | The detain test now reads the detained flag through the turns; the chunk test also checks two chunks of one quarter differ. | `tests/breaks.json` (16 rows, all caught) | done |
+| R2.16 | worklist | The person named the repository when granting a publish (MTG-Q5). | The grant said "a public github repo" without a name. | The repository is `sgilson7/mtg-hand-of-fate`, after the project folder; renaming it is the person's call with MTG-Q2. | `BRIEF.md` Autonomy | person |
 
 ## Strings written by the agent
 
