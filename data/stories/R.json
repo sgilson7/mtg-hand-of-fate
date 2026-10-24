@@ -1,0 +1,170 @@
+{"stories": [
+{"number": "265", "name": "Mountain", "kind": "land",
+ "text": "A ridge of old foundation stone juts through the street, warm from the forges below it. You can claim it for a tile you have walked."},
+
+{"number": "88", "name": "Bellows Lizard", "kind": "creature",
+ "intro": "A smith's lizard squats by a cold forge, its throat swelling like a bellows. Each breath it takes, the coals glow hotter. It turns that breath on you.",
+ "win": "The lizard settles on the anvil and wheezes a friendly spark. It is yours now.",
+ "lose": "A blast of furnace air knocks you into the slag heap.",
+ "flee": "You back out of the smithy with your eyebrows singed."},
+
+{"number": "93", "name": "Electrickery", "kind": "magic",
+ "title": "Live wires",
+ "text": "An Izzet apprentice has wired the market awnings to a stolen accumulator. Sparks jump from stall to stall, stinging anyone who touches metal. The apprentice can aim it at one person or let it loose on the whole street.",
+ "choices": [
+   {"text": "Talk the apprentice into a demonstration", "needs": {"charisma": 2},
+    "outcome": {"text": "The apprentice shows off the trick, then hands you the coiled spell to prove it works.", "effects": [{"take": true}]}},
+   {"text": "Pull the cable from the accumulator",
+    "outcome": {"text": "You grab the cable and hope the insulation holds.", "fate": {"faces": [1, 1, 1, 1],
+      "huge_success": {"text": "The charge runs into the ground, and the apprentice pays you to keep quiet.", "effects": [{"take": true}, {"gold": 8}]},
+      "success": {"text": "The sparks die and you pocket the spell coiled in the wire.", "effects": [{"take": true}]},
+      "failure": {"text": "The current throws you against a stall, and the apprentice flees with the spell.", "effects": [{"health": -2}]},
+      "huge_failure": {"text": "The awnings all light at once, with you at the centre of it.", "effects": [{"health": -4}]}}}},
+   {"text": "Keep clear of the metal and walk on",
+    "outcome": {"text": "You leave the market buzzing behind you.", "effects": [{"leave": true}]}}
+ ]},
+
+{"number": "96", "name": "Gore-House Chainwalker", "kind": "creature",
+ "intro": "Chains hang from the gore-house rafters, and a masked Rakdos performer swings between them. Pig's blood drips onto the cobbles. He drops to the street and picks you as his next act.",
+ "win": "He bows from the hook, dripping, and swears to perform for you. He is yours now.",
+ "lose": "The chain wraps your legs and drags you through the blood.",
+ "flee": "You run before the blood can drip on you."},
+
+{"number": "86", "name": "Ash Zealot", "kind": "creature",
+ "intro": "A Boros zealot in ash-grey robes is hunting necromancers through the alleys. She is on you before you hear her boots. Her mace strikes first and asks later.",
+ "win": "She lowers the mace and decides you are no necromancer. She marches with you now.",
+ "lose": "The mace finds you before you raise a hand.",
+ "flee": "You duck through a laundry line and leave her shouting at the sheets."},
+
+{"number": "101", "name": "Mizzium Mortars", "kind": "magic",
+ "title": "Mortars over the tenements",
+ "text": "An Izzet crew has set up mortars on a tenement roof. Shells of glowing mizzium arc over the chimneys and burst in the next street. The crew chief is calibrating, and anything that moves is a target.",
+ "choices": [
+   {"text": "Offer to spot targets for the crew", "needs": {"style": ["Izzet", 2]},
+    "outcome": {"text": "The chief likes your eye and gives you a spare mortar charge.", "effects": [{"take": true}, {"style": ["Izzet", 1]}]}},
+   {"text": "Climb up and seize a mortar",
+    "outcome": {"text": "You scramble across the roof between salvos.", "fate": {"faces": [1, 2, 1, 0],
+      "huge_success": {"text": "You take the mortar and a crate of shells the crew left behind.", "effects": [{"take": true}, {"supplies": 2}]},
+      "success": {"text": "The crew scatters and the mortar is yours.", "effects": [{"take": true}]},
+      "failure": {"text": "A shell lands close, and the blast throws you off the roof.", "effects": [{"health": -3}]}}}},
+   {"text": "Take cover until the shelling stops",
+    "outcome": {"text": "You wait in a doorway and leave once the smoke clears.", "effects": [{"leave": true}]}}
+ ]},
+
+{"number": "99", "name": "Lobber Crew", "kind": "creature",
+ "intro": "Three goblins stand behind a sandbag wall with a sling as wide as the street. They do not aim. They lob burning junk at everything, and you are part of everything.",
+ "win": "The goblins cheer and turn the sling to face your enemies. They are yours now.",
+ "lose": "A flaming kettle hits you square in the chest.",
+ "flee": "You zigzag away as junk rains down behind you."},
+
+{"number": "105", "name": "Splatter Thug", "kind": "creature",
+ "intro": "A thug in a stained leather mask blocks the alley. The mask is there to keep the mess out of his eyes. He swings first, and he swings hard.",
+ "win": "He wipes his mask and grunts that you will do. He follows you now.",
+ "lose": "His first blow lands before you finish raising your guard.",
+ "flee": "You leave him in the alley, wiping his mask."},
+
+{"number": "85", "name": "Annihilating Fire", "kind": "magic",
+ "title": "A one-night show",
+ "text": "A Rakdos madcap is rehearsing a fire act on a stage of crates. The flame burns so hot it leaves no ash behind. She says the best performances can be done once, and she needs a volunteer.",
+ "choices": [
+   {"text": "Volunteer for the act",
+    "outcome": {"text": "You step onto the crates and the madcap grins.", "fate": {"faces": [1, 1, 1, 1],
+      "huge_success": {"text": "You survive the act, the crowd roars, and she gives you the fire and her tips.", "effects": [{"take": true}, {"gold": 10}]},
+      "success": {"text": "The flame misses by a hair, and she rewards you with the spell.", "effects": [{"take": true}]},
+      "failure": {"text": "The fire catches your sleeve, and the act ends without you.", "effects": [{"health": -3}]},
+      "huge_failure": {"text": "The flame takes your coat and your purse with it.", "effects": [{"health": -3}, {"gold": -8}]}}}},
+   {"text": "Buy a seat in the front row", "needs": {"gold": 10},
+    "outcome": {"text": "From the front row you learn how the act works, and the madcap sells you the trick.", "effects": [{"take": true}]}},
+   {"text": "Leave before the show starts",
+    "outcome": {"text": "You slip away as the crowd gathers.", "effects": [{"leave": true}]}}
+ ]},
+
+{"number": "98", "name": "Guttersnipe", "kind": "creature",
+ "intro": "A goblin crouches in the gutter, giggling over a pocket of sparks. Each time a spell is cast nearby, he throws fire at whoever is closest. You are closest.",
+ "win": "The goblin decides you are more fun than the gutter. He is yours now.",
+ "lose": "A spray of sparks sends you rolling into the drain.",
+ "flee": "You leave him to burn someone else."},
+
+{"number": "91", "name": "Cobblebrute", "kind": "creature",
+ "intro": "The street under your feet heaves and stands up. A hulk of cobblestones and mortar has decided to move to a nicer neighbourhood. You are in its way.",
+ "win": "The cobbles settle into a shape that follows you. It is yours now.",
+ "lose": "The street lies down on top of you.",
+ "flee": "You run, and it lumbers off in search of a better address."},
+
+{"number": "89", "name": "Bloodfray Giant", "kind": "creature",
+ "intro": "The star of the Juri Revue bursts out of the club with the crowd spilling after him. He does not hold back. Fans and blood pour into the street, and he wants an encore with you.",
+ "win": "The giant takes a bow and adds you to his tour. He is yours now.",
+ "lose": "He tramples through you and back into the club.",
+ "flee": "You dive into the crowd and let it carry you away."},
+
+{"number": "95", "name": "Goblin Rally", "kind": "magic",
+ "title": "An idea in their heads",
+ "text": "A crowd of goblins loiters outside a closed foundry. Nobody hires goblins. You put ideas in their heads, and then they run with them. The question is which idea.",
+ "choices": [
+   {"text": "Rouse them with a speech", "needs": {"charisma": 3},
+    "outcome": {"text": "The goblins cheer and follow you down the street, waving bits of pipe.", "effects": [{"take": true}]}},
+   {"text": "Toss them a handful of coins", "needs": {"gold": 6},
+    "outcome": {"text": "They scramble for the coins, then fall in behind you to see if there are more.", "effects": [{"take": true}]}},
+   {"text": "Tell them the foundry is unlocked",
+    "outcome": {"text": "The goblins storm the foundry and forget you. You leave with a crate they dropped.", "effects": [{"leave": true}, {"supplies": 1}]}}
+ ]},
+
+{"number": "108", "name": "Tenement Crasher", "kind": "creature",
+ "intro": "A horned beast smashes through a tenement wall and keeps coming. Narrow alleys do not stop it, and a Boros garrison did not stop it. It is on you before the dust falls.",
+ "win": "The beast stops, snorting, and lowers its horns to you. It is yours now.",
+ "lose": "It goes through you the way it went through the wall.",
+ "flee": "You dive into a cellar as it thunders past."},
+
+{"number": "94", "name": "Explosive Impact", "kind": "magic",
+ "title": "Boros subtlety",
+ "text": "A Boros sergeant is clearing a barricade the direct way. A spell crackles in her fist, ready to throw. Behind the barricade, someone is shouting for help.",
+ "choices": [
+   {"text": "Ask her to let you clear it by hand", "needs": {"charisma": 2},
+    "outcome": {"text": "You pull the barricade apart and free the trapped carter. The sergeant hands you the spell she did not need.", "effects": [{"take": true}]}},
+   {"text": "Grab the spell before she throws it",
+    "outcome": {"text": "You lunge for her fist as it starts to glow.", "fate": {"faces": [0, 2, 1, 1],
+      "success": {"text": "You catch the spell and the sergeant, impressed, lets you keep it.", "effects": [{"take": true}]},
+      "failure": {"text": "The spell goes off between you both.", "effects": [{"health": -3}]},
+      "huge_failure": {"text": "The blast flattens the barricade and you with it.", "effects": [{"health": -5}]}}}},
+   {"text": "Stand back and let her work",
+    "outcome": {"text": "The barricade goes up in splinters, and you leave her to sweep up.", "effects": [{"leave": true}]}}
+ ]},
+
+{"number": "103", "name": "Pyroconvergence", "kind": "story",
+ "title": "The equation",
+ "text": "In a cluttered Izzet workshop, a chalkboard covers one wall with a single equation. Wherever two colours of mana meet in the room, the chalk catches fire. A chemister asks you to help her finish the last line.",
+ "choices": [
+   {"text": "Work the equation with her", "needs": {"style": ["Izzet", 1]},
+    "outcome": {"text": "The last line burns into place, and she gives you the formula as thanks.", "effects": [{"take": true}, {"style": ["Izzet", 1]}]}},
+   {"text": "Erase the line that is smoking",
+    "outcome": {"text": "You wipe the board, and the room cools. She grumbles, but lets you carry off the formula.", "effects": [{"take": true}, {"health": -1}]}},
+   {"text": "Leave her to her lunacy",
+    "outcome": {"text": "You close the door on a small explosion.", "effects": [{"leave": true}]}}
+ ]},
+
+ {"number": "87", "name": "Batterhorn", "kind": "creature", "intro": "A horned beast has wrecked a market stall full of clockwork, and gears roll in the gutter. Veteran shopkeepers keep their wares portable for a reason. It lowers its horns at your pack.", "win": "Batterhorn snorts, satisfied with the wreckage, and follows you. It is yours now.", "lose": "It tosses you into a stack of broken crates.", "flee": "You run, clutching your pack to your chest."},
+
+ {"number": "90", "name": "Chaos Imps", "kind": "creature", "intro": "A swarm of imps pours out of a broken chimney, shrieking and burning whatever they touch. They tumble over each other toward you. Every one of them is laughing.", "win": "The imps settle on your shoulders, still giggling. They are yours now.", "lose": "They set your cloak alight and scatter.", "flee": "You dive into a horse trough as they swarm past."},
+
+ {"number": "92", "name": "Dynacharge", "kind": "magic", "title": "A little lightning", "text": "A Boros sergeant is losing a brawl with three thugs. An Izzet student nearby snaps her fingers, and the sergeant's fists crackle with lightning. Nothing evens the odds, she says, like a little voltage.", "choices": [{"text": "Ask for a charge yourself", "outcome": {"text": "She snaps her fingers at you.", "fate": {"faces": [1, 2, 1, 0], "huge_success": {"text": "Your hands spark, the thugs flee, and she teaches you the snap.", "effects": [{"take": true}, {"style": ["Izzet", 1]}]}, "success": {"text": "You feel the charge and learn the trick of it.", "effects": [{"take": true}]}, "failure": {"text": "The charge grounds through your boots and stings.", "effects": [{"health": -2}]}}}}, {"text": "Help the sergeant with your fists", "outcome": {"text": "The thugs run, and the student gives you the spell for your trouble.", "effects": [{"take": true}, {"health": -1}]}}, {"text": "Stay out of the brawl", "outcome": {"text": "You walk around the brawl.", "effects": [{"leave": true}]}}]},
+
+ {"number": "97", "name": "Guild Feud", "kind": "story", "title": "Two guilds in one street", "text": "A Rakdos troupe and a Gruul clan have met in the same narrow street, and neither will step aside. Each side sends out its champion. A bookmaker is taking bets.", "choices": [{"text": "Bet on the Rakdos champion", "outcome": {"text": "The champions circle each other.", "fate": {"faces": [1, 1, 1, 1], "huge_success": {"text": "The Rakdos champion wins with a flourish, and the bookmaker pays you with the feud itself.", "effects": [{"take": true}, {"gold": 10}]}, "success": {"text": "Your champion wins, and the bookmaker settles with a token of the feud.", "effects": [{"take": true}]}, "failure": {"text": "Your champion loses, and so do you.", "effects": [{"gold": -6}]}, "huge_failure": {"text": "The brawl spills over you and your bet.", "effects": [{"gold": -6}, {"health": -2}]}}}}, {"text": "Stand between them", "outcome": {"text": "They both turn on you, then laugh, and let you carry the grudge away.", "effects": [{"take": true}, {"health": -2}]}}, {"text": "Find another street", "outcome": {"text": "You leave the feud to the street.", "effects": [{"leave": true}, {"supplies": -1}]}}]},
+
+ {"number": "100", "name": "Minotaur Aggressor", "kind": "creature", "intro": "A minotaur from the smelting district stamps into the road, smoke coming off its horns. It sees the guilds as nothing to do with it. It sees you as something to charge.", "win": "It stops a hand's breadth from you and decides you are worth following. It is yours now.", "lose": "Its charge throws you into a forge wall.", "flee": "You leap aside and it thunders on down the street."},
+
+ {"number": "102", "name": "Pursuit of Flight", "kind": "story", "title": "A harness with wings", "text": "An Izzet blastseeker is strapping copper wings to a nervous viashino. Watch the voltage, she warns her assistant. They do not need another crash.", "choices": [{"text": "Try the wings yourself", "outcome": {"text": "The harness hums against your back.", "fate": {"faces": [1, 1, 1, 1], "huge_success": {"text": "You fly a full circle of the plaza, and she gives you the harness.", "effects": [{"take": true}, {"style": ["Izzet", 1]}]}, "success": {"text": "You flap down the street in short hops, and she lets you keep it.", "effects": [{"take": true}]}, "failure": {"text": "You crash into an awning.", "effects": [{"health": -2}]}, "huge_failure": {"text": "You crash into a stall and pay for the damage.", "effects": [{"health": -2}, {"gold": -8}]}}}}, {"text": "Help with the voltage", "needs": {"style": ["Izzet", 1]}, "outcome": {"text": "The viashino flies, and the blastseeker gives you a spare harness.", "effects": [{"take": true}]}}, {"text": "Leave them to it", "outcome": {"text": "You leave before the next crash.", "effects": [{"leave": true}]}}]},
+
+ {"number": "104", "name": "Racecourse Fury", "kind": "story", "title": "The street race", "text": "A street race is about to start in the Rix Maadi quarter, beasts and riders crowding the line. Close finishes are settled by whoever gets to their weapons first. A rider is missing.", "choices": [{"text": "Ride in the empty place", "outcome": {"text": "The starter drops a burning rag.", "fate": {"faces": [1, 1, 1, 1], "huge_success": {"text": "You win by a length, and they give you the course's own fury.", "effects": [{"take": true}, {"gold": 8}]}, "success": {"text": "You finish, and the riders let you keep the course's blessing.", "effects": [{"take": true}]}, "failure": {"text": "You are thrown at the first corner.", "effects": [{"health": -2}]}, "huge_failure": {"text": "You are thrown, trampled and fined.", "effects": [{"health": -3}, {"gold": -5}]}}}}, {"text": "Bet on a rider", "needs": {"gold": 8}, "outcome": {"text": "Your rider wins, and the bookmaker pays you with a token from the course.", "effects": [{"take": true}]}}, {"text": "Watch from a roof", "outcome": {"text": "You watch the race and move on.", "effects": [{"leave": true}]}}]},
+
+ {"number": "106", "name": "Street Spasm", "kind": "magic", "title": "The cobbles erupt", "text": "The street heaves under a creature's feet, and a spout of fire throws it into the air. A Gruul shaman squats by the gutter, laughing. He can do it as big as you like, he says.", "choices": [{"text": "Ask him to show you", "needs": {"charisma": 2}, "outcome": {"text": "He grins and teaches you how to make the street jump.", "effects": [{"take": true}]}}, {"text": "Try it on a crate", "outcome": {"text": "You stamp the way he did.", "fate": {"faces": [1, 2, 1, 0], "huge_success": {"text": "The crate bursts into the sky, and the shaman howls with approval.", "effects": [{"take": true}]}, "success": {"text": "The cobbles jump, and he says you have the knack.", "effects": [{"take": true}]}, "failure": {"text": "The cobbles jump under you.", "effects": [{"health": -2}]}}}}, {"text": "Leave the shaman to his game", "outcome": {"text": "You step carefully round the scorched gutter.", "effects": [{"leave": true}]}}]},
+
+ {"number": "107", "name": "Survey the Wreckage", "kind": "magic", "title": "A building coming down", "text": "An architect and a gang of goblins are arguing over a half-demolished building. Goblins and architects seldom agree. The goblins have decided to settle it by finishing the demolition.", "choices": [{"text": "Side with the goblins", "outcome": {"text": "The building comes down, and a goblin hands you the blasting spell.", "effects": [{"take": true}, {"style": ["Rakdos", 1]}]}}, {"text": "Side with the architect", "outcome": {"text": "She saves her plans and gives you a goblin's dropped spell.", "effects": [{"take": true}]}}, {"text": "Leave before it falls", "outcome": {"text": "You hear the crash from the next street.", "effects": [{"leave": true}]}}]},
+
+ {"number": "109", "name": "Traitorous Instinct", "kind": "magic", "title": "A broken bond", "text": "A Selesnya initiate stands in the street with her eyes blank. Rakdos snapped his fingers in a dream, and her years of meditation came undone. She is waiting for an order.", "choices": [{"text": "Give her an order", "outcome": {"text": "She follows it, and the spell that broke her clings to your hand.", "effects": [{"take": true}, {"style": ["Rakdos", 1]}]}}, {"text": "Try to wake her", "outcome": {"text": "You take her by the shoulders.", "fate": {"faces": [1, 1, 2, 0], "huge_success": {"text": "She wakes, gasps, and gives you the charm that bound her.", "effects": [{"take": true}, {"style": ["Selesnya", 2]}]}, "success": {"text": "She wakes slowly and lets you keep the spell.", "effects": [{"take": true}]}, "failure": {"text": "She strikes you before she knows you.", "effects": [{"health": -2}]}}}}, {"text": "Leave her", "outcome": {"text": "You walk on, uneasy.", "effects": [{"leave": true}]}}]},
+
+ {"number": "110", "name": "Utvara Hellkite", "kind": "creature", "intro": "A hellkite circles the Utvara ruins and the sky darkens under its wings. The fear of dragons is as old as the fear of death. It folds its wings and dives at you.", "win": "The hellkite lands and lowers its head. It will fly for you now.", "lose": "Its fire burns your cloak and your back.", "flee": "You hide in a ruined cistern until it passes."},
+
+ {"number": "111", "name": "Vandalblast", "kind": "magic", "title": "Beauty in the explosion", "text": "A goblin is lighting the fuse on a gilded Orzhov statue. Beauty is in the eye of the exploder, he tells you. He offers you the matches.", "choices": [{"text": "Light it", "outcome": {"text": "The statue goes up, and the goblin gives you the spell that made it so easy.", "effects": [{"take": true}, {"style": ["Rakdos", 1]}]}}, {"text": "Stamp out the fuse", "outcome": {"text": "The goblin sulks and throws his spell at your feet.", "effects": [{"take": true}]}}, {"text": "Run before it blows", "outcome": {"text": "You run, and it blows.", "effects": [{"leave": true}]}}]},
+
+ {"number": "112", "name": "Viashino Racketeer", "kind": "creature", "intro": "A viashino is selling doubtful goods on Orzhov turf. You need a little recklessness to survive, she says. She decides you are a rival and comes at you with a cudgel.", "win": "She laughs, puts the cudgel away, and offers you a cut. She is yours now.", "lose": "The cudgel catches your knee, and she pockets your gold.", "flee": "You leave her shouting prices at the crowd."}
+]}

@@ -1,0 +1,49 @@
+{"stories": [
+{"number": "226", "name": "Chromatic Lantern", "kind": "story",
+ "title": "A lantern of six colours",
+ "text": "In a pawnshop window, a brass lantern burns with a light that shifts through the colours of mana. The pawnbroker says it was found in an Izzet district, lighting something it should not. An archivist at New Prahv has offered a reward for it.",
+ "choices": [
+   {"text": "Buy the lantern", "needs": {"gold": 12},
+    "outcome": {"text": "The pawnbroker wraps the lantern, and its light points toward an Izzet district.", "effects": [{"take": true}, {"quest_start": "lantern"}]}},
+   {"text": "Ask to hold it a moment",
+    "outcome": {"text": "You lift the lantern, and its light flares in your hands.", "fate": {"faces": [1, 1, 1, 1],
+      "huge_success": {"text": "The light settles into a steady beam, and the pawnbroker, unnerved, gives it to you for free.", "effects": [{"take": true}, {"quest_start": "lantern"}, {"gold": 5}]},
+      "success": {"text": "The lantern chooses you, and the pawnbroker lets you go with it.", "effects": [{"take": true}, {"quest_start": "lantern"}]},
+      "failure": {"text": "The light burns your fingers, and the pawnbroker locks it away.", "effects": [{"health": -2}]},
+      "huge_failure": {"text": "The flare blinds you, and you knock over a shelf you must pay for.", "effects": [{"health": -2}, {"gold": -6}]}}}},
+   {"text": "Leave it in the window",
+    "outcome": {"text": "The lantern flickers as you walk away.", "effects": [{"leave": true}]}}
+ ]},
+
+{"number": "227", "name": "Civic Saber", "kind": "story",
+ "title": "A blade that answers to the guilds",
+ "text": "A guildless smith is selling a saber with a hilt of many-coloured enamel. It is sharper, she says, in the hands of someone who stands with the guilds. Those without a signet carry it instead.",
+ "choices": [
+   {"text": "Show her your guild standing", "needs": {"style": ["Izzet", 1]},
+    "outcome": {"text": "The enamel glows at your touch, and she sells it to you at a guild price.", "effects": [{"take": true}]}},
+   {"text": "Pay her full price", "needs": {"gold": 10},
+    "outcome": {"text": "She buckles the saber to your belt.", "effects": [{"take": true}]}},
+   {"text": "Haggle until she gives up",
+    "outcome": {"text": "She sighs and lets you try your luck at the price.", "fate": {"faces": [0, 2, 2, 0],
+      "success": {"text": "She throws up her hands and sells it for a song.", "effects": [{"take": true}, {"gold": -3}]},
+      "failure": {"text": "She tires of you and sells the saber to someone else.", "effects": [{"supplies": -1}]}}}}
+ ]},
+
+{"number": "234", "name": "Street Sweeper", "kind": "creature",
+ "intro": "A brass street sweeper rolls down the lane, scrubbing away refuse with spinning brushes. It does not slow for anything too clumsy to move. Its brushes turn toward you.",
+ "win": "The sweeper's gears click into a new pattern, and it trundles after you. It is yours now.",
+ "lose": "The brushes scrub you into the gutter with the rest of the refuse.",
+ "flee": "You leap clear, and it sweeps on down the lane."},
+
+ {"number": "228", "name": "Codex Shredder", "kind": "story", "title": "A machine that eats books", "text": "A shredder in an archive eats one page at a time, and the archivist is not sure it ever stops. It can also return what it has eaten, for a price. It chews a page and hums.", "choices": [{"text": "Feed it a page", "outcome": {"text": "You hold a page out.", "fate": {"faces": [0, 2, 1, 1], "success": {"text": "It chews contentedly, and the archivist lets you take it home.", "effects": [{"take": true}]}, "failure": {"text": "It eats your map too.", "effects": [{"supplies": -1}]}, "huge_failure": {"text": "It eats your sleeve and your purse.", "effects": [{"gold": -6}]}}}}, {"text": "Buy it from the archivist", "needs": {"gold": 8}, "outcome": {"text": "She is glad to see it go.", "effects": [{"take": true}]}}, {"text": "Leave it chewing", "outcome": {"text": "You leave the archive.", "effects": [{"leave": true}]}}]},
+
+ {"number": "231", "name": "Pithing Needle", "kind": "story", "title": "A needle for the nerves", "text": "A Rakdos chirurgeon offers a procedure with a long needle. The fearful want it before a blood festival, she says, and the guilty after. It stops one thing from working.", "choices": [{"text": "Buy a needle", "needs": {"gold": 8}, "outcome": {"text": "She hands it over, wrapped in leather.", "effects": [{"take": true}]}}, {"text": "Have the procedure", "outcome": {"text": "She lifts the needle.", "fate": {"faces": [0, 2, 1, 1], "success": {"text": "It does not hurt, and she gives you the needle after.", "effects": [{"take": true}]}, "failure": {"text": "It hurts a great deal.", "effects": [{"health": -2}]}, "huge_failure": {"text": "It hurts, and she charges extra.", "effects": [{"health": -2}, {"gold": -6}]}}}}, {"text": "Decline", "outcome": {"text": "You leave before she can insist.", "effects": [{"leave": true}]}}]},
+
+ {"number": "235", "name": "Tablet of the Guilds", "kind": "story", "title": "Ten symbols in stone", "text": "A stone tablet in a plaza bears the symbols of all ten guilds. The Azorius paid well, they say, for their symbol to sit at the top. Touching two symbols at once is said to bring luck.", "choices": [{"text": "Touch two symbols", "outcome": {"text": "The tablet warms, and its blessing comes away with you.", "effects": [{"take": true}]}}, {"text": "Pay the keeper for a rubbing", "needs": {"gold": 6}, "outcome": {"text": "The keeper makes a rubbing that carries the tablet's blessing.", "effects": [{"take": true}]}}, {"text": "Leave it be", "outcome": {"text": "You leave the guilds to their stone.", "effects": [{"leave": true}]}}]},
+
+ {"number": "236", "name": "Volatile Rig", "kind": "creature", "intro": "A rig of pistons and fuel tanks lurches out of an Izzet yard, its operator long gone. Every hit it takes might make it explode. It is coming straight for you.", "win": "The rig coughs to a halt and lets you take the controls. It is yours now.", "lose": "It rams you, and its sparks singe your arms.", "flee": "You run before it explodes."},
+
+ {"number": "245", "name": "Rogue's Passage", "kind": "land", "text": "A maze without walls where thieves whisper of a prize beyond worth. You can claim it for a tile you have walked."},
+
+ {"number": "249", "name": "Transguild Promenade", "kind": "land", "text": "A promenade where every guild may walk, if each pays its toll. You can claim it for a tile you have walked."}
+]}

@@ -1,0 +1,15 @@
+{
+ "_about": "Keys the page passes to the core as actions: key code to [action, value]. The core ignores an action that does not fit the screen.",
+ "board": {"ArrowUp": ["move", "n"], "KeyW": ["move", "n"], "ArrowDown": ["move", "s"], "KeyS": ["move", "s"], "ArrowLeft": ["move", "w"], "KeyA": ["move", "w"], "ArrowRight": ["move", "e"], "KeyD": ["move", "e"], "Tab": ["deck.open", ""]},
+ "draw": {"Enter": ["first", ""], "Escape": ["draw.flee", ""]},
+ "story": {"Digit1": ["story.choose", "0"], "Digit2": ["story.choose", "1"], "Digit3": ["story.choose", "2"]},
+ "fate": {"Space": ["fate.shuffle", ""], "Digit1": ["fate.pick", "0"], "Digit2": ["fate.pick", "1"], "Digit3": ["fate.pick", "2"], "Digit4": ["fate.pick", "3"], "Digit5": ["fate.pick", "4"]},
+ "result": {"Enter": ["result.next", ""], "Space": ["result.next", ""]},
+ "battle": {"Space": ["duel.ok", ""], "KeyF": ["battle.speed", ""], "Enter": ["battle.done", ""], "KeyQ": ["view.turn", "left"], "KeyE": ["view.turn", "right"], "KeyR": ["view.turn", "home"]},
+ "city": {"Digit1": ["city.room", "armourer"], "Digit2": ["city.room", "cards"], "Digit3": ["city.room", "hall"], "Digit4": ["city.room", "inn"], "Digit5": ["city.room", "trainer"], "Escape": ["city.leave", ""], "Tab": ["deck.open", ""]},
+ "armourer": {"Escape": ["city.room", "menu"]},
+ "deck": {"Escape": ["deck.close", ""], "Tab": ["deck.close", ""]},
+ "newgame": {"Digit1": ["game.guild", "Azorius"], "Digit2": ["game.guild", "Izzet"], "Digit3": ["game.guild", "Rakdos"], "Digit4": ["game.guild", "Golgari"], "Digit5": ["game.guild", "Selesnya"]},
+ "victory": {"Enter": ["victory.continue", ""]},
+ "lair": {"Escape": ["lair.leave", ""]}
+}

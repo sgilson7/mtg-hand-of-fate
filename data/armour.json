@@ -1,0 +1,39 @@
+{
+ "_about": "Armour: four slots. Health is the base plus the sum of what you wear; charisma and style come from what you wear and from quests. Each piece has at most one rule (effect), which the core applies. price is in gold before Charisma; style_needed is standing with the piece's guild needed to buy it. 'set' pieces of one guild worn together (all four) add the set rule.",
+ "base_health": 10,
+ "slots": ["head", "chest", "hands", "feet"],
+ "pieces": [
+  {"id": "wanderer_head", "slot": "head", "guild": "", "health": 2, "charisma": 0, "style": 0, "effect": "", "price": 0, "style_needed": 0},
+  {"id": "wanderer_chest", "slot": "chest", "guild": "", "health": 4, "charisma": 0, "style": 0, "effect": "", "price": 0, "style_needed": 0},
+  {"id": "wanderer_hands", "slot": "hands", "guild": "", "health": 0, "charisma": 0, "style": 0, "effect": "", "price": 0, "style_needed": 0},
+  {"id": "wanderer_feet", "slot": "feet", "guild": "", "health": 2, "charisma": 0, "style": 0, "effect": "", "price": 0, "style_needed": 0},
+
+  {"id": "azorius_head", "slot": "head", "guild": "Azorius", "health": 3, "charisma": 2, "style": 1, "effect": "fate_success", "price": 30, "style_needed": 2},
+  {"id": "azorius_chest", "slot": "chest", "guild": "Azorius", "health": 8, "charisma": 1, "style": 2, "effect": "detain_first", "price": 40, "style_needed": 0},
+  {"id": "azorius_hands", "slot": "hands", "guild": "Azorius", "health": 2, "charisma": 1, "style": 1, "effect": "start_mana", "price": 22, "style_needed": 0},
+  {"id": "azorius_feet", "slot": "feet", "guild": "Azorius", "health": 3, "charisma": 0, "style": 1, "effect": "", "price": 16, "style_needed": 0},
+
+  {"id": "izzet_head", "slot": "head", "guild": "Izzet", "health": 2, "charisma": 1, "style": 1, "effect": "extra_draw", "price": 28, "style_needed": 0},
+  {"id": "izzet_chest", "slot": "chest", "guild": "Izzet", "health": 6, "charisma": 0, "style": 2, "effect": "spell_ping", "price": 36, "style_needed": 0},
+  {"id": "izzet_hands", "slot": "hands", "guild": "Izzet", "health": 1, "charisma": 0, "style": 1, "effect": "reach", "price": 45, "style_needed": 2},
+  {"id": "izzet_feet", "slot": "feet", "guild": "Izzet", "health": 2, "charisma": 0, "style": 1, "effect": "", "price": 14, "style_needed": 0},
+
+  {"id": "rakdos_head", "slot": "head", "guild": "Rakdos", "health": 2, "charisma": 0, "style": 2, "effect": "opening_damage", "price": 26, "style_needed": 0},
+  {"id": "rakdos_chest", "slot": "chest", "guild": "Rakdos", "health": 7, "charisma": 0, "style": 2, "effect": "unleash_haste", "price": 34, "style_needed": 0},
+  {"id": "rakdos_hands", "slot": "hands", "guild": "Rakdos", "health": 2, "charisma": 0, "style": 1, "effect": "", "price": 14, "style_needed": 0},
+  {"id": "rakdos_feet", "slot": "feet", "guild": "Rakdos", "health": 3, "charisma": 0, "style": 1, "effect": "haste_first", "price": 30, "style_needed": 2},
+
+  {"id": "golgari_head", "slot": "head", "guild": "Golgari", "health": 3, "charisma": 0, "style": 1, "effect": "", "price": 16, "style_needed": 0},
+  {"id": "golgari_chest", "slot": "chest", "guild": "Golgari", "health": 9, "charisma": 0, "style": 1, "effect": "scavenge_cheap", "price": 40, "style_needed": 2},
+  {"id": "golgari_hands", "slot": "hands", "guild": "Golgari", "health": 2, "charisma": 0, "style": 1, "effect": "regrowth", "price": 26, "style_needed": 0},
+  {"id": "golgari_feet", "slot": "feet", "guild": "Golgari", "health": 3, "charisma": 0, "style": 1, "effect": "marsh_walker", "price": 24, "style_needed": 0},
+
+  {"id": "selesnya_head", "slot": "head", "guild": "Selesnya", "health": 3, "charisma": 2, "style": 1, "effect": "heal_after_win", "price": 28, "style_needed": 2},
+  {"id": "selesnya_chest", "slot": "chest", "guild": "Selesnya", "health": 7, "charisma": 1, "style": 2, "effect": "token_start", "price": 36, "style_needed": 0},
+  {"id": "selesnya_hands", "slot": "hands", "guild": "Selesnya", "health": 2, "charisma": 1, "style": 1, "effect": "", "price": 14, "style_needed": 0},
+  {"id": "selesnya_feet", "slot": "feet", "guild": "Selesnya", "health": 3, "charisma": 0, "style": 1, "effect": "forest_walker", "price": 22, "style_needed": 0}
+ ],
+ "sets": {
+  "Azorius": "set_detain_two", "Izzet": "set_spell_cheap", "Rakdos": "set_first_strike", "Golgari": "set_regenerate", "Selesnya": "set_populate"
+ }
+}

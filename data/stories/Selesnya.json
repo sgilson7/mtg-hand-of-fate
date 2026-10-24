@@ -1,0 +1,74 @@
+{"stories": [
+{"number": "214", "name": "Dryad Militant", "kind": "creature",
+ "intro": "A dryad in bark armour guards a grove against Izzet progress. Spells cast near her crumble to dust. She sees a stranger and raises her spear.",
+ "win": "She lowers the spear and agrees to guard you instead. She is yours now.",
+ "lose": "The spear's butt catches you in the ribs.",
+ "flee": "You back out of the grove, and she lets you go."},
+
+{"number": "148", "name": "Centaur Healer", "kind": "creature",
+ "intro": "A centaur instructor from the Kasarna grounds is drilling students in the square. She mistakes you for one of them. The lesson starts now.",
+ "win": "She laughs, binds your cuts, and offers to travel with you. She is yours now.",
+ "lose": "You fail the lesson, and she patches you up before sending you off.",
+ "flee": "You slip away before the next drill."},
+
+{"number": "194", "name": "Selesnya Charm", "kind": "magic",
+ "title": "A gift from the Conclave",
+ "text": "A Selesnya knight-errant sits by a fountain, weaving charms from grass and silver wire. Each charm, she says, answers a different need. She offers to make one for you.",
+ "choices": [
+   {"text": "Tell her what you need", "needs": {"charisma": 2},
+    "outcome": {"text": "She listens, then ties the charm to your wrist.", "effects": [{"take": true}]}},
+   {"text": "Offer to help the Conclave in return", "needs": {"style": ["Selesnya", 1]},
+    "outcome": {"text": "She smiles and gives you the charm and a blessing.", "effects": [{"take": true}, {"health": 2}]}},
+   {"text": "Spar with her for it",
+    "outcome": {"text": "She sets down the wire and draws her sword.", "fate": {"faces": [1, 1, 1, 1],
+      "huge_success": {"text": "You win the bout, and she gives you the charm and her purse.", "effects": [{"take": true}, {"gold": 6}]},
+      "success": {"text": "She concedes the bout and hands you the charm.", "effects": [{"take": true}]},
+      "failure": {"text": "She disarms you and goes back to her weaving.", "effects": [{"health": -2}]},
+      "huge_failure": {"text": "She knocks you into the fountain, and your supplies go with you.", "effects": [{"health": -2}, {"supplies": -2}]}}}}
+ ]},
+
+{"number": "217", "name": "Growing Ranks", "kind": "story",
+ "title": "The Conclave asks",
+ "text": "A Selesnya envoy finds you at a crossroads, holding a seed in cupped hands. Trostani wants an army that can withstand the Izzet. The seed will grow it, if someone plants it in Conclave ground and defends the sapling.",
+ "choices": [
+   {"text": "Take the seed to Vitu-Ghazi",
+    "outcome": {"text": "The envoy gives you the seed and sends word to Vitu-Ghazi to expect you.", "effects": [{"take": true}, {"quest_start": "conclave"}]}},
+   {"text": "Ask what the Conclave will pay", "needs": {"charisma": 2},
+    "outcome": {"text": "The envoy adds a pouch of coin to the seed and points you to Vitu-Ghazi.", "effects": [{"take": true}, {"quest_start": "conclave"}, {"gold": 5}]}},
+   {"text": "Refuse the envoy",
+    "outcome": {"text": "The envoy bows and waits at the crossroads in case you return.", "effects": [{"leave": true}]}}
+ ]},
+
+{"number": "246", "name": "Selesnya Guildgate", "kind": "land",
+ "text": "A gate of living branches stands open at the edge of a Selesnya district, flowers turning to greet you. You can claim it for a tile you have walked."},
+
+ {"number": "143", "name": "Armada Wurm", "kind": "creature", "intro": "A wurm the size of a street comes down the boulevard, and another follows it. No one in the Conclave acts alone. They turn, together, toward you.", "win": "The wurms bow their heads, and both of them come with you. They are yours now.", "lose": "The wurms roll over you on their way past.", "flee": "You climb a lamp post until they have gone by."},
+
+ {"number": "146", "name": "Call of the Conclave", "kind": "magic", "title": "A centaur's call", "text": "A centaur evangelist stands at the edge of Gruul territory, calling for peace over the din of war drums. Words of war speak louder here than prayers. She needs someone to stand beside her.", "choices": [{"text": "Stand beside her", "outcome": {"text": "The drums falter, and she teaches you her call.", "effects": [{"take": true}, {"style": ["Selesnya", 1]}]}}, {"text": "Drum louder than the Gruul", "outcome": {"text": "You pick up a drum.", "fate": {"faces": [1, 1, 1, 1], "huge_success": {"text": "The Gruul stop to listen, and the centaur gives you her call.", "effects": [{"take": true}, {"style": ["Selesnya", 2]}]}, "success": {"text": "You keep the rhythm, and she gives you the call.", "effects": [{"take": true}]}, "failure": {"text": "A Gruul rock finds you.", "effects": [{"health": -2}]}, "huge_failure": {"text": "The Gruul take your drum and your purse.", "effects": [{"health": -2}, {"gold": -5}]}}}}, {"text": "Leave the border", "outcome": {"text": "You leave the centaur to her calling.", "effects": [{"leave": true}]}}]},
+
+ {"number": "150", "name": "Collective Blessing", "kind": "story", "title": "A blessing on all", "text": "Selesnya druids bless a crowd in Vitu-Ghazi, and the crowd stands a little straighter. Azorius spies note every spore. Every one, they report, could become an army.", "choices": [{"text": "Join the crowd", "outcome": {"text": "The blessing settles on you as on everyone. A druid presses a seed on you to carry home.", "effects": [{"take": true}, {"style": ["Selesnya", 1]}, {"quest_start": "blessing"}]}}, {"text": "Talk to the spies", "needs": {"charisma": 2}, "outcome": {"text": "They pay you for what you saw, and slip you a seed from the blessing.", "effects": [{"take": true}, {"gold": 5}]}}, {"text": "Leave the crowd", "outcome": {"text": "You leave the druids to their work.", "effects": [{"leave": true}]}}]},
+
+ {"number": "151", "name": "Common Bond", "kind": "magic", "title": "Elf and wolf", "text": "A wolf rider practises on the rooftops, leaping from one to the next. Each dizzying step brings elf and wolf closer together. She offers to show you the bond.", "choices": [{"text": "Ride with her", "outcome": {"text": "You climb up behind her.", "fate": {"faces": [1, 2, 1, 0], "huge_success": {"text": "You leap three roofs, and she teaches you the bond.", "effects": [{"take": true}, {"style": ["Selesnya", 1]}]}, "success": {"text": "You manage one roof, and she gives you the spell.", "effects": [{"take": true}]}, "failure": {"text": "You fall into an awning.", "effects": [{"health": -2}]}}}}, {"text": "Watch and learn", "outcome": {"text": "She shows you the spell from the safety of the street.", "effects": [{"take": true}, {"supplies": -1}]}}, {"text": "Stay on the ground", "outcome": {"text": "You watch her leap away.", "effects": [{"leave": true}]}}]},
+
+ {"number": "154", "name": "Coursers' Accord", "kind": "magic", "title": "No one travels alone", "text": "Bleak rumours have reached Trostani, and she has decreed that no one travels alone. A pair of centaur coursers offer to escort you. Their company comes with a spell.", "choices": [{"text": "Accept their escort", "outcome": {"text": "They see you safely on, and one gives you the accord.", "effects": [{"take": true}, {"style": ["Selesnya", 1]}]}}, {"text": "Pay for their company", "needs": {"gold": 8}, "outcome": {"text": "They take your coin for the Conclave and give you the accord.", "effects": [{"take": true}]}}, {"text": "Travel alone", "outcome": {"text": "You go on alone, against the decree.", "effects": [{"leave": true}]}}]},
+
+ {"number": "168", "name": "Heroes' Reunion", "kind": "magic", "title": "A family without blood", "text": "In a Selesnya hall, heroes of many guilds embrace after years apart. They share no bloodline, only the Worldsoul. A healer moves among them, mending old wounds.", "choices": [{"text": "Let the healer tend you", "outcome": {"text": "Her touch closes your wounds, and she gives you the spell. She asks you to find her sister, taken by the Golgari.", "effects": [{"take": true}, {"health": 4}, {"quest_start": "reunion"}]}}, {"text": "Bring her bandages", "needs": {"supplies": 1}, "outcome": {"text": "She thanks you and gives you the spell.", "effects": [{"take": true}]}}, {"text": "Leave them to their reunion", "outcome": {"text": "You leave the hall quietly.", "effects": [{"leave": true}]}}]},
+
+ {"number": "178", "name": "Loxodon Smiter", "kind": "creature", "intro": "A loxodon in plate swings a hammer through the market, and nothing stops it. No spell can turn it away. It sees you and raises the hammer.", "win": "The smiter lowers its hammer and offers to walk with you. It is yours now.", "lose": "The hammer catches your shield arm.", "flee": "You step aside and let it pass."},
+
+ {"number": "190", "name": "Risen Sanctuary", "kind": "creature", "intro": "A great guardian rises from the earth of Vitu-Ghazi, a sanctuary on legs. It sweeps enemies aside like chaff and does not crush a single insect. It is not yet sure which you are.", "win": "The sanctuary kneels and lets you shelter in it. It is yours now.", "lose": "It sweeps you aside like chaff.", "flee": "You back away and let it pass."},
+
+ {"number": "206", "name": "Trostani, Selesnya's Voice", "kind": "creature", "intro": "Trostani speaks with three voices from the heart of Vitu-Ghazi, and the tree speaks with her. Every creature that comes to her is made whole. She asks if you have come to join the Conclave.", "win": "Trostani's three voices agree that you are welcome. Her card is yours.", "lose": "The roots of Vitu-Ghazi carry you gently out of the tree.", "flee": "You bow and leave the heart of the tree."},
+
+ {"number": "207", "name": "Vitu-Ghazi Guildmage", "kind": "creature", "intro": "A guildmage of Vitu-Ghazi stands in a ring of centaurs. Preachers of freedom forget that conformity can be beautiful, he says. His centaurs close in round you.", "win": "The guildmage smiles and agrees to call his centaurs for you. He is yours now.", "lose": "His centaurs carry you out of the ring and drop you.", "flee": "You leave the ring before it closes."},
+
+ {"number": "209", "name": "Wayfaring Temple", "kind": "creature", "intro": "A temple of wood and stone walks the streets on great legs, growing larger for every follower it gathers. Its bells ring as it comes. It wants you as a follower.", "win": "The temple kneels and opens its doors to you. It is yours now.", "lose": "The temple steps on your pack.", "flee": "You step into an alley as the temple passes."},
+
+ {"number": "223", "name": "Sundering Growth", "kind": "magic", "title": "Every pillar a tree", "text": "Roots split an Orzhov pillar from the inside, and a tree bursts out of the stone. One day every pillar will be a tree, Trostani said. A Selesnya gardener nods at you.", "choices": [{"text": "Help the roots along", "outcome": {"text": "The gardener teaches you the growth.", "effects": [{"take": true}, {"style": ["Selesnya", 1]}]}}, {"text": "Gather a cutting", "outcome": {"text": "The cutting carries the spell inside it.", "effects": [{"take": true}, {"supplies": -1}]}}, {"text": "Leave before the Orzhov come", "outcome": {"text": "You leave as the pillar cracks.", "effects": [{"leave": true}]}}]},
+
+ {"number": "233", "name": "Selesnya Keyrune", "kind": "story", "title": "A key with a guardian", "text": "A Selesnya keyrune hangs in a trader's stall, carved with a wolf. It is a mark of unity when you want one, she says, and a guardian when you need one. She will trade it for kindness.", "choices": [{"text": "Do the trader a kindness", "outcome": {"text": "You carry her goods to the next market, and she gives you the keyrune.", "effects": [{"take": true}, {"supplies": -1}]}}, {"text": "Buy it", "needs": {"gold": 10}, "outcome": {"text": "She sells it to you with a blessing.", "effects": [{"take": true}]}}, {"text": "Leave it hanging", "outcome": {"text": "You leave the wolf carved in the stall.", "effects": [{"leave": true}]}}]},
+
+ {"number": "240", "name": "Grove of the Guardian", "kind": "land", "text": "A grove where a great elemental once slept, its roots still warm. You can claim it for a tile you have walked."},
+
+ {"number": "248", "name": "Temple Garden", "kind": "land", "text": "A walled garden of the Conclave where order and beauty grow together. You can claim it for a tile you have walked."}
+]}

@@ -1,0 +1,64 @@
+{"stories": [
+{"number": "220", "name": "Rakdos Cackler", "kind": "creature",
+ "intro": "A devil with knives for fingers capers along a rooftop, cackling. It drops in front of you, blades clattering. It will not hold back, and it does not care to block.",
+ "win": "The cackler giggles and drums its blades in your honour. It is yours now.",
+ "lose": "Its blades make music on you.",
+ "flee": "You run, and its laughter follows you down the street."},
+
+{"number": "221", "name": "Rakdos Shred-Freak", "kind": "creature",
+ "intro": "A Rakdos shred-freak is muttering about where the soul is kept. She is on you before you see her, knife out. She means to look behind your gallbladder.",
+ "win": "She decides your soul can stay where it is and follows you. She is yours now.",
+ "lose": "Her knife gets close enough to start the search.",
+ "flee": "You run before she finds out."},
+
+{"number": "157", "name": "Dreadbore", "kind": "magic",
+ "title": "Part of the show",
+ "text": "In a Rakdos-held square, a ringmaster calls for a body for the next act. A pit of churning shadow waits at the centre of the stage. In this neighbourhood, everyone is part of the show.",
+ "choices": [
+   {"text": "Offer up a rival instead", "needs": {"style": ["Rakdos", 2]},
+    "outcome": {"text": "The ringmaster cheers your cruelty and gives you the spell that opens the pit.", "effects": [{"take": true}, {"style": ["Rakdos", 1]}]}},
+   {"text": "Take the stage yourself",
+    "outcome": {"text": "The ringmaster sends his performer to drag you to the pit.", "effects": [{"fight": true}]}},
+   {"text": "Slip out through the crowd",
+    "outcome": {"text": "You push through the crowd and lose your purse on the way.", "effects": [{"leave": true}, {"gold": -4}]}}
+ ]},
+
+{"number": "147", "name": "Carnival Hellsteed", "kind": "creature",
+ "intro": "A skeletal horse bursts from the carnival tent, its mane on fire. It favours candied hands and sweet hearts. It is on you before the music stops, and it bites first.",
+ "win": "The hellsteed snorts embers and lets you climb on. It is yours now.",
+ "lose": "It tramples you into the sawdust.",
+ "flee": "You roll under a wagon as it gallops past."},
+
+{"number": "244", "name": "Rakdos Guildgate", "kind": "land",
+ "text": "A gate hung with chains and carnival lanterns marks the way into a Rakdos district. You can claim it for a tile you have walked."},
+
+ {"number": "144", "name": "Auger Spree", "kind": "magic", "title": "A weapon the Boros missed", "text": "The proprietor of the Juri Revue is showing off a drill that bores through anything. At last, he crows, a weapon the Boros cannot confiscate. He wants someone to hold the other end.", "choices": [{"text": "Hold the other end", "outcome": {"text": "The drill spins up in your hands.", "fate": {"faces": [1, 1, 1, 1], "huge_success": {"text": "You bore a perfect hole through a wall, and Juri gives you the spell behind it.", "effects": [{"take": true}, {"style": ["Rakdos", 2]}]}, "success": {"text": "You bore a ragged hole, and Juri lets you keep the drill's charm.", "effects": [{"take": true}]}, "failure": {"text": "The drill kicks and catches your arm.", "effects": [{"health": -2}]}, "huge_failure": {"text": "The drill bores through your pack.", "effects": [{"health": -2}, {"supplies": -2}]}}}}, {"text": "Buy the charm from Juri", "needs": {"gold": 10}, "outcome": {"text": "Juri sells it with a deep bow.", "effects": [{"take": true}]}}, {"text": "Leave the revue", "outcome": {"text": "You leave before Juri finds another volunteer.", "effects": [{"leave": true}]}}]},
+
+ {"number": "166", "name": "Havoc Festival", "kind": "story", "title": "A festival without end", "text": "A Rakdos festival has taken over the district, and nobody here cares whether they live. The Boros cannot control people with no regard for their own survival. A reveler offers you a mask.", "choices": [{"text": "Put on the mask and join in", "outcome": {"text": "You dance until dawn and wake with the festival's token in your fist. The mask whispers a name.", "effects": [{"take": true}, {"health": -2}, {"style": ["Rakdos", 1]}, {"quest_start": "mask"}]}}, {"text": "Buy the token from a vendor", "needs": {"gold": 8}, "outcome": {"text": "The vendor sells it and wishes you a long night.", "effects": [{"take": true}]}}, {"text": "Get out of the district", "outcome": {"text": "You fight your way out of the crowd.", "effects": [{"leave": true}, {"supplies": -1}]}}]},
+
+ {"number": "167", "name": "Hellhole Flailer", "kind": "creature", "intro": "A demon of chains and hooks whirls through a Rakdos club, flailing at everyone. When it tires of flailing, it throws itself at whoever is watching. You are watching.", "win": "The flailer stops whirling and agrees to whirl for you. It is yours now.", "lose": "Its hooks catch your cloak and drag you across the floor.", "flee": "You leave the club before it notices you again."},
+
+ {"number": "184", "name": "Rakdos Charm", "kind": "magic", "title": "A charm of three pains", "text": "A Rakdos cultist sells charms of bone strung on wire. Each one hurts in a different way. Let all feel joy in pain, he says, and offers you one free.", "choices": [{"text": "Take the free charm", "outcome": {"text": "It pricks your palm, and it is yours.", "effects": [{"take": true}, {"health": -1}, {"style": ["Rakdos", 1]}]}}, {"text": "Pay for a gentler one", "needs": {"gold": 6}, "outcome": {"text": "He laughs and sells you one that only stings.", "effects": [{"take": true}]}}, {"text": "Decline", "outcome": {"text": "You leave the cultist laughing.", "effects": [{"leave": true}]}}]},
+
+ {"number": "185", "name": "Rakdos Ragemutt", "kind": "creature", "intro": "A ragemutt pulls a chariot of zombified faeries down the street at a full gallop. The Butcher Clowns cackle from the chariot. The ragemutt sees you and veers.", "win": "The ragemutt skids to a stop and nuzzles you with its scarred snout. It is yours now.", "lose": "It bowls you over and the chariot rolls across your legs.", "flee": "You dive into a doorway as the chariot thunders by."},
+
+ {"number": "186", "name": "Rakdos Ringleader", "kind": "creature", "intro": "The ringleader of a Rakdos circus cracks a whip, and the crowd gasps. He calls you up as his next act. Refusing is part of the act too.", "win": "He bows to you as the crowd roars and offers you a place in his circus. He is yours now.", "lose": "His whip takes your purse and your pride.", "flee": "You slip out under the tent's flap."},
+
+ {"number": "187", "name": "Rakdos, Lord of Riots", "kind": "creature", "intro": "The ground of Rix Maadi splits, and Rakdos rises from the flames, horns scraping the sky. Wherever he walks, riots break out. He looks down at you and smiles.", "win": "Rakdos laughs, delighted, and says he will come when you call him. His card is yours.", "lose": "Rakdos swats you, and you wake in the street with a riot going past.", "flee": "You run, and the laughter of Rakdos follows you."},
+
+ {"number": "188", "name": "Rakdos's Return", "kind": "magic", "title": "The demon stirs", "text": "Under Rix Maadi something enormous turns in its sleep, and the whole district shakes. When Lord Rakdos stirs, everyone else's nightmare begins. His priests are chanting louder.", "choices": [{"text": "Chant with the priests", "outcome": {"text": "The chant takes you, and a priest presses the spell into your hand. The priests say their god will wake in the Tenth District.", "effects": [{"take": true}, {"style": ["Rakdos", 2]}, {"health": -2}, {"quest_start": "chant"}]}}, {"text": "Shut the priests up", "outcome": {"text": "You shout over the chanting.", "fate": {"faces": [0, 2, 1, 1], "success": {"text": "The chant falters, and you snatch the spell from the altar.", "effects": [{"take": true}]}, "failure": {"text": "The priests turn on you.", "effects": [{"health": -3}]}, "huge_failure": {"text": "The priests and the tremor both find you.", "effects": [{"health": -4}]}}}}, {"text": "Leave the district", "outcome": {"text": "You leave before the dreaming god wakes.", "effects": [{"leave": true}]}}]},
+
+ {"number": "192", "name": "Rix Maadi Guildmage", "kind": "creature", "intro": "A guildmage of Rix Maadi is draining blood from a captured Boros soldier, drop by drop. She is insatiable, they say, and irresistible, and quite insane. She smiles at your throat.", "win": "She laughs, wipes her lips, and agrees to work for you. She is yours now.", "lose": "Her spell drains you until your knees give way.", "flee": "You leave the soldier to her and run."},
+
+ {"number": "195", "name": "Skull Rend", "kind": "magic", "title": "A head-splitting act", "text": "A Gore-House ringleader is looking for a face too pretty or a mind too sane. The act is called Skull Rend. You are both, she says, with a terrible grin.", "choices": [{"text": "Go on stage", "outcome": {"text": "The ringleader raises her hands to your head.", "fate": {"faces": [0, 2, 1, 1], "success": {"text": "You survive the act, and the crowd throws the spell at your feet.", "effects": [{"take": true}, {"style": ["Rakdos", 1]}]}, "failure": {"text": "The act leaves you dizzy and lighter of purse.", "effects": [{"health": -2}, {"gold": -5}]}, "huge_failure": {"text": "The act splits your head with pain.", "effects": [{"health": -4}]}}}}, {"text": "Send someone else up", "needs": {"charisma": 3}, "outcome": {"text": "The ringleader shrugs, and you pocket the spell she drops.", "effects": [{"take": true}]}}, {"text": "Leave the Gore-House", "outcome": {"text": "You leave as the next act begins.", "effects": [{"leave": true}]}}]},
+
+ {"number": "197", "name": "Slaughter Games", "kind": "magic", "title": "A game with one rule", "text": "In a pit under the Gore-House, players name a thing and then hunt it until none of it is left. The rule is that no one can stop the game once it starts. A player offers you the first name.", "choices": [{"text": "Name something", "outcome": {"text": "The hunt goes your way, and the players give you the game.", "effects": [{"take": true}, {"style": ["Rakdos", 1]}]}}, {"text": "Bet on the hunters", "needs": {"gold": 10}, "outcome": {"text": "Your hunter wins, and the bookmaker pays you with the game itself.", "effects": [{"take": true}]}}, {"text": "Climb out of the pit", "outcome": {"text": "You leave before anyone names you.", "effects": [{"leave": true}]}}]},
+
+ {"number": "199", "name": "Spawn of Rix Maadi", "kind": "creature", "intro": "A creature from the blood-soaked mind of Rakdos crawls out of a Gore-House cage. The ringleader introduces it to the crowd with pride. It launches itself at you.", "win": "The spawn calms, as much as it can, and follows you. It is yours now.", "lose": "It tears at you until the ringleader whistles it back.", "flee": "You run while the crowd cheers."},
+
+ {"number": "212", "name": "Cryptborn Horror", "kind": "creature", "intro": "A cryptwitch's plaything has outlived her and grown fat on pain in the crypt. The more blood spilled nearby, the bigger it gets. Someone has just bled here.", "win": "The horror shrinks back and follows you, waiting. It is yours now.", "lose": "It tramples you on its way out of the crypt.", "flee": "You leave it to the dark."},
+
+ {"number": "232", "name": "Rakdos Keyrune", "kind": "story", "title": "A key with teeth", "text": "A Rakdos fence sells a keyrune carved with a grinning devil. The Rakdos use it for everything you can think of, she says, and plenty you cannot. It bites the hand of anyone who holds it wrong.", "choices": [{"text": "Buy it", "needs": {"gold": 10}, "outcome": {"text": "She drops it in your palm, and it nips you.", "effects": [{"take": true}, {"health": -1}]}}, {"text": "Steal it", "outcome": {"text": "You reach while she is looking away.", "fate": {"faces": [0, 2, 1, 1], "success": {"text": "You palm it cleanly.", "effects": [{"take": true}]}, "failure": {"text": "She catches you and you pay double.", "effects": [{"gold": -10}]}, "huge_failure": {"text": "The keyrune bites, and she catches you.", "effects": [{"health": -2}, {"gold": -10}]}}}}, {"text": "Leave the fence", "outcome": {"text": "You leave the keyrune grinning on the table.", "effects": [{"leave": true}]}}]},
+
+ {"number": "238", "name": "Blood Crypt", "kind": "land", "text": "A crypt in Rix Maadi where the dead are diversion, decor and dessert. You can claim it for a tile you have walked."}
+]}

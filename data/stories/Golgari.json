@@ -1,0 +1,74 @@
+{"stories": [
+ {"number": "158", "name": "Dreg Mangler", "kind": "creature",
+  "intro": "A hulking thing of bone and fungus bursts from a sewer grate. It charges before you can draw breath. Rot spreads where its hooves land.",
+  "win": "The mangler falls and rises again, yours to command.",
+  "lose": "It tramples you into the muck and lumbers away.",
+  "flee": "You dive into a side tunnel as it thunders past."},
+
+ {"number": "198", "name": "Sluiceway Scorpion", "kind": "creature",
+  "intro": "A scorpion as long as a man scuttles out of a sluice gate. Its sting kills anything it touches. It raises its tail and comes for you.",
+  "win": "The scorpion curls up, beaten. It skitters along behind you now.",
+  "lose": "The sting grazes you, and poison burns in your veins.",
+  "flee": "You splash back through the sluice and up a ladder."},
+
+ {"number": "141", "name": "Abrupt Decay", "kind": "magic",
+  "title": "Rot that cannot be stopped",
+  "text": "An Izzet machine has been sold with a lifetime guarantee, and it is rotting to dust. A Golgari shaman stands beside it, chanting. No counterspell slows her. The Izzet merchant begs you to stop her.",
+  "choices": [
+   {"text": "Ask the shaman to teach you", "needs": {"style": ["Golgari", 1]},
+    "outcome": {"text": "She smiles and presses a handful of spores into your palm.", "effects": [{"take": true}]}},
+   {"text": "Break her chant",
+    "outcome": {"text": "Her rot turns toward you.",
+     "fate": {"faces": [0, 2, 1, 1],
+      "success": {"text": "You break the chant, and the spell drops into your hands. The merchant pays you.", "effects": [{"gold": 6}, {"take": true}]},
+      "failure": {"text": "The rot creeps into your supplies before you pull away.", "effects": [{"supplies": -2}]},
+      "huge_failure": {"text": "The rot bites into your skin, and you stagger back.", "effects": [{"health": -3}]}}}},
+   {"text": "Let the machine rot",
+    "outcome": {"text": "You leave the merchant to his loss.", "effects": [{"leave": true}]}}
+  ]},
+
+ {"number": "229", "name": "Golgari Keyrune", "kind": "story",
+  "title": "A key to the undercity",
+  "text": "A carved stone beetle lies in a gutter, twitching. When you lift it, it clicks and points toward the sewers. A Golgari scout says it is a key to the undercity. Like a single ant, it hints at the colony below.",
+  "choices": [
+   {"text": "Follow where it points",
+    "outcome": {"text": "The beetle leads you to a door that wants to be opened.", "effects": [{"quest_start": "undercity"}, {"take": true}]}},
+   {"text": "Ask the scout for help", "needs": {"charisma": 3},
+    "outcome": {"text": "She tells you where the door lies and gives you rations for the journey.", "effects": [{"supplies": 2}, {"quest_start": "undercity"}, {"take": true}]}},
+   {"text": "Drop it back in the gutter",
+    "outcome": {"text": "The beetle scuttles out of sight.", "effects": [{"leave": true}]}}
+  ]},
+
+ {"number": "239", "name": "Golgari Guildgate", "kind": "land",
+  "text": "A gate of moss and bone opens into the undercity, where the outcast are welcome. You can claim it for a tile you have walked."},
+
+ {"number": "152", "name": "Corpsejack Menace", "kind": "creature", "intro": "A fungal horror lumbers out of a rot farm, spores bursting from its back. Weakness is not in the nature of the Swarm. Everything near it grows twice as fast, and it grows toward you.", "win": "The menace slows and settles beside you, budding gently. It is yours now.", "lose": "Its spores fill your lungs, and you stagger out coughing.", "flee": "You hold your breath and run from the farm."},
+
+ {"number": "164", "name": "Golgari Charm", "kind": "magic", "title": "A charm from the undercity", "text": "A Golgari peddler sells charms of bone and moss at the top of a sewer stair. Let the rest of Ravnica sneer, she says. One way or another, they all end up down here.", "choices": [{"text": "Buy a charm", "needs": {"gold": 8}, "outcome": {"text": "She ties it round your wrist.", "effects": [{"take": true}, {"style": ["Golgari", 1]}]}}, {"text": "Trade a story of the surface", "needs": {"charisma": 2}, "outcome": {"text": "She likes your story and gives you a charm for it.", "effects": [{"take": true}]}}, {"text": "Leave the stair", "outcome": {"text": "You leave her to her customers from below.", "effects": [{"leave": true}]}}]},
+
+ {"number": "165", "name": "Grisly Salvage", "kind": "magic", "title": "Treasure in the muck", "text": "Golgari scavengers are picking through a collapsed tunnel. To them, anything buried is treasure. They offer you a share if you dig.", "choices": [{"text": "Dig with them", "outcome": {"text": "You plunge your hands into the muck.", "fate": {"faces": [1, 2, 1, 0], "huge_success": {"text": "You find a buried spell and a handful of coin. They ask you to settle a debt they owe below.", "effects": [{"take": true}, {"gold": 6}, {"quest_start": "salvage"}]}, "success": {"text": "You find a spell wrapped in old cloth. They ask you to settle a debt they owe below.", "effects": [{"take": true}, {"quest_start": "salvage"}]}, "failure": {"text": "Something in the muck bites you.", "effects": [{"health": -2}]}}}}, {"text": "Pay for the best find", "needs": {"gold": 8}, "outcome": {"text": "The scavengers sell you the best of the day.", "effects": [{"take": true}]}}, {"text": "Leave them to dig", "outcome": {"text": "You climb back to the street.", "effects": [{"leave": true}]}}]},
+
+ {"number": "174", "name": "Jarad, Golgari Lich Lord", "kind": "creature", "intro": "Jarad sits on a throne of roots and bones deep in the undercity, and his dead brother's sword lies across his knees. The rot farms stretch away in the dark. He asks why you have come so far below.", "win": "Jarad nods slowly and agrees to rise for you when you call. His card is yours.", "lose": "The dead of the undercity drag you back to the surface.", "flee": "You climb back up toward the light."},
+
+ {"number": "175", "name": "Jarad's Orders", "kind": "magic", "title": "Orders from below", "text": "A Devkarin messenger carries sealed orders from Jarad to his agents. The Izzet are searching for something, the orders say. Find out what, or die trying.", "choices": [{"text": "Carry the orders for her", "outcome": {"text": "You deliver them, and she gives you the copy to keep.", "effects": [{"take": true}, {"style": ["Golgari", 1]}]}}, {"text": "Read the orders", "outcome": {"text": "You break the seal.", "fate": {"faces": [0, 2, 1, 1], "success": {"text": "You learn their secret, and the spell in them is yours.", "effects": [{"take": true}]}, "failure": {"text": "The seal was poisoned.", "effects": [{"health": -2}]}, "huge_failure": {"text": "The seal was poisoned, and the messenger is angry.", "effects": [{"health": -3}]}}}}, {"text": "Let her pass", "outcome": {"text": "She slips past you into the dark.", "effects": [{"leave": true}]}}]},
+
+ {"number": "176", "name": "Korozda Guildmage", "kind": "creature", "intro": "A Korozda guildmage kneels in a rot farm, coaxing fungus into creatures. His farm grows from the dead. He looks at you and sees good soil.", "win": "The guildmage laughs and agrees to farm for you. He is yours now.", "lose": "His saprolings swarm over you and leave you aching.", "flee": "You leave the farm before you become part of it."},
+
+ {"number": "177", "name": "Lotleth Troll", "kind": "creature", "intro": "A troll lurks where the corpse haulers unload their cargo, eating whatever falls off the carts. It grows stronger on the dead. Your cart is next.", "win": "The troll belches, full, and follows you. It is yours now.", "lose": "The troll tips your cart and takes your supplies.", "flee": "You leave the cart and run."},
+
+ {"number": "191", "name": "Rites of Reaping", "kind": "magic", "title": "A Devkarin rite", "text": "A Devkarin elf performs a rite over two bodies, giving strength to one and taking it from the other. Do not cross a Devkarin, they say, unless you want an early grave. She needs a second pair of hands.", "choices": [{"text": "Lend her your hands", "outcome": {"text": "She teaches you the rite in thanks.", "effects": [{"take": true}, {"style": ["Golgari", 1]}, {"health": -1}]}}, {"text": "Pay for the teaching", "needs": {"gold": 10}, "outcome": {"text": "She takes your gold and teaches you.", "effects": [{"take": true}]}}, {"text": "Leave the rite", "outcome": {"text": "You leave before she looks at you twice.", "effects": [{"leave": true}]}}]},
+
+ {"number": "204", "name": "Treasured Find", "kind": "magic", "title": "A gorgon's collection", "text": "A gorgon's lair is full of beautiful things: gems, amulets, the petrified dead. She has dozed off among them. One amulet glows faintly.", "choices": [{"text": "Take the amulet quietly", "outcome": {"text": "You tiptoe past the gorgon.", "fate": {"faces": [0, 2, 1, 1], "success": {"text": "You take the amulet and the spell it holds. Her guards wake behind you.", "effects": [{"take": true}, {"quest_start": "amulet"}]}, "failure": {"text": "She stirs, and you flee empty-handed.", "effects": [{"supplies": -1}]}, "huge_failure": {"text": "She wakes, and the edge of her gaze stiffens your arm.", "effects": [{"health": -3}]}}}}, {"text": "Wake her and ask", "needs": {"charisma": 4}, "outcome": {"text": "She is flattered and gives you the amulet.", "effects": [{"take": true}]}}, {"text": "Leave the lair", "outcome": {"text": "You leave the gorgon to her dreams.", "effects": [{"leave": true}]}}]},
+
+ {"number": "205", "name": "Trestle Troll", "kind": "creature", "intro": "A troll has made a home under a trestle bridge, unwelcome in the Golgari colonies. It represents the Swarm in its own dark way. It reaches up for you as you cross.", "win": "The troll grunts and climbs out from under the bridge to follow you. It is yours now.", "lose": "It drags you off the bridge into the mud.", "flee": "You run to the far end of the bridge."},
+
+ {"number": "208", "name": "Vraska the Unseen", "kind": "creature", "intro": "Vraska waits in the shadows of a Golgari tunnel, the gorgon who hunts the guilds' corrupt. Her gaze turns those she judges to stone. She has judged you worth a test.", "win": "Vraska smiles, eyes hooded, and agrees to hunt for you. Her card is yours.", "lose": "Her gaze stiffens your legs, and you limp from the tunnel.", "flee": "You keep your eyes down and back away."},
+
+ {"number": "213", "name": "Deathrite Shaman", "kind": "creature", "intro": "A shaman in a mask of bone burns the remains of the dead to fuel his magic. Nothing that dies is wasted. He sees you and reaches for his censer.", "win": "The shaman bows and agrees to tend your dead. He is yours now.", "lose": "His censer's smoke steals the breath from your lungs.", "flee": "You leave the shaman to his fires."},
+
+ {"number": "216", "name": "Golgari Longlegs", "kind": "creature", "intro": "A spider of enormous size unfolds from a tunnel mouth. It can fold itself into a crack with startling speed. It unfolds toward you.", "win": "The longlegs folds itself down and follows you. It is yours now.", "lose": "It wraps you in silk and leaves you hanging.", "flee": "You run before it unfolds completely."},
+
+ {"number": "222", "name": "Slitherhead", "kind": "creature", "intro": "A creature made from someone's uncle's head slithers across a cellar floor. It makes better use of the head than the uncle ever did. It hisses at you.", "win": "Slitherhead coils at your feet. It is yours now.", "lose": "It bites your ankle and slithers away.", "flee": "You step over it and leave."},
+
+ {"number": "243", "name": "Overgrown Tomb", "kind": "land", "text": "A tomb gone green, its dead wrapped in a shroud of new life. You can claim it for a tile you have walked."}
+]}

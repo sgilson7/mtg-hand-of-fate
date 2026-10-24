@@ -1,0 +1,74 @@
+{"stories": [
+ {"number": "224", "name": "Vassal Soul", "kind": "creature",
+  "intro": "A ghostly clerk in Azorius robes glides out of an archive. Death did not end its service. It finds you in breach of an old statute and swoops to enforce it.",
+  "win": "The spirit bows and swears its service to you. The law allows it.",
+  "lose": "It rakes you with cold hands and returns to its archive.",
+  "flee": "You run past the archive door, and it does not pursue."},
+
+ {"number": "179", "name": "Lyev Skyknight", "kind": "creature",
+  "intro": "A skyknight on a winged mount lands across your path. Her lance glows, and your pack freezes on your back. \"Stand for inspection.\"",
+  "win": "She lowers her lance and salutes. She will ride with you now.",
+  "lose": "She pins you with light and writes you a fine.",
+  "flee": "You break the hold and hide in an alley until she flies on."},
+
+ {"number": "155", "name": "Detention Sphere", "kind": "story",
+  "title": "A sphere holds a prisoner",
+  "text": "A glowing sphere hangs in the middle of a square, humming. Inside it, a man floats, frozen in place. An Azorius clerk is searching the cobbles for a lost writ of detention. Without it, she cannot hold him for long.",
+  "choices": [
+   {"text": "Help her search",
+    "outcome": {"text": "You and the clerk sweep the square.",
+     "fate": {"faces": [1, 2, 1, 0],
+      "huge_success": {"text": "You find the writ under a cart. She trusts you to carry it to New Prahv and gives you the sphere's key.", "effects": [{"style": ["Azorius", 1]}, {"quest_start": "writ"}, {"take": true}]},
+      "success": {"text": "You find the writ. She asks you to carry it to New Prahv and gives you the key.", "effects": [{"quest_start": "writ"}, {"take": true}]},
+      "failure": {"text": "You search until dark and find no sign of it. The clerk sends you off.", "effects": [{"supplies": -1}]}}}},
+   {"text": "Offer to take the case", "needs": {"style": ["Azorius", 2]},
+    "outcome": {"text": "She hands you the writ with relief. \"New Prahv will want to hear this.\"", "effects": [{"quest_start": "writ"}, {"take": true}]}},
+   {"text": "Leave the man to the law",
+    "outcome": {"text": "You move on, and the sphere hums on.", "effects": [{"leave": true}]}}
+  ]},
+
+ {"number": "225", "name": "Azorius Keyrune", "kind": "story",
+  "title": "A keyrune of the Senate",
+  "text": "A small carved key lies on a Senate step, shaped like a bird. As you pick it up, it stretches its wings and tries to fly. A clerk runs toward you, shouting that it is Senate property.",
+  "choices": [
+   {"text": "Hand it back", "needs": {"charisma": 2},
+    "outcome": {"text": "The clerk thanks you and says to keep it. You have shown more care for the law than its owner.", "effects": [{"style": ["Azorius", 1]}, {"take": true}]}},
+   {"text": "Run with it",
+    "outcome": {"text": "The clerk calls the guard.", "effects": [{"fight": true}]}},
+   {"text": "Leave it on the step",
+    "outcome": {"text": "The keyrune settles back into stone.", "effects": [{"leave": true}]}}
+  ]},
+
+ {"number": "237", "name": "Azorius Guildgate", "kind": "land",
+  "text": "A great white gate marks the road to the Senate, its arches carved with law. You can claim it for a tile you have walked."},
+
+ {"number": "142", "name": "Archon of the Triumvirate", "kind": "creature", "intro": "An archon descends over New Prahv on a winged steed, its face a mask of law. Wherever its shadow falls, things stop moving. Its shadow falls on you.", "win": "The archon judges you worthy and offers its service. It is yours now.", "lose": "The archon's judgement pins you to the ground until it has gone.", "flee": "You stay out of its shadow and slip away."},
+
+ {"number": "145", "name": "Azorius Charm", "kind": "magic", "title": "A charm of logic", "text": "An Azorius lawmage sells charms stamped with a seal of three choices. The rules of logic have already made the choice for you, she says. You still have to pay.", "choices": [{"text": "Buy a charm", "needs": {"gold": 8}, "outcome": {"text": "She hands you one and tells you which choice to make.", "effects": [{"take": true}, {"style": ["Azorius", 1]}]}}, {"text": "Argue that the choice is yours", "outcome": {"text": "She raises an eyebrow.", "fate": {"faces": [0, 2, 2, 0], "success": {"text": "She concedes the point and gives you a charm to prove it.", "effects": [{"take": true}]}, "failure": {"text": "She fines you for wasting the court's time.", "effects": [{"gold": -4}]}}}}, {"text": "Move on", "outcome": {"text": "You leave her to her ledger.", "effects": [{"leave": true}]}}]},
+
+ {"number": "156", "name": "Dramatic Rescue", "kind": "magic", "title": "A roc from the sky", "text": "An Azorius hussar is surrounded by Gruul raiders, and then a roc's shadow falls over them. Two tons of beak and claw drop from the sky and pluck her out. She has never been so glad of a bird.", "choices": [{"text": "Signal the next roc for her squadmate", "outcome": {"text": "The roc swoops, and the hussar gives you the whistle that calls it.", "effects": [{"take": true}, {"style": ["Azorius", 1]}]}}, {"text": "Pull the squadmate clear yourself", "outcome": {"text": "You run in under the clubs.", "fate": {"faces": [1, 1, 1, 1], "huge_success": {"text": "You both get clear, and the hussar gives you her whistle.", "effects": [{"take": true}, {"style": ["Azorius", 2]}]}, "success": {"text": "You drag him clear and keep the whistle he drops.", "effects": [{"take": true}]}, "failure": {"text": "A club catches you on the way out.", "effects": [{"health": -2}, {"take": true}]}, "huge_failure": {"text": "You are knocked flat, and the roc saves you too.", "effects": [{"health": -3}]}}}}, {"text": "Stay out of it", "outcome": {"text": "You watch the roc climb away.", "effects": [{"leave": true}]}}]},
+
+ {"number": "161", "name": "Fall of the Gavel", "kind": "magic", "title": "The ruling is final", "text": "A judge brings down her gavel, and the spell a defendant was casting falls apart in mid-air. The ruling is final, she says. Order is upheld.", "choices": [{"text": "Ask to read her rulings", "needs": {"style": ["Azorius", 1]}, "outcome": {"text": "She lets you copy one, and it carries the spell. She asks you to carry it to New Prahv.", "effects": [{"take": true}, {"quest_start": "gavel"}]}}, {"text": "Pick up a broken spell", "outcome": {"text": "You reach for the pieces under the bench.", "fate": {"faces": [1, 1, 2, 0], "huge_success": {"text": "The pieces fit back together in your hands, and the judge lets you keep them.", "effects": [{"take": true}]}, "success": {"text": "You keep the gavel's echo in a shard.", "effects": [{"take": true}]}, "failure": {"text": "The bailiff fines you for contempt.", "effects": [{"gold": -6}]}}}}, {"text": "Leave the courtroom", "outcome": {"text": "You leave as the next case is called.", "effects": [{"leave": true}]}}]},
+
+ {"number": "169", "name": "Hussar Patrol", "kind": "creature", "intro": "A patrol of Azorius hussars rounds the corner at a trot. You think no one is watching, their captain says. She has been watching you for three streets.", "win": "The captain decides you are on the side of order and lends you her patrol. They are yours now.", "lose": "They ride you down and leave you with a citation and a bruise.", "flee": "You show your empty hands and back away."},
+
+ {"number": "171", "name": "Isperia, Supreme Judge", "kind": "creature", "intro": "Isperia sits in judgement at the top of New Prahv, her wings folded like a robe. She serves only justice, she says, and through it all of Ravnica. She would like to judge you.", "win": "Isperia rules in your favour and agrees to serve you. Her card is yours.", "lose": "Her ruling throws you down the stairs of the Senate.", "flee": "You bow and back away from the bench."},
+
+ {"number": "181", "name": "New Prahv Guildmage", "kind": "creature", "intro": "A guildmage of New Prahv stands at the foot of the Senate steps, reciting statutes. He has decided you are in breach of several. He raises a hand, and the air stiffens around you.", "win": "The guildmage finds a clause in your favour and joins you. He is yours now.", "lose": "You are held fast until the bells, and fined for the delay.", "flee": "You plead for a recess and leave."},
+
+ {"number": "189", "name": "Righteous Authority", "kind": "story", "title": "The weight of authority", "text": "An Azorius magistrate wears a mantle that grows heavier with every law she remembers. The heavier it is, the stronger she stands. She offers to share its weight.", "choices": [{"text": "Take up the mantle", "outcome": {"text": "Its weight settles on you, and you stand taller for it.", "effects": [{"take": true}, {"style": ["Azorius", 1]}]}}, {"text": "Recite the statutes for her", "needs": {"charisma": 3}, "outcome": {"text": "You recite them well, and she grants you the mantle.", "effects": [{"take": true}]}}, {"text": "Decline", "outcome": {"text": "You leave her to her laws.", "effects": [{"leave": true}]}}]},
+
+ {"number": "193", "name": "Search Warrant", "kind": "magic", "title": "A satchel that glows", "text": "An Azorius arrester stops a man whose satchel is glowing with unstable energy. Would you care to explain, she asks. He would not.", "choices": [{"text": "Help her search the satchel", "outcome": {"text": "She finds the contraband and gives you the warrant to keep. She asks you to serve it on the thief's friends.", "effects": [{"take": true}, {"style": ["Azorius", 1]}, {"quest_start": "warrant"}]}}, {"text": "Vouch for the man", "outcome": {"text": "She looks from you to him.", "fate": {"faces": [0, 2, 1, 1], "success": {"text": "She lets him go, and he slips you the warrant he stole.", "effects": [{"take": true}]}, "failure": {"text": "She searches you too.", "effects": [{"gold": -5}]}, "huge_failure": {"text": "The satchel explodes while she searches you both.", "effects": [{"health": -3}, {"gold": -5}]}}}}, {"text": "Walk on", "outcome": {"text": "You leave the arrester to her questions.", "effects": [{"leave": true}]}}]},
+
+ {"number": "196", "name": "Skymark Roc", "kind": "creature", "intro": "A roc swoops low over the street market, looking for thieves. Try not to look guilty, an urchin tells you, or delicious. It is too late for both.", "win": "The roc lands, folds its wings, and lets you ride. It is yours now.", "lose": "It snatches you up and drops you in a fountain.", "flee": "You duck under an awning until it is gone."},
+
+ {"number": "200", "name": "Sphinx's Revelation", "kind": "magic", "title": "The sphinx's lesson", "text": "A sphinx on the roof of the Jelenn Column speaks to anyone who will listen. Let absolute law inspire a life of absolute order, it says. Those who listen long enough are given a revelation.", "choices": [{"text": "Listen all afternoon", "outcome": {"text": "The revelation comes at dusk, and you keep it.", "effects": [{"take": true}, {"supplies": -1}]}}, {"text": "Answer its riddle", "outcome": {"text": "The sphinx asks what is heavier than a law.", "fate": {"faces": [1, 1, 1, 1], "huge_success": {"text": "You answer well, and the sphinx gives you the revelation and its blessing.", "effects": [{"take": true}, {"style": ["Azorius", 2]}]}, "success": {"text": "You answer well enough, and the sphinx gives you the revelation.", "effects": [{"take": true}]}, "failure": {"text": "You answer badly, and the sphinx looks away.", "effects": [{"leave": true}]}, "huge_failure": {"text": "You answer badly, and its stare leaves you shaking.", "effects": [{"health": -2}]}}}}, {"text": "Leave the roof", "outcome": {"text": "You climb back down to the street.", "effects": [{"leave": true}]}}]},
+
+ {"number": "201", "name": "Supreme Verdict", "kind": "magic", "title": "An eviction by edict", "text": "A whole block is being cleared by order of the Senate. Leonos left skyrunes warning of it, though it was cloudy that day. The last tenants are being carried out.", "choices": [{"text": "Help the tenants out", "outcome": {"text": "You save what you can, and a clerk gives you a copy of the edict.", "effects": [{"take": true}, {"health": -1}]}}, {"text": "Read the edict aloud", "needs": {"style": ["Azorius", 1]}, "outcome": {"text": "Your reading carries the edict's weight, and the clerk lets you keep it.", "effects": [{"take": true}, {"style": ["Azorius", 1]}]}}, {"text": "Leave the block", "outcome": {"text": "You leave as the walls come down.", "effects": [{"leave": true}]}}]},
+
+ {"number": "210", "name": "Azor's Elocutors", "kind": "creature", "intro": "A pair of elocutors are speaking on and on in a hearing room, and no one can stop them. When they finish, the hearing will be won. They turn their voices on you.", "win": "The elocutors pause, at last, and agree to speak for you. They are yours now.", "lose": "Their voices fill your head until you cannot think.", "flee": "You leave them speaking to an empty room."},
+
+ {"number": "218", "name": "Judge's Familiar", "kind": "creature", "intro": "A small owl sits on the rail of the judge's bench and watches you. It misses nothing, says a scribe, and has no sense of humour. It decides you are suspicious.", "win": "The owl hops onto your shoulder and stays. It is yours now.", "lose": "It pecks the spell from your hand.", "flee": "You leave before it decides anything else."},
+
+ {"number": "241", "name": "Hallowed Fountain", "kind": "land", "text": "A fountain in a square of white stone, where you may rest if you hold the proper permit. You can claim it for a tile you have walked."}
+]}
