@@ -16,6 +16,54 @@ const make = (tag, cls, text) => {
 export function makeUi(root, labelRoot, act) {
   let hints = [];
 
+  // One card shown beside whatever under the pointer carries a card (a log
+  // line's card name, a land to play). Found again after every redraw,
+  // since a redraw replaces the element the pointer was over.
+  const pop = make("div", "pop");
+  pop.hidden = true;
+  document.body.append(pop);
+  let pointer = null;
+  let shown = null;
+  function popAt() {
+    const el = pointer && document.elementFromPoint(pointer.x, pointer.y);
+    const host = el && el.closest(".has-pop");
+    if (!host || !host.popFace) {
+      pop.hidden = true;
+      shown = null;
+      return;
+    }
+    if (shown !== host.popFace.name) {
+      pop.replaceChildren(cardFace(host.popFace));
+      shown = host.popFace.name;
+    }
+    pop.hidden = false;
+    const r = host.getBoundingClientRect();
+    const left = r.left > innerWidth - r.right ? r.left - pop.offsetWidth : r.right;
+    pop.style.left = `${Math.max(0, left)}px`;
+    pop.style.top = `${Math.max(0, Math.min(r.top, innerHeight - pop.offsetHeight))}px`;
+  }
+  document.addEventListener("pointermove", (e) => {
+    pointer = { x: e.clientX, y: e.clientY };
+    popAt();
+  });
+  // A redraw rebuilds each health bar: start it at the share it last showed
+  // and let the change run as a transition, so damage drains the bar.
+  const lastShare = new Map();
+  function keepBars() {
+    root.querySelectorAll(".lifebar-track").forEach((t) => {
+      const was = lastShare.get(t.dataset.key);
+      t.style.setProperty("--share", was === undefined ? t.dataset.share : was);
+      void t.offsetWidth;
+      t.style.setProperty("--share", t.dataset.share);
+      lastShare.set(t.dataset.key, t.dataset.share);
+    });
+  }
+  function withPop(node, face) {
+    node.classList.add("has-pop");
+    node.popFace = face;
+    return node;
+  }
+
   function mark(node) {
     const hint = hints.find((h) => h.term === node.textContent);
     if (hint) {
@@ -29,6 +77,7 @@ export function makeUi(root, labelRoot, act) {
     b.disabled = !a.enabled;
     if (a.key) b.dataset.key = a.key;
     if (a.sub) b.append(make("small", "", a.sub));
+    if (a.card) withPop(b, a.card);
     b.addEventListener("click", () => act(a.act, a.value));
     return b;
   }
@@ -104,6 +153,16 @@ export function makeUi(root, labelRoot, act) {
     }
     if (p.text) box.append(make("p", "text", p.text));
     (p.lines || []).forEach((l) => box.append(make("p", "line", l)));
+    (p.lifebars || []).forEach((b) => {
+      const row = make("div", `lifebar${b.low ? " low" : ""}`);
+      row.append(make("span", "lifebar-label", b.label));
+      const track = make("div", "lifebar-track");
+      track.dataset.key = b.label;
+      track.dataset.share = b.share;
+      track.append(make("div", "lifebar-lag"), make("div", "lifebar-fill"), make("span", "lifebar-text", b.text));
+      row.append(track);
+      box.append(row);
+    });
     if (p.rows && p.rows.length) {
       const t = make("dl", "rows");
       p.rows.forEach(([k, v]) => {
@@ -164,8 +223,28 @@ export function makeUi(root, labelRoot, act) {
     if (p.log) {
       const l = make("ol", "log");
       p.log.forEach((e) => {
-        const li = make("li", e.now ? "now" : "", e.text);
+        const li = make("li", e.now ? "now" : "");
         li.dataset.side = e.side;
+        // the card names in the line become hoverable: each shows its card
+        let rest = e.text;
+        while (rest.length) {
+          let at = -1;
+          let hit = null;
+          (e.cards || []).forEach((f) => {
+            const i = rest.indexOf(f.name);
+            if (i >= 0 && (at < 0 || i < at)) {
+              at = i;
+              hit = f;
+            }
+          });
+          if (!hit) {
+            li.append(document.createTextNode(rest));
+            break;
+          }
+          li.append(document.createTextNode(rest.slice(0, at)));
+          li.append(withPop(make("span", "cardname", hit.name), hit));
+          rest = rest.slice(at + hit.name.length);
+        }
         l.append(li);
       });
       box.append(l);
@@ -209,6 +288,8 @@ export function makeUi(root, labelRoot, act) {
       hints = view.hints || [];
       root.replaceChildren(...view.panels.map(panel));
       labelRoot.replaceChildren(...view.labels.map(label));
+      keepBars();
+      popAt();
     },
   };
 }

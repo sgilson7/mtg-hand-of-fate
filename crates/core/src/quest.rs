@@ -88,9 +88,16 @@ mod tests {
     use super::*;
 
     #[test]
-    fn six_quests_of_three_steps() {
+    fn sixteen_quests_of_three_steps_three_for_each_guild_and_izzet_with_the_main_one() {
         let q = parse(include_str!("../../../data/quests.json")).unwrap();
-        assert_eq!(q.len(), 6);
+        assert_eq!(q.len(), 16);
+        for g in ["Azorius", "Izzet", "Rakdos", "Golgari", "Selesnya"] {
+            let side = q
+                .iter()
+                .filter(|q| q.guild == g && q.starts != "new_game")
+                .count();
+            assert_eq!(side, 3, "{g}: its first quest and two more (T21)");
+        }
         assert!(q.iter().all(|q| q.steps.len() == 3));
         assert_eq!(q[0].id, "dracogenius");
         assert_eq!(q[0].starts, "new_game");

@@ -405,6 +405,41 @@ fn cost_text(c: &crate::mana::Cost) -> String {
         .collect()
 }
 
+/// The cards a log line names, by the names in its values: the page shows
+/// each one's card when the pointer is over its name.
+fn named_cards(s: &Session, args: &[(&'static str, String)]) -> Vec<Value> {
+    let mut out: Vec<Value> = Vec::new();
+    for (_, v) in args {
+        if let Some(c) = s.cards.iter().position(|c| &c.name == v) {
+            if !out.iter().any(|f| f["name"] == json!(v)) {
+                out.push(face(s, c, "md"));
+            }
+        }
+    }
+    out
+}
+
+/// A side's life as a bar: life now, the most it has had this fight (the
+/// bar's full length), and the share left in thousandths.
+fn life_bar(s: &Session, f: &crate::session::Fight, side: usize, label: String) -> Value {
+    let d = &f.duel;
+    let now = f.event().snap.life[side];
+    let most = d.events[..=f.shown.min(d.events.len().saturating_sub(1))]
+        .iter()
+        .map(|e| e.snap.life[side])
+        .max()
+        .unwrap_or(now)
+        .max(now)
+        .max(1);
+    let share = life_share(now, most);
+    json!({"label": label, "text": s.f("battle.life", &[("n", now.to_string())]), "share": share, "low": share <= 250})
+}
+
+/// Life left as thousandths of a bar `most` long: never below 0 or above full.
+fn life_share(now: i32, most: i32) -> i32 {
+    (now.max(0) * 1000 / most.max(1)).clamp(0, 1000)
+}
+
 /// What an action is called on a button.
 fn action_label(s: &Session, f: &crate::session::Fight, a: &Action) -> String {
     let d = &f.duel;
@@ -575,10 +610,9 @@ fn battle_panels(s: &Session, f: &crate::session::Fight) -> Vec<Value> {
     let mut panels = vec![json!({
         "id": "sides", "place": "tl",
         "heading": s.f("duel.turn_heading", &[("n", ev.turn.div_ceil(2).to_string()), ("whose", whose), ("step", s.s(step.key()))]),
+        "lifebars": [life_bar(s, f, 0, s.s("battle.you")), life_bar(s, f, 1, foe_name)],
         "rows": [
-            [s.s("battle.you"), s.f("battle.life", &[("n", snap.life[0].to_string())])],
             [s.s("duel.your_cards"), s.f("duel.cards_n", &[("hand", snap.hand[0].to_string()), ("library", snap.library[0].to_string()), ("pile", snap.pile[0].to_string())])],
-            [foe_name, s.f("battle.life", &[("n", snap.life[1].to_string())])],
             [s.s("battle.cards"), s.f("duel.cards_n", &[("hand", snap.hand[1].to_string()), ("library", snap.library[1].to_string()), ("pile", snap.pile[1].to_string())])],
         ],
         "pips": [{"label": s.s("battle.your_mana"), "units": mana_of(P)}, {"label": s.s("battle.foe_mana"), "units": mana_of(1)}],
@@ -589,26 +623,37 @@ fn battle_panels(s: &Session, f: &crate::session::Fight) -> Vec<Value> {
     let log: Vec<Value> = d.events[from..=f.shown.min(d.events.len().saturating_sub(1))]
         .iter()
         .enumerate()
-        .map(|(i, e)| json!({"text": s.f(e.key, &e.args.iter().map(|(k, v)| (*k, v.clone())).collect::<Vec<_>>()), "now": from + i == f.shown, "side": e.side}))
+        .map(|(i, e)| {
+            json!({"text": s.f(e.key, &e.args.iter().map(|(k, v)| (*k, v.clone())).collect::<Vec<_>>()), "now": from + i == f.shown, "side": e.side,
+                "cards": named_cards(s, &e.args)})
+        })
         .collect();
     panels.push(json!({"id": "log", "place": "tr", "heading": s.s("battle.log"), "log": log}));
     if !snap.stack.is_empty() {
-        let lines: Vec<String> = snap
-            .stack
-            .iter()
-            .rev()
-            .map(|(side, name)| {
-                s.f(
-                    if *side as usize == P {
-                        "duel.stack_yours"
-                    } else {
-                        "duel.stack_theirs"
-                    },
-                    &[("card", name.clone())],
-                )
-            })
-            .collect();
-        panels.push(json!({"id": "stack", "place": "left", "heading": s.s("duel.stack"), "lines": lines}));
+        // the stack as its cards, the top first, each badged with whose it is;
+        // an item with no card (a token's ability) as a line
+        let mut cards = Vec::new();
+        let mut lines = Vec::new();
+        for (side, name, card) in snap.stack.iter().rev() {
+            let whose = if *side as usize == P {
+                "duel.yours_cap"
+            } else {
+                "duel.theirs_cap"
+            };
+            if *card >= 0 {
+                let mut f = face(s, *card as usize, "sm");
+                f["badge"] = json!(s.s(whose));
+                cards.push(f);
+            } else {
+                let key = if *side as usize == P {
+                    "duel.stack_yours"
+                } else {
+                    "duel.stack_theirs"
+                };
+                lines.push(s.f(key, &[("card", name.clone())]));
+            }
+        }
+        panels.push(json!({"id": "stack", "place": "stack", "heading": s.s("duel.stack"), "cards": cards, "lines": lines}));
     }
     let ask = f.asking();
     let acts = d.actions(P);
@@ -761,7 +806,13 @@ fn controls(s: &Session, f: &crate::session::Fight, ask: Option<&Ask>, acts: &[A
                         Action::Land(_) | Action::Activate { .. } | Action::Scavenge { .. }
                     )
                 })
-                .map(|(i, a)| action(action_label(s, f, a), "duel.do", &i.to_string(), true))
+                .map(|(i, a)| {
+                    let mut b = action(action_label(s, f, a), "duel.do", &i.to_string(), true);
+                    if let Action::Land(k) = *a {
+                        b["card"] = face(s, d.s[P].pile[k], "md");
+                    }
+                    b
+                })
                 .collect();
             let text = match d.stack.last() {
                 Some(top) if top.ctrl != P => s.f("duel.answer_it", &[("card", top.name.clone())]),
@@ -1183,10 +1234,47 @@ fn city_panels(s: &mut Session, city: crate::world::City, room: Room) -> Vec<Val
     }
 }
 
+/// Where a card stands in the deck screen's order: the chosen key first,
+/// then mana value, then name, so equal cards keep a steady order.
+pub(crate) fn deck_order(s: &Session, c: usize) -> (u32, u32, String) {
+    let k = &s.cards[c];
+    // white, blue, black, red, green, then two or more colours, then none
+    let colour = match k.colours.count_ones() {
+        0 => 7,
+        1 => mana::COLOURS.iter().position(|x| k.colours & x != 0).unwrap_or(0) as u32,
+        _ => 6,
+    };
+    let kinds = [
+        ty::CREATURE,
+        ty::PLANESWALKER,
+        ty::INSTANT,
+        ty::SORCERY,
+        ty::ENCHANTMENT,
+        ty::ARTIFACT,
+        ty::LAND,
+    ];
+    let kind = kinds.iter().position(|t| k.types & t != 0).unwrap_or(kinds.len()) as u32;
+    let rarity = match k.rarity {
+        'm' => 0,
+        'r' => 1,
+        'u' => 2,
+        _ => 3,
+    };
+    let first = match s.deck_sort {
+        "colour" => colour,
+        "type" => kind,
+        "rarity" => rarity,
+        "name" => 0,
+        _ => k.value as u32,
+    };
+    let second = if s.deck_sort == "name" { 0 } else { k.value as u32 };
+    (first, second, k.name.clone())
+}
+
 fn deck_panels(s: &Session) -> Vec<Value> {
     let p = s.player();
     let mut owned: Vec<usize> = p.collection.clone();
-    owned.sort_by_key(|&c| (s.cards[c].value, s.cards[c].name.clone()));
+    owned.sort_by_key(|&c| deck_order(s, c));
     owned.dedup();
     let cards: Vec<Value> = owned
         .iter()
@@ -1226,6 +1314,7 @@ fn deck_panels(s: &Session) -> Vec<Value> {
         .collect();
     vec![
         json!({"id": "deck", "place": "top", "heading": s.f("deck.heading", &[("n", p.deck.len().to_string()), ("max", player::DECK_MAX.to_string())]), "text": s.s("deck.text"), "cards": cards,
+            "menu": crate::session::DECK_SORTS.iter().map(|k| action(s.s(&format!("deck.sort_{k}")), "deck.sort", k, *k != s.deck_sort)).collect::<Vec<_>>(),
             "actions": [action(s.s("deck.close"), "deck.close", "", true)]}),
         json!({"id": "curve", "place": "br", "heading": s.s("deck.curve"), "bars": curve.iter().enumerate().map(|(i, n)| json!([if i == 6 { "6+".to_string() } else { i.to_string() }, n])).collect::<Vec<_>>(), "colours": colours}),
     ]
@@ -1399,8 +1488,9 @@ pub fn ui(s: &mut Session) -> Value {
                 .world()
                 .lands_in_reach(s.player().pos, s.player().reach(&s.armoury))
                 .len();
-            panels
-                .push(json!({"id": "drawn", "place": "left", "kind": "card", "cards": [face(s, niv, "lg")]}));
+            panels.push(
+                json!({"id": "drawn", "place": "center-left", "kind": "card", "cards": [face(s, niv, "lg")]}),
+            );
             panels.push(json!({"id": "lair", "place": "center-right", "kind": "paper", "eyebrow": s.s("lair.eyebrow"), "heading": s.s("tile.lair"),
                 "text": if open { intro } else { s.s("lair.sealed") },
                 "lines": [s.f("lair.odds", &[("life", encounter::GUARDIAN_LIFE.to_string()), ("deck", encounter::GUARDIAN_DECK.to_string()), ("lands", lands.to_string())])],
@@ -1445,6 +1535,28 @@ pub fn ui(s: &mut Session) -> Value {
 
 #[cfg(test)]
 mod tests {
+
+    #[test]
+    fn a_health_bar_is_the_share_of_life_left() {
+        assert_eq!(super::life_share(20, 20), 1000);
+        assert_eq!(super::life_share(5, 20), 250);
+        assert_eq!(super::life_share(-3, 20), 0);
+        assert_eq!(super::life_share(7, 0), 1000);
+    }
+
+    #[test]
+    fn a_log_line_carries_the_cards_it_names_once_each() {
+        let s = crate::session::for_tests();
+        let args = vec![
+            ("card", "Cobblebrute".to_string()),
+            ("target", "Cobblebrute".to_string()),
+            ("n", "3".to_string()),
+        ];
+        let got = super::named_cards(&s, &args);
+        assert_eq!(got.len(), 1);
+        assert_eq!(got[0]["name"], "Cobblebrute");
+        assert!(super::named_cards(&s, &[("card", "a Goblin token".to_string())]).is_empty());
+    }
 
     #[test]
     fn idle_enchantments_and_artifacts_go_unlabelled_but_creatures_and_walkers_do_not() {

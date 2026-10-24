@@ -69,6 +69,11 @@ The rules in `CLAUDE.md` under "Rules agreed for this project" (MTG-1 to MTG-11)
 - R5.3: a planeswalker met on the map is a fight.
 - R5.7: idle enchantments and artifacts on the table carry no label; hover to read one.
 - R5.10: read the 52 new strings and the 146 new stories.
+- R6.1: log card names show their card on hover, not whole cards in the log.
+- R6.3: the bands of difficulty and what each holds.
+- R6.4: the ten new quests, their cards and rewards.
+- R6.6: a health bar's full length is the most life the side has had.
+- R6.8: read the new strings.
 
 ## Mistakes so far
 
@@ -93,6 +98,8 @@ The rules in `CLAUDE.md` under "Rules agreed for this project" (MTG-1 to MTG-11)
 2026-10-24, T9 to T13: `./scripts/check.sh` ended `BROWSER CHECK PASSED in chromium, firefox, webkit` and `BUILDER CHECK PASSED`; `./scripts/count-tests.sh`: 140 passed, 0 failed; `scripts/break_tests.py`: 43 of 43 caught; `tools/cardart/render.py --check`: card art ok (254 pictures). A live play-through of the new artifacts and enchantments (Playwright, build from the working tree) showed no page errors.
 
 2026-10-24, T9 to T13 deploy: `./scripts/check.sh` passed on the clean tree at c7549cd (`BUILDER CHECK PASSED`); `dist/` pushed to gh-pages by hand, as `scripts/publish.sh` does, since it still stops on the missing `git config user.name` (R2.17); the live `build.txt` reads `43c0336dd629 c7549cd`; `BUILDER_ORIGIN=https://sgilson7.github.io/mtg-hand-of-fate .venv/bin/python tests/browser/check.py` ended `BROWSER CHECK PASSED in chromium, firefox, webkit`.
+
+2026-10-24, T14 to T22: `./scripts/check.sh` ended `BROWSER CHECK PASSED in chromium, firefox, webkit` and `BUILDER CHECK PASSED`; `./scripts/count-tests.sh`: 146 passed, 0 failed; `scripts/break_tests.py`: 54 of 54 caught. A live play-through (Playwright) showed the stack, log and land hovers, health bars and deck sorting with no page errors.
 
 ## The next action
 

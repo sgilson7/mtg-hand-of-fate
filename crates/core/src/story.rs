@@ -259,6 +259,35 @@ mod tests {
     }
 
     #[test]
+    fn every_quest_that_starts_from_a_card_is_started_by_that_cards_story() {
+        let stories = all_for_tests();
+        let quests = crate::quest::parse(include_str!("../../../data/quests.json")).unwrap();
+        for q in &quests {
+            let Some(n) = q.starts.strip_prefix("card:") else {
+                continue;
+            };
+            let want = Effect::QuestStart(q.id.clone());
+            let starts = |o: &Outcome| -> bool {
+                o.effects.contains(&want)
+                    || o.fate
+                        .as_ref()
+                        .map(|f| {
+                            Face::ALL
+                                .iter()
+                                .any(|x| f.branch(*x).map(|b| b.effects.contains(&want)).unwrap_or(false))
+                        })
+                        .unwrap_or(false)
+            };
+            let story = stories.get(n).unwrap_or_else(|| panic!("no story for card {n}"));
+            assert!(
+                story.choices.iter().any(|c| starts(&c.outcome)),
+                "{}: card {n}'s story never starts it",
+                q.id
+            );
+        }
+    }
+
+    #[test]
     fn a_shuffle_keeps_the_faces_and_follows_the_seed() {
         let mut a = vec![Face::Success, Face::Success, Face::Failure, Face::HugeFailure];
         let mut b = a.clone();

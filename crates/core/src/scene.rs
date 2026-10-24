@@ -423,13 +423,13 @@ pub fn battle_spots<'a>(s: &Session, snap: &'a Snap) -> Vec<(V3, &'a PermSnap)> 
         let lands: Vec<&&PermSnap> = mine.iter().filter(|p| p.land).collect();
         let dir = if side == 0 { 1 } else { -1 };
         // lands: columns in the side's left corner, as a player keeps them;
-        // a third column when there are more than ten
-        let cols = if lands.len() > 10 { 3 } else { 2 };
+        // a third column when there are more than eight
+        let cols = if lands.len() > 8 { 3 } else { 2 };
         for (i, p) in lands.iter().enumerate() {
             let col = (i % cols) as i32;
             let row = (i / cols) as i32;
-            let x = -dir * (ONE * 53 / 10 - col * ONE * 6 / 10);
-            let z = dir * (ONE * 4 / 10 + row * ONE * 6 / 10);
+            let x = -dir * (ONE * 53 / 10 - col * ONE);
+            let z = dir * (ONE * 4 / 10 + row * ONE);
             out.push((v3(x, 0, z), **p));
         }
         // enchantments, artifacts and planeswalkers: the same in the right
@@ -628,7 +628,7 @@ fn draw_battle(s: &Session, b: &mut Batch, f: &crate::session::Fight) {
             } else {
                 0
             };
-            let h = if p.tapped { ONE * 3 / 10 } else { ONE * 7 / 10 };
+            let h = if p.tapped { ONE * 3 / 4 } else { ONE * 16 / 10 };
             match crystal_name(unit) {
                 Some(n) => model_h(s, b, n, pt, 0, h),
                 None => model_h(s, b, "gate_marker", pt, 0, h),

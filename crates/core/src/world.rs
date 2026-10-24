@@ -240,6 +240,21 @@ pub fn ring(c: Pos) -> i32 {
     c.0.abs().max(c.1.abs())
 }
 
+/// Tiles from the start to the edge of each band of difficulty (T20).
+pub const BAND: i32 = 5;
+
+/// Which band of difficulty a tile is in: 0 within `BAND` tiles of the start
+/// (as the crow flies), 1 within twice that, and so on outward.
+pub fn band(p: Pos) -> i32 {
+    let d2 = p.0 as i64 * p.0 as i64 + p.1 as i64 * p.1 as i64;
+    // the whole square root: the largest r with r * r <= d2
+    let mut r: i64 = 0;
+    while (r + 1) * (r + 1) <= d2 {
+        r += 1;
+    }
+    r as i32 / BAND
+}
+
 pub fn distance(a: Pos, b: Pos) -> i32 {
     (a.0 - b.0).abs() + (a.1 - b.1).abs()
 }
@@ -250,8 +265,10 @@ fn mix(seed: u64, c: Pos) -> u64 {
     seed ^ x.rotate_left(17)
 }
 
-/// Whether a card may appear in a tile's pool.
-fn fits(card: &Card, tile: &Tile, ring: i32, lair_chunk: bool) -> bool {
+/// Whether a card may appear in a tile's pool. `ring` is the chunk's ring
+/// (colourless cards stay out of the start chunk); `band` the tile's band of
+/// difficulty: the creatures met grow with it (T20).
+fn fits(card: &Card, tile: &Tile, ring: i32, band: i32, lair_chunk: bool) -> bool {
     if card.name == "Niv-Mizzet, Dracogenius" {
         return false;
     }
@@ -273,9 +290,17 @@ fn fits(card: &Card, tile: &Tile, ring: i32, lair_chunk: bool) -> bool {
     if !ok {
         return false;
     }
-    match ring {
-        0 => card.value <= 3 && matches!(card.rarity, 'c' | 'u'),
-        _ => card.value <= 5 || lair_chunk || card.rarity == 'm' && lair_chunk,
+    // the lair's chunk holds the big cards, but not inside the first band
+    if lair_chunk && band >= 1 {
+        return true;
+    }
+    let creature = card.is(ty::CREATURE);
+    match band {
+        0 => card.value <= 2 && matches!(card.rarity, 'c' | 'u'),
+        1 if creature => (2..=4).contains(&card.value),
+        1 => card.value <= 5,
+        _ if creature => card.value >= 3,
+        _ => true,
     }
 }
 
@@ -462,12 +487,14 @@ pub fn generate(seed: u64, c: Pos, cards: &[Card]) -> Vec<(Pos, Tile)> {
     // pools
     let r = ring(c);
     let lair_chunk = special == Some(Feature::Lair);
-    for t in tiles.values_mut() {
+    for (p, t) in tiles.iter_mut() {
         if t.feature != Feature::Cards {
             continue;
         }
+        // the tile's place in the world: the chunk's centre and its offset
+        let b = band((centre.0 + p.0, centre.1 + p.1));
         let fit: Vec<usize> = (0..cards.len())
-            .filter(|&i| fits(&cards[i], t, r, lair_chunk))
+            .filter(|&i| fits(&cards[i], t, r, b, lair_chunk))
             .collect();
         let (lands, rest): (Vec<usize>, Vec<usize>) = fit.into_iter().partition(|&i| cards[i].is(ty::LAND));
         let mut pool = Vec::new();
@@ -573,14 +600,35 @@ mod tests {
                 let card = &cards[i];
                 let colours = t.colours();
                 assert!(card.identity & !colours == 0, "{} at {p:?}", card.name);
-                if ring(chunk_of(*p)) == 0 && !card.is(ty::LAND) {
-                    assert!(card.value <= 3, "{} at the start", card.name);
+                if band(*p) == 0 && !card.is(ty::LAND) {
+                    assert!(card.value <= 2, "{} near the start", card.name);
+                }
+                if band(*p) == 1
+                    && card.is(ty::CREATURE)
+                    && w.find(Feature::Lair).map(chunk_of) != Some(chunk_of(*p))
+                {
+                    assert!(
+                        (2..=4).contains(&card.value),
+                        "{} at {p:?}, the second band",
+                        card.name
+                    );
                 }
                 assert_ne!(card.name, "Niv-Mizzet, Dracogenius");
             }
         }
         // the lair is in the north-east chunk
         assert_eq!(w.find(Feature::Lair), Some((5, -5)));
+    }
+
+    #[test]
+    fn the_bands_of_difficulty_are_rings_five_tiles_wide_around_the_start() {
+        assert_eq!(band((0, 0)), 0);
+        assert_eq!(band((4, 0)), 0);
+        assert_eq!(band((3, 3)), 0); // 4.2 tiles away
+        assert_eq!(band((5, 0)), 1);
+        assert_eq!(band((4, 3)), 1); // 5 exactly
+        assert_eq!(band((-7, -7)), 1); // 9.9
+        assert_eq!(band((0, 10)), 2);
     }
 
     #[test]

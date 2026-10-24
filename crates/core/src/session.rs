@@ -174,6 +174,9 @@ pub struct Save {
     pub player: Player,
 }
 
+/// The orders the deck screen offers, the default first.
+pub const DECK_SORTS: [&str; 5] = ["cost", "colour", "type", "rarity", "name"];
+
 pub struct Session {
     pub cards: Vec<Card>,
     pub stories: BTreeMap<String, Story>,
@@ -191,6 +194,8 @@ pub struct Session {
     pub now: i64,
     /// How far the fight's table is turned from its home view (turns).
     pub view_yaw: i32,
+    /// How the deck screen orders the collection: one of `DECK_SORTS`.
+    pub deck_sort: &'static str,
     /// The permanent under the pointer in a fight, shown full size.
     pub hovered: Option<u32>,
     /// The step under way: from, to, when it began.
@@ -257,6 +262,7 @@ impl Session {
             .filter(|s| s.version == SAVE_VERSION);
         Ok(Session {
             view_yaw: 0,
+            deck_sort: DECK_SORTS[0],
             hovered: None,
             cards,
             stories,
@@ -586,20 +592,10 @@ impl Session {
 
     fn gain_card(&mut self, c: usize) -> String {
         let p = self.player.as_mut().expect("player");
+        // a card won goes to the collection; the player puts it in the deck (T22)
         p.collection.push(c);
-        let into_deck = p.deck.len() < player::DECK_MAX;
-        if into_deck {
-            p.deck.push(c);
-        }
         let name = self.cards[c].name.clone();
-        self.f(
-            if into_deck {
-                "effect.card_deck"
-            } else {
-                "effect.card"
-            },
-            &[("card", name)],
-        )
+        self.f("effect.card", &[("card", name)])
     }
 
     fn clear(&mut self, at: Pos) {
@@ -947,6 +943,12 @@ impl Session {
                 }
                 p.deck.push(c);
                 self.write_save();
+            }
+            "deck.sort" => {
+                self.deck_sort = DECK_SORTS
+                    .iter()
+                    .find(|k| **k == value)
+                    .ok_or_else(|| format!("\"{value}\" is not a way to sort."))?;
             }
             "deck.remove" => {
                 let c = num(value)?;
@@ -1649,6 +1651,39 @@ mod tests {
         s.act("game.new", "").unwrap();
         s.act("game.guild", "Izzet").unwrap();
         s
+    }
+
+    #[test]
+    fn a_card_won_joins_the_collection_and_not_the_deck() {
+        let mut s = started();
+        let caracal = s.cards.iter().position(|c| c.name == "Trained Caracal").unwrap();
+        let deck = s.player().deck.clone();
+        let had = s.player().collection.len();
+        let line = s.gain_card(caracal);
+        assert_eq!(s.player().deck, deck);
+        assert_eq!(s.player().collection.len(), had + 1);
+        assert!(line.contains("Trained Caracal"));
+    }
+
+    #[test]
+    fn the_deck_screen_sorts_by_colour_type_rarity_name_or_mana_value() {
+        let mut s = started();
+        let id = |s: &Session, n: &str| s.cards.iter().position(|c| c.name == n).unwrap();
+        let (caracal, island_spell) = (id(&s, "Trained Caracal"), id(&s, "Cancel"));
+        // Trained Caracal is white and costs 1; Cancel is blue and costs 3
+        s.act("deck.sort", "colour").unwrap();
+        assert!(crate::view::deck_order(&s, caracal) < crate::view::deck_order(&s, island_spell));
+        s.act("deck.sort", "type").unwrap();
+        assert!(
+            crate::view::deck_order(&s, caracal) < crate::view::deck_order(&s, island_spell),
+            "a creature before an instant"
+        );
+        s.act("deck.sort", "name").unwrap();
+        assert!(
+            crate::view::deck_order(&s, island_spell) < crate::view::deck_order(&s, caracal),
+            "C before T"
+        );
+        assert!(s.act("deck.sort", "weight").is_err());
     }
 
     #[test]

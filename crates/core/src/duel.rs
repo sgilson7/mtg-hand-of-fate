@@ -538,7 +538,9 @@ pub struct Snap {
     pub player_hand: Vec<usize>,
     pub perms: Vec<PermSnap>,
     /// The stack, bottom first: (side, name).
-    pub stack: Vec<(u8, String)>,
+    /// Each item on the stack: its controller, its name, and the card it
+    /// comes from (-1 for none), bottom first.
+    pub stack: Vec<(u8, String, i32)>,
     pub step: Step,
     pub active: u8,
 }
@@ -804,7 +806,13 @@ impl Duel {
             stack: self
                 .stack
                 .iter()
-                .map(|i| (i.ctrl as u8, i.name.clone()))
+                .map(|i| {
+                    let card = match i.src {
+                        Source::Spell { card, .. } | Source::Copy { card } => Some(card),
+                        Source::Ability { card, .. } => card,
+                    };
+                    (i.ctrl as u8, i.name.clone(), card.map(|c| c as i32).unwrap_or(-1))
+                })
                 .collect(),
             step: self.step,
             active: self.active as u8,
@@ -4838,6 +4846,11 @@ mod tests {
         )
         .unwrap();
         assert_eq!(d.stack.len(), 1);
+        // the snapshot shows the spell on the stack as its card
+        assert_eq!(
+            d.snap().stack,
+            vec![(P as u8, "Cobblebrute".to_string(), find(&c, "Cobblebrute") as i32)]
+        );
         // the foe is asked, with Cancel in hand and three Islands untapped
         let item = d.stack[0].id;
         assert!(matches!(

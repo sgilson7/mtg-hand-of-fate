@@ -196,3 +196,24 @@ body[data-screen="battle"] #panel-hand .card.sm:first-child { transform-origin: 
 /* a card shown to be read grows to fit its whole text box */
 .place-peek .card.md, body[data-screen="battle"] #panel-hand .card.sm:hover { aspect-ratio: auto; }
 .place-peek .card .tx, body[data-screen="battle"] #panel-hand .card.sm:hover .tx { overflow: visible; }
+
+/* T18: health as bars that drain; a pale lag bar follows the fill down */
+.lifebar { display: grid; gap: 3px; margin: 6px 0 8px; }
+.lifebar-label { font: 600 13px var(--hud); color: var(--muted); }
+.lifebar-track { position: relative; height: 22px; border-radius: 6px; background: rgba(0, 0, 0, 0.45); border: 1px solid var(--line); overflow: hidden; }
+.lifebar-fill, .lifebar-lag { position: absolute; left: 0; top: 0; bottom: 0; width: calc(var(--share) * 0.1%); }
+.lifebar-fill { background: linear-gradient(#e3504a, #a8262a); transition: width 0.45s ease-out; }
+.lifebar-lag { background: #f6d27a; transition: width 0.9s ease-in 0.35s; }
+.lifebar.low .lifebar-fill { animation: lowpulse 0.9s ease-in-out infinite alternate; }
+@keyframes lowpulse { from { filter: brightness(1); } to { filter: brightness(1.45); } }
+.lifebar-text { position: absolute; inset: 0; display: grid; place-items: center; font: 700 13px var(--hud); color: #fff; text-shadow: 0 1px 2px #000; }
+/* T14: the stack, beside the table on the right */
+.place-stack { right: 14px; top: 50%; translate: 0 -50%; max-width: min(560px, 46vw); }
+#panel-stack .cards { flex-wrap: nowrap; justify-content: flex-end; }
+/* T15, T16: a card shown beside a hovered name or land */
+.cardname { text-decoration: underline dotted; text-underline-offset: 3px; cursor: help; }
+.pop { position: fixed; z-index: 50; pointer-events: none; padding: 6px; }
+.pop .card { width: 260px; }
+/* T19: the deck's sort buttons, a row above the cards; the order in use in gold */
+#panel-deck .menu { grid-auto-flow: column; justify-content: start; margin-bottom: 10px; }
+#panel-deck .menu-item:disabled { background: var(--gold); color: var(--ink); opacity: 1; }
