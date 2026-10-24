@@ -9,7 +9,7 @@ the steps press keys and click buttons the way a player would.
 
 Steps (JSON list): ["key", "ArrowRight"], ["click", "button text"],
 ["clicksel", "css selector"], ["wait", ms], ["screen", "board"] (wait for body[data-screen]),
-["shot", "name"], ["hash", "models"], ["reload"].
+["shot", "name"], ["hash", "models"], ["reload"], ["save", "path/to/save.json"].
 Fails on a console error or page error.
 """
 import functools
@@ -62,6 +62,12 @@ def main(out, steps_path, query=""):
                 pg.wait_for_selector(f"body[data-screen='{arg}']", timeout=30000)
             elif kind == "hash":
                 pg.goto(base + "#" + arg)
+                pg.wait_for_selector("body[data-ready='true']", timeout=60000)
+            elif kind == "save":
+                # load a save the way a returning player's browser holds one
+                text = pathlib.Path(arg).read_text()
+                pg.evaluate("t => localStorage.setItem('tenth-district.save', t)", text)
+                pg.reload()
                 pg.wait_for_selector("body[data-ready='true']", timeout=60000)
             elif kind == "reload":
                 pg.reload()

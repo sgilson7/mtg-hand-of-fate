@@ -64,4 +64,4 @@ These stay with the person and go in `BRIEF.md` or `PLAN.md`:
 
 | Default | Changed to | Reason | Recorded in |
 | --- | --- | --- | --- |
-| | | | |
+| D17 (no browser storage) | one save in `localStorage`, read and written only by `web/store.js`; the core treats an unreadable save as none | a long game needs a save (MTG-Q10's default, and the person asked for the MVP) | `crates/core/tests/no_storage.rs`; SECOND-ORDER.md R2.2 |

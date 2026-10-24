@@ -1,16 +1,18 @@
 [
-  {
-    "name": "an empty title is refused",
-    "file": "crates/core/src/page.rs",
-    "find": "if strings.title.trim().is_empty() {",
-    "replace": "if false {",
-    "test": "an_empty_title_is_rejected_by_name"
-  },
-  {
-    "name": "an unknown action is refused",
-    "file": "crates/core/src/api.rs",
-    "find": "other => return Err(format!(\"Unknown action \\\"{other}\\\".\")),",
-    "replace": "_ => {}",
-    "test": "act_refuses_an_unknown_action"
-  }
+  {"name": "the bank stops at its cap", "file": "crates/core/src/mana.rs", "find": "if self.units.len() < BANK_CAP {", "replace": "if true {", "test": "the_bank_stops_at_its_cap"},
+  {"name": "a flier is only blocked by flying or reach", "file": "crates/core/src/battle.rs", "find": "if self.has(attacker, kw::FLYING) && !self.has(blocker, kw::FLYING | kw::REACH) {", "replace": "if false {", "test": "a_flier_is_not_blocked_by_a_creature_without_reach"},
+  {"name": "detain lasts to the detainer's next turn", "file": "crates/core/src/battle.rs", "find": "let until = if self.active == me {", "replace": "let until = if false {", "test": "detain_stops_a_creature_attacking_until_the_detainers_next_turn"},
+  {"name": "overload needs two or more targets", "file": "crates/core/src/battle.rs", "find": "if hits >= 2 && bank.can_pay(&oc) {", "replace": "if hits >= 9 && bank.can_pay(&oc) {", "test": "overload_is_cast_when_it_hits_two_or_more"},
+  {"name": "lifelink gains what it deals", "file": "crates/core/src/battle.rs", "find": "        if lifelink {\n            self.gain_life(src_side, n);\n        }\n        if draw_any {", "replace": "        if false {\n            self.gain_life(src_side, n);\n        }\n        if draw_any {", "test": "lifelink_gains_what_it_deals"},
+  {"name": "an edge step grows the map", "file": "crates/core/src/world.rs", "find": "if !self.tiles.contains_key(&n) {", "replace": "if false {", "test": "stepping_onto_an_edge_adds_the_chunk_beyond_it_once"},
+  {"name": "the start chunk holds cheap cards", "file": "crates/core/src/world.rs", "find": "0 => card.value <= 3 && matches!(card.rarity, 'c' | 'u'),", "replace": "0 => true,", "test": "a_pool_draws_from_its_tiles_colours_and_the_start_holds_cheap_cards"},
+  {"name": "a land goes only on a visited tile", "file": "crates/core/src/session.rs", "find": "                if !t.visited {", "replace": "                if false {", "test": "a_land_goes_only_on_a_visited_tile_with_room"},
+  {"name": "health is the base plus armour", "file": "crates/core/src/player.rs", "find": "armoury.base_health + self.pieces(armoury).map(|p| p.health).sum::<i32>()", "replace": "armoury.base_health", "test": "health_is_the_base_plus_the_armour_worn"},
+  {"name": "charisma lowers prices", "file": "crates/core/src/player.rs", "find": "let off = (self.charisma(armoury) * CHARISMA_PRICE_STEP).clamp(0, 50);", "replace": "let off = 0;", "test": "charisma_takes_five_percent_a_point_off_a_price"},
+  {"name": "a foe's life follows its tier", "file": "crates/core/src/encounter.rs", "find": "life: FOE_LIFE[tier - 1],", "replace": "life: FOE_LIFE[0],", "test": "a_foe_brings_its_creature_in_play_and_life_by_tier"},
+  {"name": "the guardian's deck is forty", "file": "crates/core/src/encounter.rs", "find": "for _ in 0..GUARDIAN_COPIES {", "replace": "for _ in 0..1 {", "test": "the_guardian_has_forty_blue_and_red_cards_and_niv_mizzet_in_play"},
+  {"name": "the lair needs the writ", "file": "crates/core/src/session.rs", "find": "if self.player().quests.get(\"dracogenius\").copied().unwrap_or(0) < 2 {", "replace": "if false {", "test": "the_lair_is_sealed_until_new_prahv_has_been_visited"},
+  {"name": "a card without rules is refused", "file": "crates/core/src/content.rs", "find": ".ok_or_else(|| format!(\"The card \\\"{}\\\" has no rules in this game yet.\", c.name))?;", "replace": ".unwrap_or_else(|| rules::for_card(\"Cobblebrute\").unwrap());", "test": "a_card_without_rules_is_refused_by_name"},
+  {"name": "card text stays verbatim on the face", "file": "crates/core/src/view.rs", "find": "        \"lines\": segments(&k.text),", "replace": "        \"lines\": segments(&k.text.to_lowercase()),", "test": "a_face_keeps_the_card_text_verbatim"},
+  {"name": "a chunk depends only on seed and place", "file": "crates/core/src/world.rs", "find": "let mut rng = Rng::new(mix(seed, c));", "replace": "let mut rng = Rng::new(seed);", "test": "a_chunk_is_the_same_whatever_order_it_is_made_in"}
 ]

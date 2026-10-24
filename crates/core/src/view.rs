@@ -194,7 +194,9 @@ fn readings(s: &Session, c: usize, at: Pos) -> Value {
             abilities.push(s.s(key));
         }
     }
-    let ab = if abilities.is_empty() {
+    let ab = if abilities.is_empty() && k.kind() != Kind::Creature {
+        s.s("reading.abilities.spell")
+    } else if abilities.is_empty() {
         s.s("reading.abilities.none")
     } else {
         s.f("reading.abilities", &[("list", abilities.join(", "))])
@@ -598,8 +600,8 @@ fn city_panels(s: &mut Session, city: crate::world::City, room: Room) -> Vec<Val
                 })
                 .collect();
             vec![
-                json!({"id": "shop", "place": "top", "heading": s.s("room.cards"), "text": s.s("cards.text"), "cards": buy, "actions": [back]}),
-                json!({"id": "sell", "place": "left", "heading": s.s("cards.sell_heading"), "list": sell}),
+                json!({"id": "shop", "place": "main", "heading": s.s("room.cards"), "text": s.s("cards.text"), "lines": [s.f("armour.gold", &[("n", p.gold.to_string())])], "cards": buy, "actions": [back]}),
+                json!({"id": "sell", "place": "side", "heading": s.s("cards.sell_heading"), "list": sell}),
             ]
         }
         Room::Hall => {
@@ -612,15 +614,16 @@ fn city_panels(s: &mut Session, city: crate::world::City, room: Room) -> Vec<Val
             }
             let q = quests_panel(s);
             vec![
-                json!({"id": "hall", "place": "left", "heading": s.s("room.hall"), "text": s.s(&format!("hall.{}", city.id())), "rows": rows, "actions": [back]}),
-                json!({"id": "quests", "place": "right", "heading": q["heading"], "rows": q["rows"]}),
+                json!({"id": "hall", "place": "side", "heading": s.s("room.hall"), "text": s.s(&format!("hall.{}", city.id())), "rows": rows, "actions": [back]}),
+                json!({"id": "quests", "place": "main", "heading": q["heading"], "rows": q["rows"]}),
             ]
         }
         Room::Inn => {
             let p = s.player();
             let a = &s.armoury;
             vec![
-                json!({"id": "inn", "place": "left", "heading": s.s("room.inn"), "text": s.s("inn.text"),
+                json!({"id": "inn", "place": "side", "heading": s.s("room.inn"), "text": s.s("inn.text"),
+                "lines": [s.f("armour.gold", &[("n", p.gold.to_string())]), s.f("hud.health", &[("n", p.health.to_string()), ("max", p.max_health(a).to_string())]), s.f("inn.carrying", &[("n", p.supplies.to_string()), ("max", p.max_supplies().to_string())])],
                 "actions": [
                     action(s.f("inn.rest", &[("n", p.price(a, encounter::INN_REST).to_string())]), "inn.rest", "", p.health < p.max_health(a)),
                     action(s.f("inn.supplies", &[("n", p.price(a, encounter::INN_SUPPLIES_PRICE).to_string()), ("k", encounter::INN_SUPPLIES.to_string())]), "inn.supplies", "", p.supplies < p.max_supplies()),
@@ -641,7 +644,7 @@ fn city_panels(s: &mut Session, city: crate::world::City, room: Room) -> Vec<Val
                 })
                 .collect();
             vec![
-                json!({"id": "trainer", "place": "left", "heading": s.s("room.trainer"), "text": s.s("trainer.text"), "list": list, "actions": [back]}),
+                json!({"id": "trainer", "place": "side", "heading": s.s("room.trainer"), "text": s.s("trainer.text"), "lines": [s.f("armour.gold", &[("n", p.gold.to_string())])], "list": list, "actions": [back]}),
             ]
         }
     }
@@ -826,7 +829,7 @@ pub fn ui(s: &mut Session) -> Value {
             "battle"
         }
         Screen::City { city, room } => {
-            if *room != Room::Armourer {
+            if *room == Room::Menu {
                 panels.push(hud(s));
             }
             panels.extend(city_panels(s, *city, *room));

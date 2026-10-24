@@ -47,7 +47,8 @@ html, body { margin: 0; height: 100%; background: #e9d6b8; color: var(--text); f
 .place-top { left: 50%; top: 14px; translate: -50% 0; width: min(1180px, 96vw); max-height: 70%; }
 .place-bottom { left: 50%; bottom: 40px; translate: -50% 0; background: transparent; border: 0; box-shadow: none; overflow: visible; }
 body[data-screen="board"] .place-tl, body[data-screen="land"] .place-tl, body[data-screen="draw"] .place-tl, body[data-screen="city"] .place-tl, body[data-screen="armourer"] .place-tl, body[data-screen="lair"] .place-tl, body[data-screen="result"] .place-tl { width: min(260px, 36vw); }
-.place-side { left: 14px; top: 14px; bottom: 44px; width: min(360px, 40vw); }
+.place-side { left: 14px; top: 14px; bottom: 44px; width: min(360px, 40vw); align-content: start; }
+.place-main { left: calc(min(360px, 40vw) + 28px); right: 14px; top: 14px; max-height: calc(100% - 60px); }
 .kind-menu .menu { grid-template-columns: 1fr 1fr; }
 .kind-menu .menu-item { padding: 6px 10px; }
 body[data-screen="city"] .place-bl { width: min(460px, 48vw); }

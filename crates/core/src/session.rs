@@ -325,7 +325,15 @@ impl Session {
         self.guild = s.guild;
         self.world = Some(world);
         self.player = Some(s.player);
-        self.screen = Screen::Board;
+        // a game saved in a city or at the lair opens there
+        self.screen = match self.world().tile(self.player().pos).map(|t| t.feature) {
+            Some(Feature::City(c)) => Screen::City {
+                city: c,
+                room: Room::Menu,
+            },
+            Some(Feature::Lair) => Screen::Lair,
+            _ => Screen::Board,
+        };
         self.statics_dirty = true;
         Ok(())
     }
@@ -487,6 +495,7 @@ impl Session {
                 }
             }
             Feature::Lair => {
+                self.write_save();
                 self.screen = Screen::Lair;
             }
             Feature::Cards if !tile.cleared && !tile.pool.is_empty() => {

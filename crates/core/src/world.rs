@@ -550,6 +550,15 @@ mod tests {
         b.add_chunk((1, 1), &cards);
         b.add_chunk((1, 0), &cards);
         assert_eq!(a.tiles, b.tiles);
+        // two chunks of one guild's quarter still differ: each has its own chance
+        let south = generate(11, (0, 1), &cards);
+        let south_east = generate(11, (1, 1), &cards);
+        let layout = |t: &[(Pos, Tile)]| {
+            t.iter()
+                .map(|(_, t)| (t.terrain, t.feature, t.guild))
+                .collect::<Vec<_>>()
+        };
+        assert_ne!(layout(&south), layout(&south_east));
     }
 
     #[test]

@@ -2681,11 +2681,16 @@ mod tests {
             .events
             .iter()
             .any(|e| e.key == "log.detain" && e.args[0].1 == "Cobblebrute"));
-        // the foe's turn 2: no attack from the detained Cobblebrute
-        assert!(!r
-            .events
-            .iter()
-            .any(|e| e.ev == Ev::Attack && e.side == 1 && e.turn == 2));
+        // through the foe's turn 2 the Cobblebrute is still detained; at the player's turn 3 it goes free
+        let detained_on = |turn: u32| {
+            r.events
+                .iter()
+                .filter(|e| e.turn == turn)
+                .flat_map(|e| e.snap.perms.iter())
+                .any(|p| p.name == "Cobblebrute" && p.detained)
+        };
+        assert!(detained_on(2), "detained through the foe's next turn");
+        assert!(!detained_on(3), "free from the detainer's next turn");
         // the foe's turn 4: free again; it attacks, the 2/1 Arrester will not block a 5/2
         assert!(r
             .events

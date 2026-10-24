@@ -31,7 +31,19 @@
 
 ## Rules agreed for this project
 
-None yet. When the person answers the opening entry's questions, add each rule that applies to every later session here, with its journal ID.
+From the journal's opening entry (rules MTG-1 to MTG-11) and the person's answer of 2026-10-24 (DECISIONS.md):
+
+- MTG-1. Every rule is in the core; the page replays a draw list and lays out cards. (`boundary.rs`)
+- MTG-2. The game is 2D underneath: core state is integer grid cells. (`world.rs`)
+- MTG-3. Card text is shown exactly as `data/cards.json` has it. (`view.rs` test `a_face_keeps_the_card_text_verbatim`; `copy.rs` ALLOWED for its "!")
+- MTG-4. A fight is decided from its seed and both decks. (`battle.rs` test `a_fight_replays_the_same_from_its_seed`)
+- MTG-5. Every card of the region has rules, or it does not load. (`content.rs`)
+- MTG-6. Reference art is never committed. (`tools/cardart/render.py --check`)
+- MTG-7. First load stays near 2.5 MB before card art; card art loads when a card is shown.
+- MTG-8. Magic's terms keep their meaning; this game's terms are in `GLOSSARY.md`.
+- MTG-10. three.js stays in the journal's mockups, never in `web/`.
+- MTG-11. Every decision, visible change, divergence and deploy gets a journal entry.
+- Scope (2026-10-24): the first region; 20 cards of each colour (108 with guild cards, gates and artifacts); a 3D model for every creature; TikZ art and rules for every card.
 
 ## Stopping
 

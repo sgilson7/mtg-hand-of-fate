@@ -33,6 +33,9 @@ step "5/9 WebAssembly import audit (scripts/wasm_imports.py)"
 
 step "6/9 art pipeline checks, no TeX needed (tests/art_check.py)"
 if [ -f tests/art_check.py ]; then "$PY" tests/art_check.py; else echo "no art pipeline in this project"; fi
+# this game's own content checks: a TikZ picture for every card, a story for every card
+"$PY" tools/cardart/render.py --check
+"$PY" tools/stories/check.py
 
 step "7/9 notebook form (scripts/notebook_check.py)"
 "$PY" scripts/notebook_check.py
