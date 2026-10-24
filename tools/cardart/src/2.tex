@@ -1,0 +1,37 @@
+\input{../preamble}
+\definecolor{skyA}{HTML}{e8d2a0}\definecolor{wallA}{HTML}{c89a5e}\definecolor{wallB}{HTML}{8a6238}\definecolor{wallC}{HTML}{5e4024}
+\definecolor{steel}{HTML}{9a9488}\definecolor{steelL}{HTML}{d0c8b4}\definecolor{steelD}{HTML}{5a5448}\definecolor{skin}{HTML}{a86e48}
+\definecolor{cloth}{HTML}{3e3a2a}\definecolor{leather}{HTML}{6a3e22}\definecolor{shadow}{HTML}{4a3420}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[top color=skyA,bottom color=wallA] (0,0) rectangle (6.16,4.52);
+% street of tall houses running away to the left
+\fill[wallB,ink] (0,0) -- (0,4.52) -- (0.7,4.52) -- (0.9,3.6) -- (1.6,3.3) -- (1.7,1.0) -- (0,0.4) -- cycle;
+\fill[wallA,ink] (1.6,3.3) -- (2.3,3.7) -- (2.4,1.1) -- (1.7,1.0) -- cycle;
+\foreach \y in {1.6,2.3,2.9}{\fill[wallC] (0.25,\y) rectangle (0.5,\y+0.35); \fill[wallC] (1.0,\y-0.1) rectangle (1.2,\y+0.2);}
+\fill[shadow,opacity=.5] (0,0) -- (6.16,0) -- (6.16,0.5) -- (2.4,1.1) -- (0,0.4) -- cycle;
+% small figures down the street
+\foreach \x/\s in {0.5/1,0.85/.9,1.2/.8,1.55/.7,1.9/.6}{\fill[shadow] (\x,0.55) ellipse ({0.06*\s} and {0.18*\s}); \fill[shadow] (\x,0.78*\s+0.02) circle (0.05*\s);}
+% arched door and stone wall at the right
+\fill[wallB,ink] (3.9,0) -- (3.9,4.52) -- (6.16,4.52) -- (6.16,0) -- cycle;
+\fill[wallC,ink] (4.6,0) -- (4.6,2.6) arc (180:0:0.55) -- (5.7,0) -- cycle;
+\draw[shadow,line width=1pt] (4.75,0) -- (4.75,2.6) arc (180:0:0.4) -- (5.55,0);
+% the guard: legs, cloak, breastplate
+\fill[cloth,ink] (2.7,0) -- (2.9,1.6) -- (3.9,1.6) -- (4.05,0) -- (3.55,0) -- (3.4,1.0) -- (3.25,0) -- cycle;
+\fill[steelD,ink] (2.75,1.5) -- (2.6,2.9) -- (3.0,3.35) -- (3.85,3.35) -- (4.15,2.9) -- (3.95,1.5) -- cycle;
+\fill[steel,ink] (2.85,1.75) .. controls (2.8,2.4) and (2.9,3.0) .. (3.4,3.15) .. controls (3.9,3.0) and (3.95,2.4) .. (3.85,1.75) -- cycle;
+\fill[steelL,opacity=.7] (3.0,2.6) .. controls (3.1,3.0) and (3.4,3.0) .. (3.5,2.7) -- cycle;
+\fill[leather,ink] (2.82,1.6) rectangle (3.95,1.8);
+\fill[steelL,ink] (3.3,1.62) rectangle (3.45,1.78);
+% pauldrons and arms; the right hand on the staff
+\fill[steel,ink] (2.95,3.3) ellipse (0.35 and 0.22);\fill[steel,ink] (3.9,3.3) ellipse (0.35 and 0.22);
+\fill[cloth,ink] (2.65,3.1) -- (2.45,2.0) -- (2.7,1.9) -- (2.95,2.95) -- cycle;
+\fill[skin,ink] (2.55,1.95) circle (0.13);
+\fill[leather,ink] (4.4,0) -- (4.55,4.4) -- (4.65,4.4) -- (4.52,0) -- cycle;
+\fill[cloth,ink] (4.1,3.1) -- (4.5,3.6) -- (4.6,3.4) -- (4.2,2.9) -- cycle;
+\fill[skin,ink] (4.58,3.55) circle (0.13);
+% head, bald and bearded
+\fill[skin,ink] (3.4,3.5) circle (0.32);
+\fill[skin,ink] (3.3,3.35) rectangle (3.55,3.55);
+\fill[shadow,ink] (3.15,3.4) .. controls (3.2,3.05) and (3.6,3.05) .. (3.65,3.4) -- (3.55,3.35) -- (3.25,3.35) -- cycle;
+\end{tikzpicture}\end{document}

@@ -1,0 +1,15 @@
+\input{../preamble}
+\definecolor{sky}{HTML}{6a9ad8}\definecolor{cloud}{HTML}{f0f4f8}\definecolor{tower}{HTML}{3a4a6a}\definecolor{towerL}{HTML}{8a9ab8}\definecolor{stone}{HTML}{c8ccd4}\definecolor{water}{HTML}{8ac8e8}\definecolor{waterL}{HTML}{e8f8ff}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\fill[sky] (0,0) rectangle (6.16,4.52);\fill[cloud] (1.4,3.4) ellipse (1.0 and 0.4);\fill[cloud] (4.4,4.0) ellipse (1.2 and 0.4);
+% great sheer towers leaning in from both sides
+\fill[tower,ink] (0,0) -- (0,4.52) -- (1.2,4.52) -- (1.6,0.8) -- cycle;\fill[towerL,opacity=.6] (0.4,4.52) -- (0.6,1.0) -- (0.8,1.0) -- (0.8,4.52) -- cycle;
+\fill[tower,ink] (6.16,0) -- (6.16,4.52) -- (4.8,4.52) -- (4.4,0.8) -- cycle;\fill[towerL,opacity=.6] (5.6,4.52) -- (5.4,1.0) -- (5.2,1.0) -- (5.2,4.52) -- cycle;
+\fill[towerL,ink] (2.4,1.2) -- (2.6,4.0) -- (2.9,3.6) -- (3.0,1.2) -- cycle;\fill[towerL,ink] (3.4,1.2) -- (3.6,3.8) -- (3.8,3.4) -- (3.9,1.2) -- cycle;
+% the fountain and its basin
+\fill[stone,ink] (0.6,0) -- (1.0,0.9) -- (5.2,0.9) -- (5.6,0) -- cycle;\fill[water] (1.2,0.6) ellipse (2.0 and 0.25);
+\fill[water] (1.4,0.62) ellipse (1.6 and 0.18);\fill[waterL,opacity=.6] (3.1,0.62) ellipse (1.2 and 0.12);
+\fill[stone,ink] (2.9,0.8) rectangle (3.3,2.0);\fill[stone,ink] (2.6,2.0) -- (3.6,2.0) -- (3.4,2.3) -- (2.8,2.3) -- cycle;\fill[stone,ink] (3.0,2.3) -- (3.1,2.8) -- (3.2,2.3) -- cycle;
+\foreach \s in {-1,1}{\draw[waterL,line width=1.2pt] (3.1,2.4) .. controls (3.1+\s*0.4,2.8) .. (3.1+\s*0.7,1.0);}
+\end{tikzpicture}\end{document}

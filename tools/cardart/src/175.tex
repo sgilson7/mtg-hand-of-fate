@@ -1,0 +1,16 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{6a7a4a}\definecolor{bgD}{HTML}{2a3020}\definecolor{moss}{HTML}{4a5a2a}\definecolor{armor}{HTML}{3a3a2a}\definecolor{hood}{HTML}{5a7a3a}\definecolor{skin}{HTML}{b8b8a0}\definecolor{elf}{HTML}{8a9aa0}\definecolor{blade}{HTML}{8a8a80}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[inner color=bg,outer color=bgD] (0,0) rectangle (6.16,4.52);
+% three figures: a moss-armoured warrior, a pale elf, a hooded man
+\fill[armor,ink] (0.6,0) -- (0.8,2.4) .. controls (0.8,3.0) and (1.2,3.4) .. (1.6,3.4) .. controls (2.0,3.4) and (2.4,3.0) .. (2.4,2.4) -- (2.6,0) -- cycle;
+\foreach \x/\y in {0.9/1.0,1.4/1.6,2.0/1.2,1.1/2.4,1.9/2.6,1.5/0.4}{\fill[moss,ink] (\x,\y) ellipse (0.2 and 0.12);}
+\fill[skin,ink] (1.6,3.7) ellipse (0.22 and 0.28);\fill[moss,ink] (1.35,3.8) .. controls (1.4,4.2) and (1.8,4.2) .. (1.85,3.8) -- cycle;
+\fill[armor,ink] (2.3,2.4) -- (3.0,1.8) -- (3.1,1.9) -- (2.4,2.6) -- cycle;
+\fill[elf,ink] (2.8,0.4) -- (3.0,2.4) .. controls (3.1,2.8) and (3.6,2.8) .. (3.7,2.4) -- (3.8,0.4) -- cycle;\fill[elf,ink] (3.35,3.0) ellipse (0.18 and 0.24);
+\fill[elf,ink] (3.2,3.1) -- (2.9,3.3) -- (3.2,3.0) -- cycle;\fill[armor,ink] (3.2,3.15) .. controls (3.3,3.4) and (3.5,3.4) .. (3.5,3.15) -- cycle;
+\fill[hood,ink] (3.8,0) -- (4.0,2.6) .. controls (4.2,3.8) and (5.4,3.8) .. (5.6,2.6) -- (6.0,0) -- cycle;
+\fill[skin,ink] (4.3,2.6) .. controls (4.3,3.2) and (4.9,3.3) .. (5.0,2.8) .. controls (5.0,2.4) and (4.6,2.2) .. (4.3,2.6);
+\fill[blade,ink] (4.2,1.4) -- (3.6,0.2) -- (3.75,0.15) -- (4.35,1.3) -- cycle;
+\end{tikzpicture}\end{document}

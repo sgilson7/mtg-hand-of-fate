@@ -1,0 +1,22 @@
+\input{../preamble}
+\definecolor{fire}{HTML}{c84a2a}\definecolor{fireL}{HTML}{e8945a}\definecolor{robe}{HTML}{8a1e1e}\definecolor{robeL}{HTML}{b84030}
+\definecolor{skin}{HTML}{c8866a}\definecolor{dark}{HTML}{2a1a1a}\definecolor{cape}{HTML}{2a3e8a}\definecolor{capeL}{HTML}{4a62b0}
+\definecolor{gold}{HTML}{c8a050}\definecolor{steel}{HTML}{b0aca0}\definecolor{dome}{HTML}{d8c8b0}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[top color=fireL,bottom color=fire] (0,0) rectangle (6.16,4.52);
+\fill[dome,opacity=.6] (4.6,3.0) arc (180:0:0.8) -- cycle;\fill[dome,opacity=.6] (4.6,2.4) rectangle (6.16,3.0);
+% red banners above
+\foreach \x in {0.6,1.5,2.4,3.3}{\fill[robeL,ink] (\x,4.52) -- (\x+0.15,3.9) -- (\x+0.6,3.8) -- (\x+0.55,4.52) -- cycle;}
+% the crowd in red, fists raised
+\foreach \x/\y in {0.3/2.2,1.1/2.5,1.9/2.3,2.7/2.6}{\fill[robe,ink] (\x-0.4,0) -- (\x-0.3,\y-0.3) .. controls (\x-0.2,\y) and (\x+0.2,\y) .. (\x+0.3,\y-0.3) -- (\x+0.4,0) -- cycle; \fill[skin,ink] (\x,\y+0.1) circle (0.2); \fill[robe,ink] (\x+0.2,\y-0.3) -- (\x+0.35,\y+0.6) -- (\x+0.5,\y+0.55) -- (\x+0.4,\y-0.4) -- cycle; \fill[skin,ink] (\x+0.43,\y+0.7) circle (0.1);}
+% the Azorius arrester driving in from the right, hammer swung
+\fill[cape,ink] (3.2,0) .. controls (3.4,1.4) and (4.0,2.6) .. (4.8,2.8) .. controls (5.6,2.9) and (6.16,2.2) .. (6.16,1.0) -- (6.16,0) -- cycle;
+\fill[capeL,ink] (3.9,0.4) .. controls (4.1,1.4) and (4.5,2.2) .. (5.0,2.4) .. controls (5.4,2.0) and (5.6,1.0) .. (5.5,0.2) -- cycle;
+\fill[steel,ink] (4.4,2.6) circle (0.34);\fill[gold,ink] (4.1,2.55) rectangle (4.7,2.65);
+\fill[steel,ink] (4.1,2.3) -- (3.1,2.6) -- (3.15,2.85) -- (4.15,2.55) -- cycle;
+\fill[gold,ink] (3.4,2.35) rectangle (3.75,3.05);
+\fill[steel,ink] (2.75,2.25) rectangle (3.45,3.15);\fill[gold,ink] (2.75,2.55) rectangle (3.45,2.85);
+% dark foreground heads
+\foreach \x in {0.4,1.5,2.6,3.6}{\fill[dark] (\x,0) .. controls (\x-0.1,0.6) and (\x+0.6,0.7) .. (\x+0.7,0) -- cycle;}
+\end{tikzpicture}\end{document}

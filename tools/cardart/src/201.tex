@@ -1,0 +1,14 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{c8b890}\definecolor{bgD}{HTML}{5a5040}\definecolor{storm}{HTML}{8a8a7a}\definecolor{beam}{HTML}{fff8e0}\definecolor{city}{HTML}{3a3428}\definecolor{debris}{HTML}{6a5a48}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[top color=bg,bottom color=bgD] (0,0) rectangle (6.16,4.52);
+% a whirling storm tearing the city up into the sky
+\foreach \r in {1.0,1.6,2.2,2.8,3.4}{\draw[storm,line width=3pt,opacity=.6] (3.6,3.2) ++(200:\r) arc (200:340:{\r} and {\r*0.4});}
+\fill[city,opacity=.5] (2.8,2.6) -- (3.0,4.0) -- (3.4,4.4) -- (3.8,4.0) -- (4.0,2.6) -- cycle;
+\foreach \x/\y/\a in {1.0/3.4/20,1.6/3.0/-30,4.8/3.6/40,5.4/2.8/-10,2.2/3.8/60,5.0/4.2/10,0.6/2.6/-50}{\fill[debris,ink,rotate around={\a:(\x,\y)}] (\x,\y) rectangle (\x+0.3,\y+0.12);}
+% the shaft of light striking the plaza
+\fill[beam,opacity=.85] (2.4,0.6) -- (3.0,0.6) -- (3.8,4.0) -- (3.6,4.0) -- cycle;
+\fill[city,ink] (0,0) -- (0,1.4) -- (0.6,1.6) -- (1.0,1.2) -- (1.8,1.4) -- (2.4,0.8) -- (3.2,0.6) -- (4.4,0.9) -- (5.0,1.3) -- (5.6,1.0) -- (6.16,1.3) -- (6.16,0) -- cycle;
+\fill[city,ink] (4.6,0.9) -- (4.75,2.2) -- (4.9,0.9) -- cycle;
+\end{tikzpicture}\end{document}

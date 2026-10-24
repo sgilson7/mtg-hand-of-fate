@@ -1,0 +1,18 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{4a4a6a}\definecolor{bgL}{HTML}{a8a8c0}\definecolor{city}{HTML}{6a6a80}\definecolor{slime}{HTML}{5aa83a}\definecolor{slimeL}{HTML}{b8f06a}\definecolor{slimeD}{HTML}{2a5a22}
+\definecolor{robe}{HTML}{2a1e2a}\definecolor{skin}{HTML}{c8d8b0}\definecolor{staff}{HTML}{8a8a80}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[top color=bgL,bottom color=bg] (0,0) rectangle (6.16,4.52);
+\fill[city,opacity=.6] (4.4,1.6) -- (4.6,3.6) -- (5.0,4.0) -- (5.4,3.4) -- (6.16,3.6) -- (6.16,1.6) -- cycle;
+% slime rising in great loops behind the shaman
+\fill[slimeD,ink] (1.6,0.8) .. controls (1.0,2.4) and (1.6,4.0) .. (2.6,4.3) .. controls (3.6,4.52) and (4.2,3.8) .. (3.8,3.0) .. controls (3.4,2.4) and (2.8,2.8) .. (3.0,3.2) .. controls (3.2,3.6) and (2.6,3.8) .. (2.4,3.2) .. controls (2.2,2.4) and (2.6,1.6) .. (3.0,0.8) -- cycle;
+\fill[slime] (1.9,1.0) .. controls (1.5,2.4) and (1.9,3.6) .. (2.6,3.9) .. controls (3.2,4.1) and (3.7,3.6) .. (3.5,3.2) .. controls (3.0,3.6) and (2.4,3.4) .. (2.2,2.8) .. controls (2.1,2.2) and (2.3,1.6) .. (2.6,1.0) -- cycle;
+\foreach \x/\s in {0.6/1,4.8/1.1,5.6/.8,0.2/.7}{\fill[slime,ink] (\x,0) .. controls (\x-0.2*\s,1.0*\s) and (\x+0.4*\s,1.6*\s) .. (\x+0.8*\s,1.2*\s) .. controls (\x+0.6*\s,1.0*\s) and (\x+0.4*\s,0.6*\s) .. (\x+0.5*\s,0) -- cycle;}
+\fill[slimeL,opacity=.8] (0,0) -- (6.16,0) -- (6.16,0.3) .. controls (4,0.6) and (2,0.2) .. (0,0.5) -- cycle;
+% the shaman standing in the glow
+\fill[robe,ink] (2.6,0.3) -- (2.8,1.8) -- (3.2,1.8) -- (3.4,0.3) -- cycle;\fill[skin,ink] (3.0,2.0) circle (0.15);
+\fill[robe,ink] (2.85,2.1) -- (2.7,2.5) -- (2.95,2.2) -- (3.0,2.6) -- (3.05,2.2) -- (3.3,2.5) -- (3.15,2.1) -- cycle;
+\draw[staff,line width=1pt] (3.5,0.3) -- (3.6,2.4);\fill[slimeL] (3.6,2.45) circle (0.06);
+\fill[skin,ink] (3.2,1.5) -- (3.55,1.6) -- (3.55,1.5) -- (3.2,1.4) -- cycle;
+\end{tikzpicture}\end{document}

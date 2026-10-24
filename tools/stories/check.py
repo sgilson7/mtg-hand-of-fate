@@ -21,7 +21,8 @@ QUESTS = {q["id"] for q in json.loads((ROOT / "data" / "quests.json").read_text(
 
 def kind_of(c):
     t = c["types"]
-    if "Creature" in t:
+    # a planeswalker is met as a fight, like a creature
+    if "Creature" in t or "Planeswalker" in t:
         return "creature"
     if "Land" in t:
         return "land"

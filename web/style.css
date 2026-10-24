@@ -179,7 +179,10 @@ body[data-screen="battle"] .place-tr { max-height: 38%; }
 /* labels over the 3D view: the core places them in thousandths of the view */
 .lbl { position: absolute; left: calc(var(--x) * 0.1%); top: calc(var(--y) * 0.1%); translate: -50% -100%; background: var(--glass); border: 1px solid var(--line); border-radius: 6px; padding: 3px 9px; font: 600 15px var(--hud); white-space: nowrap; display: grid; }
 .lbl small { font-size: 12px; color: var(--muted); font-weight: 500; }
-.lbl.hot { background: var(--gold); color: var(--ink); }
+/* a crowded row: a name gives way to the next one, the hover peek shows it whole */
+.lbl { max-width: 9.5em; }
+.lbl > * { overflow: hidden; text-overflow: ellipsis; }
+.lbl.hot { background: var(--gold); color: var(--ink); max-width: none; z-index: 1; }
 .lbl.hot small { color: var(--ink); }
 
 @media (max-width: 760px) {

@@ -1,0 +1,24 @@
+\input{../preamble}
+\definecolor{sky}{HTML}{d8ecf0}\definecolor{tower}{HTML}{e8ecec}\definecolor{towerS}{HTML}{a8b8c0}\definecolor{leaf}{HTML}{5a9a2a}\definecolor{leafL}{HTML}{8ac84a}
+\definecolor{trunk}{HTML}{5a4a3a}\definecolor{water}{HTML}{6ab0d8}\definecolor{grass}{HTML}{5aa02a}\definecolor{hide}{HTML}{e8c030}\definecolor{hideD}{HTML}{b08a1a}
+\definecolor{saddle}{HTML}{b83a1a}\definecolor{saddleL}{HTML}{e8783a}\definecolor{robe}{HTML}{c83a2a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\fill[sky] (0,0) rectangle (6.16,4.52);
+\fill[tower,ink] (0.3,1.6) rectangle (0.9,4.0);\fill[tower,ink] (1.2,1.6) rectangle (1.6,3.4);\fill[towerS] (0.3,1.6) rectangle (0.45,4.0);
+\fill[tower,ink] (5.3,2.0) rectangle (5.9,4.52);
+\fill[leaf] (1.6,4.52) .. controls (2.6,3.8) and (4.2,3.6) .. (6.16,4.1) -- (6.16,4.52) -- cycle;\fill[leafL] (3.0,4.52) .. controls (3.8,4.1) and (4.6,4.2) .. (5.2,4.52) -- cycle;
+\fill[trunk,ink] (3.4,4.52) .. controls (3.6,3.0) and (3.9,2.2) .. (4.6,1.6) -- (5.4,1.6) .. controls (4.8,2.4) and (4.6,3.4) .. (4.6,4.52) -- cycle;
+\fill[water] (0,1.0) rectangle (3.0,1.7);\fill[grass] (0,0) -- (0,1.0) -- (3.0,1.1) .. controls (4,1.6) and (5,1.5) .. (6.16,1.7) -- (6.16,0) -- cycle;
+% a robed figure in red by the stair
+\fill[robe,ink] (4.7,1.7) -- (4.85,2.7) -- (5.05,2.7) -- (5.2,1.7) -- cycle;\fill[robe,ink] (4.95,2.85) circle (0.13);
+% the steed: long neck, crested head, red saddle
+\fill[hide,ink] (1.8,1.9) .. controls (2.0,2.5) and (3.0,2.7) .. (3.6,2.4) .. controls (3.8,2.0) and (3.4,1.7) .. (2.8,1.7) -- cycle;
+\fill[hide,ink] (1.85,2.1) .. controls (1.6,2.8) and (1.7,3.3) .. (1.95,3.6) -- (2.2,3.5) .. controls (2.0,3.1) and (2.1,2.6) .. (2.3,2.2) -- cycle;
+\fill[hide,ink] (1.85,3.5) .. controls (1.6,3.5) and (1.4,3.3) .. (1.45,3.15) .. controls (1.7,3.25) and (2.0,3.3) .. (2.2,3.45) -- cycle;
+\fill[saddleL,ink] (1.95,3.6) -- (2.05,4.2) -- (2.15,3.7) -- (2.3,4.1) -- (2.3,3.55) -- cycle;
+\fill[saddle,ink] (2.3,2.4) .. controls (2.6,2.9) and (3.3,2.9) .. (3.5,2.3) .. controls (3.0,2.0) and (2.6,2.0) .. (2.3,2.4);
+\fill[saddleL,ink] (3.0,2.6) .. controls (3.4,2.9) and (3.7,2.7) .. (3.8,2.4) -- (3.4,2.3) -- cycle;
+\foreach \a/\b in {2.0/1.2,2.3/0.9,3.1/1.1,3.4/0.7}{\draw[ink,line width=4pt] (\a,1.9) -- (\b+0.3,0.5);\draw[hideD,line width=2.8pt] (\a,1.9) -- (\b+0.3,0.5);}
+\draw[ink,line width=4pt] (3.5,2.1) .. controls (4.2,1.8) and (4.6,2.2) .. (5.2,2.0);\draw[hide,line width=2.8pt] (3.5,2.1) .. controls (4.2,1.8) and (4.6,2.2) .. (5.2,2.0);
+\end{tikzpicture}\end{document}

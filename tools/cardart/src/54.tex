@@ -1,0 +1,20 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{a8c8e8}\definecolor{ring}{HTML}{e8f4ff}\definecolor{fire}{HTML}{f08a3a}\definecolor{fireL}{HTML}{ffd080}
+\definecolor{coat}{HTML}{14141e}\definecolor{coatL}{HTML}{3a3a5a}\definecolor{skin}{HTML}{e8d0c4}\definecolor{hair}{HTML}{1a1a2e}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\fill[bg] (0,0) rectangle (6.16,4.52);
+% the ring of fire and light round her
+\draw[fire,line width=10pt] (3.0,2.1) circle (2.3);\draw[ring,line width=4pt] (3.0,2.1) circle (2.05);
+\foreach \a in {10,60,150,200,250,320}{\fill[fireL] (3.0,2.1) ++(\a:2.3) circle (0.25);}
+% her dark coat and high collar sweeping wide
+\fill[coat,ink] (0.6,0) .. controls (0.8,1.6) and (0.4,2.8) .. (0.0,3.2) .. controls (1.0,3.4) and (1.8,3.2) .. (2.4,2.8) -- (3.4,2.8) .. controls (4.0,3.2) and (4.8,3.6) .. (5.6,3.4) .. controls (5.0,2.6) and (4.6,1.6) .. (4.4,0) -- cycle;
+\fill[coatL,ink] (2.4,2.8) -- (2.9,1.6) -- (3.4,2.8) -- cycle;\fill[skin] (2.7,2.6) -- (2.9,1.9) -- (3.1,2.6) -- cycle;
+% the raised hand, two fingers up
+\fill[coat,ink] (3.4,1.6) -- (3.9,2.6) -- (4.15,2.45) -- (3.7,1.5) -- cycle;
+\fill[skin,ink] (3.85,2.55) -- (3.8,3.2) -- (3.92,3.22) -- (3.98,2.7) -- (4.05,3.25) -- (4.17,3.22) -- (4.12,2.5) -- cycle;
+% head and sharp black hair
+\fill[skin,ink] (2.9,3.35) ellipse (0.32 and 0.4);
+\fill[hair,ink] (2.5,3.4) .. controls (2.4,4.0) and (2.9,4.3) .. (3.3,4.1) .. controls (3.5,3.9) and (3.35,3.6) .. (3.2,3.55) .. controls (2.9,3.8) and (2.7,3.6) .. (2.6,3.0) -- cycle;
+\fill[ink] (2.95,3.4) ellipse (0.05 and 0.03);\fill[ink] (3.15,3.4) ellipse (0.05 and 0.03);
+\end{tikzpicture}\end{document}

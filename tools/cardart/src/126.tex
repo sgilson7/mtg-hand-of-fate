@@ -1,0 +1,13 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{3a5a3a}\definecolor{bgL}{HTML}{9ac87a}\definecolor{ooze}{HTML}{b8c83a}\definecolor{oozeL}{HTML}{e8f07a}\definecolor{oozeD}{HTML}{6a8a1e}\definecolor{rock}{HTML}{4a5a4a}\definecolor{glow}{HTML}{7af05a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[inner color=bgL,outer color=bg] (0,0) rectangle (6.16,4.52);
+\fill[rock,ink] (0,0) -- (0,1.0) .. controls (1.0,1.4) and (2.4,0.8) .. (3.6,1.0) .. controls (4.6,1.2) and (5.4,0.8) .. (6.16,1.2) -- (6.16,0) -- cycle;
+% the ooze: a heaving blob reaching out with fat pseudopods
+\fill[ooze,ink] (1.6,1.0) .. controls (1.2,2.0) and (1.0,3.0) .. (1.6,3.6) .. controls (2.2,4.2) and (3.0,3.8) .. (3.6,4.2) .. controls (4.4,4.52) and (5.4,4.2) .. (5.6,3.6) .. controls (5.0,3.6) and (4.6,3.2) .. (5.2,2.8) .. controls (5.8,2.6) and (5.6,2.0) .. (5.0,2.2) .. controls (4.4,2.4) and (4.2,1.8) .. (4.4,1.0) -- (3.8,1.0) .. controls (3.6,1.8) and (3.0,2.0) .. (2.6,1.6) .. controls (2.4,1.4) and (2.4,1.1) .. (2.4,1.0) -- cycle;
+\fill[oozeL,opacity=.7] (1.8,3.0) .. controls (2.2,3.6) and (3.2,3.6) .. (3.8,3.8) .. controls (3.2,3.2) and (2.4,3.2) .. (1.8,3.0);
+\fill[oozeL,opacity=.6] (4.0,3.8) .. controls (4.6,4.0) and (5.0,3.9) .. (5.2,3.7) -- cycle;
+\fill[glow,opacity=.6] (2.0,1.0) arc (180:0:0.4 and 0.6) -- cycle;\fill[glow,opacity=.6] (3.5,1.0) arc (180:0:0.4 and 0.7) -- cycle;
+\fill[oozeD,opacity=.5] (2.6,2.2) .. controls (3.2,2.6) and (4.0,2.6) .. (4.4,2.2) .. controls (3.8,2.0) and (3.0,2.0) .. (2.6,2.2);
+\end{tikzpicture}\end{document}

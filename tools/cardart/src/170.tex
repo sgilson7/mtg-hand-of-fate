@@ -1,0 +1,16 @@
+\input{../preamble}
+\definecolor{sky}{HTML}{8a9a7a}\definecolor{skyL}{HTML}{d8dcc0}\definecolor{city}{HTML}{4a5a4a}\definecolor{hide}{HTML}{a8201a}\definecolor{hideD}{HTML}{5a1010}\definecolor{hideL}{HTML}{e85a3a}\definecolor{teeth}{HTML}{f0e8d8}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[top color=skyL,bottom color=sky] (0,0) rectangle (6.16,4.52);
+\foreach \x/\h in {0.2/2.6,0.8/3.4,1.6/2.2,4.6/3.0,5.2/3.8,5.8/2.6}{\fill[city,opacity=.7] (\x,0) -- (\x,\h) -- (\x+0.2,\h+0.6) -- (\x+0.4,\h) -- (\x+0.4,0) -- cycle;}
+% the dragon streaking across, one huge wing up and back
+\fill[hideD,ink] (2.4,2.2) -- (4.8,4.52) -- (6.16,4.52) -- (6.16,3.8) -- (4.0,2.0) -- cycle;
+\foreach \i in {1,2,3}{\draw[hide,line width=1pt] (2.6+\i*0.3,2.2+\i*0.1) -- (4.8+\i*0.4,4.52);}
+\fill[hide,ink] (0.4,2.8) .. controls (1.2,2.8) and (2.4,2.4) .. (3.4,2.0) .. controls (4.4,1.6) and (5.4,1.0) .. (6.16,0.4) -- (6.16,0) .. controls (5.0,0.6) and (4.0,1.2) .. (3.2,1.4) .. controls (2.2,1.8) and (1.2,2.2) .. (0.4,2.4) -- cycle;
+\fill[hideL,opacity=.7] (1.4,2.4) .. controls (2.2,2.2) and (3.0,1.9) .. (3.6,1.7) -- (3.4,1.6) .. controls (2.6,1.8) and (1.8,2.1) .. (1.4,2.3) -- cycle;
+\fill[hide,ink] (0.4,2.8) -- (0,2.9) -- (0.2,2.6) -- (0,2.4) -- (0.4,2.4) -- cycle;
+\foreach \x in {0.1,0.2,0.3}{\fill[teeth] (\x,2.6) -- (\x+0.04,2.5) -- (\x+0.08,2.6) -- cycle;}
+\fill[hideL] (0.6,2.7) circle (0.05);
+\fill[hideD,ink] (3.2,1.6) -- (2.8,0.6) -- (3.0,0.6) -- (3.4,1.5) -- cycle;
+\end{tikzpicture}\end{document}

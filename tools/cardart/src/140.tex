@@ -1,0 +1,13 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{a8a080}\definecolor{bgD}{HTML}{4a4a32}\definecolor{city}{HTML}{3a3a2a}\definecolor{wurm}{HTML}{2a2a1e}\definecolor{wurmL}{HTML}{4a4a32}\definecolor{maw}{HTML}{6a2a1e}\definecolor{teeth}{HTML}{c8b890}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[top color=bg,bottom color=bgD] (0,0) rectangle (6.16,4.52);
+\foreach \x/\h in {0.2/2.2,0.6/2.8,1.2/1.8,4.8/2.4,5.4/3.0,5.9/2.0}{\fill[city,opacity=.7] (\x,0) -- (\x,\h) -- (\x+0.15,\h+0.5) -- (\x+0.3,\h) -- (\x+0.3,0) -- cycle;}
+% the wurm rising out of the earth, a round spiked maw
+\fill[wurm,ink] (1.8,0) .. controls (1.8,1.2) and (2.0,2.2) .. (2.4,2.8) -- (4.0,2.8) .. controls (4.2,2.0) and (4.4,1.0) .. (4.6,0) -- cycle;
+\fill[wurm,ink] (3.15,3.4) circle (1.0);
+\fill[maw,ink] (3.15,3.4) circle (0.6);\foreach \a in {0,30,...,330}{\fill[teeth] (3.15,3.4) ++(\a:0.6) -- ++(\a+170:0.25) -- ++(\a+100:0.1) -- cycle;}
+\foreach \a in {0,30,...,330}{\fill[wurm,ink] (3.15,3.4) ++(\a:0.95) -- ++(\a+10:0.5) -- ++(\a+120:0.15) -- cycle;}
+\foreach \y in {0.6,1.2,1.8,2.4}{\draw[wurmL,line width=.8pt] (2.0+\y*0.15,\y) .. controls (3.2,\y+0.2) .. (4.4-\y*0.12,\y);\fill[wurm,ink] (1.9+\y*0.13,\y) -- (1.4+\y*0.1,\y+0.2) -- (1.95+\y*0.13,\y+0.2) -- cycle;\fill[wurm,ink] (4.45-\y*0.12,\y) -- (5.0-\y*0.1,\y+0.2) -- (4.4-\y*0.12,\y+0.2) -- cycle;}
+\end{tikzpicture}\end{document}

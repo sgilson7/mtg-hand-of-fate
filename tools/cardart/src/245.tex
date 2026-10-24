@@ -1,0 +1,17 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{5a6a6a}\definecolor{wall}{HTML}{7a7a72}\definecolor{wallD}{HTML}{4a4a44}\definecolor{ivy}{HTML}{4a7a2a}\definecolor{ivyL}{HTML}{7aa84a}\definecolor{door}{HTML}{1e1810}\definecolor{glow}{HTML}{e8a03a}\definecolor{cloak}{HTML}{6a6a6a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\fill[bg] (0,0) rectangle (6.16,4.52);
+% a stone wall turning a corner, an arched doorway in it
+\fill[wall,ink] (0,0) -- (0,3.6) -- (3.6,4.0) -- (3.6,0) -- cycle;\foreach \y in {0.5,1.1,1.7,2.3,2.9}{\draw[wallD,line width=.5pt] (0,\y) -- (3.6,\y+0.08);}
+\fill[wallD,ink] (3.6,0) -- (3.6,4.0) -- (4.4,3.6) -- (4.4,0.4) -- cycle;
+\fill[wallD,ink] (1.6,0) -- (1.6,2.4) arc (180:0:0.6) -- (2.8,0) -- cycle;\fill[door] (1.75,0) -- (1.75,2.4) arc (180:0:0.45) -- (2.65,0) -- cycle;
+\fill[glow,opacity=.7] (1.8,0) -- (1.9,1.8) -- (2.6,1.8) -- (2.6,0) -- cycle;
+% a cloaked rogue slipping through
+\fill[cloak,ink] (2.0,0) -- (2.1,1.4) .. controls (2.2,1.8) and (2.5,1.8) .. (2.55,1.4) -- (2.6,0) -- cycle;\fill[cloak,ink] (2.32,1.75) circle (0.14);
+% ivy spilling over the walls
+\fill[ivy,ink] (0,3.4) .. controls (0.6,4.52) and (2.4,4.6) .. (4.4,3.8) -- (4.4,4.52) -- (0,4.52) -- cycle;
+\foreach \x/\y in {0.4/3.2,1.0/3.0,0.2/2.4,3.0/3.6,3.8/3.2,4.2/2.6,1.4/3.6,2.4/3.8}{\fill[ivyL,ink] (\x,\y) ellipse (0.22 and 0.14);}
+\fill[ivy] (4.4,0) .. controls (5.0,1.6) and (5.8,2.0) .. (6.16,3.0) -- (6.16,0) -- cycle;
+\end{tikzpicture}\end{document}

@@ -1,0 +1,13 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{4a4a8a}\definecolor{bgL}{HTML}{a8a8e0}\definecolor{stone}{HTML}{3a3a4a}\definecolor{stoneL}{HTML}{6a6a7a}\definecolor{bolt}{HTML}{e0e8ff}\definecolor{boltD}{HTML}{8a6aff}\definecolor{ember}{HTML}{ff3a4a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[top color=bg,bottom color=bgL] (0,0) rectangle (6.16,4.52);
+% the street heaving up into a wave of cobbles
+\fill[stone,ink] (0,0) -- (0,1.0) .. controls (1.0,1.6) and (1.6,2.6) .. (2.0,3.6) .. controls (2.6,4.0) and (3.4,3.8) .. (3.8,3.0) .. controls (4.4,2.0) and (5.4,1.6) .. (6.16,1.4) -- (6.16,0) -- cycle;
+\foreach \x/\y in {0.4/0.4,1.0/0.6,1.6/0.3,2.2/0.7,2.8/0.4,3.4/0.8,4.0/0.5,4.6/0.6,5.2/0.4,5.8/0.6,1.2/1.3,1.8/1.6,2.4/1.4,3.0/1.8,3.6/1.5,4.2/1.3,2.2/2.4,2.8/2.7,3.3/2.4,2.6/3.3,3.2/3.2,4.8/1.2,0.6/1.0}{\fill[stoneL,ink] (\x,\y) ellipse (0.25 and 0.16);}
+% flung stones flying out
+\foreach \x/\y in {1.0/3.0,1.4/3.6,0.8/4.0,1.8/4.2,2.2/4.4,4.4/3.6,4.8/4.0,0.4/3.4}{\fill[stoneL,ink] (\x,\y) -- (\x+0.15,\y+0.1) -- (\x+0.2,\y-0.08) -- (\x+0.05,\y-0.12) -- cycle;}
+\foreach \p in {{(1.4,1.2) -- (2.0,1.8) -- (1.8,2.2) -- (2.6,2.9)},{(3.0,0.6) -- (3.6,1.2) -- (3.4,1.6) -- (4.2,2.2) -- (4.0,2.6) -- (4.8,3.4)},{(5.2,2.8) -- (5.6,3.4) -- (5.4,3.8) -- (6.0,4.4)}}{\draw[boltD,line width=2.5pt] \p;\draw[bolt,line width=1pt] \p;}
+\foreach \x/\y in {2.5/2.0,3.5/2.0,1.6/1.0}{\fill[ember] (\x,\y) circle (0.06);}
+\end{tikzpicture}\end{document}

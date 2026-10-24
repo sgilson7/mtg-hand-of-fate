@@ -1,0 +1,15 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{a8d8d0}\definecolor{bgL}{HTML}{e8f8f4}\definecolor{shelf}{HTML}{4a5a5a}\definecolor{stone}{HTML}{8a7a5a}\definecolor{stoneL}{HTML}{b8a880}\definecolor{stoneD}{HTML}{4a4030}\definecolor{teeth}{HTML}{4a4a6a}\definecolor{glow}{HTML}{4a6ad8}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[inner color=bgL,outer color=bg] (0,0) rectangle (6.16,4.52);
+\fill[shelf,ink] (0,0) rectangle (0.8,4.52);\foreach \y in {0.8,1.6,2.4,3.2,4.0}{\draw[bgL,line width=.6pt] (0,\y) -- (0.8,\y);}
+\fill[shelf,opacity=.6] (4.6,0.6) rectangle (6.16,1.4);
+% the shredder: a carved stone beast-head with grinding teeth
+\fill[glow,opacity=.5] (2.6,2.4) circle (2.0);
+\fill[stone,ink] (1.0,0) .. controls (0.8,1.6) and (1.2,3.4) .. (2.2,3.8) .. controls (3.2,4.1) and (4.2,3.6) .. (4.4,2.8) -- (4.4,1.4) .. controls (4.0,0.6) and (3.6,0.2) .. (3.4,0) -- cycle;
+\foreach \i in {0,1,2}{\draw[stoneL,line width=1pt] (1.4+\i*0.3,3.4-\i*0.2) .. controls (1.8+\i*0.3,3.8-\i*0.2) and (2.6+\i*0.2,3.8-\i*0.2) .. (3.0+\i*0.2,3.4-\i*0.2);}
+\fill[stoneD,ink] (3.0,2.6) -- (4.4,2.8) -- (4.4,1.4) -- (3.2,1.6) -- cycle;
+\foreach \y in {2.4,2.1,1.8}{\fill[teeth,ink] (3.2,\y) rectangle (4.3,\y+0.2);}
+\fill[stoneD] (2.4,3.0) circle (0.12);\fill[stoneL,ink] (3.4,3.2) ellipse (0.3 and 0.2);
+\end{tikzpicture}\end{document}

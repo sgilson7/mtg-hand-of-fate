@@ -1,0 +1,33 @@
+\input{../preamble}
+\definecolor{sky}{HTML}{a8c8e0}\definecolor{skyL}{HTML}{e8f0f4}\definecolor{roof}{HTML}{c85a3a}\definecolor{house}{HTML}{e0d4b8}\definecolor{houseD}{HTML}{a89a80}
+\definecolor{steel}{HTML}{a8acb0}\definecolor{steelL}{HTML}{e0e4e8}\definecolor{steelD}{HTML}{5e6268}\definecolor{gold}{HTML}{c8a050}
+\definecolor{shawl}{HTML}{8a6ab8}\definecolor{shawlL}{HTML}{c0a8e0}\definecolor{skin}{HTML}{d8a888}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[top color=sky,bottom color=skyL] (0,0) rectangle (6.16,4.52);
+% the city tilted behind
+\fill[house,ink] (3.4,1.6) -- (3.9,4.0) -- (5.0,4.3) -- (6.16,3.9) -- (6.16,1.2) -- cycle;
+\fill[roof,ink] (3.9,4.0) -- (4.3,4.52) -- (5.4,4.52) -- (5.0,4.3) -- cycle;
+\foreach \x/\y in {4.2/3.3,4.7/3.4,5.2/3.3,5.7/3.1,4.4/2.5,4.9/2.5,5.4/2.4}{\fill[houseD,ink] (\x,\y) rectangle (\x+0.2,\y+0.35);}
+\fill[house,ink] (0,2.8) -- (1.2,3.4) -- (1.6,4.52) -- (0,4.52) -- cycle;\fill[roof,ink] (0,2.8) -- (1.2,3.4) -- (1.3,3.2) -- (0,2.55) -- cycle;
+% the knight, sword raised high on the left
+\fill[steelD,ink] (1.7,0) -- (1.9,1.8) -- (3.2,1.8) -- (3.4,0) -- cycle;
+\fill[steel,ink] (1.75,1.7) .. controls (1.6,2.5) and (1.8,3.1) .. (2.5,3.25) .. controls (3.2,3.1) and (3.4,2.5) .. (3.3,1.7) -- cycle;
+\fill[steelL,opacity=.7] (2.0,2.7) .. controls (2.2,3.05) and (2.6,3.05) .. (2.7,2.8) -- cycle;
+\fill[gold,ink] (1.8,1.7) rectangle (3.3,1.9);
+\foreach \y in {0.4,0.9,1.4}{\draw[steelL,line width=.6pt] (1.9,\y) -- (3.2,\y);}
+\fill[steel,ink] (1.9,3.15) ellipse (0.42 and 0.28);\fill[steel,ink] (3.15,3.1) ellipse (0.4 and 0.26);
+\fill[steel,ink] (1.6,3.0) -- (1.1,2.1) -- (1.35,1.95) -- (1.85,2.85) -- cycle;
+\fill[steelD,ink] (1.15,2.0) circle (0.15);
+\fill[steelL,ink] (1.15,2.0) -- (0.0,3.9) -- (0.1,4.0) -- (1.25,2.1) -- cycle;
+\fill[gold,ink] (0.95,1.85) -- (1.4,2.2) -- (1.45,2.1) -- (1.0,1.75) -- cycle;
+% helmet with face slit
+\fill[steel,ink] (2.5,3.65) circle (0.38);\fill[steel,ink] (2.15,3.4) rectangle (2.85,3.65);
+\fill[steelD] (2.25,3.6) rectangle (2.75,3.7);\fill[steelL] (2.4,4.0) -- (2.5,4.3) -- (2.6,4.0) -- cycle;
+% the old woman in a violet shawl at the lower right
+\fill[shawl,ink] (3.9,0) .. controls (3.8,0.8) and (4.0,1.5) .. (4.5,1.8) .. controls (5.1,2.0) and (5.6,1.6) .. (5.7,0.9) .. controls (5.8,0.4) and (5.9,0.1) .. (6.0,0) -- cycle;
+\foreach \i in {0,1,2}{\draw[shawlL,line width=.7pt] (4.2+\i*0.4,1.6-\i*0.1) .. controls (4.3+\i*0.4,0.9) .. (4.1+\i*0.4,0.1);}
+\fill[skin,ink] (4.7,1.55) .. controls (4.6,2.0) and (5.1,2.15) .. (5.25,1.8) .. controls (5.3,1.5) and (4.9,1.3) .. (4.7,1.55);
+\fill[shawl,ink] (4.55,1.75) .. controls (4.6,2.3) and (5.3,2.4) .. (5.4,1.85) .. controls (5.3,2.05) and (4.8,2.1) .. (4.55,1.75);
+\fill[skin,ink] (4.7,0.9) circle (0.12);
+\end{tikzpicture}\end{document}

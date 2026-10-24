@@ -1,0 +1,21 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{4a8a4a}\definecolor{bgL}{HTML}{c8f0b8}\definecolor{hide}{HTML}{8a8a9a}\definecolor{hideD}{HTML}{5a5a6a}\definecolor{tusk}{HTML}{e8d4b0}\definecolor{silver}{HTML}{d0d4dc}
+\definecolor{robe}{HTML}{2a5a3a}\definecolor{hammer}{HTML}{4a8a5a}\definecolor{shaft}{HTML}{3a3a3a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[inner color=bgL,outer color=bg] (0,0) rectangle (6.16,4.52);
+% the great maul raised over his shoulder
+\draw[shaft,line width=3pt] (1.2,4.0) -- (4.4,0.6);
+\fill[hammer,ink] (0.2,3.4) -- (1.2,4.52) -- (2.2,3.6) -- (1.2,2.6) -- cycle;\fill[silver,ink] (1.2,3.6) circle (0.3);
+% the loxodon in green robes and silver plate
+\fill[robe,ink] (2.2,0) -- (2.4,2.0) .. controls (2.6,2.8) and (4.4,2.8) .. (4.6,2.0) -- (4.8,0) -- cycle;
+\fill[silver,ink] (2.6,1.4) .. controls (2.7,2.2) and (4.3,2.2) .. (4.4,1.4) .. controls (3.8,1.2) and (3.2,1.2) .. (2.6,1.4);
+\fill[hide,ink] (2.6,3.6) .. controls (2.2,4.2) and (2.6,4.52) .. (3.2,4.4) .. controls (2.8,4.1) and (2.8,3.8) .. (2.9,3.5) -- cycle;
+\fill[hide,ink] (4.4,3.6) .. controls (5.0,4.2) and (5.4,3.4) .. (5.0,2.6) .. controls (4.7,2.8) and (4.5,3.2) .. (4.4,3.6);
+\fill[hide,ink] (2.8,2.6) .. controls (2.6,3.6) and (3.2,4.2) .. (3.7,4.2) .. controls (4.3,4.1) and (4.6,3.4) .. (4.4,2.6) -- cycle;
+\fill[silver,ink] (3.3,4.4) .. controls (3.4,3.8) and (4.0,3.8) .. (4.1,4.4) -- cycle;
+\fill[hide,ink] (3.5,3.0) .. controls (3.4,2.2) and (3.6,1.4) .. (4.0,1.0) -- (4.15,1.15) .. controls (3.8,1.6) and (3.75,2.3) .. (3.8,3.0) -- cycle;
+\fill[tusk,ink] (3.4,2.9) .. controls (3.0,2.4) and (2.8,1.8) .. (2.9,1.4) .. controls (3.1,1.9) and (3.3,2.3) .. (3.55,2.7) -- cycle;
+\fill[tusk,ink] (3.95,2.9) .. controls (4.4,2.4) and (4.6,1.8) .. (4.5,1.4) .. controls (4.3,1.9) and (4.1,2.3) .. (3.85,2.7) -- cycle;
+\fill[hideD] (3.3,3.4) circle (0.05);\fill[hideD] (4.05,3.4) circle (0.05);
+\end{tikzpicture}\end{document}

@@ -1,0 +1,17 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{8a9a5a}\definecolor{bgL}{HTML}{d8e0a8}\definecolor{rock}{HTML}{3a3a2a}\definecolor{hide}{HTML}{6a6a3a}\definecolor{hideL}{HTML}{a8a060}
+\definecolor{mouth}{HTML}{8a3a2a}\definecolor{teeth}{HTML}{f0e8d0}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[inner color=bgL,outer color=bg] (0,0) rectangle (6.16,4.52);
+\fill[rock,ink] (0,4.52) -- (0,2.4) .. controls (0.6,3.2) and (1.4,3.8) .. (2.4,4.0) .. controls (3.6,4.3) and (4.8,4.0) .. (6.16,4.2) -- (6.16,4.52) -- cycle;
+\fill[rock,ink] (4.6,0) -- (5.0,1.4) -- (6.16,2.0) -- (6.16,0) -- cycle;
+% the wurm's coiled body in the foreground
+\fill[hide,ink] (0,0) -- (0,1.6) .. controls (1.2,2.2) and (3.0,2.0) .. (4.0,1.4) .. controls (4.6,1.0) and (5.0,0.4) .. (5.2,0) -- cycle;
+\foreach \x in {0.4,0.9,...,4.4}{\draw[hideL,line width=.8pt] (\x,0) .. controls (\x+0.15,0.8) .. (\x,1.7-0.04*\x*\x);}
+% the neck rising and the head turning down, jaws gaping
+\fill[hide,ink] (1.4,1.8) .. controls (1.0,2.6) and (1.4,3.4) .. (2.2,3.5) .. controls (3.0,3.6) and (3.4,3.0) .. (3.2,2.4) -- (2.6,2.6) .. controls (2.6,2.9) and (2.3,3.0) .. (2.1,2.8) .. controls (1.9,2.6) and (2.0,2.2) .. (2.2,1.8) -- cycle;
+\fill[mouth,ink] (2.8,3.0) .. controls (3.4,3.3) and (3.9,3.0) .. (4.0,2.6) .. controls (3.7,2.4) and (3.3,2.4) .. (2.9,2.6) -- cycle;
+\foreach \x/\y in {3.0/3.05,3.3/3.15,3.6/3.05,3.85/2.85}{\fill[teeth,ink] (\x,\y) -- (\x+0.05,\y-0.2) -- (\x+0.12,\y-0.02) -- cycle;}
+\foreach \x/\y in {3.0/2.55,3.3/2.48,3.6/2.5}{\fill[teeth,ink] (\x,\y) -- (\x+0.05,\y+0.18) -- (\x+0.12,\y) -- cycle;}
+\end{tikzpicture}\end{document}

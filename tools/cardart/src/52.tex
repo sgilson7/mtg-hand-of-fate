@@ -1,0 +1,23 @@
+\input{../preamble}
+\definecolor{dark}{HTML}{2a2a2a}\definecolor{stone}{HTML}{5a5a5a}\definecolor{light}{HTML}{f0f0e0}\definecolor{bell}{HTML}{6a5a4a}
+\definecolor{fur}{HTML}{a8884a}\definecolor{furD}{HTML}{6a5030}\definecolor{mane}{HTML}{c8a868}\definecolor{wing}{HTML}{3a3a3a}\definecolor{wingL}{HTML}{6a6a6a}\definecolor{skin}{HTML}{c8a080}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\fill[dark] (0,0) rectangle (6.16,4.52);
+\fill[stone,ink] (0,4.52) -- (1.4,3.2) -- (4.8,3.2) -- (6.16,4.52) -- cycle;\fill[stone,ink] (0,0) -- (6.16,0) -- (6.16,0.8) -- (0,0.6) -- cycle;
+% the great bell overhead, light breaking from behind
+\fill[light,opacity=.8] (2.4,3.2) .. controls (3.0,3.6) and (3.6,3.6) .. (4.2,3.2) -- (4.6,2.6) -- (2.0,2.6) -- cycle;
+\fill[bell,ink] (2.4,4.52) .. controls (2.4,3.9) and (2.2,3.6) .. (1.9,3.4) -- (4.6,3.4) .. controls (4.3,3.6) and (4.1,3.9) .. (4.1,4.52) -- cycle;
+\draw[ink,line width=1pt] (3.25,3.4) -- (3.25,3.0);\fill[bell,ink] (3.25,2.95) circle (0.1);
+% the dark wings folded behind
+\fill[wing,ink] (3.4,2.2) .. controls (4.4,3.2) and (5.6,3.2) .. (6.16,2.6) -- (6.16,1.0) .. controls (5.4,1.2) and (4.4,1.3) .. (3.8,1.2) -- cycle;
+\foreach \i in {0,1,2,3}{\draw[wingL,line width=.6pt] (3.9+\i*0.5,2.5+\i*0.1) .. controls (4.2+\i*0.5,1.8) .. (4.1+\i*0.5,1.2);}
+% the lion body, couched
+\fill[fur,ink] (1.2,0.6) .. controls (1.0,1.4) and (1.6,2.2) .. (2.6,2.3) .. controls (3.8,2.4) and (4.8,1.8) .. (5.0,0.8) -- cycle;
+\fill[furD,ink] (1.5,0.6) .. controls (1.4,0.9) and (1.6,1.1) .. (2.0,1.1) -- (2.4,0.6) -- cycle;\fill[furD,ink] (3.0,0.6) .. controls (3.0,0.9) and (3.3,1.0) .. (3.6,0.9) -- (3.7,0.6) -- cycle;
+% the bearded man's face in a mane
+\fill[mane,ink] (2.4,2.6) circle (0.75);
+\fill[skin,ink] (2.4,2.65) ellipse (0.35 and 0.42);
+\fill[mane,ink] (2.05,2.6) .. controls (2.1,2.1) and (2.25,1.8) .. (2.4,1.75) .. controls (2.55,1.8) and (2.7,2.1) .. (2.75,2.6) .. controls (2.6,2.45) and (2.2,2.45) .. (2.05,2.6);
+\fill[ink] (2.28,2.78) circle (0.04);\fill[ink] (2.52,2.78) circle (0.04);
+\end{tikzpicture}\end{document}

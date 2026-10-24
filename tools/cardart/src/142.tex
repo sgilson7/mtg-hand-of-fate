@@ -1,0 +1,22 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{c8784a}\definecolor{bgL}{HTML}{f0c8a0}\definecolor{fur}{HTML}{4a4a52}\definecolor{furL}{HTML}{7a7a82}\definecolor{wing}{HTML}{2a2a30}\definecolor{horn}{HTML}{c8b490}
+\definecolor{rider}{HTML}{2a2a3a}\definecolor{steel}{HTML}{8a8a9a}\definecolor{eye}{HTML}{8ad8ff}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[inner color=bgL,outer color=bg] (0,0) rectangle (6.16,4.52);
+% wings sweeping out on both sides
+\fill[wing,ink] (1.8,2.6) .. controls (1.0,3.4) and (0.4,3.8) .. (0,3.8) -- (0,1.6) .. controls (0.6,1.8) and (1.2,2.0) .. (1.8,2.0) -- cycle;
+\foreach \y in {2.0,2.4,2.8,3.2}{\draw[furL,line width=.6pt] (1.6,\y-0.3) -- (0.2,\y);}
+\fill[wing,ink] (4.4,2.8) .. controls (5.2,3.4) and (5.8,3.8) .. (6.16,3.6) -- (6.16,1.4) .. controls (5.6,1.8) and (5.0,2.0) .. (4.4,2.2) -- cycle;
+% the shaggy flying beast
+\fill[fur,ink] (1.6,1.4) .. controls (1.4,2.4) and (2.2,3.0) .. (3.2,3.0) .. controls (4.2,3.0) and (4.8,2.4) .. (4.8,1.6) .. controls (4.4,0.8) and (3.6,0.6) .. (2.8,0.6) .. controls (2.2,0.7) and (1.8,1.0) .. (1.6,1.4);
+\foreach \x in {2.0,2.4,...,4.4}{\draw[furL,line width=.6pt] (\x,2.8) -- (\x-0.1,1.0);}
+\fill[fur,ink] (4.4,2.6) .. controls (4.6,3.0) and (5.2,3.0) .. (5.4,2.6) .. controls (5.6,2.2) and (5.2,1.8) .. (4.8,1.9) -- cycle;
+\fill[horn,ink] (4.6,2.8) .. controls (4.4,3.4) and (4.8,3.6) .. (5.0,3.3) .. controls (4.8,3.2) and (4.7,3.0) .. (4.8,2.85) -- cycle;
+\fill[eye] (5.1,2.55) circle (0.06);
+\foreach \x in {2.4,3.8}{\fill[fur,ink] (\x,0.8) -- (\x-0.2,0.1) -- (\x+0.1,0.1) -- (\x+0.3,0.7) -- cycle;}
+% the hooded rider with a raised staff
+\fill[rider,ink] (2.8,2.8) -- (2.9,3.6) .. controls (3.0,4.0) and (3.4,4.0) .. (3.5,3.6) -- (3.6,2.8) -- cycle;
+\fill[rider,ink] (3.0,3.7) .. controls (2.9,4.2) and (3.5,4.3) .. (3.5,3.8) -- cycle;
+\draw[steel,line width=1.2pt] (2.4,3.4) -- (3.8,4.4);\fill[steel] (2.35,3.35) circle (0.07);
+\end{tikzpicture}\end{document}

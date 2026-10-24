@@ -1,0 +1,18 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{6a9ad8}\definecolor{bgL}{HTML}{d8ecff}\definecolor{rune}{HTML}{8af0b0}\definecolor{steel}{HTML}{8a8a9a}\definecolor{steelL}{HTML}{c8ccd8}\definecolor{steelD}{HTML}{4a4a5a}
+\definecolor{cape}{HTML}{2a4ab0}\definecolor{blade}{HTML}{5a5a6a}\definecolor{bladeL}{HTML}{9a9aaa}\definecolor{skin}{HTML}{c8906a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[inner color=bgL,outer color=bg] (0,0) rectangle (6.16,4.52);
+% bands of glowing runes sweeping round him
+\foreach \a/\b in {0/1.0,1/0.6}{\draw[rune,line width=1.8pt,dash pattern=on 3pt off 2pt] (3.2,2.6) ellipse ({3.0-\b} and {1.0+\b*0.6});}
+\draw[rune,line width=1.6pt,dash pattern=on 3pt off 2pt,rotate around={40:(3.2,2.6)}] (3.2,2.6) ellipse (2.6 and 0.8);
+% the knight with a broad sword held across
+\fill[cape,ink] (3.0,3.6) .. controls (4.4,4.0) and (5.6,3.2) .. (6.16,2.2) -- (6.16,0) -- (3.4,0) -- cycle;
+\fill[steel,ink] (2.6,0) -- (2.8,2.8) .. controls (3.0,3.4) and (4.0,3.4) .. (4.2,2.8) -- (4.4,0) -- cycle;
+\fill[steelL,ink] (3.0,2.6) .. controls (3.2,3.1) and (3.8,3.1) .. (4.0,2.6) .. controls (3.6,2.4) and (3.4,2.4) .. (3.0,2.6);
+\fill[steel,ink] (3.5,3.8) ellipse (0.35 and 0.45);\fill[skin,ink] (3.3,3.4) rectangle (3.7,3.75);\fill[steelD] (3.32,3.62) rectangle (3.68,3.68);
+\fill[blade,ink] (2.6,1.6) -- (0.2,4.52) -- (1.2,4.52) -- (2.9,1.9) -- cycle;\fill[bladeL] (1.0,4.0) -- (2.7,1.75) -- (2.75,1.8) -- (1.1,4.1) -- cycle;
+\fill[steelD,ink] (2.2,1.4) -- (3.2,2.2) -- (3.3,2.0) -- (2.3,1.2) -- cycle;
+\fill[steel,ink] (2.8,1.2) circle (0.3);\fill[steelD,ink] (2.3,1.2) -- (1.9,0.8) -- (2.0,0.7) -- (2.4,1.1) -- cycle;
+\end{tikzpicture}\end{document}

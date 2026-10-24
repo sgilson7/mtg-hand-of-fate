@@ -31,6 +31,8 @@ pub enum Sym {
     Colour(u8),
     /// Either colour: {U/R}.
     Hybrid(u8, u8),
+    /// X: chosen as the spell is cast.
+    X,
 }
 
 #[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
@@ -87,7 +89,9 @@ impl Cost {
                 .ok_or_else(|| format!("The mana cost \"{text}\" has an open brace."))?;
             let tok = &open[..end];
             rest = &open[end + 1..];
-            if let Ok(n) = tok.parse::<u8>() {
+            if tok == "X" {
+                syms.push(Sym::X);
+            } else if let Ok(n) = tok.parse::<u8>() {
                 if n > 0 {
                     syms.push(Sym::Generic(n));
                 }
@@ -125,6 +129,7 @@ impl Cost {
             .iter()
             .map(|s| match s {
                 Sym::Generic(n) => *n as usize,
+                Sym::X => 0,
                 _ => 1,
             })
             .sum()
@@ -148,12 +153,33 @@ impl Cost {
         Cost { syms }
     }
 
+    /// How many X the cost holds ({X}{X}{R}{R} holds two).
+    pub fn xs(&self) -> u8 {
+        self.syms.iter().filter(|s| matches!(s, Sym::X)).count() as u8
+    }
+
+    /// The cost with each X as `x` generic mana.
+    pub fn with_x(&self, x: i32) -> Cost {
+        let x = x.max(0) as u8;
+        Cost {
+            syms: self
+                .syms
+                .iter()
+                .filter_map(|s| match s {
+                    Sym::X if x == 0 => None,
+                    Sym::X => Some(Sym::Generic(x)),
+                    other => Some(*other),
+                })
+                .collect(),
+        }
+    }
+
     /// The colours its coloured and hybrid symbols ask for.
     pub fn colours(&self) -> u8 {
         self.syms.iter().fold(0, |m, s| match s {
             Sym::Colour(c) => m | c,
             Sym::Hybrid(a, b) => m | a | b,
-            Sym::Generic(_) => m,
+            Sym::Generic(_) | Sym::X => m,
         })
     }
 }
@@ -195,7 +221,7 @@ impl Bank {
             .filter_map(|s| match s {
                 Sym::Colour(c) => Some(*c),
                 Sym::Hybrid(a, b) => Some(a | b),
-                Sym::Generic(_) => None,
+                Sym::Generic(_) | Sym::X => None,
             })
             .collect();
         needs.sort_by_key(|m| count_colours(*m));

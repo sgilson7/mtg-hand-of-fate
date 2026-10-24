@@ -1,0 +1,23 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{3a5a3a}\definecolor{bgL}{HTML}{8aa87a}\definecolor{skin}{HTML}{f0c8a8}\definecolor{gold}{HTML}{d8a83a}\definecolor{goldD}{HTML}{8a6a2a}
+\definecolor{wood}{HTML}{a8783a}\definecolor{woodD}{HTML}{6a4a22}\definecolor{orb}{HTML}{e8ff8a}\definecolor{robe}{HTML}{f0ece0}\definecolor{hair}{HTML}{6a3a1e}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[inner color=bgL,outer color=bg] (0,0) rectangle (6.16,4.52);
+% a face of living wood at the right
+\fill[woodD,ink] (4.0,0) .. controls (4.2,1.6) and (4.0,3.0) .. (4.4,4.0) .. controls (5.0,4.52) and (5.8,4.4) .. (6.16,4.0) -- (6.16,0) -- cycle;
+\fill[wood,ink] (4.4,1.6) .. controls (4.2,2.4) and (4.4,3.4) .. (4.9,3.6) .. controls (5.3,3.4) and (5.4,2.4) .. (5.2,1.6) .. controls (5.0,1.3) and (4.6,1.3) .. (4.4,1.6);
+\fill[woodD] (4.6,2.8) ellipse (0.12 and 0.05);\fill[woodD] (5.0,2.8) ellipse (0.12 and 0.05);\draw[woodD,line width=.8pt] (4.7,2.0) -- (5.0,2.0);
+\foreach \a in {60,80,100,120}{\draw[woodD,line width=1.4pt] (5.0,3.7) -- ++(\a:0.7);}
+% the glowing seed between them
+\fill[orb,opacity=.5] (3.6,2.6) circle (0.45);\fill[orb] (3.6,2.6) circle (0.18);
+% the druid in a golden helm, hands raised
+\fill[robe,ink] (0,0) -- (0.4,1.6) .. controls (0.8,2.0) and (1.8,2.0) .. (2.2,1.6) -- (2.6,0) -- cycle;
+\fill[skin,ink] (0.6,1.7) .. controls (0.8,2.2) and (1.6,2.2) .. (1.9,1.7) -- cycle;
+\fill[skin,ink] (1.6,2.6) ellipse (0.45 and 0.55);\fill[hair,ink] (1.1,2.6) .. controls (1.0,1.8) and (1.3,1.6) .. (1.5,1.8) -- (1.3,2.6) -- cycle;
+\fill[gold,ink] (1.05,2.8) .. controls (1.0,3.8) and (2.2,3.9) .. (2.2,2.9) .. controls (2.0,3.2) and (1.3,3.2) .. (1.05,2.8);\draw[goldD,line width=.6pt] (1.2,3.2) .. controls (1.5,3.5) and (1.9,3.5) .. (2.05,3.2);
+\fill[ink] (1.85,2.7) ellipse (0.05 and 0.03);
+\fill[skin,ink] (2.2,1.4) -- (3.0,2.4) -- (3.15,2.9) -- (3.25,2.85) -- (3.2,2.4) -- (3.35,2.75) -- (3.4,2.6) -- (3.2,2.1) -- (2.4,1.2) -- cycle;
+\fill[gold,ink] (2.35,1.35) -- (2.6,1.6) -- (2.7,1.5) -- (2.45,1.25) -- cycle;
+\fill[skin,ink] (2.6,1.0) -- (3.4,1.8) -- (3.8,2.1) -- (3.85,2.0) -- (3.5,1.6) -- (2.8,0.8) -- cycle;
+\end{tikzpicture}\end{document}

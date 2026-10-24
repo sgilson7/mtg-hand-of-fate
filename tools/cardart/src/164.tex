@@ -1,0 +1,15 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{3a3220}\definecolor{body}{HTML}{5a4a2a}\definecolor{bodyL}{HTML}{8a7a4a}\definecolor{root}{HTML}{4a3a22}\definecolor{glow}{HTML}{6af04a}\definecolor{glowL}{HTML}{c8ffa8}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\fill[bg] (0,0) rectangle (6.16,4.52);
+% a great body of root and bark filling the frame
+\fill[body,ink] (0.4,0) .. controls (0.2,2.0) and (0.8,3.6) .. (1.8,4.2) .. controls (3.0,4.52) and (4.4,4.4) .. (5.2,3.6) .. controls (5.8,2.6) and (5.8,1.2) .. (5.6,0) -- cycle;
+\foreach \x in {1.0,1.6,...,5.2}{\draw[bodyL,line width=.8pt] (\x,0) .. controls (\x+0.2,1.6) and (\x-0.2,2.8) .. (\x+0.1,4.0);}
+\foreach \p in {{(0,3.0) .. controls (0.8,2.6) and (1.2,3.4) .. (1.8,3.0)},{(6.16,3.6) .. controls (5.4,3.2) and (5.0,3.8) .. (4.4,3.4)},{(0,1.2) .. controls (0.6,1.6) and (1.0,1.0) .. (1.4,1.4)}}{\draw[root,line width=4pt] \p;}
+% the guild charm glowing on its chest: a beetle of green light
+\fill[glow,opacity=.35] (3.0,2.0) circle (1.2);
+\fill[glow,ink] (3.0,2.0) ellipse (0.35 and 0.55);\draw[glowL,line width=1pt] (3.0,1.5) -- (3.0,2.5);
+\fill[glow,ink] (3.0,2.75) circle (0.18);
+\foreach \s in {-1,1}{\draw[glow,line width=2.4pt] (3.0+\s*0.3,2.4) .. controls (3.0+\s*0.9,2.8) and (3.0+\s*1.0,2.0) .. (3.0+\s*0.8,1.4);\draw[glow,line width=2pt] (3.0+\s*0.3,1.8) .. controls (3.0+\s*0.7,1.6) .. (3.0+\s*0.6,1.0);\draw[glow,line width=1.6pt] (3.0+\s*0.1,2.9) .. controls (3.0+\s*0.3,3.3) .. (3.0+\s*0.6,3.3);}
+\end{tikzpicture}\end{document}

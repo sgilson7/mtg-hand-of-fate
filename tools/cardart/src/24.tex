@@ -1,0 +1,19 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{d8d4c8}\definecolor{shell}{HTML}{f8d890}\definecolor{shellD}{HTML}{e08a3a}\definecolor{demon}{HTML}{2a2420}
+\definecolor{steel}{HTML}{b8b4ac}\definecolor{steelD}{HTML}{6a665e}\definecolor{skin}{HTML}{c89a7a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\fill[bg] (0,0) rectangle (6.16,4.52);
+% the bright shell of the sphere, its edge on fire
+\fill[shell,opacity=.7] (3.6,2.4) circle (2.3);
+\draw[shellD,line width=3pt] (1.5,1.2) arc (210:110:2.3);\draw[shell,line width=1.5pt] (1.55,1.25) arc (210:110:2.25);
+% demons clawing at it from outside
+\foreach \x/\y/\s in {0.3/3.6/1,0.6/2.6/1.1,0.5/1.5/1,1.4/0.6/1.2,2.4/0.4/1.1,3.6/0.5/1.2,4.8/0.6/1.1,5.6/1.6/1,5.6/3.3/.9}{\fill[demon] (\x,\y) ellipse ({0.35*\s} and {0.45*\s}); \fill[demon] (\x-0.2*\s,\y+0.35*\s) -- (\x-0.35*\s,\y+0.75*\s) -- (\x-0.05*\s,\y+0.4*\s) -- cycle; \fill[demon] (\x+0.2*\s,\y+0.35*\s) -- (\x+0.35*\s,\y+0.75*\s) -- (\x+0.05*\s,\y+0.4*\s) -- cycle;}
+\foreach \x/\y in {0.9/3.1,1.1/2.0,1.6/1.3}{\draw[demon,line width=2pt] (\x-0.4,\y-0.1) -- (\x,\y+0.1) -- (\x+0.15,\y+0.35);}
+% the knight inside, arm thrust out
+\fill[steelD,ink] (3.1,1.2) -- (3.3,2.4) -- (4.1,2.4) -- (4.3,1.2) -- (3.95,1.2) -- (3.7,1.9) -- (3.45,1.2) -- cycle;
+\fill[steel,ink] (3.25,2.35) .. controls (3.15,3.0) and (3.35,3.4) .. (3.7,3.45) .. controls (4.05,3.4) and (4.25,3.0) .. (4.15,2.35) -- cycle;
+\fill[steel,ink] (3.3,3.25) -- (2.2,3.1) -- (2.2,2.9) -- (3.3,3.0) -- cycle;\fill[skin,ink] (2.1,3.0) circle (0.12);
+\fill[steel,ink] (4.1,3.2) -- (4.6,2.7) -- (4.45,2.6) -- (4.0,3.0) -- cycle;
+\fill[skin,ink] (3.7,3.75) ellipse (0.2 and 0.24);\fill[steelD] (3.52,3.88) .. controls (3.6,4.05) and (3.8,4.05) .. (3.88,3.88) -- cycle;
+\end{tikzpicture}\end{document}

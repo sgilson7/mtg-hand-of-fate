@@ -1,0 +1,22 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{d8dcb8}\definecolor{bgD}{HTML}{8a9a6a}\definecolor{beast}{HTML}{2a2a24}\definecolor{bear}{HTML}{4a3a2a}\definecolor{deer}{HTML}{a8a88a}
+\definecolor{cloak}{HTML}{3a3a22}\definecolor{armor}{HTML}{8a8a7a}\definecolor{skin}{HTML}{f0c8a8}\definecolor{hair}{HTML}{c84a1a}\definecolor{plinth}{HTML}{b8b8a0}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[top color=bg,bottom color=bgD] (0,0) rectangle (6.16,4.52);
+\foreach \x in {0.4,0.9,5.0,5.6}{\fill[deer,opacity=.6] (\x,1.2) ellipse (0.25 and 0.15);\draw[deer,line width=1pt,opacity=.6] (\x+0.2,1.3) -- (\x+0.3,1.7);}
+% the huge legs of a beast striding past behind her
+\fill[beast,ink] (3.8,4.52) .. controls (3.6,3.6) and (4.0,2.8) .. (4.6,2.4) -- (4.4,1.4) -- (4.8,1.4) -- (5.2,2.4) .. controls (5.6,3.0) and (5.6,4.0) .. (5.4,4.52) -- cycle;
+\fill[beast,ink] (5.4,4.52) .. controls (5.8,3.8) and (6.16,3.4) .. (6.16,3.0) -- (6.16,4.52) -- cycle;
+% bears in the foreground
+\fill[bear,ink] (0,0) .. controls (0,0.8) and (0.6,1.0) .. (1.4,0.9) .. controls (2.0,0.8) and (2.4,0.4) .. (2.4,0) -- cycle;\fill[bear,ink] (0.4,0.9) circle (0.25);
+\fill[bear,ink] (4.4,0) .. controls (4.4,0.6) and (4.8,0.8) .. (5.4,0.8) .. controls (6.0,0.8) and (6.16,0.4) .. (6.16,0) -- cycle;\fill[bear,ink] (5.9,0.8) circle (0.22);
+\fill[plinth,ink] (1.8,0.3) rectangle (4.0,0.6);
+% the beastmaster, cloak billowing, one arm thrown up
+\fill[cloak,ink] (2.6,3.2) .. controls (1.8,2.8) and (1.0,1.6) .. (0.8,1.0) .. controls (1.6,1.2) and (2.2,0.8) .. (2.6,0.6) -- (3.6,0.6) .. controls (3.8,1.6) and (3.4,2.8) .. (3.2,3.2) -- cycle;
+\fill[armor,ink] (2.6,1.6) .. controls (2.5,2.4) and (2.7,3.0) .. (2.95,3.1) .. controls (3.2,3.0) and (3.3,2.4) .. (3.2,1.6) -- cycle;
+\fill[skin,ink] (2.7,1.6) -- (2.5,0.6) -- (2.7,0.6) -- (2.95,1.5) -- (3.1,0.6) -- (3.3,0.6) -- (3.2,1.6) -- cycle;
+\fill[armor,ink] (2.6,2.9) -- (1.9,3.8) -- (2.05,3.9) -- (2.75,3.1) -- cycle;\fill[skin,ink] (1.95,3.95) circle (0.12);
+\fill[skin,ink] (2.95,3.35) ellipse (0.16 and 0.2);
+\fill[hair,ink] (2.8,3.45) .. controls (2.6,3.9) and (3.0,4.2) .. (3.3,4.0) .. controls (3.6,3.8) and (3.4,3.4) .. (3.6,3.0) .. controls (3.3,3.2) and (3.15,3.3) .. (3.1,3.45) -- cycle;
+\end{tikzpicture}\end{document}

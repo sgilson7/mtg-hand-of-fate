@@ -1,0 +1,19 @@
+\input{../preamble}
+\definecolor{sky}{HTML}{c8c0b8}\definecolor{skyD}{HTML}{8a8080}\definecolor{copper}{HTML}{c8783a}\definecolor{copperD}{HTML}{8a4a22}\definecolor{coat}{HTML}{3a3a4a}\definecolor{skin}{HTML}{d8a888}
+\definecolor{hair}{HTML}{2a1e1a}\definecolor{orb}{HTML}{ffb040}\definecolor{orbD}{HTML}{2a1a1a}\definecolor{lens}{HTML}{8ad8e8}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[top color=sky,bottom color=skyD] (0,0) rectangle (6.16,4.52);
+% the copper cannon over his shoulder
+\fill[copper,ink] (3.6,3.0) -- (5.8,4.2) -- (6.16,3.6) -- (4.0,2.4) -- cycle;\fill[copperD,ink] (5.8,4.2) ellipse (0.25 and 0.35);\fill[lens] (5.85,4.1) circle (0.12);
+% the chemister in copper armour
+\fill[coat,ink] (1.4,0) -- (1.6,2.4) .. controls (1.8,3.0) and (3.8,3.0) .. (4.0,2.4) -- (4.4,0) -- cycle;
+\fill[copper,ink] (1.9,1.0) .. controls (1.8,2.2) and (2.2,2.7) .. (2.9,2.8) .. controls (3.6,2.7) and (3.9,2.2) .. (3.8,1.0) -- cycle;
+\fill[copperD,ink] (2.4,1.6) -- (2.9,2.4) -- (3.4,1.6) -- (2.9,1.0) -- cycle;
+\fill[copper,ink] (1.6,2.6) circle (0.4);\fill[copper,ink] (4.1,2.6) circle (0.4);
+\fill[copper,ink] (1.4,2.4) -- (0.8,3.2) -- (1.0,3.4) -- (1.7,2.7) -- cycle;
+\foreach \a in {60,90,120}{\fill[copperD,ink] (0.9,3.3) -- ++(\a:0.35) -- ++(\a-90:0.06) -- cycle;}
+\fill[orbD] (1.2,4.0) circle (0.28);\fill[orb] (1.2,4.0) circle (0.12);\draw[orb,line width=1pt] (1.2,4.0) circle (0.32);
+\fill[skin,ink] (2.9,3.25) ellipse (0.28 and 0.34);\fill[hair,ink] (2.62,3.35) .. controls (2.6,3.8) and (3.2,3.8) .. (3.18,3.35) .. controls (3.0,3.55) and (2.8,3.55) .. (2.62,3.35);
+\fill[ink] (2.8,3.3) circle (0.04);\fill[ink] (3.0,3.3) circle (0.04);\fill[hair] (2.9,3.0) ellipse (0.1 and 0.05);
+\end{tikzpicture}\end{document}

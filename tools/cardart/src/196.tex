@@ -1,0 +1,19 @@
+\input{../preamble}
+\definecolor{sky}{HTML}{5a8ad8}\definecolor{skyL}{HTML}{d8e8f8}\definecolor{cloud}{HTML}{f0f4f8}\definecolor{tower}{HTML}{e0e0e8}\definecolor{towerS}{HTML}{a8a8b8}
+\definecolor{wing}{HTML}{3a5ab0}\definecolor{wingL}{HTML}{8a9ad0}\definecolor{body}{HTML}{a88a5a}\definecolor{head}{HTML}{2a4ab0}\definecolor{beak}{HTML}{e8c05a}\definecolor{goblin}{HTML}{8a5a2a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[top color=sky,bottom color=skyL] (0,0) rectangle (6.16,4.52);
+\fill[cloud] (3.6,3.2) .. controls (4.4,3.8) and (5.6,3.4) .. (6.16,4.0) -- (6.16,2.6) .. controls (5.2,2.8) and (4.2,2.6) .. (3.6,3.2);
+% the white spire slanting across
+\fill[tower,ink] (6.16,2.2) -- (6.16,1.4) -- (2.8,0) -- (1.8,0) -- cycle;\foreach \t in {0.2,0.4,0.6,0.8}{\fill[towerS,ink] ({2.4+3.6*\t},{1.8*\t}) -- ++(0.15,0.25) -- ++(0.15,-0.1) -- ++(-0.1,-0.25) -- cycle;}
+\fill[tower,ink] (0,2.8) -- (0.6,4.52) -- (0,4.52) -- cycle;
+% the roc banking, wings raised high
+\fill[wing,ink] (2.7,2.5) .. controls (2.2,3.2) and (1.8,3.9) .. (1.7,4.52) -- (2.1,4.2) -- (2.3,4.52) -- (2.6,4.1) -- (2.9,4.52) -- (3.1,4.0) -- (3.4,4.3) -- (3.5,3.6) .. controls (3.5,3.1) and (3.4,2.8) .. (3.3,2.5) -- cycle;\foreach \x in {2.2,2.6,3.0}{\draw[wingL,line width=.7pt] (\x,4.2) -- (\x+0.4,2.7);}
+\fill[wing,ink] (2.4,2.2) -- (0.6,3.0) -- (1.0,2.6) -- (0.4,2.4) -- (2.2,1.8) -- cycle;
+\fill[body,ink] (2.2,1.8) .. controls (2.2,2.6) and (3.0,2.8) .. (3.6,2.4) .. controls (3.9,2.0) and (3.6,1.6) .. (3.2,1.6) -- cycle;
+\fill[head,ink] (3.6,2.2) ellipse (0.3 and 0.24);\fill[beak,ink] (3.85,2.15) -- (4.15,1.95) -- (3.85,2.0) -- cycle;\fill[beak] (3.62,2.25) circle (0.04);
+% the goblin dangling in its talons
+\draw[body,line width=1.4pt] (2.8,1.6) -- (2.7,1.2);\fill[goblin,ink] (2.5,0.6) .. controls (2.4,1.0) and (2.6,1.3) .. (2.8,1.2) .. controls (3.0,1.0) and (2.9,0.6) .. (2.7,0.5) -- cycle;
+\fill[goblin,ink] (2.75,1.3) circle (0.12);\fill[beak,ink] (2.9,0.5) circle (0.12);
+\end{tikzpicture}\end{document}

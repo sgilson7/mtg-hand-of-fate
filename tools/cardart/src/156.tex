@@ -1,0 +1,19 @@
+\input{../preamble}
+\definecolor{sky}{HTML}{c8b0a0}\definecolor{smoke}{HTML}{6a6a6a}\definecolor{fire}{HTML}{e84a1a}\definecolor{tower}{HTML}{e8d4b0}\definecolor{roof}{HTML}{c86a3a}\definecolor{roofD}{HTML}{8a4a2a}
+\definecolor{bird}{HTML}{8a5a2a}\definecolor{birdL}{HTML}{c89a5a}\definecolor{beak}{HTML}{e8a83a}\definecolor{steel}{HTML}{c8d0d8}\definecolor{cape}{HTML}{3a4a8a}\definecolor{orb}{HTML}{4a7ad8}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\fill[sky] (0,0) rectangle (6.16,4.52);
+\fill[smoke,opacity=.7] (0,2.0) .. controls (0.6,3.4) and (1.6,4.0) .. (2.4,4.52) -- (0,4.52) -- cycle;\fill[fire] (0.4,2.2) .. controls (0.8,2.8) and (1.2,2.6) .. (1.4,3.0) .. controls (1.0,2.2) and (0.8,1.8) .. (0.4,2.2);
+% the spire with a patterned roof
+\fill[tower,ink] (3.4,0) -- (3.6,2.6) -- (6.16,2.4) -- (6.16,0) -- cycle;\foreach \x in {3.9,4.5,5.1,5.7}{\fill[roofD,ink] (\x,0.4) -- (\x,1.2) arc (180:0:0.15) -- (\x+0.3,0.4) -- cycle;}
+\fill[roof,ink] (3.6,2.6) -- (4.8,4.52) -- (6.0,2.4) -- cycle;\foreach \i in {1,2,3,4}{\draw[roofD,line width=.6pt] (3.6+\i*0.24,2.6+\i*0.38) -- (6.0-\i*0.24,2.4+\i*0.42);}
+% the griffin, goggled and harnessed, carrying the soldier on a spear
+\fill[bird,ink] (1.4,2.6) .. controls (1.6,3.4) and (2.6,3.6) .. (3.2,3.2) .. controls (3.6,2.8) and (3.4,2.2) .. (2.8,2.2) -- cycle;
+\fill[birdL,ink] (2.2,3.6) -- (1.0,4.52) -- (2.0,4.52) -- (2.8,3.6) -- cycle;
+\fill[steel,ink] (1.6,3.0) .. controls (1.8,3.4) and (2.4,3.4) .. (2.6,3.0) -- (2.4,2.6) -- (1.8,2.6) -- cycle;\fill[orb] (2.1,3.0) circle (0.1);
+\fill[bird,ink] (3.0,3.2) circle (0.3);\fill[beak,ink] (3.25,3.0) -- (3.6,2.8) -- (3.2,2.85) -- cycle;\fill[steel,ink] (2.95,3.3) circle (0.1);\fill[orb] (2.95,3.3) circle (0.05);
+\draw[ink,line width=1.2pt] (1.2,2.2) -- (3.4,2.0);
+\fill[cape,ink] (1.4,2.1) -- (0.6,1.4) -- (0.6,0.8) -- (1.4,1.4) -- cycle;
+\fill[steel,ink] (1.5,2.1) -- (1.4,1.2) -- (1.2,0.6) -- (1.4,0.6) -- (1.65,1.2) -- (1.8,0.6) -- (2.0,0.6) -- (1.9,1.3) -- (1.8,2.1) -- cycle;\fill[steel,ink] (1.65,2.25) circle (0.15);
+\end{tikzpicture}\end{document}

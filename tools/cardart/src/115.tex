@@ -1,0 +1,19 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{c8d07a}\definecolor{bgD}{HTML}{4a5a2a}\definecolor{arch}{HTML}{8a9a5a}\definecolor{thorn}{HTML}{2a2a1a}\definecolor{robe}{HTML}{6a3a22}
+\definecolor{robeL}{HTML}{9a5a32}\definecolor{skin}{HTML}{c8906a}\definecolor{hair}{HTML}{3a2416}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[inner color=bg,outer color=bgD] (0,0) rectangle (6.16,4.52);
+\fill[arch,opacity=.6] (0.4,0) -- (0.4,3.0) arc (180:0:0.6) -- (1.6,0) -- cycle;\fill[arch,opacity=.6] (4.6,0) -- (4.6,3.2) arc (180:0:0.6) -- (5.8,0) -- cycle;
+% the druid with arms raised, calling the thorns
+\fill[robe,ink] (2.2,0) .. controls (2.3,1.4) and (2.4,2.4) .. (2.7,2.9) -- (3.5,2.9) .. controls (3.8,2.4) and (3.9,1.4) .. (4.0,0) -- cycle;
+\fill[robeL,ink] (2.7,2.9) -- (3.1,1.8) -- (3.5,2.9) -- cycle;
+\fill[robe,ink] (2.8,2.8) .. controls (2.3,2.8) and (2.0,3.1) .. (1.8,3.4) -- (2.0,3.55) .. controls (2.2,3.3) and (2.5,3.1) .. (2.8,3.1) -- cycle;
+\fill[robe,ink] (3.4,2.8) .. controls (3.9,2.8) and (4.2,3.1) .. (4.4,3.4) -- (4.2,3.55) .. controls (4.0,3.3) and (3.7,3.1) .. (3.4,3.1) -- cycle;
+\fill[skin,ink] (1.85,3.55) circle (0.13);\fill[skin,ink] (4.35,3.55) circle (0.13);
+\fill[skin,ink] (3.1,3.25) ellipse (0.22 and 0.28);
+\fill[hair,ink] (2.85,3.3) .. controls (2.8,3.8) and (3.4,3.8) .. (3.35,3.3) -- (3.45,2.8) -- (3.3,3.1) -- (2.9,3.1) -- (2.75,2.8) -- cycle;
+% thorny branches coiling round him
+\foreach \p in {{(0,0.6) .. controls (1.2,1.4) and (2.0,0.4) .. (3.0,1.2) .. controls (3.8,1.8) and (4.8,0.8) .. (6.16,1.4)},{(0.6,4.52) .. controls (1.2,3.4) and (1.0,2.4) .. (1.8,1.6)},{(5.4,4.52) .. controls (5.0,3.6) and (5.2,2.4) .. (4.4,1.6)},{(0,2.4) .. controls (0.8,2.2) and (1.4,2.8) .. (2.0,2.4)},{(6.16,2.8) .. controls (5.4,2.4) and (4.8,3.0) .. (4.2,2.6)}}{\draw[thorn,line width=1.6pt] \p;}
+\foreach \x/\y/\a in {1.0/1.1/60,2.2/0.8/120,3.6/1.5/40,4.8/1.0/110,1.2/3.4/20,1.4/2.4/160,5.1/3.2/150,5.0/2.2/30,0.7/2.4/80,5.6/2.6/100}{\fill[thorn] (\x,\y) -- ++(\a:0.18) -- ++(\a+150:0.1) -- cycle;}
+\end{tikzpicture}\end{document}

@@ -1,0 +1,18 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{c83a3a}\definecolor{bgL}{HTML}{f0a0a0}\definecolor{crowd}{HTML}{1e1418}\definecolor{body}{HTML}{8a1a1a}\definecolor{bone}{HTML}{e8dcc8}\definecolor{fire}{HTML}{f08a1a}\definecolor{chain}{HTML}{2a2a2a}\definecolor{check}{HTML}{3a1a2a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[top color=bgL,bottom color=bg] (0,0) rectangle (6.16,4.52);
+\foreach \x in {0.4,5.6}{\foreach \i in {0,...,14}{\draw[chain,line width=1.4pt] (\x,4.52-\i*0.3) ellipse (0.08 and 0.14);}}
+% the ringleader on stage, skull-faced, torches held high
+\fill[body,ink] (2.6,1.4) -- (2.7,3.0) .. controls (2.8,3.3) and (3.4,3.3) .. (3.5,3.0) -- (3.6,1.4) -- cycle;
+\foreach \y in {2.0,2.3,2.6}{\draw[bone,line width=1pt] (2.75,\y) -- (3.45,\y);}
+\fill[bone,ink] (3.1,3.5) ellipse (0.2 and 0.24);\fill[crowd] (3.02,3.55) circle (0.05);\fill[crowd] (3.18,3.55) circle (0.05);
+\fill[body,ink] (2.85,3.7) -- (2.7,4.1) -- (3.0,3.8) -- cycle;\fill[body,ink] (3.35,3.7) -- (3.5,4.1) -- (3.2,3.8) -- cycle;
+\fill[body,ink] (2.7,2.9) -- (2.0,3.8) -- (2.15,3.9) -- (2.85,3.1) -- cycle;\fill[body,ink] (3.5,2.9) -- (4.2,3.8) -- (4.05,3.9) -- (3.35,3.1) -- cycle;
+\fill[fire] (2.0,4.0) .. controls (1.8,4.3) and (2.0,4.52) .. (2.1,4.52) .. controls (2.3,4.3) and (2.2,4.0) .. (2.0,4.0);\fill[fire] (4.15,4.0) .. controls (3.95,4.3) and (4.15,4.52) .. (4.25,4.52) .. controls (4.45,4.3) and (4.35,4.0) .. (4.15,4.0);
+\fill[check] (2.4,1.0) rectangle (3.8,1.4);
+% the crowd's heads in silhouette below
+\fill[crowd] (0,0) -- (0,1.4) -- (6.16,1.6) -- (6.16,0) -- cycle;
+\foreach \x/\y/\r in {0.6/1.4/0.4,1.4/1.6/0.45,2.4/1.4/0.42,3.4/1.5/0.4,4.4/1.6/0.46,5.4/1.4/0.42}{\fill[crowd] (\x,\y) circle (\r);}
+\end{tikzpicture}\end{document}

@@ -1,0 +1,15 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{d8d4b8}\definecolor{bgD}{HTML}{8a8a6a}\definecolor{stone}{HTML}{8a8a6a}\definecolor{stoneL}{HTML}{c8c8a8}\definecolor{stoneD}{HTML}{4a4a3a}\definecolor{leaf}{HTML}{8ab84a}\definecolor{gold}{HTML}{c8b06a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[top color=bg,bottom color=bgD] (0,0) rectangle (6.16,4.52);
+\draw[bgD,line width=2pt,opacity=.5] (3.4,0.6) ellipse (2.4 and 0.5);
+% the Selesnya key-rune: a stone rod with a tree-sun crest
+\fill[stone,ink] (2.2,2.0) -- (3.2,0) -- (3.8,0) -- (2.6,2.2) -- cycle;
+\foreach \t in {0.3,0.6}{\fill[stoneD,ink] ({2.4+1.0*\t},{2.0-2.0*\t}) -- ++(0.4,0.1) -- ++(0.0,-0.2) -- ++(-0.4,-0.1) -- cycle;}
+\fill[stone,ink] (2.4,3.0) circle (0.95);\fill[stoneL,ink] (2.4,3.0) circle (0.7);
+\fill[leaf,ink] (2.4,3.0) circle (0.35);
+\foreach \a in {0,30,...,330}{\draw[gold,line width=1.6pt] (2.4,3.0) ++(\a:0.4) -- ++(\a:0.25);}
+\fill[stone,ink] (1.8,3.8) -- (2.0,4.4) -- (2.4,4.2) -- (2.8,4.4) -- (3.0,3.8) -- cycle;
+\fill[stoneD,ink] (3.2,3.4) -- (3.5,3.2) -- (3.4,2.6) -- (3.1,2.8) -- cycle;
+\end{tikzpicture}\end{document}

@@ -1,0 +1,20 @@
+\input{../preamble}
+\definecolor{sky}{HTML}{3a7a7a}\definecolor{skyL}{HTML}{c8a860}\definecolor{city}{HTML}{1e3a4a}\definecolor{skin}{HTML}{c8902a}\definecolor{skinL}{HTML}{f0c860}\definecolor{skinD}{HTML}{6a4a1a}
+\definecolor{eye}{HTML}{7af05a}\definecolor{spark}{HTML}{ffe08a}\definecolor{shaft}{HTML}{3a2a1e}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[left color=sky,right color=skyL] (0,0) rectangle (6.16,4.52);
+\fill[city] (0,0) -- (0,3.0) -- (0.4,3.4) -- (0.8,3.0) -- (0.8,2.4) -- (1.3,2.6) -- (1.3,0) -- cycle;\fill[city] (4.4,0) -- (4.6,1.6) -- (5.0,1.9) -- (5.4,1.6) -- (5.6,0) -- cycle;
+% arrows glancing off his metal skin
+\draw[shaft,line width=1.2pt] (6.16,3.9) -- (4.0,2.8);\fill[shaft] (4.0,2.8) -- (4.25,2.85) -- (4.15,3.0) -- cycle;
+\draw[shaft,line width=1.2pt] (6.16,0.3) -- (4.2,1.5);\draw[shaft,line width=1.2pt] (3.9,3.4) -- (3.5,4.3);
+\foreach \x/\y in {3.9,2.7/3.8/2.9,4.1/1.6,3.95/1.75,3.7/3.1}{\fill[spark] (\x,\y) circle (0.04);}
+% the goblin, gleaming gold
+\fill[skin,ink] (2.0,0) -- (2.2,1.0) .. controls (2.0,1.8) and (2.2,2.6) .. (2.7,2.9) .. controls (3.3,2.9) and (3.6,2.2) .. (3.5,1.4) -- (3.6,0) -- (3.2,0) -- (3.0,0.9) -- (2.6,0.9) -- (2.4,0) -- cycle;
+\fill[skinL,opacity=.7] (2.6,1.4) .. controls (2.7,2.2) and (3.0,2.5) .. (3.2,2.2) .. controls (3.1,1.7) and (2.9,1.4) .. (2.6,1.4);
+\fill[skin,ink] (2.2,2.5) .. controls (1.8,2.0) and (1.7,1.4) .. (1.9,0.9) -- (2.1,1.0) .. controls (2.0,1.5) and (2.1,2.0) .. (2.4,2.4) -- cycle;
+\fill[skin,ink] (2.6,3.4) .. controls (2.3,3.1) and (2.4,2.8) .. (2.8,2.8) .. controls (3.2,2.8) and (3.3,3.2) .. (3.0,3.5) -- cycle;
+\fill[skin,ink] (2.6,3.4) -- (1.9,4.3) -- (2.75,3.6) -- cycle;\fill[skin,ink] (3.0,3.5) -- (3.5,4.4) -- (3.15,3.4) -- cycle;
+\fill[skin,ink] (2.75,3.1) -- (2.45,2.85) -- (2.8,2.95) -- cycle;
+\fill[eye] (2.7,3.25) circle (0.05);\fill[eye] (2.95,3.3) circle (0.05);
+\end{tikzpicture}\end{document}

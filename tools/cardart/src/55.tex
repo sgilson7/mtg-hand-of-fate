@@ -1,0 +1,20 @@
+\input{../preamble}
+\definecolor{sky}{HTML}{e8dcc0}\definecolor{city}{HTML}{a89a80}\definecolor{hide}{HTML}{3a6ab0}\definecolor{hideD}{HTML}{1e3a6a}\definecolor{metal}{HTML}{c8b890}
+\definecolor{metalD}{HTML}{7a6a4a}\definecolor{orb}{HTML}{8ad8ff}\definecolor{teeth}{HTML}{f0e8d8}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\fill[sky] (0,0) rectangle (6.16,4.52);
+\fill[city,opacity=.6] (3.6,0) -- (3.6,1.4) -- (6.16,2.2) -- (6.16,0) -- cycle;\foreach \x in {4.0,4.6,5.2,5.8}{\draw[metalD,line width=.6pt,opacity=.6] (\x,0) -- (\x,1.4+\x*0.12-0.4);}
+% the drake diving down to the right, armoured with brass plates
+\fill[hide,ink] (0.4,4.0) .. controls (1.4,4.3) and (2.8,3.8) .. (3.6,3.0) .. controls (4.2,2.4) and (4.6,1.6) .. (4.8,1.0) -- (4.2,0.9) .. controls (3.8,1.6) and (3.0,2.2) .. (2.2,2.6) .. controls (1.4,3.0) and (0.8,3.4) .. (0.4,4.0);
+\foreach \x/\y in {1.2/3.7,1.9/3.5,2.6/3.2,3.2/2.8,3.7/2.3}{\fill[metal,ink] (\x,\y) ellipse (0.32 and 0.22);\fill[metalD] (\x,\y) ellipse (0.12 and 0.08);}
+\fill[orb,ink] (1.9,3.6) circle (0.12);\fill[orb,ink] (3.2,2.9) circle (0.12);
+% small fan wings
+\fill[metal,ink] (2.2,3.8) -- (2.8,4.52) -- (3.4,4.52) -- (2.8,3.6) -- cycle;\fill[hideD,ink] (2.6,4.1) -- (3.0,4.52) -- (3.15,4.52) -- (2.75,3.95) -- cycle;
+% claws reaching forward
+\foreach \x in {2.6,3.6}{\fill[hideD,ink] (\x,2.6) -- (\x-0.3,1.6) -- (\x-0.1,1.55) -- (\x+0.2,2.5) -- cycle;\fill[teeth,ink] (\x-0.35,1.6) -- (\x-0.4,1.4) -- (\x-0.2,1.55) -- cycle;}
+% head, jaws open
+\fill[hideD,ink] (4.2,0.9) .. controls (4.3,1.4) and (4.9,1.5) .. (5.3,1.1) -- (5.6,0.5) -- (5.0,0.7) -- (4.9,0.3) -- (4.5,0.6) -- cycle;
+\fill[metal,ink] (4.4,1.2) .. controls (4.6,1.5) and (5.0,1.5) .. (5.2,1.2) -- (4.8,1.0) -- cycle;\fill[orb,ink] (4.8,1.25) circle (0.12);
+\foreach \x in {4.95,5.15,5.35}{\fill[teeth] (\x,0.72) -- (\x+0.06,0.55) -- (\x+0.12,0.68) -- cycle;}
+\end{tikzpicture}\end{document}

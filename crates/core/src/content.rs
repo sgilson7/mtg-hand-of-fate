@@ -14,6 +14,7 @@ pub mod ty {
     pub const ENCHANTMENT: u8 = 8;
     pub const ARTIFACT: u8 = 16;
     pub const LAND: u8 = 32;
+    pub const PLANESWALKER: u8 = 64;
 }
 
 /// What a card is as an encounter on the map, from its type.
@@ -68,7 +69,8 @@ pub struct Card {
 
 impl Card {
     pub fn kind(&self) -> Kind {
-        if self.types & ty::CREATURE != 0 {
+        // a planeswalker is met as a fight, like a creature
+        if self.types & (ty::CREATURE | ty::PLANESWALKER) != 0 {
             Kind::Creature
         } else if self.types & ty::LAND != 0 {
             Kind::Land
@@ -155,6 +157,7 @@ pub fn parse(cards_json: &str) -> Result<Vec<Card>, String> {
                 "Enchantment" => ty::ENCHANTMENT,
                 "Artifact" => ty::ARTIFACT,
                 "Land" => ty::LAND,
+                "Planeswalker" => ty::PLANESWALKER,
                 other => {
                     return Err(format!(
                         "The card \"{}\" has a type \"{other}\" this game has no place for.",
@@ -221,7 +224,7 @@ mod tests {
     #[test]
     fn every_card_of_the_region_loads_with_rules() {
         let cards = for_tests();
-        assert_eq!(cards.len(), 108);
+        assert_eq!(cards.len(), 254);
         let niv = &cards[find(&cards, "Niv-Mizzet, Dracogenius")];
         assert_eq!((niv.power, niv.toughness, niv.value), (5, 5, 6));
         assert_eq!(niv.kind(), Kind::Creature);
@@ -243,9 +246,9 @@ mod tests {
     #[test]
     fn a_card_without_rules_is_refused_by_name() {
         let bad =
-            include_str!("../../../data/cards.json").replacen("\"Cobblebrute\"", "\"Worldspine Wurm\"", 1);
+            include_str!("../../../data/cards.json").replacen("\"Cobblebrute\"", "\"Grizzly Bears\"", 1);
         let e = parse(&bad).unwrap_err();
-        assert_eq!(e, "The card \"Worldspine Wurm\" has no rules in this game yet.");
+        assert_eq!(e, "The card \"Grizzly Bears\" has no rules in this game yet.");
     }
 
     #[test]

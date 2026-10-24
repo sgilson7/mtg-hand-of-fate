@@ -1,0 +1,17 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{2a3020}\definecolor{bgL}{HTML}{5a6a4a}\definecolor{coil}{HTML}{1e1e18}\definecolor{coilL}{HTML}{4a4a3a}\definecolor{skin}{HTML}{c8c8b0}\definecolor{gold}{HTML}{e8b840}\definecolor{goldD}{HTML}{8a5a1a}\definecolor{eye}{HTML}{e8e8d0}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\fill[bg] (0,0) rectangle (6.16,4.52);\shade[inner color=bgL,outer color=bg] (3.0,2.6) circle (3.0);
+% snake-hair coiling out round her
+\foreach \a/\l in {20/2.2,50/2.6,90/2.4,130/2.6,160/2.2,200/2.4,340/2.4}{\draw[ink,line width=6pt] (3.0,3.4) .. controls ++(\a+30:{\l*0.5}) and ++(\a-40:-0.5) .. ++(\a:\l);\draw[coil,line width=4.6pt] (3.0,3.4) .. controls ++(\a+30:{\l*0.5}) and ++(\a-40:-0.5) .. ++(\a:\l);}
+% the gorgon holding up the golden skull she found
+\fill[skin,ink] (2.0,0) .. controls (2.0,1.4) and (2.4,2.6) .. (3.0,2.8) .. controls (3.6,2.6) and (4.0,1.4) .. (4.0,0) -- cycle;
+\fill[skin,ink] (3.0,3.4) ellipse (0.36 and 0.46);
+\fill[eye] (2.86,3.5) ellipse (0.08 and 0.04);\fill[eye] (3.14,3.5) ellipse (0.08 and 0.04);\fill[coil] (3.0,3.1) ellipse (0.1 and 0.04);
+\draw[goldD,line width=.8pt] (2.4,2.7) .. controls (2.8,2.2) and (3.2,2.2) .. (3.6,2.7);
+\fill[coil,ink] (3.8,1.4) .. controls (4.4,1.6) and (4.6,2.2) .. (4.2,2.4) -- (3.6,2.0) -- cycle;
+\foreach \a in {100,120,140}{\fill[coil] (4.2,2.4) -- ++(\a:0.4) -- ++(\a-90:0.06) -- cycle;}
+\fill[gold,ink] (3.1,2.0) .. controls (2.8,2.0) and (2.7,1.6) .. (2.8,1.4) -- (3.4,1.4) .. controls (3.5,1.6) and (3.4,2.0) .. (3.1,2.0);
+\fill[goldD] (2.98,1.75) circle (0.06);\fill[goldD] (3.22,1.75) circle (0.06);\fill[goldD] (2.95,1.45) rectangle (3.25,1.5);
+\end{tikzpicture}\end{document}

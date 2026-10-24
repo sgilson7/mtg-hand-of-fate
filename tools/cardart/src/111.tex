@@ -1,0 +1,18 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{e8783a}\definecolor{bgL}{HTML}{f8c070}\definecolor{city}{HTML}{8a4a2a}\definecolor{fire}{HTML}{f84a1a}\definecolor{bolt}{HTML}{d8ecff}\definecolor{boltD}{HTML}{4a8ae8}
+\definecolor{goblin}{HTML}{3a2a2a}\definecolor{metal}{HTML}{5a5a6a}\definecolor{plinth}{HTML}{6a3a2a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[top color=bgL,bottom color=bg] (0,0) rectangle (6.16,4.52);
+\fill[city,opacity=.6] (0,1.6) -- (0,3.6) -- (0.6,3.6) -- (0.6,4.2) -- (1.2,4.2) -- (1.4,1.6) -- cycle;\fill[city,opacity=.6] (4.6,1.6) -- (4.6,3.8) -- (5.2,4.52) -- (6.16,4.2) -- (6.16,1.6) -- cycle;
+% a statue on a plinth, struck and crackling
+\fill[plinth,ink] (1.6,1.2) rectangle (2.6,2.2);\fill[metal,ink] (1.8,2.2) -- (1.9,3.6) -- (2.3,3.6) -- (2.4,2.2) -- cycle;\fill[metal,ink] (2.1,3.8) circle (0.2);
+\foreach \p in {{(2.1,4.52) -- (1.8,3.8) -- (2.2,3.4) -- (1.7,2.6) -- (2.1,2.0)},{(1.4,3.2) -- (2.0,2.8) -- (1.6,2.3)}}{\draw[boltD,line width=2.5pt] \p;\draw[bolt,line width=1pt] \p;}
+% a smashed machine at the right, sparking
+\fill[metal,ink] (4.4,0.6) rectangle (6.16,2.2);\fill[metal,ink] (4.8,2.2) -- (5.2,3.0) -- (6.16,2.8) -- (6.16,2.2) -- cycle;
+\foreach \p in {{(5.0,3.0) -- (5.4,3.6) -- (5.1,3.9) -- (5.6,4.4)},{(5.6,2.6) -- (6.0,3.2) -- (5.8,3.6)}}{\draw[boltD,line width=2.5pt] \p;\draw[bolt,line width=1pt] \p;}
+% fire along the street and a goblin running off
+\fill[fire,opacity=.85] (0,0) -- (0,1.2) .. controls (1.4,1.6) and (3.2,1.0) .. (4.4,1.4) -- (4.4,0) -- cycle;
+\fill[goblin,ink] (2.8,0.2) -- (3.0,1.2) -- (3.5,1.2) -- (3.7,0.2) -- (3.4,0.2) -- (3.25,0.8) -- (3.1,0.2) -- cycle;\fill[goblin,ink] (3.25,1.4) circle (0.2);
+\fill[goblin,ink] (3.0,1.2) -- (2.5,1.6) -- (2.6,1.7) -- (3.1,1.3) -- cycle;\fill[goblin,ink] (3.5,1.1) -- (3.9,0.8) -- (3.95,0.9) -- (3.55,1.2) -- cycle;
+\end{tikzpicture}\end{document}

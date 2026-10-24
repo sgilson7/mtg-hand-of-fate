@@ -1,0 +1,18 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{e8d8c0}\definecolor{bgD}{HTML}{b8a088}\definecolor{wurm}{HTML}{8a6a3a}\definecolor{wurmL}{HTML}{c8a060}\definecolor{plate}{HTML}{e8ecf0}\definecolor{plateS}{HTML}{a8b0b8}\definecolor{debris}{HTML}{4a3a2a}\definecolor{street}{HTML}{8a7a6a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[top color=bg,bottom color=bgD] (0,0) rectangle (6.16,4.52);
+\fill[street] (0,0) -- (6.16,0) -- (6.16,0.6) -- (0,0.4) -- cycle;
+% a second wurm arching in the distance
+\draw[wurmL,line width=10pt,opacity=.6] (0,1.2) .. controls (0.6,2.8) and (1.6,2.4) .. (1.4,1.6) .. controls (1.2,0.8) and (2.0,0.6) .. (2.4,1.0);
+% the armoured wurm bursting up through the street
+\fill[wurm,ink] (2.6,0) .. controls (2.7,1.2) and (2.8,2.2) .. (3.0,2.8) -- (4.4,2.8) .. controls (4.4,2.0) and (4.6,1.0) .. (5.0,0) -- cycle;
+\foreach \y in {0.4,0.8,1.2,1.6,2.0,2.4}{\draw[wurmL,line width=.9pt] (2.7+\y*0.1,\y) -- (4.8-\y*0.15,\y+0.2);}
+\fill[plate,ink] (2.8,2.6) .. controls (2.6,3.4) and (3.0,4.2) .. (3.7,4.4) .. controls (4.4,4.2) and (4.6,3.4) .. (4.5,2.6) .. controls (4.0,2.3) and (3.3,2.3) .. (2.8,2.6);
+\draw[plateS,line width=1pt] (3.7,4.3) -- (3.7,2.5);\draw[plateS,line width=.8pt] (3.0,2.9) .. controls (3.4,3.1) and (4.0,3.1) .. (4.4,2.9);
+\fill[plateS,ink] (3.1,2.6) .. controls (3.4,2.2) and (4.0,2.2) .. (4.3,2.6) -- (4.1,2.4) -- (3.3,2.4) -- cycle;
+% debris and a flung soldier
+\foreach \x/\y in {2.4/3.2,2.0/3.8,2.8/4.3,4.8/3.6,5.2/3.0,5.6/3.8,4.9/4.3,2.2/2.6,5.4/2.4}{\fill[debris] (\x,\y) -- (\x+0.12,\y+0.08) -- (\x+0.15,\y-0.06) -- (\x+0.03,\y-0.1) -- cycle;}
+\fill[debris,ink] (2.2,4.0) -- (2.5,4.3) -- (2.6,4.2) -- (2.3,3.9) -- cycle;\fill[debris] (2.6,4.35) circle (0.07);\draw[debris,line width=.8pt] (2.3,4.0) -- (2.1,4.2);
+\end{tikzpicture}\end{document}

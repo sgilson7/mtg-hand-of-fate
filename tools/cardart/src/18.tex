@@ -1,0 +1,25 @@
+\input{../preamble}
+\definecolor{sky}{HTML}{c8d8d0}\definecolor{trees}{HTML}{4a7a3a}\definecolor{treesD}{HTML}{2e5426}\definecolor{lake}{HTML}{6aa0b0}
+\definecolor{grass}{HTML}{5a9a3a}\definecolor{pillar}{HTML}{e8e4dc}\definecolor{pillarS}{HTML}{a8a49c}\definecolor{dome}{HTML}{c89a6a}
+\definecolor{glow}{HTML}{c0f0d8}\definecolor{robe}{HTML}{f4f0e8}\definecolor{skin}{HTML}{e8c8b0}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\fill[sky] (0,0) rectangle (6.16,4.52);
+\fill[treesD] (0,1.4) .. controls (0.8,2.6) and (2.0,2.3) .. (3.0,2.5) .. controls (4.0,2.8) and (5.2,2.3) .. (6.16,2.6) -- (6.16,1.4) -- cycle;
+\fill[trees] (0.6,1.4) .. controls (1.0,2.0) and (1.6,2.1) .. (2.0,1.9) -- (2.0,1.4) -- cycle;
+\fill[dome,ink] (2.2,2.4) arc (180:0:0.3) -- cycle;\fill[dome,ink] (2.2,2.0) rectangle (2.8,2.4);
+\fill[lake] (0,1.1) rectangle (6.16,1.5);
+\fill[grass] (0,0) -- (0,1.15) .. controls (2,1.2) and (4,1.1) .. (6.16,1.2) -- (6.16,0) -- cycle;
+% the ring of columns and their roof
+\fill[pillarS,ink] (0,4.0) -- (6.16,4.0) -- (6.16,4.52) -- (0,4.52) -- cycle;
+\fill[pillar,ink] (0.3,4.0) .. controls (2.0,3.5) and (4.2,3.5) .. (5.9,4.0) -- cycle;
+\foreach \x/\w in {0.15/0.45,1.15/0.35,4.65/0.35,5.5/0.45}{\fill[pillar,ink] (\x,0.2) rectangle (\x+\w,4.0);\draw[pillarS,line width=.5pt] (\x+\w*0.33,0.25) -- (\x+\w*0.33,3.95);\fill[pillarS,ink] (\x-0.08,3.75) rectangle (\x+\w+0.08,3.95);\fill[pillarS,ink] (\x-0.08,0.1) rectangle (\x+\w+0.08,0.3);}
+\foreach \x in {1.9,3.9}{\fill[pillar,ink] (\x,1.0) rectangle (\x+0.25,3.65);}
+% the soul rising in a column of light
+\fill[glow,opacity=.6] (2.9,0.9) .. controls (2.6,2.0) and (3.4,2.8) .. (2.8,4.52) -- (3.6,4.52) .. controls (3.9,3.0) and (3.0,2.0) .. (3.3,0.9) -- cycle;
+\foreach \y in {1.3,1.9,2.5,3.1,3.7}{\draw[white,line width=.8pt,opacity=.8] (2.95,\y) .. controls (3.3,\y+0.2) .. (3.1,\y+0.45);}
+\foreach \x/\y in {2.7/2.2,3.6/2.8,2.8/3.4,3.5/1.7,3.3/4.0}{\fill[white] (\x,\y) circle (0.04);}
+% the woman lying at rest
+\fill[robe,ink] (1.8,0.55) .. controls (2.4,0.9) and (3.4,0.85) .. (4.2,0.65) .. controls (4.0,0.45) and (2.6,0.35) .. (1.8,0.55);
+\fill[skin,ink] (4.25,0.7) circle (0.13);\fill[skin,ink] (1.6,0.5) -- (1.85,0.6) -- (1.85,0.5) -- cycle;
+\end{tikzpicture}\end{document}

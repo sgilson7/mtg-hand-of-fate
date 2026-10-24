@@ -1,0 +1,15 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{2a2018}\definecolor{bgL}{HTML}{6a5038}\definecolor{metal}{HTML}{4a3e32}\definecolor{metalL}{HTML}{8a6a4a}\definecolor{coat}{HTML}{2a3a6a}\definecolor{skin}{HTML}{d8a888}
+\definecolor{bolt}{HTML}{ff8a3a}\definecolor{boltL}{HTML}{ffe0a0}\definecolor{lamp}{HTML}{ffc050}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\fill[bg] (0,0) rectangle (6.16,4.52);\shade[inner color=bgL,outer color=bg] (3.0,3.0) circle (3.0);
+\fill[metal,ink] (0,1.6) rectangle (1.2,4.52);\fill[metal,ink] (4.8,0) rectangle (6.16,4.52);\foreach \y in {2.0,3.0,4.0}{\fill[lamp] (5.1,\y) circle (0.08);\fill[lamp] (0.6,\y) circle (0.08);}
+\draw[metalL,line width=3pt] (1.2,3.6) .. controls (2.0,4.2) and (3.6,4.4) .. (4.8,3.8);
+% the mage, head flung back, sparks of thought crackling off him
+\fill[coat,ink] (1.8,0) .. controls (1.8,1.4) and (2.2,2.4) .. (2.8,2.6) -- (3.4,2.6) .. controls (4.0,2.4) and (4.4,1.4) .. (4.4,0) -- cycle;
+\fill[coat,ink] (3.4,2.4) -- (4.2,3.0) -- (4.4,2.8) -- (3.6,2.2) -- cycle;\fill[skin,ink] (4.35,2.95) circle (0.13);
+\fill[coat,ink] (2.8,2.4) -- (2.0,3.0) -- (1.9,2.8) -- (2.6,2.2) -- cycle;\fill[skin,ink] (1.85,2.95) circle (0.13);
+\fill[skin,ink] (3.1,3.0) ellipse (0.28 and 0.3);
+\foreach \p in {{(3.1,3.3) -- (2.8,3.8) -- (3.1,4.0) -- (2.7,4.52)},{(3.2,3.3) -- (3.6,3.7) -- (3.4,4.0) -- (3.8,4.4)},{(2.9,3.1) -- (2.4,3.4) -- (2.5,3.7)},{(3.4,3.1) -- (3.9,3.3) -- (3.8,3.6)}}{\draw[bolt,line width=2.4pt] \p;\draw[boltL,line width=.8pt] \p;}
+\end{tikzpicture}\end{document}

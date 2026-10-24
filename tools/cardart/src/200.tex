@@ -1,0 +1,18 @@
+\input{../preamble}
+\definecolor{sky}{HTML}{3a4a8a}\definecolor{skyL}{HTML}{a8b8e8}\definecolor{cloud}{HTML}{e8ecf4}\definecolor{beam}{HTML}{f0f4ff}\definecolor{wing}{HTML}{3a2a2a}\definecolor{wingL}{HTML}{8a5a3a}
+\definecolor{body}{HTML}{5a4a6a}\definecolor{face}{HTML}{c8b8d8}\definecolor{gold}{HTML}{d8b05a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[top color=sky,bottom color=skyL] (0,0) rectangle (6.16,4.52);
+\fill[cloud] (2.8,0) .. controls (3.2,0.8) and (4.2,1.0) .. (4.8,0.6) .. controls (5.4,1.0) and (6.0,0.8) .. (6.16,1.0) -- (6.16,0) -- cycle;
+% shafts of light through the clouds
+\fill[beam,opacity=.6] (3.2,2.6) -- (4.0,4.52) -- (4.4,4.52) -- cycle;\fill[beam,opacity=.4] (3.0,2.6) -- (0,1.8) -- (0,2.2) -- cycle;
+% the sphinx diving down with great dark wings
+\fill[wing,ink] (2.8,2.8) .. controls (2.0,3.6) and (1.0,4.0) .. (0.2,3.8) -- (0.8,3.4) -- (0.4,3.0) -- (1.2,2.9) -- (1.0,2.4) -- (2.6,2.4) -- cycle;
+\foreach \i in {1,2,3}{\draw[wingL,line width=.7pt] (2.6-\i*0.1,2.6) -- (2.4-\i*0.6,3.6-\i*0.1);}
+\fill[wing,ink] (3.6,2.8) .. controls (4.2,3.8) and (5.0,4.4) .. (5.8,4.4) -- (5.4,3.9) -- (6.0,3.6) -- (5.2,3.4) -- (5.6,2.9) -- (3.8,2.4) -- cycle;
+\foreach \i in {1,2,3}{\draw[wingL,line width=.7pt] (3.8+\i*0.1,2.6) -- (4.2+\i*0.5,3.6+\i*0.1);}
+\fill[body,ink] (2.8,2.6) .. controls (2.6,1.8) and (3.0,1.0) .. (3.4,0.9) .. controls (3.8,1.0) and (4.0,1.8) .. (3.8,2.6) .. controls (3.6,3.0) and (3.0,3.0) .. (2.8,2.6);
+\draw[body,line width=2pt] (3.4,1.0) .. controls (3.8,0.6) and (4.2,0.8) .. (4.4,0.4);
+\fill[gold,ink] (3.0,2.9) .. controls (3.0,3.6) and (3.6,3.6) .. (3.6,2.9) -- cycle;\fill[face,ink] (3.3,3.05) ellipse (0.18 and 0.24);
+\end{tikzpicture}\end{document}

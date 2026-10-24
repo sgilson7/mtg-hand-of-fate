@@ -18,11 +18,18 @@ use std::path::{Path, PathBuf};
 use tool_core::glossary;
 
 /// (file name, word, reason): a ruled-out word that is right in one file.
-const ALLOWED: &[(&str, &str, &str)] = &[(
-    "data/cards.json",
-    "!",
-    "card text and flavour text are Wizards of the Coast's words, kept verbatim (rule MTG-3)",
-)];
+const ALLOWED: &[(&str, &str, &str)] = &[
+    (
+        "data/cards.json",
+        "!",
+        "card text and flavour text are Wizards of the Coast's words, kept verbatim (rule MTG-3)",
+    ),
+    (
+        "data/cards.json",
+        "really",
+        "Sphinx of the Chimes' flavour text is Wizards of the Coast's words, kept verbatim (rule MTG-3)",
+    ),
+];
 
 fn root() -> PathBuf {
     Path::new(env!("CARGO_MANIFEST_DIR")).join("..").join("..")

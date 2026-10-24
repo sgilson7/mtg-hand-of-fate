@@ -1,0 +1,18 @@
+\input{../preamble}
+\definecolor{haze}{HTML}{c8a870}\definecolor{hazeD}{HTML}{8a6a40}\definecolor{root}{HTML}{6a4a2a}\definecolor{rootL}{HTML}{a8805a}
+\definecolor{bark}{HTML}{e8dcc8}\definecolor{armor}{HTML}{4a3a2a}\definecolor{steel}{HTML}{b0aca0}\definecolor{skin}{HTML}{b07a50}\definecolor{trim}{HTML}{e8e4d8}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[top color=haze,bottom color=hazeD] (0,0) rectangle (6.16,4.52);
+\fill[hazeD,opacity=.4] (0,1.0) .. controls (1,1.6) and (2,1.3) .. (2.4,1.5) -- (2.4,0) -- (0,0) -- cycle;
+% the soldier in a cage of great roots
+\fill[armor,ink] (2.4,0) .. controls (2.3,1.5) and (2.5,2.8) .. (3.0,3.1) -- (3.6,3.1) .. controls (4.0,2.8) and (4.1,1.5) .. (4.0,0) -- cycle;
+\fill[skin,ink] (3.3,3.4) ellipse (0.25 and 0.3);
+\fill[trim,ink] (2.95,3.35) .. controls (3.0,4.0) and (3.6,4.0) .. (3.65,3.35) .. controls (3.55,3.7) and (3.05,3.7) .. (2.95,3.35);
+\fill[steel,ink] (3.0,2.2) -- (3.3,2.9) -- (3.6,2.2) -- (3.3,1.6) -- cycle;\fill[root,ink] (3.27,0.6) rectangle (3.33,2.9);
+\fill[trim,ink] (2.8,2.6) ellipse (0.25 and 0.15);\fill[trim,ink] (3.8,2.6) ellipse (0.25 and 0.15);
+% roots curling round, marked with white bark plates
+\foreach \a/\b/\c/\d in {0.3/0/0.6/4.52,1.0/0/2.8/4.52,5.9/0/4.2/4.52,4.8/0/5.6/4.52}{\draw[ink,line width=9pt] (\a,\b) .. controls (\a+0.8,1.8) and (\c-0.6,2.8) .. (\c,\d);\draw[root,line width=7.6pt] (\a,\b) .. controls (\a+0.8,1.8) and (\c-0.6,2.8) .. (\c,\d);\draw[rootL,line width=1.6pt] (\a+0.05,\b) .. controls (\a+0.85,1.8) and (\c-0.55,2.8) .. (\c+0.05,\d);}
+\foreach \x/\y in {0.75/1.2,1.9/2.0,2.5/3.4,5.2/1.4,4.7/2.6,5.4/3.4,1.2/3.0}{\fill[bark,ink] (\x,\y) ellipse (0.12 and 0.08);}
+\draw[ink,line width=7pt] (1.6,0) .. controls (2.0,1.0) and (4.6,1.2) .. (4.8,2.4);\draw[root,line width=5.6pt] (1.6,0) .. controls (2.0,1.0) and (4.6,1.2) .. (4.8,2.4);
+\end{tikzpicture}\end{document}

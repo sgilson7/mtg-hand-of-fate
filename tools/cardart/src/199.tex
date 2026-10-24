@@ -1,0 +1,13 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{4a5a6a}\definecolor{bgD}{HTML}{1e2028}\definecolor{hide}{HTML}{8a2a1e}\definecolor{hideL}{HTML}{e85a2a}\definecolor{maw}{HTML}{f08a3a}\definecolor{tusk}{HTML}{e8d8b0}\definecolor{spike}{HTML}{2a1a14}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[top color=bg,bottom color=bgD] (0,0) rectangle (6.16,4.52);
+% the spawn's gaping, ridged maw coming at us
+\fill[hide,ink] (0.8,0) .. controls (0.4,1.8) and (0.8,3.8) .. (2.4,4.4) .. controls (3.8,4.52) and (5.0,3.6) .. (5.2,2.2) .. controls (5.2,1.0) and (4.8,0.4) .. (4.6,0) -- cycle;
+\fill[maw,ink] (1.6,0.6) .. controls (1.4,2.0) and (1.8,3.4) .. (2.8,3.6) .. controls (3.8,3.6) and (4.4,2.6) .. (4.2,1.4) .. controls (4.0,0.6) and (3.0,0.2) .. (1.6,0.6);
+\fill[hideL,opacity=.8] (2.2,1.4) .. controls (2.2,2.4) and (2.8,3.0) .. (3.2,2.8) .. controls (3.6,2.4) and (3.4,1.4) .. (2.2,1.4);
+\foreach \a in {100,130,160,190,220,250,280,310,340,10,40,70}{\fill[tusk,ink] (2.9,2.0) ++(\a:1.4) -- ++(\a+165:0.6) -- ++(\a+80:0.15) -- cycle;}
+\foreach \a in {60,90,120,150}{\fill[spike] (2.9,2.2) ++(\a:2.2) -- ++(\a:0.6) -- ++(\a-100:0.15) -- cycle;}
+\foreach \x/\y in {2.4/0.8,3.0/0.7,3.6/0.9}{\fill[hideL] (\x,\y) circle (0.12);}
+\end{tikzpicture}\end{document}

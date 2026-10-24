@@ -1,0 +1,20 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{e8882a}\definecolor{bgL}{HTML}{f8c860}\definecolor{wall}{HTML}{a84a1a}\definecolor{hood}{HTML}{3a2a3a}\definecolor{skin}{HTML}{5a8a4a}
+\definecolor{armor}{HTML}{4a6a3a}\definecolor{armorD}{HTML}{2a3a22}\definecolor{legs}{HTML}{4a3a5a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[inner color=bgL,outer color=bg] (0,0) rectangle (6.16,4.52);
+\fill[wall,ink] (4.8,0) -- (5.2,4.52) -- (6.16,4.52) -- (6.16,0) -- cycle;\foreach \y in {0.8,1.6,2.4,3.2,4.0}{\draw[bg,line width=.6pt] (4.85+\y*0.08,\y) -- (6.16,\y);}
+% the decoy leaping, limbs flung out
+\fill[legs,ink] (2.6,1.8) -- (1.2,0.6) -- (0.6,0) -- (1.2,0) -- (1.6,0.4) -- (2.8,1.3) -- cycle;
+\fill[legs,ink] (3.2,1.8) -- (4.0,0.8) -- (4.8,0.6) -- (4.9,0.3) -- (3.9,0.4) -- (2.9,1.4) -- cycle;
+\fill[armor,ink] (2.2,1.6) .. controls (2.0,2.4) and (2.4,3.2) .. (3.0,3.4) .. controls (3.6,3.4) and (3.9,2.6) .. (3.6,1.6) -- cycle;
+\foreach \y in {2.0,2.4,2.8}{\draw[armorD,line width=.7pt] (2.3,\y) -- (3.6,\y+0.1);}
+\fill[armor,ink] (2.4,3.0) -- (0.6,3.6) -- (0.5,3.3) -- (2.3,2.6) -- cycle;\fill[skin,ink] (0.45,3.45) circle (0.18);
+\fill[armor,ink] (3.6,3.0) -- (4.8,2.4) -- (4.7,2.1) -- (3.5,2.6) -- cycle;\fill[skin,ink] (4.85,2.25) circle (0.17);
+% hooded green face, sharp ear
+\fill[hood,ink] (2.5,3.3) .. controls (2.3,4.1) and (2.8,4.52) .. (3.3,4.4) .. controls (3.7,4.2) and (3.7,3.6) .. (3.5,3.2) -- cycle;
+\fill[skin,ink] (2.75,3.5) .. controls (2.7,4.0) and (3.2,4.1) .. (3.35,3.8) .. controls (3.4,3.5) and (3.1,3.3) .. (2.75,3.5);
+\fill[skin,ink] (3.3,3.9) -- (3.8,4.2) -- (3.35,3.75) -- cycle;
+\fill[bgL] (2.95,3.75) circle (0.04);\fill[bgL] (3.15,3.78) circle (0.04);
+\end{tikzpicture}\end{document}

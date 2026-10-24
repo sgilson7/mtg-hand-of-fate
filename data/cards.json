@@ -1,5 +1,5 @@
 {
- "_about": "Return to Ravnica (RTR) cards for the first region, from MTGJSON 5.3.0 (MIT for the data; card text and names belong to Wizards of the Coast). Text is MTGJSON's current Oracle wording, verbatim. 'group' is this game's grouping: a colour, a guild or colourless.",
+ "_about": "Return to Ravnica (RTR) cards, the whole set of 254 names, from MTGJSON 5.3.0 (MIT for the data; card text and names belong to Wizards of the Coast). Text is MTGJSON's current Oracle wording, verbatim. 'group' is this game's grouping: a colour, a guild or colourless.",
  "cards": [
   {
    "name": "Plains",
@@ -3455,6 +3455,4698 @@
    "keywords": [],
    "artist": "Izzy",
    "number": "234",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "colourless",
+   "watermark": null,
+   "group": "colourless"
+  },
+  {
+   "name": "Armory Guard",
+   "manaCost": "{3}{W}",
+   "manaValue": 4,
+   "colors": [
+    "W"
+   ],
+   "colorIdentity": [
+    "W"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Giant",
+    "Soldier"
+   ],
+   "supertypes": [],
+   "rarity": "common",
+   "text": "This creature has vigilance as long as you control a Gate.",
+   "flavorText": "The Dimir agents watched from the shadows. \"Eight hours, and I've yet to see him blink,\" Nefara hissed. \"I suggest we find another way in.\"",
+   "power": "2",
+   "toughness": "5",
+   "keywords": [],
+   "artist": "Karl Kopinski",
+   "number": "2",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-white",
+   "watermark": null,
+   "group": "W"
+  },
+  {
+   "name": "Avenging Arrow",
+   "manaCost": "{2}{W}",
+   "manaValue": 3,
+   "colors": [
+    "W"
+   ],
+   "colorIdentity": [
+    "W"
+   ],
+   "types": [
+    "Instant"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "common",
+   "text": "Destroy target creature that dealt damage this turn.",
+   "flavorText": "\"Forgive the theft. Punish the deception.\"\n—Alcarus, Selesnya archer",
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "James Ryman",
+   "number": "4",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-white",
+   "watermark": null,
+   "group": "W"
+  },
+  {
+   "name": "Bazaar Krovod",
+   "manaCost": "{4}{W}",
+   "manaValue": 5,
+   "colors": [
+    "W"
+   ],
+   "colorIdentity": [
+    "W"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Beast"
+   ],
+   "supertypes": [],
+   "rarity": "uncommon",
+   "text": "Whenever this creature attacks, another target attacking creature gets +0/+2 until end of turn. Untap that creature.",
+   "flavorText": "The Hauler's Collective wields great influence over the Ravnican merchant class. Without it, little moves in the city.",
+   "power": "2",
+   "toughness": "5",
+   "keywords": [],
+   "artist": "Lars Grant-West",
+   "number": "7",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-white",
+   "watermark": null,
+   "group": "W"
+  },
+  {
+   "name": "Keening Apparition",
+   "manaCost": "{1}{W}",
+   "manaValue": 2,
+   "colors": [
+    "W"
+   ],
+   "colorIdentity": [
+    "W"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Spirit"
+   ],
+   "supertypes": [],
+   "rarity": "common",
+   "text": "Sacrifice this creature: Destroy target enchantment.",
+   "flavorText": "Some souls are too damaged to be of use to the Orzhov.",
+   "power": "2",
+   "toughness": "2",
+   "keywords": [],
+   "artist": "Terese Nielsen",
+   "number": "12",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-white",
+   "watermark": null,
+   "group": "W"
+  },
+  {
+   "name": "Knightly Valor",
+   "manaCost": "{4}{W}",
+   "manaValue": 5,
+   "colors": [
+    "W"
+   ],
+   "colorIdentity": [
+    "W"
+   ],
+   "types": [
+    "Enchantment"
+   ],
+   "subtypes": [
+    "Aura"
+   ],
+   "supertypes": [],
+   "rarity": "common",
+   "text": "Enchant creature\nWhen this Aura enters, create a 2/2 white Knight creature token with vigilance. (Attacking doesn't cause it to tap.)\nEnchanted creature gets +2/+2 and has vigilance.",
+   "flavorText": null,
+   "power": null,
+   "toughness": null,
+   "keywords": [
+    "Enchant"
+   ],
+   "artist": "Matt Stewart",
+   "number": "13",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-white",
+   "watermark": null,
+   "group": "W"
+  },
+  {
+   "name": "Martial Law",
+   "manaCost": "{2}{W}{W}",
+   "manaValue": 4,
+   "colors": [
+    "W"
+   ],
+   "colorIdentity": [
+    "W"
+   ],
+   "types": [
+    "Enchantment"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "rare",
+   "text": "At the beginning of your upkeep, detain target creature an opponent controls. (Until your next turn, that creature can't attack or block and its activated abilities can't be activated.)",
+   "flavorText": "\"The good of society matters much more than the inconvenience of a few.\"\n—Agmand Sarv, Azorius hussar",
+   "power": null,
+   "toughness": null,
+   "keywords": [
+    "Detain"
+   ],
+   "artist": "Tyler Jacobson",
+   "number": "14",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-white",
+   "watermark": "azorius",
+   "group": "W"
+  },
+  {
+   "name": "Palisade Giant",
+   "manaCost": "{4}{W}{W}",
+   "manaValue": 6,
+   "colors": [
+    "W"
+   ],
+   "colorIdentity": [
+    "W"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Giant",
+    "Soldier"
+   ],
+   "supertypes": [],
+   "rarity": "rare",
+   "text": "All damage that would be dealt to you and other permanents you control is dealt to this creature instead.",
+   "flavorText": "Refusing guild allegiances, she fights for those who can't protect themselves.",
+   "power": "2",
+   "toughness": "7",
+   "keywords": [],
+   "artist": "Greg Staples",
+   "number": "15",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-white",
+   "watermark": null,
+   "group": "W"
+  },
+  {
+   "name": "Rest in Peace",
+   "manaCost": "{1}{W}",
+   "manaValue": 2,
+   "colors": [
+    "W"
+   ],
+   "colorIdentity": [
+    "W"
+   ],
+   "types": [
+    "Enchantment"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "rare",
+   "text": "When this enchantment enters, exile all graveyards.\nIf a card or token would be put into a graveyard from anywhere, exile it instead.",
+   "flavorText": "Some corpses the Golgari cannot claim. Some souls the Orzhov cannot shackle.",
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Terese Nielsen",
+   "number": "18",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-white",
+   "watermark": null,
+   "group": "W"
+  },
+  {
+   "name": "Rootborn Defenses",
+   "manaCost": "{2}{W}",
+   "manaValue": 3,
+   "colors": [
+    "W"
+   ],
+   "colorIdentity": [
+    "W"
+   ],
+   "types": [
+    "Instant"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "common",
+   "text": "Populate. Creatures you control gain indestructible until end of turn. (To populate, create a token that's a copy of a creature token you control.)",
+   "flavorText": null,
+   "power": null,
+   "toughness": null,
+   "keywords": [
+    "Populate"
+   ],
+   "artist": "Mark Zug",
+   "number": "19",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-white",
+   "watermark": "selesnya",
+   "group": "W"
+  },
+  {
+   "name": "Security Blockade",
+   "manaCost": "{2}{W}",
+   "manaValue": 3,
+   "colors": [
+    "W"
+   ],
+   "colorIdentity": [
+    "W"
+   ],
+   "types": [
+    "Enchantment"
+   ],
+   "subtypes": [
+    "Aura"
+   ],
+   "supertypes": [],
+   "rarity": "uncommon",
+   "text": "Enchant land\nWhen this Aura enters, create a 2/2 white Knight creature token with vigilance.\nEnchanted land has \"{T}: Prevent the next 1 damage that would be dealt to you this turn.\"",
+   "flavorText": null,
+   "power": null,
+   "toughness": null,
+   "keywords": [
+    "Enchant"
+   ],
+   "artist": "James Ryman",
+   "number": "20",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-white",
+   "watermark": null,
+   "group": "W"
+  },
+  {
+   "name": "Selesnya Sentry",
+   "manaCost": "{2}{W}",
+   "manaValue": 3,
+   "colors": [
+    "W"
+   ],
+   "colorIdentity": [
+    "G",
+    "W"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Elephant",
+    "Soldier"
+   ],
+   "supertypes": [],
+   "rarity": "common",
+   "text": "{5}{G}: Regenerate this creature.",
+   "flavorText": "Ravnicans still tell tales about the Battle of Sumala where four Selesnya sentries held off an entire clan of Gruul warriors.",
+   "power": "3",
+   "toughness": "2",
+   "keywords": [
+    "Regenerate"
+   ],
+   "artist": "Wesley Burt",
+   "number": "21",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-white",
+   "watermark": "selesnya",
+   "group": "W"
+  },
+  {
+   "name": "Soul Tithe",
+   "manaCost": "{1}{W}",
+   "manaValue": 2,
+   "colors": [
+    "W"
+   ],
+   "colorIdentity": [
+    "W"
+   ],
+   "types": [
+    "Enchantment"
+   ],
+   "subtypes": [
+    "Aura"
+   ],
+   "supertypes": [],
+   "rarity": "uncommon",
+   "text": "Enchant nonland permanent\nAt the beginning of the upkeep of enchanted permanent's controller, that player sacrifices it unless they pay {X}, where X is its mana value.",
+   "flavorText": null,
+   "power": null,
+   "toughness": null,
+   "keywords": [
+    "Enchant"
+   ],
+   "artist": "Dave Kendall",
+   "number": "23",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-white",
+   "watermark": null,
+   "group": "W"
+  },
+  {
+   "name": "Sphere of Safety",
+   "manaCost": "{4}{W}",
+   "manaValue": 5,
+   "colors": [
+    "W"
+   ],
+   "colorIdentity": [
+    "W"
+   ],
+   "types": [
+    "Enchantment"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "uncommon",
+   "text": "Creatures can't attack you or planeswalkers you control unless their controller pays {X} for each of those creatures, where X is the number of enchantments you control.",
+   "flavorText": "The Rakdos believe that all are eager to join their revels, even when told otherwise.",
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Slawomir Maniak",
+   "number": "24",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-white",
+   "watermark": null,
+   "group": "W"
+  },
+  {
+   "name": "Aquus Steed",
+   "manaCost": "{3}{U}",
+   "manaValue": 4,
+   "colors": [
+    "U"
+   ],
+   "colorIdentity": [
+    "U"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Beast"
+   ],
+   "supertypes": [],
+   "rarity": "uncommon",
+   "text": "{2}{U}, {T}: Target creature gets -2/-0 until end of turn.",
+   "flavorText": "In water, it's as graceful as a dolphin. On land, it darts and jerks so unpredictably that few can ride it for long.",
+   "power": "1",
+   "toughness": "3",
+   "keywords": [],
+   "artist": "Warren Mahy",
+   "number": "29",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-blue",
+   "watermark": null,
+   "group": "U"
+  },
+  {
+   "name": "Chronic Flooding",
+   "manaCost": "{1}{U}",
+   "manaValue": 2,
+   "colors": [
+    "U"
+   ],
+   "colorIdentity": [
+    "U"
+   ],
+   "types": [
+    "Enchantment"
+   ],
+   "subtypes": [
+    "Aura"
+   ],
+   "supertypes": [],
+   "rarity": "common",
+   "text": "Enchant land\nWhenever enchanted land becomes tapped, its controller mills three cards.",
+   "flavorText": "With the Izzet occupied elsewhere, many of their public works fell into disrepair.",
+   "power": null,
+   "toughness": null,
+   "keywords": [
+    "Enchant",
+    "Mill"
+   ],
+   "artist": "Scott Chou",
+   "number": "32",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-blue",
+   "watermark": null,
+   "group": "U"
+  },
+  {
+   "name": "Conjured Currency",
+   "manaCost": "{5}{U}",
+   "manaValue": 6,
+   "colors": [
+    "U"
+   ],
+   "colorIdentity": [
+    "U"
+   ],
+   "types": [
+    "Enchantment"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "rare",
+   "text": "At the beginning of your upkeep, you may exchange control of this enchantment and target permanent you neither own nor control.",
+   "flavorText": "A bargain in Keyhole Downs is always too good to be true.",
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Steve Argyle",
+   "number": "33",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-blue",
+   "watermark": null,
+   "group": "U"
+  },
+  {
+   "name": "Crosstown Courier",
+   "manaCost": "{1}{U}",
+   "manaValue": 2,
+   "colors": [
+    "U"
+   ],
+   "colorIdentity": [
+    "U"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Vedalken"
+   ],
+   "supertypes": [],
+   "rarity": "common",
+   "text": "Whenever this creature deals combat damage to a player, that player mills that many cards.",
+   "flavorText": "Information travels quickly through Ravnica's network of messengers and thought agents.",
+   "power": "2",
+   "toughness": "1",
+   "keywords": [
+    "Mill"
+   ],
+   "artist": "Chase Stone",
+   "number": "34",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-blue",
+   "watermark": null,
+   "group": "U"
+  },
+  {
+   "name": "Dispel",
+   "manaCost": "{U}",
+   "manaValue": 1,
+   "colors": [
+    "U"
+   ],
+   "colorIdentity": [
+    "U"
+   ],
+   "types": [
+    "Instant"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "common",
+   "text": "Counter target instant spell.",
+   "flavorText": "\"Civilization will subsume us unless we overwhelm it instead.\"\n—Speaker Zegana",
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Chase Stone",
+   "number": "36",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-blue",
+   "watermark": null,
+   "group": "U"
+  },
+  {
+   "name": "Doorkeeper",
+   "manaCost": "{1}{U}",
+   "manaValue": 2,
+   "colors": [
+    "U"
+   ],
+   "colorIdentity": [
+    "U"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Homunculus"
+   ],
+   "supertypes": [],
+   "rarity": "common",
+   "text": "Defender\n{2}{U}, {T}: Target player mills X cards, where X is the number of creatures you control with defender.",
+   "flavorText": "One piercing stare usually convinces thieves to go elsewhere.",
+   "power": "0",
+   "toughness": "4",
+   "keywords": [
+    "Defender",
+    "Mill"
+   ],
+   "artist": "Kev Walker",
+   "number": "37",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-blue",
+   "watermark": null,
+   "group": "U"
+  },
+  {
+   "name": "Jace, Architect of Thought",
+   "manaCost": "{2}{U}{U}",
+   "manaValue": 4,
+   "colors": [
+    "U"
+   ],
+   "colorIdentity": [
+    "U"
+   ],
+   "types": [
+    "Planeswalker"
+   ],
+   "subtypes": [
+    "Jace"
+   ],
+   "supertypes": [
+    "Legendary"
+   ],
+   "rarity": "mythic",
+   "text": "[+1]: Until your next turn, whenever a creature an opponent controls attacks, it gets -1/-0 until end of turn.\n[−2]: Reveal the top three cards of your library. An opponent separates those cards into two piles. Put one pile into your hand and the other on the bottom of your library in any order.\n[−8]: For each player, search that player's library for a nonland card and exile it, then that player shuffles. You may cast those cards without paying their mana costs.",
+   "flavorText": null,
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Jaime Jones",
+   "number": "44",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-blue",
+   "watermark": null,
+   "group": "U"
+  },
+  {
+   "name": "Mizzium Skin",
+   "manaCost": "{U}",
+   "manaValue": 1,
+   "colors": [
+    "U"
+   ],
+   "colorIdentity": [
+    "U"
+   ],
+   "types": [
+    "Instant"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "common",
+   "text": "Target creature you control gets +0/+1 and gains hexproof until end of turn.\nOverload {1}{U} (You may cast this spell for its overload cost. If you do, change \"target\" in its text to \"each.\")",
+   "flavorText": null,
+   "power": null,
+   "toughness": null,
+   "keywords": [
+    "Overload"
+   ],
+   "artist": "Scott Chou",
+   "number": "45",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-blue",
+   "watermark": "izzet",
+   "group": "U"
+  },
+  {
+   "name": "Psychic Spiral",
+   "manaCost": "{4}{U}",
+   "manaValue": 5,
+   "colors": [
+    "U"
+   ],
+   "colorIdentity": [
+    "U"
+   ],
+   "types": [
+    "Instant"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "uncommon",
+   "text": "Shuffle all cards from your graveyard into your library. Target player mills that many cards.",
+   "flavorText": "An elocutor forces criminals to confess to the laws they merely intended to break.",
+   "power": null,
+   "toughness": null,
+   "keywords": [
+    "Mill"
+   ],
+   "artist": "Ryan Pancoast",
+   "number": "47",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-blue",
+   "watermark": null,
+   "group": "U"
+  },
+  {
+   "name": "Search the City",
+   "manaCost": "{4}{U}",
+   "manaValue": 5,
+   "colors": [
+    "U"
+   ],
+   "colorIdentity": [
+    "U"
+   ],
+   "types": [
+    "Enchantment"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "rare",
+   "text": "When this enchantment enters, exile the top five cards of your library.\nWhenever you play a card with the same name as one of the exiled cards, you may put one of those cards with that name into its owner's hand. Then if there are no cards exiled with this enchantment, sacrifice it. If you do, take an extra turn after this one.",
+   "flavorText": null,
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Jack Wang",
+   "number": "49",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-blue",
+   "watermark": null,
+   "group": "U"
+  },
+  {
+   "name": "Sphinx of the Chimes",
+   "manaCost": "{4}{U}{U}",
+   "manaValue": 6,
+   "colors": [
+    "U"
+   ],
+   "colorIdentity": [
+    "U"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Sphinx"
+   ],
+   "supertypes": [],
+   "rarity": "rare",
+   "text": "Flying\nDiscard two nonland cards with the same name: Draw four cards.",
+   "flavorText": "\"I've dreamt of the future, Isperia. Danger is on the horizon. You must heed my warning.\"",
+   "power": "5",
+   "toughness": "6",
+   "keywords": [
+    "Flying"
+   ],
+   "artist": "Greg Staples",
+   "number": "52",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-blue",
+   "watermark": null,
+   "group": "U"
+  },
+  {
+   "name": "Syncopate",
+   "manaCost": "{X}{U}",
+   "manaValue": 1,
+   "colors": [
+    "U"
+   ],
+   "colorIdentity": [
+    "U"
+   ],
+   "types": [
+    "Instant"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "uncommon",
+   "text": "Counter target spell unless its controller pays {X}. If that spell is countered this way, exile it instead of putting it into its owner's graveyard.",
+   "flavorText": "\"Patience, mage. Killing you now would be too easy.\"",
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Clint Cearley",
+   "number": "54",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-blue",
+   "watermark": null,
+   "group": "U"
+  },
+  {
+   "name": "Tower Drake",
+   "manaCost": "{2}{U}",
+   "manaValue": 3,
+   "colors": [
+    "U"
+   ],
+   "colorIdentity": [
+    "U",
+    "W"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Drake"
+   ],
+   "supertypes": [],
+   "rarity": "common",
+   "text": "Flying\n{W}: This creature gets +0/+1 until end of turn.",
+   "flavorText": "The first motion put forth in the pristine Jelenn Column was for severe restrictions on the airspace around New Prahv.",
+   "power": "2",
+   "toughness": "1",
+   "keywords": [
+    "Flying"
+   ],
+   "artist": "Ryan Barger",
+   "number": "55",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-blue",
+   "watermark": "azorius",
+   "group": "U"
+  },
+  {
+   "name": "Cremate",
+   "manaCost": "{B}",
+   "manaValue": 1,
+   "colors": [
+    "B"
+   ],
+   "colorIdentity": [
+    "B"
+   ],
+   "types": [
+    "Instant"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "common",
+   "text": "Exile target card from a graveyard.\nDraw a card.",
+   "flavorText": "\"Without a body, the soul is helpless to fight the terms of our contracts.\"\n—Somhaur, Orzhov pontiff",
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Cynthia Sheppard",
+   "number": "59",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-black",
+   "watermark": null,
+   "group": "B"
+  },
+  {
+   "name": "Desecration Demon",
+   "manaCost": "{2}{B}{B}",
+   "manaValue": 4,
+   "colors": [
+    "B"
+   ],
+   "colorIdentity": [
+    "B"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Demon"
+   ],
+   "supertypes": [],
+   "rarity": "rare",
+   "text": "Flying\nAt the beginning of each combat, any opponent may sacrifice a creature of their choice. If a player does, tap this creature and put a +1/+1 counter on it.",
+   "flavorText": null,
+   "power": "6",
+   "toughness": "6",
+   "keywords": [
+    "Flying"
+   ],
+   "artist": "Jason Chan",
+   "number": "63",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-black",
+   "watermark": null,
+   "group": "B"
+  },
+  {
+   "name": "Destroy the Evidence",
+   "manaCost": "{4}{B}",
+   "manaValue": 5,
+   "colors": [
+    "B"
+   ],
+   "colorIdentity": [
+    "B"
+   ],
+   "types": [
+    "Sorcery"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "common",
+   "text": "Destroy target land. Its controller reveals cards from the top of their library until they reveal a land card, then puts those cards into their graveyard.",
+   "flavorText": "Everyone knew the Dimir had done the damage. Everyone suspected the Izzet had hired them.",
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Clint Cearley",
+   "number": "64",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-black",
+   "watermark": null,
+   "group": "B"
+  },
+  {
+   "name": "Deviant Glee",
+   "manaCost": "{B}",
+   "manaValue": 1,
+   "colors": [
+    "B"
+   ],
+   "colorIdentity": [
+    "B",
+    "R"
+   ],
+   "types": [
+    "Enchantment"
+   ],
+   "subtypes": [
+    "Aura"
+   ],
+   "supertypes": [],
+   "rarity": "common",
+   "text": "Enchant creature\nEnchanted creature gets +2/+1 and has \"{R}: This creature gains trample until end of turn.\"",
+   "flavorText": "\"You just need the right incentive to fulfill my dreams.\"",
+   "power": null,
+   "toughness": null,
+   "keywords": [
+    "Enchant"
+   ],
+   "artist": "Michael C. Hayes",
+   "number": "65",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-black",
+   "watermark": "rakdos",
+   "group": "B"
+  },
+  {
+   "name": "Drainpipe Vermin",
+   "manaCost": "{B}",
+   "manaValue": 1,
+   "colors": [
+    "B"
+   ],
+   "colorIdentity": [
+    "B"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Rat"
+   ],
+   "supertypes": [],
+   "rarity": "common",
+   "text": "When this creature dies, you may pay {B}. If you do, target player discards a card.",
+   "flavorText": "When times are tough, the poor eat the rats. When times are tougher, the rats eat the poor.",
+   "power": "1",
+   "toughness": "1",
+   "keywords": [],
+   "artist": "Trevor Claxton",
+   "number": "66",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-black",
+   "watermark": null,
+   "group": "B"
+  },
+  {
+   "name": "Grave Betrayal",
+   "manaCost": "{5}{B}{B}",
+   "manaValue": 7,
+   "colors": [
+    "B"
+   ],
+   "colorIdentity": [
+    "B"
+   ],
+   "types": [
+    "Enchantment"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "rare",
+   "text": "Whenever a creature you don't control dies, return it to the battlefield under your control with an additional +1/+1 counter on it at the beginning of the next end step. That creature is a black Zombie in addition to its other colors and types.",
+   "flavorText": null,
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Lucas Graciano",
+   "number": "67",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-black",
+   "watermark": null,
+   "group": "B"
+  },
+  {
+   "name": "Launch Party",
+   "manaCost": "{3}{B}",
+   "manaValue": 4,
+   "colors": [
+    "B"
+   ],
+   "colorIdentity": [
+    "B"
+   ],
+   "types": [
+    "Instant"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "common",
+   "text": "As an additional cost to cast this spell, sacrifice a creature.\nDestroy target creature. Its controller loses 2 life.",
+   "flavorText": "Life's too short to not do the things you love.",
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Lucas Graciano",
+   "number": "69",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-black",
+   "watermark": null,
+   "group": "B"
+  },
+  {
+   "name": "Necropolis Regent",
+   "manaCost": "{3}{B}{B}{B}",
+   "manaValue": 6,
+   "colors": [
+    "B"
+   ],
+   "colorIdentity": [
+    "B"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Vampire"
+   ],
+   "supertypes": [],
+   "rarity": "mythic",
+   "text": "Flying\nWhenever a creature you control deals combat damage to a player, put that many +1/+1 counters on it.",
+   "flavorText": "\"Jarad fancies himself king of the undercity, but he's merely king of rot.\"",
+   "power": "6",
+   "toughness": "5",
+   "keywords": [
+    "Flying"
+   ],
+   "artist": "Winona Nelson",
+   "number": "71",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-black",
+   "watermark": null,
+   "group": "B"
+  },
+  {
+   "name": "Ogre Jailbreaker",
+   "manaCost": "{3}{B}",
+   "manaValue": 4,
+   "colors": [
+    "B"
+   ],
+   "colorIdentity": [
+    "B"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Ogre",
+    "Rogue"
+   ],
+   "supertypes": [],
+   "rarity": "common",
+   "text": "Defender\nThis creature can attack as though it didn't have defender as long as you control a Gate.",
+   "flavorText": "It took three years for it to occur to him to use the chain as a weapon, but once it did, he made up for lost time.",
+   "power": "4",
+   "toughness": "4",
+   "keywords": [
+    "Defender"
+   ],
+   "artist": "Karl Kopinski",
+   "number": "72",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-black",
+   "watermark": null,
+   "group": "B"
+  },
+  {
+   "name": "Pack Rat",
+   "manaCost": "{1}{B}",
+   "manaValue": 2,
+   "colors": [
+    "B"
+   ],
+   "colorIdentity": [
+    "B"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Rat"
+   ],
+   "supertypes": [],
+   "rarity": "rare",
+   "text": "Pack Rat's power and toughness are each equal to the number of Rats you control.\n{2}{B}, Discard a card: Create a token that's a copy of this creature.",
+   "flavorText": null,
+   "power": "*",
+   "toughness": "*",
+   "keywords": [],
+   "artist": "Kev Walker",
+   "number": "73",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-black",
+   "watermark": null,
+   "group": "B"
+  },
+  {
+   "name": "Tavern Swindler",
+   "manaCost": "{1}{B}",
+   "manaValue": 2,
+   "colors": [
+    "B"
+   ],
+   "colorIdentity": [
+    "B"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Human",
+    "Rogue"
+   ],
+   "supertypes": [],
+   "rarity": "uncommon",
+   "text": "{T}, Pay 3 life: Flip a coin. If you win the flip, you gain 6 life.",
+   "flavorText": "Rakdos cultists are her best customers. They never flinch at pain and are seldom good at math.",
+   "power": "2",
+   "toughness": "2",
+   "keywords": [],
+   "artist": "Cynthia Sheppard",
+   "number": "79",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-black",
+   "watermark": null,
+   "group": "B"
+  },
+  {
+   "name": "Terrus Wurm",
+   "manaCost": "{6}{B}",
+   "manaValue": 7,
+   "colors": [
+    "B"
+   ],
+   "colorIdentity": [
+    "B"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Zombie",
+    "Wurm"
+   ],
+   "supertypes": [],
+   "rarity": "common",
+   "text": "Scavenge {6}{B} ({6}{B}, Exile this card from your graveyard: Put a number of +1/+1 counters equal to this card's power on target creature. Scavenge only as a sorcery.)",
+   "flavorText": "\"We follow it through its tunnels, and where it dies, we farm.\"\n—Mihas, spore druid",
+   "power": "5",
+   "toughness": "5",
+   "keywords": [
+    "Scavenge"
+   ],
+   "artist": "Cliff Childs",
+   "number": "80",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-black",
+   "watermark": "golgari",
+   "group": "B"
+  },
+  {
+   "name": "Underworld Connections",
+   "manaCost": "{1}{B}{B}",
+   "manaValue": 3,
+   "colors": [
+    "B"
+   ],
+   "colorIdentity": [
+    "B"
+   ],
+   "types": [
+    "Enchantment"
+   ],
+   "subtypes": [
+    "Aura"
+   ],
+   "supertypes": [],
+   "rarity": "rare",
+   "text": "Enchant land\nEnchanted land has \"{T}, Pay 1 life: Draw a card.\"",
+   "flavorText": "If you're looking for it, it's available. The question is how much you're willing to pay.",
+   "power": null,
+   "toughness": null,
+   "keywords": [
+    "Enchant"
+   ],
+   "artist": "Yeong-Hao Han",
+   "number": "83",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-black",
+   "watermark": null,
+   "group": "B"
+  },
+  {
+   "name": "Batterhorn",
+   "manaCost": "{4}{R}",
+   "manaValue": 5,
+   "colors": [
+    "R"
+   ],
+   "colorIdentity": [
+    "R"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Beast"
+   ],
+   "supertypes": [],
+   "rarity": "common",
+   "text": "When this creature enters, you may destroy target artifact.",
+   "flavorText": "Novice shopkeeps spend hours deciding how best to display their wares. Veterans focus on portability.",
+   "power": "4",
+   "toughness": "3",
+   "keywords": [],
+   "artist": "Dave Kendall",
+   "number": "87",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-red",
+   "watermark": null,
+   "group": "R"
+  },
+  {
+   "name": "Chaos Imps",
+   "manaCost": "{4}{R}{R}",
+   "manaValue": 6,
+   "colors": [
+    "R"
+   ],
+   "colorIdentity": [
+    "R"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Imp"
+   ],
+   "supertypes": [],
+   "rarity": "rare",
+   "text": "Flying\nUnleash (You may have this creature enter with a +1/+1 counter on it. It can't block as long as it has a +1/+1 counter on it.)\nThis creature has trample as long as it has a +1/+1 counter on it.",
+   "flavorText": null,
+   "power": "6",
+   "toughness": "5",
+   "keywords": [
+    "Flying",
+    "Unleash"
+   ],
+   "artist": "Tyler Jacobson",
+   "number": "90",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-red",
+   "watermark": "rakdos",
+   "group": "R"
+  },
+  {
+   "name": "Dynacharge",
+   "manaCost": "{R}",
+   "manaValue": 1,
+   "colors": [
+    "R"
+   ],
+   "colorIdentity": [
+    "R"
+   ],
+   "types": [
+    "Instant"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "common",
+   "text": "Target creature you control gets +2/+0 until end of turn.\nOverload {2}{R} (You may cast this spell for its overload cost. If you do, change \"target\" in its text to \"each.\")",
+   "flavorText": "Nothing evens the odds like a little lightning.",
+   "power": null,
+   "toughness": null,
+   "keywords": [
+    "Overload"
+   ],
+   "artist": "Matt Stewart",
+   "number": "92",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-red",
+   "watermark": "izzet",
+   "group": "R"
+  },
+  {
+   "name": "Guild Feud",
+   "manaCost": "{5}{R}",
+   "manaValue": 6,
+   "colors": [
+    "R"
+   ],
+   "colorIdentity": [
+    "R"
+   ],
+   "types": [
+    "Enchantment"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "rare",
+   "text": "At the beginning of your upkeep, target opponent reveals the top three cards of their library, may put a creature card from among them onto the battlefield, then puts the rest into their graveyard. You do the same with the top three cards of your library. If two creatures are put onto the battlefield this way, those creatures fight each other.",
+   "flavorText": null,
+   "power": null,
+   "toughness": null,
+   "keywords": [
+    "Fight"
+   ],
+   "artist": "Karl Kopinski",
+   "number": "97",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-red",
+   "watermark": null,
+   "group": "R"
+  },
+  {
+   "name": "Minotaur Aggressor",
+   "manaCost": "{6}{R}",
+   "manaValue": 7,
+   "colors": [
+    "R"
+   ],
+   "colorIdentity": [
+    "R"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Minotaur",
+    "Berserker"
+   ],
+   "supertypes": [],
+   "rarity": "uncommon",
+   "text": "First strike, haste",
+   "flavorText": "The smelting district is home to many who see the guilds as not for them.",
+   "power": "6",
+   "toughness": "2",
+   "keywords": [
+    "First strike",
+    "Haste"
+   ],
+   "artist": "Lucas Graciano",
+   "number": "100",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-red",
+   "watermark": null,
+   "group": "R"
+  },
+  {
+   "name": "Pursuit of Flight",
+   "manaCost": "{1}{R}",
+   "manaValue": 2,
+   "colors": [
+    "R"
+   ],
+   "colorIdentity": [
+    "R",
+    "U"
+   ],
+   "types": [
+    "Enchantment"
+   ],
+   "subtypes": [
+    "Aura"
+   ],
+   "supertypes": [],
+   "rarity": "common",
+   "text": "Enchant creature\nEnchanted creature gets +2/+2 and has \"{U}: This creature gains flying until end of turn.\"",
+   "flavorText": "\"Watch the voltage. We don't need another charred, crashing viashino.\"\n—Bori Andon, Izzet blastseeker",
+   "power": null,
+   "toughness": null,
+   "keywords": [
+    "Enchant"
+   ],
+   "artist": "Christopher Moeller",
+   "number": "102",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-red",
+   "watermark": "izzet",
+   "group": "R"
+  },
+  {
+   "name": "Racecourse Fury",
+   "manaCost": "{R}",
+   "manaValue": 1,
+   "colors": [
+    "R"
+   ],
+   "colorIdentity": [
+    "R"
+   ],
+   "types": [
+    "Enchantment"
+   ],
+   "subtypes": [
+    "Aura"
+   ],
+   "supertypes": [],
+   "rarity": "uncommon",
+   "text": "Enchant land\nEnchanted land has \"{T}: Target creature gains haste until end of turn.\"",
+   "flavorText": "Close finishes are settled by who can dismount and get to weapons first.",
+   "power": null,
+   "toughness": null,
+   "keywords": [
+    "Enchant"
+   ],
+   "artist": "Sam Burley",
+   "number": "104",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-red",
+   "watermark": null,
+   "group": "R"
+  },
+  {
+   "name": "Street Spasm",
+   "manaCost": "{X}{R}",
+   "manaValue": 1,
+   "colors": [
+    "R"
+   ],
+   "colorIdentity": [
+    "R"
+   ],
+   "types": [
+    "Instant"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "uncommon",
+   "text": "Street Spasm deals X damage to target creature without flying you don't control.\nOverload {X}{X}{R}{R} (You may cast this spell for its overload cost. If you do, change \"target\" in its text to \"each.\")",
+   "flavorText": null,
+   "power": null,
+   "toughness": null,
+   "keywords": [
+    "Overload"
+   ],
+   "artist": "Raymond Swanland",
+   "number": "106",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-red",
+   "watermark": "izzet",
+   "group": "R"
+  },
+  {
+   "name": "Survey the Wreckage",
+   "manaCost": "{4}{R}",
+   "manaValue": 5,
+   "colors": [
+    "R"
+   ],
+   "colorIdentity": [
+    "R"
+   ],
+   "types": [
+    "Sorcery"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "common",
+   "text": "Destroy target land. Create a 1/1 red Goblin creature token.",
+   "flavorText": "Goblins and architects seldom get along.",
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Warren Mahy",
+   "number": "107",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-red",
+   "watermark": null,
+   "group": "R"
+  },
+  {
+   "name": "Traitorous Instinct",
+   "manaCost": "{3}{R}",
+   "manaValue": 4,
+   "colors": [
+    "R"
+   ],
+   "colorIdentity": [
+    "R"
+   ],
+   "types": [
+    "Sorcery"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "common",
+   "text": "Gain control of target creature until end of turn. Untap that creature. Until end of turn, it gets +2/+0 and gains haste.",
+   "flavorText": "Joining the Worldsoul took years of study and meditation. Severing that connection took the snap of Rakdos's fingers.",
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Daarken",
+   "number": "109",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-red",
+   "watermark": null,
+   "group": "R"
+  },
+  {
+   "name": "Utvara Hellkite",
+   "manaCost": "{6}{R}{R}",
+   "manaValue": 8,
+   "colors": [
+    "R"
+   ],
+   "colorIdentity": [
+    "R"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Dragon"
+   ],
+   "supertypes": [],
+   "rarity": "mythic",
+   "text": "Flying\nWhenever a Dragon you control attacks, create a 6/6 red Dragon creature token with flying.",
+   "flavorText": "The fear of dragons is as old and as powerful as the fear of death itself.",
+   "power": "6",
+   "toughness": "6",
+   "keywords": [
+    "Flying"
+   ],
+   "artist": "Mark Zug",
+   "number": "110",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-red",
+   "watermark": null,
+   "group": "R"
+  },
+  {
+   "name": "Vandalblast",
+   "manaCost": "{R}",
+   "manaValue": 1,
+   "colors": [
+    "R"
+   ],
+   "colorIdentity": [
+    "R"
+   ],
+   "types": [
+    "Sorcery"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "uncommon",
+   "text": "Destroy target artifact you don't control.\nOverload {4}{R} (You may cast this spell for its overload cost. If you do, change \"target\" in its text to \"each.\")",
+   "flavorText": "Beauty is in the eye of the exploder.",
+   "power": null,
+   "toughness": null,
+   "keywords": [
+    "Overload"
+   ],
+   "artist": "Seb McKinnon",
+   "number": "111",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-red",
+   "watermark": "izzet",
+   "group": "R"
+  },
+  {
+   "name": "Viashino Racketeer",
+   "manaCost": "{2}{R}",
+   "manaValue": 3,
+   "colors": [
+    "R"
+   ],
+   "colorIdentity": [
+    "R"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Lizard",
+    "Rogue"
+   ],
+   "supertypes": [],
+   "rarity": "common",
+   "text": "When this creature enters, you may discard a card. If you do, draw a card.",
+   "flavorText": "\"You may call me a fool, selling this stuff on Orzhov turf. Well, you need to be a little reckless to survive.\"",
+   "power": "2",
+   "toughness": "1",
+   "keywords": [],
+   "artist": "Slawomir Maniak",
+   "number": "112",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-red",
+   "watermark": null,
+   "group": "R"
+  },
+  {
+   "name": "Axebane Guardian",
+   "manaCost": "{2}{G}",
+   "manaValue": 3,
+   "colors": [
+    "G"
+   ],
+   "colorIdentity": [
+    "G"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Human",
+    "Druid"
+   ],
+   "supertypes": [],
+   "rarity": "common",
+   "text": "Defender\n{T}: Add X mana in any combination of colors, where X is the number of creatures you control with defender.",
+   "flavorText": "Only a worthy few are permitted within the sentient forest known as Axebane.",
+   "power": "0",
+   "toughness": "3",
+   "keywords": [
+    "Defender"
+   ],
+   "artist": "Slawomir Maniak",
+   "number": "115",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-green",
+   "watermark": null,
+   "group": "G"
+  },
+  {
+   "name": "Druid's Deliverance",
+   "manaCost": "{1}{G}",
+   "manaValue": 2,
+   "colors": [
+    "G"
+   ],
+   "colorIdentity": [
+    "G"
+   ],
+   "types": [
+    "Instant"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "common",
+   "text": "Prevent all combat damage that would be dealt to you this turn. Populate. (Create a token that's a copy of a creature token you control.)",
+   "flavorText": "\"So many oppose us, but we are the reed that bends without breaking.\"",
+   "power": null,
+   "toughness": null,
+   "keywords": [
+    "Populate"
+   ],
+   "artist": "Dan Murayama Scott",
+   "number": "123",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-green",
+   "watermark": "selesnya",
+   "group": "G"
+  },
+  {
+   "name": "Gatecreeper Vine",
+   "manaCost": "{1}{G}",
+   "manaValue": 2,
+   "colors": [
+    "G"
+   ],
+   "colorIdentity": [
+    "G"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Plant"
+   ],
+   "supertypes": [],
+   "rarity": "common",
+   "text": "Defender\nWhen this creature enters, you may search your library for a basic land card or a Gate card, reveal it, put it into your hand, then shuffle.",
+   "flavorText": "Every inch of Ravnica is home to something.",
+   "power": "0",
+   "toughness": "2",
+   "keywords": [
+    "Defender"
+   ],
+   "artist": "Trevor Claxton",
+   "number": "124",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-green",
+   "watermark": null,
+   "group": "G"
+  },
+  {
+   "name": "Gobbling Ooze",
+   "manaCost": "{4}{G}",
+   "manaValue": 5,
+   "colors": [
+    "G"
+   ],
+   "colorIdentity": [
+    "G"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Ooze"
+   ],
+   "supertypes": [],
+   "rarity": "uncommon",
+   "text": "{G}, Sacrifice another creature: Put a +1/+1 counter on this creature.",
+   "flavorText": "The furious citizens blamed the Simic for releasing it in their district. The Simic pointed out that rats were no longer a problem.",
+   "power": "3",
+   "toughness": "3",
+   "keywords": [],
+   "artist": "Johann Bodin",
+   "number": "126",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-green",
+   "watermark": null,
+   "group": "G"
+  },
+  {
+   "name": "Golgari Decoy",
+   "manaCost": "{3}{G}",
+   "manaValue": 4,
+   "colors": [
+    "G"
+   ],
+   "colorIdentity": [
+    "G"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Elf",
+    "Rogue"
+   ],
+   "supertypes": [],
+   "rarity": "uncommon",
+   "text": "All creatures able to block this creature do so.\nScavenge {3}{G}{G} ({3}{G}{G}, Exile this card from your graveyard: Put a number of +1/+1 counters equal to this card's power on target creature. Scavenge only as a sorcery.)",
+   "flavorText": null,
+   "power": "2",
+   "toughness": "2",
+   "keywords": [
+    "Scavenge"
+   ],
+   "artist": "Marco Nelor",
+   "number": "127",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-green",
+   "watermark": "golgari",
+   "group": "G"
+  },
+  {
+   "name": "Mana Bloom",
+   "manaCost": "{X}{G}",
+   "manaValue": 1,
+   "colors": [
+    "G"
+   ],
+   "colorIdentity": [
+    "G"
+   ],
+   "types": [
+    "Enchantment"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "rare",
+   "text": "This enchantment enters with X charge counters on it.\nRemove a charge counter from this enchantment: Add one mana of any color. Activate only once each turn.\nAt the beginning of your upkeep, if this enchantment has no charge counters on it, return it to its owner's hand.",
+   "flavorText": null,
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Mike Bierek",
+   "number": "130",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-green",
+   "watermark": null,
+   "group": "G"
+  },
+  {
+   "name": "Oak Street Innkeeper",
+   "manaCost": "{2}{G}",
+   "manaValue": 3,
+   "colors": [
+    "G"
+   ],
+   "colorIdentity": [
+    "G"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Elf"
+   ],
+   "supertypes": [],
+   "rarity": "uncommon",
+   "text": "During turns other than yours, tapped creatures you control have hexproof.",
+   "flavorText": "The city is vast and perilous, but there are places where a weary traveler can feel very much at home.",
+   "power": "1",
+   "toughness": "2",
+   "keywords": [],
+   "artist": "Svetlin Velinov",
+   "number": "131",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-green",
+   "watermark": null,
+   "group": "G"
+  },
+  {
+   "name": "Seek the Horizon",
+   "manaCost": "{3}{G}",
+   "manaValue": 4,
+   "colors": [
+    "G"
+   ],
+   "colorIdentity": [
+    "G"
+   ],
+   "types": [
+    "Sorcery"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "uncommon",
+   "text": "Search your library for up to three basic land cards, reveal them, put them into your hand, then shuffle.",
+   "flavorText": "Raked by vertical spikes of glass and stone, Ravnica's vistas offer only a rare glimpse of the horizon.",
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Howard Lyon",
+   "number": "134",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-green",
+   "watermark": null,
+   "group": "G"
+  },
+  {
+   "name": "Slime Molding",
+   "manaCost": "{X}{G}",
+   "manaValue": 1,
+   "colors": [
+    "G"
+   ],
+   "colorIdentity": [
+    "G"
+   ],
+   "types": [
+    "Sorcery"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "uncommon",
+   "text": "Create an X/X green Ooze creature token.",
+   "flavorText": "\"Give me enough refuse and mana and I will summon an ooze that can engulf all of Ravnica.\"\n—Cevraya, Golgari shaman",
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Marco Nelor",
+   "number": "135",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-green",
+   "watermark": null,
+   "group": "G"
+  },
+  {
+   "name": "Stonefare Crocodile",
+   "manaCost": "{2}{G}",
+   "manaValue": 3,
+   "colors": [
+    "G"
+   ],
+   "colorIdentity": [
+    "B",
+    "G"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Crocodile"
+   ],
+   "supertypes": [],
+   "rarity": "common",
+   "text": "{2}{B}: This creature gains lifelink until end of turn. (Damage dealt by this creature also causes you to gain that much life.)",
+   "flavorText": "The Izzet's plans to exploit the undercity ran into a few stubborn obstacles.",
+   "power": "3",
+   "toughness": "2",
+   "keywords": [],
+   "artist": "Tomasz Jedruszek",
+   "number": "136",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-green",
+   "watermark": "golgari",
+   "group": "G"
+  },
+  {
+   "name": "Urban Burgeoning",
+   "manaCost": "{G}",
+   "manaValue": 1,
+   "colors": [
+    "G"
+   ],
+   "colorIdentity": [
+    "G"
+   ],
+   "types": [
+    "Enchantment"
+   ],
+   "subtypes": [
+    "Aura"
+   ],
+   "supertypes": [],
+   "rarity": "common",
+   "text": "Enchant land\nEnchanted land has \"Untap this land during each other player's untap step.\"",
+   "flavorText": "The ruins of Old Prahv became a wildspace, although all birdsong was silenced by lingering Azorius magic.",
+   "power": null,
+   "toughness": null,
+   "keywords": [
+    "Enchant"
+   ],
+   "artist": "Nic Klein",
+   "number": "138",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-green",
+   "watermark": null,
+   "group": "G"
+  },
+  {
+   "name": "Wild Beastmaster",
+   "manaCost": "{2}{G}",
+   "manaValue": 3,
+   "colors": [
+    "G"
+   ],
+   "colorIdentity": [
+    "G"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Human",
+    "Shaman"
+   ],
+   "supertypes": [],
+   "rarity": "rare",
+   "text": "Whenever this creature attacks, each other creature you control gets +X/+X until end of turn, where X is this creature's power.",
+   "flavorText": "\"When they covered the world in city, all they did was give themselves nowhere to run.\"",
+   "power": "1",
+   "toughness": "1",
+   "keywords": [],
+   "artist": "Kev Walker",
+   "number": "139",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-green",
+   "watermark": null,
+   "group": "G"
+  },
+  {
+   "name": "Worldspine Wurm",
+   "manaCost": "{8}{G}{G}{G}",
+   "manaValue": 11,
+   "colors": [
+    "G"
+   ],
+   "colorIdentity": [
+    "G"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Wurm"
+   ],
+   "supertypes": [],
+   "rarity": "mythic",
+   "text": "Trample\nWhen this creature dies, create three 5/5 green Wurm creature tokens with trample.\nWhen Worldspine Wurm is put into a graveyard from anywhere, shuffle it into its owner's library.",
+   "flavorText": null,
+   "power": "15",
+   "toughness": "15",
+   "keywords": [
+    "Trample"
+   ],
+   "artist": "Richard Wright",
+   "number": "140",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "mono-green",
+   "watermark": null,
+   "group": "G"
+  },
+  {
+   "name": "Archon of the Triumvirate",
+   "manaCost": "{5}{W}{U}",
+   "manaValue": 7,
+   "colors": [
+    "U",
+    "W"
+   ],
+   "colorIdentity": [
+    "U",
+    "W"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Archon"
+   ],
+   "supertypes": [],
+   "rarity": "rare",
+   "text": "Flying\nWhenever this creature attacks, detain up to two target nonland permanents your opponents control. (Until your next turn, those permanents can't attack or block and their activated abilities can't be activated.)",
+   "flavorText": null,
+   "power": "4",
+   "toughness": "5",
+   "keywords": [
+    "Detain",
+    "Flying"
+   ],
+   "artist": "David Rapoza",
+   "number": "142",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Azorius",
+   "watermark": "azorius",
+   "group": "Azorius"
+  },
+  {
+   "name": "Armada Wurm",
+   "manaCost": "{2}{G}{G}{W}{W}",
+   "manaValue": 6,
+   "colors": [
+    "G",
+    "W"
+   ],
+   "colorIdentity": [
+    "G",
+    "W"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Wurm"
+   ],
+   "supertypes": [],
+   "rarity": "mythic",
+   "text": "Trample\nWhen this creature enters, create a 5/5 green Wurm creature token with trample.",
+   "flavorText": "No one in the Conclave acts alone.",
+   "power": "5",
+   "toughness": "5",
+   "keywords": [
+    "Trample"
+   ],
+   "artist": "Volkan Baǵa",
+   "number": "143",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Selesnya",
+   "watermark": "selesnya",
+   "group": "Selesnya"
+  },
+  {
+   "name": "Auger Spree",
+   "manaCost": "{1}{B}{R}",
+   "manaValue": 3,
+   "colors": [
+    "B",
+    "R"
+   ],
+   "colorIdentity": [
+    "B",
+    "R"
+   ],
+   "types": [
+    "Instant"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "common",
+   "text": "Target creature gets +4/-4 until end of turn.",
+   "flavorText": "\"Finally, a weapon the Boros can't confiscate!\"\n—Juri, proprietor of the Juri Revue",
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Raymond Swanland",
+   "number": "144",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Rakdos",
+   "watermark": "rakdos",
+   "group": "Rakdos"
+  },
+  {
+   "name": "Azorius Charm",
+   "manaCost": "{W}{U}",
+   "manaValue": 2,
+   "colors": [
+    "U",
+    "W"
+   ],
+   "colorIdentity": [
+    "U",
+    "W"
+   ],
+   "types": [
+    "Instant"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "uncommon",
+   "text": "Choose one —\n• Creatures you control gain lifelink until end of turn.\n• Draw a card.\n• Put target attacking or blocking creature on top of its owner's library.",
+   "flavorText": "\"The rules of logic and order have already made the choice for you.\"\n—Isperia",
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Zoltan Boros",
+   "number": "145",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Azorius",
+   "watermark": "azorius",
+   "group": "Azorius"
+  },
+  {
+   "name": "Call of the Conclave",
+   "manaCost": "{G}{W}",
+   "manaValue": 2,
+   "colors": [
+    "G",
+    "W"
+   ],
+   "colorIdentity": [
+    "G",
+    "W"
+   ],
+   "types": [
+    "Sorcery"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "uncommon",
+   "text": "Create a 3/3 green Centaur creature token.",
+   "flavorText": "Centaurs are sent to evangelize in Gruul territories where words of war speak louder than prayers of peace.",
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Terese Nielsen",
+   "number": "146",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Selesnya",
+   "watermark": "selesnya",
+   "group": "Selesnya"
+  },
+  {
+   "name": "Chemister's Trick",
+   "manaCost": "{U}{R}",
+   "manaValue": 2,
+   "colors": [
+    "R",
+    "U"
+   ],
+   "colorIdentity": [
+    "R",
+    "U"
+   ],
+   "types": [
+    "Instant"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "common",
+   "text": "Target creature you don't control gets -2/-0 until end of turn and attacks this turn if able.\nOverload {3}{U}{R} (You may cast this spell for its overload cost. If you do, change \"target\" in its text to \"each.\")",
+   "flavorText": null,
+   "power": null,
+   "toughness": null,
+   "keywords": [
+    "Overload"
+   ],
+   "artist": "Christopher Moeller",
+   "number": "149",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Izzet",
+   "watermark": "izzet",
+   "group": "Izzet"
+  },
+  {
+   "name": "Collective Blessing",
+   "manaCost": "{3}{G}{G}{W}",
+   "manaValue": 6,
+   "colors": [
+    "G",
+    "W"
+   ],
+   "colorIdentity": [
+    "G",
+    "W"
+   ],
+   "types": [
+    "Enchantment"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "rare",
+   "text": "Creatures you control get +3/+3.",
+   "flavorText": "Senators of Azorius often hired agents to spy on the Selesnya. They were told to record every spore and root they saw, as each could become a deadly foe.",
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Svetlin Velinov",
+   "number": "150",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Selesnya",
+   "watermark": "selesnya",
+   "group": "Selesnya"
+  },
+  {
+   "name": "Common Bond",
+   "manaCost": "{1}{G}{W}",
+   "manaValue": 3,
+   "colors": [
+    "G",
+    "W"
+   ],
+   "colorIdentity": [
+    "G",
+    "W"
+   ],
+   "types": [
+    "Instant"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "common",
+   "text": "Put a +1/+1 counter on target creature.\nPut a +1/+1 counter on target creature.",
+   "flavorText": "Wolf riders hone their skills traversing the perilous rooftops, each dizzying step bringing elf and wolf closer together.",
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Raymond Swanland",
+   "number": "151",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Selesnya",
+   "watermark": "selesnya",
+   "group": "Selesnya"
+  },
+  {
+   "name": "Corpsejack Menace",
+   "manaCost": "{2}{B}{G}",
+   "manaValue": 4,
+   "colors": [
+    "B",
+    "G"
+   ],
+   "colorIdentity": [
+    "B",
+    "G"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Fungus"
+   ],
+   "supertypes": [],
+   "rarity": "rare",
+   "text": "If one or more +1/+1 counters would be put on a creature you control, twice that many +1/+1 counters are put on it instead.",
+   "flavorText": "Weakness is not in the nature of the Swarm.",
+   "power": "4",
+   "toughness": "4",
+   "keywords": [],
+   "artist": "Chris Rahn",
+   "number": "152",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Golgari",
+   "watermark": "golgari",
+   "group": "Golgari"
+  },
+  {
+   "name": "Counterflux",
+   "manaCost": "{U}{U}{R}",
+   "manaValue": 3,
+   "colors": [
+    "R",
+    "U"
+   ],
+   "colorIdentity": [
+    "R",
+    "U"
+   ],
+   "types": [
+    "Instant"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "rare",
+   "text": "This spell can't be countered.\nCounter target spell you don't control.\nOverload {1}{U}{U}{R} (You may cast this spell for its overload cost. If you do, change \"target\" in its text to \"each.\")",
+   "flavorText": null,
+   "power": null,
+   "toughness": null,
+   "keywords": [
+    "Overload"
+   ],
+   "artist": "Scott M. Fischer",
+   "number": "153",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Izzet",
+   "watermark": "izzet",
+   "group": "Izzet"
+  },
+  {
+   "name": "Coursers' Accord",
+   "manaCost": "{4}{G}{W}",
+   "manaValue": 6,
+   "colors": [
+    "G",
+    "W"
+   ],
+   "colorIdentity": [
+    "G",
+    "W"
+   ],
+   "types": [
+    "Sorcery"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "common",
+   "text": "Create a 3/3 green Centaur creature token, then populate. (Create a token that's a copy of a creature token you control.)",
+   "flavorText": "Bleak rumors reached Trostani's ears. She decreed that no one should travel alone.",
+   "power": null,
+   "toughness": null,
+   "keywords": [
+    "Populate"
+   ],
+   "artist": "Nils Hamm",
+   "number": "154",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Selesnya",
+   "watermark": "selesnya",
+   "group": "Selesnya"
+  },
+  {
+   "name": "Dramatic Rescue",
+   "manaCost": "{W}{U}",
+   "manaValue": 2,
+   "colors": [
+    "U",
+    "W"
+   ],
+   "colorIdentity": [
+    "U",
+    "W"
+   ],
+   "types": [
+    "Instant"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "common",
+   "text": "Return target creature to its owner's hand. You gain 2 life.",
+   "flavorText": "\"I never thought I'd be so glad to see two tons of beak and claws bearing down on me at the speed of an arrow.\"\n—Mirela, Azorius hussar",
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Ryan Pancoast",
+   "number": "156",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Azorius",
+   "watermark": "azorius",
+   "group": "Azorius"
+  },
+  {
+   "name": "Epic Experiment",
+   "manaCost": "{X}{U}{R}",
+   "manaValue": 2,
+   "colors": [
+    "R",
+    "U"
+   ],
+   "colorIdentity": [
+    "R",
+    "U"
+   ],
+   "types": [
+    "Sorcery"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "mythic",
+   "text": "Exile the top X cards of your library. You may cast instant and sorcery spells with mana value X or less from among them without paying their mana costs. Then put all cards exiled this way that weren't cast into your graveyard.",
+   "flavorText": null,
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Dan Murayama Scott",
+   "number": "159",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Izzet",
+   "watermark": "izzet",
+   "group": "Izzet"
+  },
+  {
+   "name": "Essence Backlash",
+   "manaCost": "{2}{U}{R}",
+   "manaValue": 4,
+   "colors": [
+    "R",
+    "U"
+   ],
+   "colorIdentity": [
+    "R",
+    "U"
+   ],
+   "types": [
+    "Instant"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "common",
+   "text": "Counter target creature spell. Essence Backlash deals damage equal to that spell's power to its controller.",
+   "flavorText": "\"The other guilds will learn the hard way not to interfere with our investigations.\"\n—Bori Andon, Izzet blastseeker",
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Jung Park",
+   "number": "160",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Izzet",
+   "watermark": "izzet",
+   "group": "Izzet"
+  },
+  {
+   "name": "Fall of the Gavel",
+   "manaCost": "{3}{W}{U}",
+   "manaValue": 5,
+   "colors": [
+    "U",
+    "W"
+   ],
+   "colorIdentity": [
+    "U",
+    "W"
+   ],
+   "types": [
+    "Instant"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "uncommon",
+   "text": "Counter target spell. You gain 5 life.",
+   "flavorText": "\"My ruling is final. Order is upheld. Justice is done.\"",
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Matt Stewart",
+   "number": "161",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Azorius",
+   "watermark": "azorius",
+   "group": "Azorius"
+  },
+  {
+   "name": "Firemind's Foresight",
+   "manaCost": "{5}{U}{R}",
+   "manaValue": 7,
+   "colors": [
+    "R",
+    "U"
+   ],
+   "colorIdentity": [
+    "R",
+    "U"
+   ],
+   "types": [
+    "Instant"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "rare",
+   "text": "Search your library for an instant card with mana value 3, reveal it, and put it into your hand. Then repeat this process for instant cards with mana values 2 and 1. Then shuffle.",
+   "flavorText": null,
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Dan Murayama Scott",
+   "number": "162",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Izzet",
+   "watermark": "izzet",
+   "group": "Izzet"
+  },
+  {
+   "name": "Golgari Charm",
+   "manaCost": "{B}{G}",
+   "manaValue": 2,
+   "colors": [
+    "B",
+    "G"
+   ],
+   "colorIdentity": [
+    "B",
+    "G"
+   ],
+   "types": [
+    "Instant"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "uncommon",
+   "text": "Choose one —\n• All creatures get -1/-1 until end of turn.\n• Destroy target enchantment.\n• Regenerate each creature you control.",
+   "flavorText": "\"Let the rest of Ravnica sneer. One way or another, they all end up in the undercity.\"\n—Jarad",
+   "power": null,
+   "toughness": null,
+   "keywords": [
+    "Regenerate"
+   ],
+   "artist": "Zoltan Boros",
+   "number": "164",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Golgari",
+   "watermark": "golgari",
+   "group": "Golgari"
+  },
+  {
+   "name": "Grisly Salvage",
+   "manaCost": "{B}{G}",
+   "manaValue": 2,
+   "colors": [
+    "B",
+    "G"
+   ],
+   "colorIdentity": [
+    "B",
+    "G"
+   ],
+   "types": [
+    "Instant"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "common",
+   "text": "Reveal the top five cards of your library. You may put a creature or land card from among them into your hand. Put the rest into your graveyard.",
+   "flavorText": "To the Golgari, anything buried is treasure.",
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Dave Kendall",
+   "number": "165",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Golgari",
+   "watermark": "golgari",
+   "group": "Golgari"
+  },
+  {
+   "name": "Havoc Festival",
+   "manaCost": "{4}{B}{R}",
+   "manaValue": 6,
+   "colors": [
+    "B",
+    "R"
+   ],
+   "colorIdentity": [
+    "B",
+    "R"
+   ],
+   "types": [
+    "Enchantment"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "rare",
+   "text": "Players can't gain life.\nAt the beginning of each player's upkeep, that player loses half their life, rounded up.",
+   "flavorText": "\"We can't control enemies who have no regard for their own survival.\"\n—Arrester Lavinia, Tenth Precinct",
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Johannes Voss",
+   "number": "166",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Rakdos",
+   "watermark": "rakdos",
+   "group": "Rakdos"
+  },
+  {
+   "name": "Hellhole Flailer",
+   "manaCost": "{1}{B}{R}",
+   "manaValue": 3,
+   "colors": [
+    "B",
+    "R"
+   ],
+   "colorIdentity": [
+    "B",
+    "R"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Ogre",
+    "Warrior"
+   ],
+   "supertypes": [],
+   "rarity": "uncommon",
+   "text": "Unleash (You may have this creature enter with a +1/+1 counter on it. It can't block as long as it has a +1/+1 counter on it.)\n{2}{B}{R}, Sacrifice this creature: It deals damage equal to its power to target player or planeswalker.",
+   "flavorText": null,
+   "power": "3",
+   "toughness": "2",
+   "keywords": [
+    "Unleash"
+   ],
+   "artist": "Steve Prescott",
+   "number": "167",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Rakdos",
+   "watermark": "rakdos",
+   "group": "Rakdos"
+  },
+  {
+   "name": "Heroes' Reunion",
+   "manaCost": "{G}{W}",
+   "manaValue": 2,
+   "colors": [
+    "G",
+    "W"
+   ],
+   "colorIdentity": [
+    "G",
+    "W"
+   ],
+   "types": [
+    "Instant"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "uncommon",
+   "text": "Target player gains 7 life.",
+   "flavorText": "They share no bloodline, but a bond greater than family unites them. Such are the gifts of the Worldsoul.",
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Howard Lyon",
+   "number": "168",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Selesnya",
+   "watermark": "selesnya",
+   "group": "Selesnya"
+  },
+  {
+   "name": "Hussar Patrol",
+   "manaCost": "{2}{W}{U}",
+   "manaValue": 4,
+   "colors": [
+    "U",
+    "W"
+   ],
+   "colorIdentity": [
+    "U",
+    "W"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Human",
+    "Knight"
+   ],
+   "supertypes": [],
+   "rarity": "common",
+   "text": "Flash (You may cast this spell any time you could cast an instant.)\nVigilance",
+   "flavorText": "\"You think no one is watching, you think you're smart enough to escape, and most foolish of all, you think no one cares.\"\n—Arrester Lavinia, Tenth Precinct",
+   "power": "2",
+   "toughness": "4",
+   "keywords": [
+    "Flash",
+    "Vigilance"
+   ],
+   "artist": "Seb McKinnon",
+   "number": "169",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Azorius",
+   "watermark": "azorius",
+   "group": "Azorius"
+  },
+  {
+   "name": "Hypersonic Dragon",
+   "manaCost": "{3}{U}{R}",
+   "manaValue": 5,
+   "colors": [
+    "R",
+    "U"
+   ],
+   "colorIdentity": [
+    "R",
+    "U"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Dragon"
+   ],
+   "supertypes": [],
+   "rarity": "rare",
+   "text": "Flying, haste\nYou may cast sorcery spells as though they had flash. (You may cast them any time you could cast an instant.)",
+   "flavorText": "\"Even this primitive specimen of my kind is impressive.\"\n—Niv-Mizzet",
+   "power": "4",
+   "toughness": "4",
+   "keywords": [
+    "Flying",
+    "Haste"
+   ],
+   "artist": "Dan Murayama Scott",
+   "number": "170",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Izzet",
+   "watermark": "izzet",
+   "group": "Izzet"
+  },
+  {
+   "name": "Isperia, Supreme Judge",
+   "manaCost": "{2}{W}{W}{U}{U}",
+   "manaValue": 6,
+   "colors": [
+    "U",
+    "W"
+   ],
+   "colorIdentity": [
+    "U",
+    "W"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Sphinx"
+   ],
+   "supertypes": [
+    "Legendary"
+   ],
+   "rarity": "mythic",
+   "text": "Flying\nWhenever a creature attacks you or a planeswalker you control, you may draw a card.",
+   "flavorText": "\"I serve only justice. But through that duty, I serve all of Ravnica.\"",
+   "power": "6",
+   "toughness": "4",
+   "keywords": [
+    "Flying"
+   ],
+   "artist": "Scott M. Fischer",
+   "number": "171",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Azorius",
+   "watermark": "azorius",
+   "group": "Azorius"
+  },
+  {
+   "name": "Izzet Staticaster",
+   "manaCost": "{1}{U}{R}",
+   "manaValue": 3,
+   "colors": [
+    "R",
+    "U"
+   ],
+   "colorIdentity": [
+    "R",
+    "U"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Human",
+    "Wizard"
+   ],
+   "supertypes": [],
+   "rarity": "uncommon",
+   "text": "Flash (You may cast this spell any time you could cast an instant.)\nHaste\n{T}: This creature deals 1 damage to target creature and each other creature with the same name as that creature.",
+   "flavorText": null,
+   "power": "0",
+   "toughness": "3",
+   "keywords": [
+    "Flash",
+    "Haste"
+   ],
+   "artist": "Scott M. Fischer",
+   "number": "173",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Izzet",
+   "watermark": "izzet",
+   "group": "Izzet"
+  },
+  {
+   "name": "Jarad, Golgari Lich Lord",
+   "manaCost": "{B}{B}{G}{G}",
+   "manaValue": 4,
+   "colors": [
+    "B",
+    "G"
+   ],
+   "colorIdentity": [
+    "B",
+    "G"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Zombie",
+    "Elf"
+   ],
+   "supertypes": [
+    "Legendary"
+   ],
+   "rarity": "mythic",
+   "text": "Jarad gets +1/+1 for each creature card in your graveyard.\n{1}{B}{G}, Sacrifice another creature: Each opponent loses life equal to the sacrificed creature's power.\nSacrifice a Swamp and a Forest: Return this card from your graveyard to your hand.",
+   "flavorText": null,
+   "power": "2",
+   "toughness": "2",
+   "keywords": [],
+   "artist": "Eric Deschamps",
+   "number": "174",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Golgari",
+   "watermark": "golgari",
+   "group": "Golgari"
+  },
+  {
+   "name": "Jarad's Orders",
+   "manaCost": "{2}{B}{G}",
+   "manaValue": 4,
+   "colors": [
+    "B",
+    "G"
+   ],
+   "colorIdentity": [
+    "B",
+    "G"
+   ],
+   "types": [
+    "Sorcery"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "rare",
+   "text": "Search your library for up to two creature cards and reveal them. Put one into your hand and the other into your graveyard. Then shuffle.",
+   "flavorText": "\"The Izzet are searching for something. Discern what or die trying.\"",
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Svetlin Velinov",
+   "number": "175",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Golgari",
+   "watermark": "golgari",
+   "group": "Golgari"
+  },
+  {
+   "name": "Korozda Guildmage",
+   "manaCost": "{B}{G}",
+   "manaValue": 2,
+   "colors": [
+    "B",
+    "G"
+   ],
+   "colorIdentity": [
+    "B",
+    "G"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Elf",
+    "Shaman"
+   ],
+   "supertypes": [],
+   "rarity": "uncommon",
+   "text": "{1}{B}{G}: Target creature gets +1/+1 and gains intimidate until end of turn. (It can't be blocked except by artifact creatures and/or creatures that share a color with it.)\n{2}{B}{G}, Sacrifice a nontoken creature: Create X 1/1 green Saproling creature tokens, where X is the sacrificed creature's toughness.",
+   "flavorText": null,
+   "power": "2",
+   "toughness": "2",
+   "keywords": [],
+   "artist": "Ryan Pancoast",
+   "number": "176",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Golgari",
+   "watermark": "golgari",
+   "group": "Golgari"
+  },
+  {
+   "name": "Lotleth Troll",
+   "manaCost": "{B}{G}",
+   "manaValue": 2,
+   "colors": [
+    "B",
+    "G"
+   ],
+   "colorIdentity": [
+    "B",
+    "G"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Zombie",
+    "Troll"
+   ],
+   "supertypes": [],
+   "rarity": "rare",
+   "text": "Trample\nDiscard a creature card: Put a +1/+1 counter on this creature.\n{B}: Regenerate this creature.",
+   "flavorText": "He lurks in the undercity, eager for the corpse haulers to unload their rotting cargo.",
+   "power": "2",
+   "toughness": "1",
+   "keywords": [
+    "Regenerate",
+    "Trample"
+   ],
+   "artist": "Vincent Proce",
+   "number": "177",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Golgari",
+   "watermark": "golgari",
+   "group": "Golgari"
+  },
+  {
+   "name": "Loxodon Smiter",
+   "manaCost": "{1}{G}{W}",
+   "manaValue": 3,
+   "colors": [
+    "G",
+    "W"
+   ],
+   "colorIdentity": [
+    "G",
+    "W"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Elephant",
+    "Soldier"
+   ],
+   "supertypes": [],
+   "rarity": "rare",
+   "text": "This spell can't be countered.\nIf a spell or ability an opponent controls causes you to discard this card, put it onto the battlefield instead of putting it into your graveyard.",
+   "flavorText": null,
+   "power": "4",
+   "toughness": "4",
+   "keywords": [],
+   "artist": "Ryan Barger",
+   "number": "178",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Selesnya",
+   "watermark": "selesnya",
+   "group": "Selesnya"
+  },
+  {
+   "name": "Mercurial Chemister",
+   "manaCost": "{3}{U}{R}",
+   "manaValue": 5,
+   "colors": [
+    "R",
+    "U"
+   ],
+   "colorIdentity": [
+    "R",
+    "U"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Human",
+    "Wizard"
+   ],
+   "supertypes": [],
+   "rarity": "rare",
+   "text": "{U}, {T}: Draw two cards.\n{R}, {T}, Discard a card: This creature deals damage to target creature equal to the discarded card's mana value.",
+   "flavorText": "What some see as \"distracted\" is really \"fathoming the unfathomable.\"",
+   "power": "2",
+   "toughness": "3",
+   "keywords": [],
+   "artist": "Wesley Burt",
+   "number": "180",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Izzet",
+   "watermark": "izzet",
+   "group": "Izzet"
+  },
+  {
+   "name": "New Prahv Guildmage",
+   "manaCost": "{W}{U}",
+   "manaValue": 2,
+   "colors": [
+    "U",
+    "W"
+   ],
+   "colorIdentity": [
+    "U",
+    "W"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Human",
+    "Wizard"
+   ],
+   "supertypes": [],
+   "rarity": "uncommon",
+   "text": "{W}{U}: Target creature gains flying until end of turn.\n{3}{W}{U}: Detain target nonland permanent an opponent controls. (Until your next turn, that permanent can't attack or block and its activated abilities can't be activated.)",
+   "flavorText": null,
+   "power": "2",
+   "toughness": "2",
+   "keywords": [
+    "Detain"
+   ],
+   "artist": "Karl Kopinski",
+   "number": "181",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Azorius",
+   "watermark": "azorius",
+   "group": "Azorius"
+  },
+  {
+   "name": "Nivix Guildmage",
+   "manaCost": "{U}{R}",
+   "manaValue": 2,
+   "colors": [
+    "R",
+    "U"
+   ],
+   "colorIdentity": [
+    "R",
+    "U"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Human",
+    "Wizard"
+   ],
+   "supertypes": [],
+   "rarity": "uncommon",
+   "text": "{1}{U}{R}: Draw a card, then discard a card.\n{2}{U}{R}: Copy target instant or sorcery spell you control. You may choose new targets for the copy.",
+   "flavorText": "\"The only action worth taking is one with an unknown outcome.\"",
+   "power": "2",
+   "toughness": "2",
+   "keywords": [],
+   "artist": "Scott M. Fischer",
+   "number": "182",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Izzet",
+   "watermark": "izzet",
+   "group": "Izzet"
+  },
+  {
+   "name": "Rakdos Charm",
+   "manaCost": "{B}{R}",
+   "manaValue": 2,
+   "colors": [
+    "B",
+    "R"
+   ],
+   "colorIdentity": [
+    "B",
+    "R"
+   ],
+   "types": [
+    "Instant"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "uncommon",
+   "text": "Choose one —\n• Exile target player's graveyard.\n• Destroy target artifact.\n• Each creature deals 1 damage to its controller.",
+   "flavorText": "\"Let all feel joy in pain.\"\n—Rakdos",
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Zoltan Boros",
+   "number": "184",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Rakdos",
+   "watermark": "rakdos",
+   "group": "Rakdos"
+  },
+  {
+   "name": "Rakdos Ragemutt",
+   "manaCost": "{3}{B}{R}",
+   "manaValue": 5,
+   "colors": [
+    "B",
+    "R"
+   ],
+   "colorIdentity": [
+    "B",
+    "R"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Elemental",
+    "Dog"
+   ],
+   "supertypes": [],
+   "rarity": "uncommon",
+   "text": "Lifelink, haste",
+   "flavorText": "Ragemutts pull the chariots of the Butcher Clowns, a trio of wingless, zombified faeries formerly of the Izzet.",
+   "power": "3",
+   "toughness": "3",
+   "keywords": [
+    "Haste",
+    "Lifelink"
+   ],
+   "artist": "Ryan Barger",
+   "number": "185",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Rakdos",
+   "watermark": "rakdos",
+   "group": "Rakdos"
+  },
+  {
+   "name": "Rakdos Ringleader",
+   "manaCost": "{4}{B}{R}",
+   "manaValue": 6,
+   "colors": [
+    "B",
+    "R"
+   ],
+   "colorIdentity": [
+    "B",
+    "R"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Skeleton",
+    "Warrior"
+   ],
+   "supertypes": [],
+   "rarity": "uncommon",
+   "text": "First strike\nWhenever this creature deals combat damage to a player, that player discards a card at random.\n{B}: Regenerate this creature.",
+   "flavorText": null,
+   "power": "3",
+   "toughness": "1",
+   "keywords": [
+    "First strike",
+    "Regenerate"
+   ],
+   "artist": "Jason Felix",
+   "number": "186",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Rakdos",
+   "watermark": "rakdos",
+   "group": "Rakdos"
+  },
+  {
+   "name": "Rakdos, Lord of Riots",
+   "manaCost": "{B}{B}{R}{R}",
+   "manaValue": 4,
+   "colors": [
+    "B",
+    "R"
+   ],
+   "colorIdentity": [
+    "B",
+    "R"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Demon"
+   ],
+   "supertypes": [
+    "Legendary"
+   ],
+   "rarity": "mythic",
+   "text": "You can't cast Rakdos unless an opponent lost life this turn.\nFlying, trample\nCreature spells you cast cost {1} less to cast for each 1 life your opponents have lost this turn.",
+   "flavorText": null,
+   "power": "6",
+   "toughness": "6",
+   "keywords": [
+    "Flying",
+    "Trample"
+   ],
+   "artist": "Vincent Proce",
+   "number": "187",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Rakdos",
+   "watermark": "rakdos",
+   "group": "Rakdos"
+  },
+  {
+   "name": "Rakdos's Return",
+   "manaCost": "{X}{B}{R}",
+   "manaValue": 2,
+   "colors": [
+    "B",
+    "R"
+   ],
+   "colorIdentity": [
+    "B",
+    "R"
+   ],
+   "types": [
+    "Sorcery"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "mythic",
+   "text": "Rakdos's Return deals X damage to target opponent or planeswalker. That player or that planeswalker's controller discards X cards.",
+   "flavorText": "When Lord Rakdos stirred from his slumber, everyone else's nightmare began.",
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Daarken",
+   "number": "188",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Rakdos",
+   "watermark": "rakdos",
+   "group": "Rakdos"
+  },
+  {
+   "name": "Righteous Authority",
+   "manaCost": "{3}{W}{U}",
+   "manaValue": 5,
+   "colors": [
+    "U",
+    "W"
+   ],
+   "colorIdentity": [
+    "U",
+    "W"
+   ],
+   "types": [
+    "Enchantment"
+   ],
+   "subtypes": [
+    "Aura"
+   ],
+   "supertypes": [],
+   "rarity": "rare",
+   "text": "Enchant creature\nEnchanted creature gets +1/+1 for each card in its controller's hand.\nAt the beginning of the draw step of enchanted creature's controller, that player draws an additional card.",
+   "flavorText": null,
+   "power": null,
+   "toughness": null,
+   "keywords": [
+    "Enchant"
+   ],
+   "artist": "Scott Chou",
+   "number": "189",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Azorius",
+   "watermark": "azorius",
+   "group": "Azorius"
+  },
+  {
+   "name": "Risen Sanctuary",
+   "manaCost": "{5}{G}{W}",
+   "manaValue": 7,
+   "colors": [
+    "G",
+    "W"
+   ],
+   "colorIdentity": [
+    "G",
+    "W"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Elemental"
+   ],
+   "supertypes": [],
+   "rarity": "uncommon",
+   "text": "Vigilance",
+   "flavorText": "When one of the great guardians arises, it sweeps enemies aside like chaff yet takes care not to crush a single insect underfoot.",
+   "power": "8",
+   "toughness": "8",
+   "keywords": [
+    "Vigilance"
+   ],
+   "artist": "Chase Stone",
+   "number": "190",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Selesnya",
+   "watermark": "selesnya",
+   "group": "Selesnya"
+  },
+  {
+   "name": "Rites of Reaping",
+   "manaCost": "{4}{B}{G}",
+   "manaValue": 6,
+   "colors": [
+    "B",
+    "G"
+   ],
+   "colorIdentity": [
+    "B",
+    "G"
+   ],
+   "types": [
+    "Sorcery"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "uncommon",
+   "text": "Target creature gets +3/+3 until end of turn. Another target creature gets -3/-3 until end of turn.",
+   "flavorText": "Don't cross a Devkarin elf unless you long for an early grave.",
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "David Rapoza",
+   "number": "191",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Golgari",
+   "watermark": "golgari",
+   "group": "Golgari"
+  },
+  {
+   "name": "Rix Maadi Guildmage",
+   "manaCost": "{B}{R}",
+   "manaValue": 2,
+   "colors": [
+    "B",
+    "R"
+   ],
+   "colorIdentity": [
+    "B",
+    "R"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Human",
+    "Shaman"
+   ],
+   "supertypes": [],
+   "rarity": "uncommon",
+   "text": "{B}{R}: Target blocking creature gets -1/-1 until end of turn.\n{B}{R}: Target player who lost life this turn loses 1 life.",
+   "flavorText": "Insatiable, irresistible, and insane.",
+   "power": "2",
+   "toughness": "2",
+   "keywords": [],
+   "artist": "Karl Kopinski",
+   "number": "192",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Rakdos",
+   "watermark": "rakdos",
+   "group": "Rakdos"
+  },
+  {
+   "name": "Search Warrant",
+   "manaCost": "{W}{U}",
+   "manaValue": 2,
+   "colors": [
+    "U",
+    "W"
+   ],
+   "colorIdentity": [
+    "U",
+    "W"
+   ],
+   "types": [
+    "Sorcery"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "common",
+   "text": "Target player reveals their hand. You gain life equal to the number of cards in that player's hand.",
+   "flavorText": "\"And would you care to explain why your satchel is radiating an aura of unstable energy?\"",
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Steven Belledin",
+   "number": "193",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Azorius",
+   "watermark": "azorius",
+   "group": "Azorius"
+  },
+  {
+   "name": "Skull Rend",
+   "manaCost": "{3}{B}{R}",
+   "manaValue": 5,
+   "colors": [
+    "B",
+    "R"
+   ],
+   "colorIdentity": [
+    "B",
+    "R"
+   ],
+   "types": [
+    "Sorcery"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "common",
+   "text": "Skull Rend deals 2 damage to each opponent. Those players each discard two cards at random.",
+   "flavorText": "\"We could never accept anyone with a face that pretty or a mind that sane.\"\n—Nyoser, Gore-House ringleader",
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Greg Staples",
+   "number": "195",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Rakdos",
+   "watermark": "rakdos",
+   "group": "Rakdos"
+  },
+  {
+   "name": "Skymark Roc",
+   "manaCost": "{2}{W}{U}",
+   "manaValue": 4,
+   "colors": [
+    "U",
+    "W"
+   ],
+   "colorIdentity": [
+    "U",
+    "W"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Bird"
+   ],
+   "supertypes": [],
+   "rarity": "uncommon",
+   "text": "Flying\nWhenever this creature attacks, you may return target creature defending player controls with toughness 2 or less to its owner's hand.",
+   "flavorText": "\"Try not to look guilty. Or delicious.\"\n—Thorpe, street urchin",
+   "power": "3",
+   "toughness": "3",
+   "keywords": [
+    "Flying"
+   ],
+   "artist": "Christopher Moeller",
+   "number": "196",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Azorius",
+   "watermark": "azorius",
+   "group": "Azorius"
+  },
+  {
+   "name": "Slaughter Games",
+   "manaCost": "{2}{B}{R}",
+   "manaValue": 4,
+   "colors": [
+    "B",
+    "R"
+   ],
+   "colorIdentity": [
+    "B",
+    "R"
+   ],
+   "types": [
+    "Sorcery"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "rare",
+   "text": "This spell can't be countered.\nChoose a nonland card name. Search target opponent's graveyard, hand, and library for any number of cards with that name and exile them. Then that player shuffles.",
+   "flavorText": null,
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Steve Prescott",
+   "number": "197",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Rakdos",
+   "watermark": "rakdos",
+   "group": "Rakdos"
+  },
+  {
+   "name": "Spawn of Rix Maadi",
+   "manaCost": "{3}{B}{R}",
+   "manaValue": 5,
+   "colors": [
+    "B",
+    "R"
+   ],
+   "colorIdentity": [
+    "B",
+    "R"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Horror"
+   ],
+   "supertypes": [],
+   "rarity": "common",
+   "text": "Unleash (You may have this creature enter with a +1/+1 counter on it. It can't block as long as it has a +1/+1 counter on it.)",
+   "flavorText": "\"Straight from the blood-drenched imagination of our illustrious parun!\"\n—Nyoser, Gore-House ringleader",
+   "power": "5",
+   "toughness": "3",
+   "keywords": [
+    "Unleash"
+   ],
+   "artist": "Min Yum",
+   "number": "199",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Rakdos",
+   "watermark": "rakdos",
+   "group": "Rakdos"
+  },
+  {
+   "name": "Sphinx's Revelation",
+   "manaCost": "{X}{W}{U}{U}",
+   "manaValue": 3,
+   "colors": [
+    "U",
+    "W"
+   ],
+   "colorIdentity": [
+    "U",
+    "W"
+   ],
+   "types": [
+    "Instant"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "mythic",
+   "text": "You gain X life and draw X cards.",
+   "flavorText": "\"Let the knowledge of absolute law inspire you to live a life of absolute order.\"",
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Slawomir Maniak",
+   "number": "200",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Azorius",
+   "watermark": "azorius",
+   "group": "Azorius"
+  },
+  {
+   "name": "Supreme Verdict",
+   "manaCost": "{1}{W}{W}{U}",
+   "manaValue": 4,
+   "colors": [
+    "U",
+    "W"
+   ],
+   "colorIdentity": [
+    "U",
+    "W"
+   ],
+   "types": [
+    "Sorcery"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "rare",
+   "text": "This spell can't be countered.\nDestroy all creatures.",
+   "flavorText": "Leonos had no second thoughts about the abolishment edict. He'd left skyrunes warning of the eviction, even though it was cloudy.",
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Sam Burley",
+   "number": "201",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Azorius",
+   "watermark": "azorius",
+   "group": "Azorius"
+  },
+  {
+   "name": "Teleportal",
+   "manaCost": "{U}{R}",
+   "manaValue": 2,
+   "colors": [
+    "R",
+    "U"
+   ],
+   "colorIdentity": [
+    "R",
+    "U"
+   ],
+   "types": [
+    "Sorcery"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "uncommon",
+   "text": "Target creature you control gets +1/+0 until end of turn and can't be blocked this turn.\nOverload {3}{U}{R} (You may cast this spell for its overload cost. If you do, change \"target\" in its text to \"each.\")",
+   "flavorText": null,
+   "power": null,
+   "toughness": null,
+   "keywords": [
+    "Overload"
+   ],
+   "artist": "Scott M. Fischer",
+   "number": "202",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Izzet",
+   "watermark": "izzet",
+   "group": "Izzet"
+  },
+  {
+   "name": "Thoughtflare",
+   "manaCost": "{3}{U}{R}",
+   "manaValue": 5,
+   "colors": [
+    "R",
+    "U"
+   ],
+   "colorIdentity": [
+    "R",
+    "U"
+   ],
+   "types": [
+    "Instant"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "uncommon",
+   "text": "Draw four cards, then discard two cards.",
+   "flavorText": "\"If this is thinking, I don't know what I was doing before.\"",
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "David Rapoza",
+   "number": "203",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Izzet",
+   "watermark": "izzet",
+   "group": "Izzet"
+  },
+  {
+   "name": "Treasured Find",
+   "manaCost": "{B}{G}",
+   "manaValue": 2,
+   "colors": [
+    "B",
+    "G"
+   ],
+   "colorIdentity": [
+    "B",
+    "G"
+   ],
+   "types": [
+    "Sorcery"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "uncommon",
+   "text": "Return target card from your graveyard to your hand. Exile Treasured Find.",
+   "flavorText": "Gorgons crave beautiful things: gems, exquisite amulets, the alabaster corpses of the petrified dead . . .",
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Jason Chan",
+   "number": "204",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Golgari",
+   "watermark": "golgari",
+   "group": "Golgari"
+  },
+  {
+   "name": "Trestle Troll",
+   "manaCost": "{1}{B}{G}",
+   "manaValue": 3,
+   "colors": [
+    "B",
+    "G"
+   ],
+   "colorIdentity": [
+    "B",
+    "G"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Troll"
+   ],
+   "supertypes": [],
+   "rarity": "common",
+   "text": "Defender\nReach (This creature can block creatures with flying.)\n{1}{B}{G}: Regenerate this creature.",
+   "flavorText": "Unwelcome in Golgari colonies, he found his own dark place from which to represent the Swarm.",
+   "power": "1",
+   "toughness": "4",
+   "keywords": [
+    "Defender",
+    "Reach",
+    "Regenerate"
+   ],
+   "artist": "Peter Mohrbacher",
+   "number": "205",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Golgari",
+   "watermark": "golgari",
+   "group": "Golgari"
+  },
+  {
+   "name": "Trostani, Selesnya's Voice",
+   "manaCost": "{G}{G}{W}{W}",
+   "manaValue": 4,
+   "colors": [
+    "G",
+    "W"
+   ],
+   "colorIdentity": [
+    "G",
+    "W"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Dryad"
+   ],
+   "supertypes": [
+    "Legendary"
+   ],
+   "rarity": "mythic",
+   "text": "Whenever another creature you control enters, you gain life equal to that creature's toughness.\n{1}{G}{W}, {T}: Populate. (Create a token that's a copy of a creature token you control.)",
+   "flavorText": null,
+   "power": "2",
+   "toughness": "5",
+   "keywords": [
+    "Populate"
+   ],
+   "artist": "Chippy",
+   "number": "206",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Selesnya",
+   "watermark": "selesnya",
+   "group": "Selesnya"
+  },
+  {
+   "name": "Vitu-Ghazi Guildmage",
+   "manaCost": "{G}{W}",
+   "manaValue": 2,
+   "colors": [
+    "G",
+    "W"
+   ],
+   "colorIdentity": [
+    "G",
+    "W"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Dryad",
+    "Shaman"
+   ],
+   "supertypes": [],
+   "rarity": "uncommon",
+   "text": "{4}{G}{W}: Create a 3/3 green Centaur creature token.\n{2}{G}{W}: Populate. (Create a token that's a copy of a creature token you control.)",
+   "flavorText": "\"Preachers of freedom forget that conformity can be beautiful.\"",
+   "power": "2",
+   "toughness": "2",
+   "keywords": [
+    "Populate"
+   ],
+   "artist": "Jason Chan",
+   "number": "207",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Selesnya",
+   "watermark": "selesnya",
+   "group": "Selesnya"
+  },
+  {
+   "name": "Vraska the Unseen",
+   "manaCost": "{3}{B}{G}",
+   "manaValue": 5,
+   "colors": [
+    "B",
+    "G"
+   ],
+   "colorIdentity": [
+    "B",
+    "G"
+   ],
+   "types": [
+    "Planeswalker"
+   ],
+   "subtypes": [
+    "Vraska"
+   ],
+   "supertypes": [
+    "Legendary"
+   ],
+   "rarity": "mythic",
+   "text": "[+1]: Until your next turn, whenever a creature deals combat damage to Vraska, destroy that creature.\n[−3]: Destroy target nonland permanent.\n[−7]: Create three 1/1 black Assassin creature tokens with \"Whenever this token deals combat damage to a player, that player loses the game.\"",
+   "flavorText": null,
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Aleksi Briclot",
+   "number": "208",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Golgari",
+   "watermark": null,
+   "group": "Golgari"
+  },
+  {
+   "name": "Wayfaring Temple",
+   "manaCost": "{1}{G}{W}",
+   "manaValue": 3,
+   "colors": [
+    "G",
+    "W"
+   ],
+   "colorIdentity": [
+    "G",
+    "W"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Elemental"
+   ],
+   "supertypes": [],
+   "rarity": "rare",
+   "text": "Wayfaring Temple's power and toughness are each equal to the number of creatures you control.\nWhenever this creature deals combat damage to a player, populate. (Create a token that's a copy of a creature token you control.)",
+   "flavorText": null,
+   "power": "*",
+   "toughness": "*",
+   "keywords": [
+    "Populate"
+   ],
+   "artist": "Peter Mohrbacher",
+   "number": "209",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Selesnya",
+   "watermark": "selesnya",
+   "group": "Selesnya"
+  },
+  {
+   "name": "Azor's Elocutors",
+   "manaCost": "{3}{W/U}{W/U}",
+   "manaValue": 5,
+   "colors": [
+    "U",
+    "W"
+   ],
+   "colorIdentity": [
+    "U",
+    "W"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Human",
+    "Advisor"
+   ],
+   "supertypes": [],
+   "rarity": "rare",
+   "text": "At the beginning of your upkeep, put a filibuster counter on this creature. Then if this creature has five or more filibuster counters on it, you win the game.\nWhenever a source deals damage to you, remove a filibuster counter from this creature.",
+   "flavorText": null,
+   "power": "3",
+   "toughness": "5",
+   "keywords": [],
+   "artist": "Johannes Voss",
+   "number": "210",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Azorius",
+   "watermark": "azorius",
+   "group": "Azorius"
+  },
+  {
+   "name": "Blistercoil Weird",
+   "manaCost": "{U/R}",
+   "manaValue": 1,
+   "colors": [
+    "R",
+    "U"
+   ],
+   "colorIdentity": [
+    "R",
+    "U"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Weird"
+   ],
+   "supertypes": [],
+   "rarity": "uncommon",
+   "text": "Whenever you cast an instant or sorcery spell, this creature gets +1/+1 until end of turn. Untap it.",
+   "flavorText": "Azorius lawmages would like to outlaw the creation of weirds, but first they'd have to settle their long-standing debate on how to classify them.",
+   "power": "1",
+   "toughness": "1",
+   "keywords": [],
+   "artist": "Dan Murayama Scott",
+   "number": "211",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Izzet",
+   "watermark": "izzet",
+   "group": "Izzet"
+  },
+  {
+   "name": "Cryptborn Horror",
+   "manaCost": "{1}{B/R}{B/R}",
+   "manaValue": 3,
+   "colors": [
+    "B",
+    "R"
+   ],
+   "colorIdentity": [
+    "B",
+    "R"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Horror"
+   ],
+   "supertypes": [],
+   "rarity": "rare",
+   "text": "Trample\nThis creature enters with X +1/+1 counters on it, where X is the total life lost by your opponents this turn.",
+   "flavorText": "Although Cryptwitch Merree vanished after a spat with Rakdos, her playthings lingered.",
+   "power": "0",
+   "toughness": "0",
+   "keywords": [
+    "Trample"
+   ],
+   "artist": "Richard Wright",
+   "number": "212",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Rakdos",
+   "watermark": "rakdos",
+   "group": "Rakdos"
+  },
+  {
+   "name": "Deathrite Shaman",
+   "manaCost": "{B/G}",
+   "manaValue": 1,
+   "colors": [
+    "B",
+    "G"
+   ],
+   "colorIdentity": [
+    "B",
+    "G"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Elf",
+    "Shaman"
+   ],
+   "supertypes": [],
+   "rarity": "rare",
+   "text": "{T}: Exile target land card from a graveyard. Add one mana of any color. (Activate only as an instant.)\n{B}, {T}: Exile target instant or sorcery card from a graveyard. Each opponent loses 2 life.\n{G}, {T}: Exile target creature card from a graveyard. You gain 2 life.",
+   "flavorText": null,
+   "power": "1",
+   "toughness": "2",
+   "keywords": [],
+   "artist": "Steve Argyle",
+   "number": "213",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Golgari",
+   "watermark": "golgari",
+   "group": "Golgari"
+  },
+  {
+   "name": "Golgari Longlegs",
+   "manaCost": "{3}{B/G}{B/G}",
+   "manaValue": 5,
+   "colors": [
+    "B",
+    "G"
+   ],
+   "colorIdentity": [
+    "B",
+    "G"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Insect"
+   ],
+   "supertypes": [],
+   "rarity": "common",
+   "text": null,
+   "flavorText": "Despite its enormous stature, it can fold itself into a tunnel with startling quickness, vanishing back into the undercity.",
+   "power": "5",
+   "toughness": "4",
+   "keywords": [],
+   "artist": "Volkan Baǵa",
+   "number": "216",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Golgari",
+   "watermark": "golgari",
+   "group": "Golgari"
+  },
+  {
+   "name": "Judge's Familiar",
+   "manaCost": "{W/U}",
+   "manaValue": 1,
+   "colors": [
+    "U",
+    "W"
+   ],
+   "colorIdentity": [
+    "U",
+    "W"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Bird"
+   ],
+   "supertypes": [],
+   "rarity": "uncommon",
+   "text": "Flying\nSacrifice this creature: Counter target instant or sorcery spell unless its controller pays {1}.",
+   "flavorText": "\"It misses nothing and it has no sense of humor.\"\n—Barvisa, courtroom scribe",
+   "power": "1",
+   "toughness": "1",
+   "keywords": [
+    "Flying"
+   ],
+   "artist": "Jack Wang",
+   "number": "218",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Azorius",
+   "watermark": "azorius",
+   "group": "Azorius"
+  },
+  {
+   "name": "Nivmagus Elemental",
+   "manaCost": "{U/R}",
+   "manaValue": 1,
+   "colors": [
+    "R",
+    "U"
+   ],
+   "colorIdentity": [
+    "R",
+    "U"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Elemental"
+   ],
+   "supertypes": [],
+   "rarity": "rare",
+   "text": "Exile an instant or sorcery spell you control: Put two +1/+1 counters on this creature. (That spell won't resolve.)",
+   "flavorText": "When it escaped, the experimenters hesitated. It would cause untold havoc, yet they wished to see it in action.",
+   "power": "1",
+   "toughness": "2",
+   "keywords": [],
+   "artist": "Mike Bierek",
+   "number": "219",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Izzet",
+   "watermark": "izzet",
+   "group": "Izzet"
+  },
+  {
+   "name": "Slitherhead",
+   "manaCost": "{B/G}",
+   "manaValue": 1,
+   "colors": [
+    "B",
+    "G"
+   ],
+   "colorIdentity": [
+    "B",
+    "G"
+   ],
+   "types": [
+    "Creature"
+   ],
+   "subtypes": [
+    "Plant",
+    "Zombie"
+   ],
+   "supertypes": [],
+   "rarity": "uncommon",
+   "text": "Scavenge {0} ({0}, Exile this card from your graveyard: Put a number of +1/+1 counters equal to this card's power on target creature. Scavenge only as a sorcery.)",
+   "flavorText": "\"It makes better use of Uncle Dragi's head than he ever did.\"\n—Pesha, retired blacksmith",
+   "power": "1",
+   "toughness": "1",
+   "keywords": [
+    "Scavenge"
+   ],
+   "artist": "Greg Staples",
+   "number": "222",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Golgari",
+   "watermark": "golgari",
+   "group": "Golgari"
+  },
+  {
+   "name": "Sundering Growth",
+   "manaCost": "{G/W}{G/W}",
+   "manaValue": 2,
+   "colors": [
+    "G",
+    "W"
+   ],
+   "colorIdentity": [
+    "G",
+    "W"
+   ],
+   "types": [
+    "Instant"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "common",
+   "text": "Destroy target artifact or enchantment, then populate. (Create a token that's a copy of a creature token you control.)",
+   "flavorText": "\"One day every pillar will be a tree and every hall a glade.\"\n—Trostani",
+   "power": null,
+   "toughness": null,
+   "keywords": [
+    "Populate"
+   ],
+   "artist": "David Palumbo",
+   "number": "223",
+   "isHybrid": false,
+   "isGold": true,
+   "guild": "Selesnya",
+   "watermark": "selesnya",
+   "group": "Selesnya"
+  },
+  {
+   "name": "Codex Shredder",
+   "manaCost": "{1}",
+   "manaValue": 1,
+   "colors": [],
+   "colorIdentity": [],
+   "types": [
+    "Artifact"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "uncommon",
+   "text": "{T}: Target player mills a card. (They put the top card of their library into their graveyard.)\n{5}, {T}, Sacrifice this artifact: Return target card from your graveyard to your hand.",
+   "flavorText": null,
+   "power": null,
+   "toughness": null,
+   "keywords": [
+    "Mill"
+   ],
+   "artist": "Jason Felix",
+   "number": "228",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "colourless",
+   "watermark": null,
+   "group": "colourless"
+  },
+  {
+   "name": "Izzet Keyrune",
+   "manaCost": "{3}",
+   "manaValue": 3,
+   "colors": [],
+   "colorIdentity": [
+    "R",
+    "U"
+   ],
+   "types": [
+    "Artifact"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "uncommon",
+   "text": "{T}: Add {U} or {R}.\n{U}{R}: Until end of turn, this artifact becomes a 2/1 blue and red Elemental artifact creature.\nWhenever this artifact deals combat damage to a player, you may draw a card. If you do, discard a card.",
+   "flavorText": null,
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Daniel Ljunggren",
+   "number": "230",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "Izzet",
+   "watermark": "izzet",
+   "group": "Izzet"
+  },
+  {
+   "name": "Pithing Needle",
+   "manaCost": "{1}",
+   "manaValue": 1,
+   "colors": [],
+   "colorIdentity": [],
+   "types": [
+    "Artifact"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "rare",
+   "text": "As this artifact enters, choose a card name.\nActivated abilities of sources with the chosen name can't be activated unless they're mana abilities.",
+   "flavorText": "The fearful want the procedure before a blood festival. The guilty seek it afterward.",
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Anthony Palumbo",
+   "number": "231",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "colourless",
+   "watermark": null,
+   "group": "colourless"
+  },
+  {
+   "name": "Rakdos Keyrune",
+   "manaCost": "{3}",
+   "manaValue": 3,
+   "colors": [],
+   "colorIdentity": [
+    "B",
+    "R"
+   ],
+   "types": [
+    "Artifact"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "uncommon",
+   "text": "{T}: Add {B} or {R}.\n{B}{R}: This artifact becomes a 3/1 black and red Devil artifact creature with first strike until end of turn.",
+   "flavorText": "The Rakdos use it for everything you can think of and plenty more than that.",
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Daniel Ljunggren",
+   "number": "232",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "Rakdos",
+   "watermark": "rakdos",
+   "group": "Rakdos"
+  },
+  {
+   "name": "Selesnya Keyrune",
+   "manaCost": "{3}",
+   "manaValue": 3,
+   "colors": [],
+   "colorIdentity": [
+    "G",
+    "W"
+   ],
+   "types": [
+    "Artifact"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "uncommon",
+   "text": "{T}: Add {G} or {W}.\n{G}{W}: This artifact becomes a 3/3 green and white Wolf artifact creature until end of turn.",
+   "flavorText": "A mark of unity when you want one; a fierce guardian when you need one.",
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Daniel Ljunggren",
+   "number": "233",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "Selesnya",
+   "watermark": "selesnya",
+   "group": "Selesnya"
+  },
+  {
+   "name": "Tablet of the Guilds",
+   "manaCost": "{2}",
+   "manaValue": 2,
+   "colors": [],
+   "colorIdentity": [],
+   "types": [
+    "Artifact"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "uncommon",
+   "text": "As this artifact enters, choose two colors.\nWhenever you cast a spell, if it's at least one of the chosen colors, you gain 1 life for each of the chosen colors it is.",
+   "flavorText": "It is rumored the Azorius paid an exorbitant sum to ensure its symbol would appear at the top.",
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Nic Klein",
+   "number": "235",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "colourless",
+   "watermark": null,
+   "group": "colourless"
+  },
+  {
+   "name": "Volatile Rig",
+   "manaCost": "{4}",
+   "manaValue": 4,
+   "colors": [],
+   "colorIdentity": [],
+   "types": [
+    "Artifact",
+    "Creature"
+   ],
+   "subtypes": [
+    "Construct"
+   ],
+   "supertypes": [],
+   "rarity": "rare",
+   "text": "Trample\nThis creature attacks each combat if able.\nWhenever this creature is dealt damage, flip a coin. If you lose the flip, sacrifice this creature.\nWhen this creature dies, flip a coin. If you lose the flip, it deals 4 damage to each creature and each player.",
+   "flavorText": null,
+   "power": "4",
+   "toughness": "4",
+   "keywords": [
+    "Trample"
+   ],
+   "artist": "Mathias Kollros",
+   "number": "236",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "colourless",
+   "watermark": null,
+   "group": "colourless"
+  },
+  {
+   "name": "Blood Crypt",
+   "manaCost": null,
+   "manaValue": 0,
+   "colors": [],
+   "colorIdentity": [
+    "B",
+    "R"
+   ],
+   "types": [
+    "Land"
+   ],
+   "subtypes": [
+    "Swamp",
+    "Mountain"
+   ],
+   "supertypes": [],
+   "rarity": "rare",
+   "text": "({T}: Add {B} or {R}.)\nAs this land enters, you may pay 2 life. If you don't, it enters tapped.",
+   "flavorText": "Where the dead serve as diversion, decor, and dessert.",
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Vincent Proce",
+   "number": "238",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "Rakdos",
+   "watermark": "rakdos",
+   "group": "Rakdos"
+  },
+  {
+   "name": "Grove of the Guardian",
+   "manaCost": null,
+   "manaValue": 0,
+   "colors": [],
+   "colorIdentity": [
+    "G",
+    "W"
+   ],
+   "types": [
+    "Land"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "rare",
+   "text": "{T}: Add {C}.\n{3}{G}{W}, {T}, Tap two untapped creatures you control, Sacrifice this land: Create an 8/8 green and white Elemental creature token with vigilance.",
+   "flavorText": null,
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Christine Choi",
+   "number": "240",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "Selesnya",
+   "watermark": "selesnya",
+   "group": "Selesnya"
+  },
+  {
+   "name": "Hallowed Fountain",
+   "manaCost": null,
+   "manaValue": 0,
+   "colors": [],
+   "colorIdentity": [
+    "U",
+    "W"
+   ],
+   "types": [
+    "Land"
+   ],
+   "subtypes": [
+    "Plains",
+    "Island"
+   ],
+   "supertypes": [],
+   "rarity": "rare",
+   "text": "({T}: Add {W} or {U}.)\nAs this land enters, you may pay 2 life. If you don't, it enters tapped.",
+   "flavorText": "A place to relax, if you have the proper permit.",
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Jung Park",
+   "number": "241",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "Azorius",
+   "watermark": "azorius",
+   "group": "Azorius"
+  },
+  {
+   "name": "Overgrown Tomb",
+   "manaCost": null,
+   "manaValue": 0,
+   "colors": [],
+   "colorIdentity": [
+    "B",
+    "G"
+   ],
+   "types": [
+    "Land"
+   ],
+   "subtypes": [
+    "Swamp",
+    "Forest"
+   ],
+   "supertypes": [],
+   "rarity": "rare",
+   "text": "({T}: Add {B} or {G}.)\nAs this land enters, you may pay 2 life. If you don't, it enters tapped.",
+   "flavorText": "The best funeral shroud is the fabric of new life.",
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Steven Belledin",
+   "number": "243",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "Golgari",
+   "watermark": "golgari",
+   "group": "Golgari"
+  },
+  {
+   "name": "Rogue's Passage",
+   "manaCost": null,
+   "manaValue": 0,
+   "colors": [],
+   "colorIdentity": [],
+   "types": [
+    "Land"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "uncommon",
+   "text": "{T}: Add {C}.\n{4}, {T}: Target creature can't be blocked this turn.",
+   "flavorText": "Rumors quickly spread among thieves about a labyrinth without walls and a prize beyond all measures of worth.",
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Christine Choi",
+   "number": "245",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "colourless",
+   "watermark": null,
+   "group": "colourless"
+  },
+  {
+   "name": "Steam Vents",
+   "manaCost": null,
+   "manaValue": 0,
+   "colors": [],
+   "colorIdentity": [
+    "R",
+    "U"
+   ],
+   "types": [
+    "Land"
+   ],
+   "subtypes": [
+    "Island",
+    "Mountain"
+   ],
+   "supertypes": [],
+   "rarity": "rare",
+   "text": "({T}: Add {U} or {R}.)\nAs this land enters, you may pay 2 life. If you don't, it enters tapped.",
+   "flavorText": "Crafted with genius, energized with madness.",
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Yeong-Hao Han",
+   "number": "247",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "Izzet",
+   "watermark": "izzet",
+   "group": "Izzet"
+  },
+  {
+   "name": "Temple Garden",
+   "manaCost": null,
+   "manaValue": 0,
+   "colors": [],
+   "colorIdentity": [
+    "G",
+    "W"
+   ],
+   "types": [
+    "Land"
+   ],
+   "subtypes": [
+    "Forest",
+    "Plains"
+   ],
+   "supertypes": [],
+   "rarity": "rare",
+   "text": "({T}: Add {G} or {W}.)\nAs this land enters, you may pay 2 life. If you don't, it enters tapped.",
+   "flavorText": "In the gardens of the Conclave, order and beauty are the roots of power.",
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Volkan Baǵa",
+   "number": "248",
+   "isHybrid": false,
+   "isGold": false,
+   "guild": "Selesnya",
+   "watermark": "selesnya",
+   "group": "Selesnya"
+  },
+  {
+   "name": "Transguild Promenade",
+   "manaCost": null,
+   "manaValue": 0,
+   "colors": [],
+   "colorIdentity": [],
+   "types": [
+    "Land"
+   ],
+   "subtypes": [],
+   "supertypes": [],
+   "rarity": "common",
+   "text": "This land enters tapped.\nWhen this land enters, sacrifice it unless you pay {1}.\n{T}: Add one mana of any color.",
+   "flavorText": null,
+   "power": null,
+   "toughness": null,
+   "keywords": [],
+   "artist": "Noah Bradley",
+   "number": "249",
    "isHybrid": false,
    "isGold": false,
    "guild": "colourless",

@@ -4,7 +4,7 @@ Stage 9, written by the agent. `C5 Consolidate in your own words`. A fresh sessi
 
 ## What this is
 
-Tenth District (a working title): a Hand of Fate–style deck-building adventure on Ravnica's grid with 108 Return to Ravnica cards, for the browser. This MVP is the first region, from a new game in the Tenth District to the fight with Niv-Mizzet in Nivix. Since MVP 2 (TRIAGE T1) every fight is a game of Magic the player plays against a computer opponent, with a land pile instead of lands in the deck. MVP 2 is public at https://sgilson7.github.io/mtg-hand-of-fate/ (built from e3c6958), source at https://github.com/sgilson7/mtg-hand-of-fate.
+Tenth District (a working title): a Hand of Fate–style deck-building adventure on Ravnica's grid with 108 Return to Ravnica cards, for the browser. This MVP is the first region, from a new game in the Tenth District to the fight with Niv-Mizzet in Nivix; since T10 the pool is all of Return to Ravnica (254 cards, the first 108 first). Since MVP 2 (TRIAGE T1) every fight is a game of Magic the player plays against a computer opponent, with a land pile instead of lands in the deck. MVP 2 is public at https://sgilson7.github.io/mtg-hand-of-fate/ (built from e3c6958), source at https://github.com/sgilson7/mtg-hand-of-fate.
 
 ## Rules that hold it up
 
@@ -64,6 +64,11 @@ The rules in `CLAUDE.md` under "Rules agreed for this project" (MTG-1 to MTG-11)
 - R3.10: armour and ability rules carried over to Magic.
 - R3.12: read the fight's new strings.
 - R2.16: the repository's name, `mtg-hand-of-fate`, chosen by the agent from the project folder.
+- R5.1: the choices the new cards make for both sides (Tablet's colours, Jace's piles, free casts).
+- R5.2: Seek the Horizon and Gatecreeper Vine fill the land pile instead of searching.
+- R5.3: a planeswalker met on the map is a fight.
+- R5.7: idle enchantments and artifacts on the table carry no label; hover to read one.
+- R5.10: read the 52 new strings and the 146 new stories.
 
 ## Mistakes so far
 
@@ -84,6 +89,8 @@ The rules in `CLAUDE.md` under "Rules agreed for this project" (MTG-1 to MTG-11)
 2026-10-24, MVP 2 deploy: `BUILDER_ORIGIN=https://sgilson7.github.io/mtg-hand-of-fate python3 tests/browser/check.py` ended `BROWSER CHECK PASSED in chromium, firefox, webkit`; the live `build.txt` reads `e8d5a5f9f04d e3c6958`.
 
 2026-10-24, T8: `./scripts/check.sh` ended `BUILDER CHECK PASSED` (browser check in chromium, firefox, webkit); 136 tests passed; 37 of 37 breaks caught.
+
+2026-10-24, T9 to T13: `./scripts/check.sh` ended `BROWSER CHECK PASSED in chromium, firefox, webkit` and `BUILDER CHECK PASSED`; `./scripts/count-tests.sh`: 140 passed, 0 failed; `scripts/break_tests.py`: 43 of 43 caught; `tools/cardart/render.py --check`: card art ok (254 pictures). A live play-through of the new artifacts and enchantments (Playwright, build from the working tree) showed no page errors.
 
 ## The next action
 

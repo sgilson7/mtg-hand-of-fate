@@ -1,0 +1,15 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{a8a49a}\definecolor{bgD}{HTML}{5a5650}\definecolor{city}{HTML}{6a665e}\definecolor{red}{HTML}{b83a1e}\definecolor{redD}{HTML}{6a1e10}\definecolor{teal}{HTML}{3a9aa8}\definecolor{metal}{HTML}{4a3a4a}\definecolor{gem}{HTML}{8ae8f0}\definecolor{fire}{HTML}{f0a040}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[top color=bg,bottom color=bgD] (0,0) rectangle (6.16,4.52);
+\fill[city,opacity=.6] (0,0) rectangle (1.0,3.0);\fill[city,opacity=.6] (4.8,0) rectangle (6.16,3.6);\fill[fire] (0.4,0.6) ellipse (0.3 and 0.15);
+% the key-rune: a red and teal Izzet rod, set on a slant
+\fill[metal,ink] (3.0,1.6) -- (4.6,0) -- (5.2,0) -- (3.4,2.0) -- cycle;
+\foreach \t in {0.25,0.55,0.85}{\fill[teal,ink] ({3.2+1.8*\t},{1.8-1.8*\t}) -- ++(0.35,0.2) -- ++(0.2,-0.3) -- ++(-0.35,-0.2) -- cycle;}
+\fill[red,ink] (1.6,3.4) -- (2.0,4.2) -- (3.2,3.8) -- (3.8,2.6) -- (3.2,1.6) -- (2.4,2.0) -- cycle;
+\fill[redD,ink] (2.2,2.6) -- (2.6,3.4) -- (3.2,3.2) -- (3.4,2.4) -- (3.0,2.0) -- cycle;
+\fill[gem,ink] (2.8,2.8) circle (0.2);\fill[gem] (2.0,3.8) circle (0.07);\fill[gem] (3.4,3.4) circle (0.07);
+\foreach \a/\b in {1.6/4.52,2.2/4.52,2.6/4.4}{\fill[red,ink] (\a+0.2,3.9) -- (\a,\b) -- (\a+0.4,4.0) -- cycle;}
+\draw[metal,line width=1pt] (3.6,2.6) .. controls (4.4,3.0) and (4.6,2.4) .. (4.2,2.0);
+\end{tikzpicture}\end{document}

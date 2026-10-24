@@ -1,0 +1,13 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{c8a050}\definecolor{bgL}{HTML}{f0d890}\definecolor{wall}{HTML}{a8803a}\definecolor{disc}{HTML}{d8b060}\definecolor{discD}{HTML}{8a6a2a}\definecolor{armor}{HTML}{3a4a2a}\definecolor{armorL}{HTML}{6a7a4a}\definecolor{stair}{HTML}{7a5a2a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[inner color=bgL,outer color=bg] (0,0) rectangle (6.16,4.52);
+\fill[wall,ink] (0,0) rectangle (0.6,4.52);\fill[wall,ink] (5.56,0) rectangle (6.16,4.52);\foreach \i in {0,1,2}{\fill[stair,ink] (0.6,\i*0.18) rectangle (5.56,\i*0.18+0.18);}
+% the tablet: ten guild roundels in a ring round a great sun-disc
+\fill[disc,ink] (3.08,2.5) circle (1.0);\draw[discD,line width=1pt] (3.08,2.5) circle (0.7);\fill[discD] (3.08,2.5) circle (0.25);
+\foreach \a in {0,36,...,324}{\draw[discD,line width=1pt] (3.08,2.5) ++(\a:0.3) -- ++(\a:0.35);}
+\foreach \a in {90,126,162,198,234,270,306,342,18,54}{\fill[disc,ink] (3.08,2.5) ++(\a:1.6) circle (0.32);\draw[discD,line width=.8pt] (3.08,2.5) ++(\a:1.6) circle (0.18);}
+% two guards standing to either side
+\foreach \x in {0.9,4.7}{\fill[armor,ink] (\x,0.5) rectangle (\x+0.6,2.4);\fill[armorL,ink] (\x+0.3,2.7) circle (0.28);\fill[armor,ink] (\x+0.1,2.4) -- (\x+0.3,2.2) -- (\x+0.5,2.4) -- cycle;\draw[discD,line width=1.2pt] (\x+0.3,0.5) -- (\x+0.3,2.0);}
+\end{tikzpicture}\end{document}

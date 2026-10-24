@@ -1,0 +1,23 @@
+\input{../preamble}
+\definecolor{wall}{HTML}{8a7a8a}\definecolor{wallD}{HTML}{5a4e5a}\definecolor{frame}{HTML}{5a7a5a}\definecolor{frameL}{HTML}{8aa88a}
+\definecolor{hide}{HTML}{a8783a}\definecolor{hideD}{HTML}{6a4a22}\definecolor{eye}{HTML}{f0ece0}\definecolor{iris}{HTML}{4a7ab8}\definecolor{bell}{HTML}{c89a3a}\definecolor{steel}{HTML}{8a8a8a}\definecolor{floor}{HTML}{d8c8a0}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\fill[wall] (0,0) rectangle (6.16,4.52);\foreach \y in {0.9,1.8,2.7,3.6}{\draw[wallD,line width=.5pt] (0,\y) -- (6.16,\y);}
+\fill[floor] (2.0,0) rectangle (6.16,0.6);
+% the green door lintel he crouches on
+\fill[frame,ink] (1.2,0) -- (1.2,2.0) -- (3.4,2.0) -- (3.4,0) -- (3.1,0) -- (3.1,1.7) -- (1.5,1.7) -- (1.5,0) -- cycle;
+\foreach \x in {1.3,1.4}{\draw[frameL,line width=.5pt] (\x,0) -- (\x,1.9);}\draw[frameL,line width=.5pt] (1.3,1.9) -- (3.3,1.9);
+% hanging bell
+\draw[ink,line width=.6pt] (3.0,2.6) -- (3.0,1.9);\fill[bell,ink] (2.8,1.4) .. controls (2.8,1.9) and (3.2,1.9) .. (3.2,1.4) -- cycle;
+% the doorkeeper: hunched body, long arms, one huge eye
+\fill[hideD,ink] (1.0,2.0) .. controls (0.8,2.8) and (1.4,3.6) .. (2.2,3.8) .. controls (3.0,3.9) and (3.6,3.4) .. (3.6,2.8) .. controls (3.5,2.3) and (3.0,2.0) .. (2.4,2.0) -- cycle;
+\fill[hide,ink] (1.3,2.4) .. controls (1.2,3.2) and (1.8,3.8) .. (2.4,3.8) .. controls (3.0,3.7) and (3.2,3.2) .. (3.1,2.7) .. controls (2.7,2.3) and (1.8,2.2) .. (1.3,2.4);
+\fill[eye,ink] (2.2,3.15) circle (0.48);\fill[iris] (2.25,3.15) circle (0.22);\fill[ink] (2.27,3.15) circle (0.09);
+\fill[hideD,ink] (1.7,3.6) .. controls (2.0,3.75) and (2.5,3.75) .. (2.75,3.5) -- (2.7,3.65) .. controls (2.4,3.85) and (1.9,3.85) .. (1.7,3.6);
+\fill[hide,ink] (1.1,2.4) .. controls (0.7,2.2) and (0.5,1.6) .. (0.6,1.0) -- (0.85,1.0) .. controls (0.8,1.5) and (0.95,2.0) .. (1.3,2.2) -- cycle;
+\foreach \a in {-20,0,20}{\fill[hide,ink] (0.72,1.0) -- ++(-90+\a:0.3) -- ++(90+\a:0.05) -- cycle;}
+\fill[hide,ink] (3.4,2.6) .. controls (3.8,2.3) and (3.8,2.0) .. (3.6,1.9) -- (3.4,2.1) -- cycle;
+% the spear across the lower left
+\draw[hideD,line width=1.8pt] (0,2.2) -- (2.6,0.6);\fill[steel,ink] (2.5,0.7) -- (3.1,0.3) -- (2.6,0.55) -- cycle;
+\end{tikzpicture}\end{document}

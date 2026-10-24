@@ -1,0 +1,16 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{8a4a3a}\definecolor{bgD}{HTML}{3a1e18}\definecolor{city}{HTML}{4a2a22}\definecolor{iron}{HTML}{3a3a3a}\definecolor{ironL}{HTML}{6a6a6a}\definecolor{red}{HTML}{e83a2a}\definecolor{eye}{HTML}{ff4a2a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[top color=bg,bottom color=bgD] (0,0) rectangle (6.16,4.52);
+\fill[city,opacity=.7] (0,1.0) -- (0,2.8) -- (0.6,3.2) -- (1.0,2.6) -- (1.6,2.8) -- (1.8,1.0) -- cycle;\fill[city,opacity=.7] (4.6,1.0) -- (4.8,3.0) -- (5.4,3.4) -- (6.16,2.8) -- (6.16,1.0) -- cycle;
+% the Rakdos key-rune: a horned demon head atop a jagged black rod
+\fill[iron,ink] (2.8,2.6) -- (4.4,0) -- (5.0,0) -- (3.2,2.8) -- cycle;
+\foreach \t in {0.3,0.6}{\fill[iron,ink] ({3.0+1.6*\t},{2.6-2.6*\t}) -- ++(0.5,0.0) -- ++(-0.2,-0.3) -- cycle;}
+\fill[red,ink] (3.4,1.6) -- (3.6,1.9) -- (3.8,1.6) -- (3.6,1.3) -- cycle;
+\fill[iron,ink] (2.8,3.0) circle (0.5);\fill[ironL] (2.65,3.15) circle (0.12);
+\fill[eye] (2.65,3.0) circle (0.07);\fill[eye] (2.95,3.0) circle (0.07);
+\fill[iron,ink] (2.4,3.3) .. controls (1.6,3.6) and (1.2,4.2) .. (1.4,4.52) .. controls (1.6,4.0) and (2.0,3.7) .. (2.5,3.5) -- cycle;
+\fill[iron,ink] (3.2,3.3) .. controls (4.0,3.6) and (4.4,4.2) .. (4.2,4.52) .. controls (4.0,4.0) and (3.6,3.7) .. (3.1,3.5) -- cycle;
+\fill[iron,ink] (2.4,2.8) .. controls (1.6,2.6) and (1.4,2.0) .. (1.6,1.6) .. controls (1.8,2.1) and (2.1,2.4) .. (2.5,2.6) -- cycle;
+\end{tikzpicture}\end{document}

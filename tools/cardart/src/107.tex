@@ -1,0 +1,14 @@
+\input{../preamble}
+\definecolor{sky}{HTML}{e8c888}\definecolor{skyL}{HTML}{f8ecc8}\definecolor{dust}{HTML}{c8a060}\definecolor{beam}{HTML}{3a2a1e}\definecolor{beamL}{HTML}{6a4a2a}\definecolor{door}{HTML}{e8cc88}\definecolor{doorS}{HTML}{a8884a}\definecolor{goblin}{HTML}{4a3a2a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[top color=skyL,bottom color=sky] (0,0) rectangle (6.16,4.52);
+\fill[dust,opacity=.7] (2.6,0) .. controls (3.0,2.2) and (4.0,3.4) .. (5.0,3.2) .. controls (5.6,2.6) and (5.8,1.0) .. (5.6,0) -- cycle;
+% the burned-out frame, beams jutting every way
+\foreach \a/\b/\c/\d in {0.6/0/2.4/3.6,2.4/3.6/4.2/3.0,4.2/3.0/4.6/0,5.0/0/5.8/4.52,0/1.2/3.2/0.6,3.6/0.4/6.16/1.6,1.6/2.2/0.4/4.0,4.4/3.6/5.4/4.4}{\draw[ink,line width=7pt] (\a,\b) -- (\c,\d);\draw[beam,line width=5.6pt] (\a,\b) -- (\c,\d);\draw[beamL,line width=1.2pt] (\a+0.03,\b+0.03) -- (\c+0.03,\d+0.03);}
+% a door left standing in the frame
+\fill[door,ink] (2.0,0.4) -- (2.4,2.8) -- (3.4,2.6) -- (3.2,0.2) -- cycle;\foreach \i in {1,2,3}{\draw[doorS,line width=.6pt] (2.0+\i*0.3,0.35-\i*0.05) -- (2.4+\i*0.25,2.75-\i*0.05);}
+% a scavenger with a bucket on the heap, top right
+\fill[goblin,ink] (4.6,3.3) -- (4.7,3.9) -- (4.9,3.9) -- (5.0,3.3) -- cycle;\fill[goblin] (4.8,4.05) circle (0.12);
+\draw[beam,line width=1pt] (4.5,4.0) -- (5.3,3.8);\fill[goblin,ink] (5.25,3.4) rectangle (5.45,3.65);
+\end{tikzpicture}\end{document}

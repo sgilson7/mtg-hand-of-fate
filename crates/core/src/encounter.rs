@@ -185,6 +185,31 @@ pub fn basics_for(cards: &[Card], mask: u8, n: usize) -> Vec<usize> {
     (0..n).map(|i| names[i % names.len()]).collect()
 }
 
+/// `n` basic lands for a library search (Seek the Horizon, Gatecreeper Vine):
+/// the colours the cards in hand and library ask for most, by turns.
+pub fn basics_needed(cards: &[Card], hand: &[usize], library: &[usize], n: usize) -> Vec<usize> {
+    let mut count = [0usize; 5];
+    for &c in hand.iter().chain(library.iter()) {
+        for (i, col) in mana::COLOURS.iter().enumerate() {
+            if cards[c].cost.colours() & col != 0 {
+                count[i] += 1;
+            }
+        }
+    }
+    let mut order: Vec<usize> = (0..5).filter(|&i| count[i] > 0).collect();
+    order.sort_by_key(|&i| (std::cmp::Reverse(count[i]), i));
+    if order.is_empty() {
+        order = (0..5).collect();
+    }
+    (0..n)
+        .filter_map(|k| {
+            basics_for(cards, mana::COLOURS[order[k % order.len()]], 1)
+                .first()
+                .copied()
+        })
+        .collect()
+}
+
 /// The player's land pile: the lands within Reach, made up to `PILE_MIN`
 /// with basics of the deck's colours, the colour the pile has least of first.
 pub fn fill_pile(cards: &[Card], deck: &[usize], mut lands: Vec<usize>) -> Vec<usize> {

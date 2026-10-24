@@ -1,0 +1,18 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{e0e4d0}\definecolor{bgD}{HTML}{8a9a7a}\definecolor{pillar}{HTML}{c8c8b8}\definecolor{tree}{HTML}{6a5a4a}\definecolor{leaf}{HTML}{5a8a3a}\definecolor{robe}{HTML}{2a6a3a}\definecolor{robeW}{HTML}{f0ece0}
+\definecolor{skin}{HTML}{a8704a}\definecolor{hair}{HTML}{1e1a16}\definecolor{gold}{HTML}{d8c07a}\definecolor{glow}{HTML}{f0ff8a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[top color=bg,bottom color=bgD] (0,0) rectangle (6.16,4.52);
+\foreach \x in {2.2,3.4,4.6}{\fill[pillar,opacity=.7] (\x,0.8) rectangle (\x+0.3,4.52);}
+% a twisted old tree at the left
+\fill[tree,ink] (0,0) -- (0,3.0) .. controls (0.6,3.4) and (1.4,3.2) .. (1.8,3.6) -- (2.0,3.4) .. controls (1.4,2.8) and (0.8,2.6) .. (1.0,1.6) .. controls (1.2,1.0) and (1.8,0.6) .. (2.4,0) -- cycle;
+\fill[leaf] (1.4,3.8) ellipse (0.6 and 0.3);\fill[leaf] (0.4,3.4) ellipse (0.5 and 0.25);
+% the guildmage, a glowing seed in one hand, a white staff in the other
+\fill[robe,ink] (3.6,0) .. controls (3.6,1.4) and (3.8,2.6) .. (4.2,2.9) -- (4.8,2.9) .. controls (5.2,2.6) and (5.6,1.4) .. (5.8,0) -- cycle;
+\fill[robeW,ink] (4.3,0) -- (4.4,2.6) -- (4.6,2.6) -- (4.8,0) -- cycle;\fill[gold,ink] (4.5,1.6) circle (0.12);
+\fill[robe,ink] (4.2,2.6) -- (3.7,3.2) -- (3.85,3.3) -- (4.35,2.8) -- cycle;\fill[skin,ink] (3.75,3.3) circle (0.1);\fill[glow] (3.7,3.55) circle (0.12);
+\fill[skin,ink] (4.5,3.2) ellipse (0.19 and 0.24);\fill[hair,ink] (4.3,3.25) .. controls (4.3,3.6) and (4.7,3.6) .. (4.7,3.25) -- (4.8,2.7) -- (4.6,3.0) -- (4.4,3.0) -- (4.2,2.7) -- cycle;
+\fill[robeW,ink] (4.3,3.4) -- (4.5,3.75) -- (4.7,3.4) -- cycle;
+\draw[robeW,line width=1.6pt] (5.4,0) -- (5.5,3.8);\foreach \a in {0,60,...,300}{\draw[robeW,line width=1.2pt] (5.5,4.05) -- ++(\a:0.25);}
+\end{tikzpicture}\end{document}

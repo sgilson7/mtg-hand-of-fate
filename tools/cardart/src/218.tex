@@ -1,0 +1,18 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{8a8ab8}\definecolor{bgL}{HTML}{e8e4d8}\definecolor{arch}{HTML}{6a6a9a}\definecolor{feather}{HTML}{c8a878}\definecolor{featherD}{HTML}{8a6a4a}\definecolor{robe}{HTML}{2a3a8a}\definecolor{trim}{HTML}{d8dcf0}\definecolor{gold}{HTML}{d8b050}\definecolor{eye}{HTML}{f0c040}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\fill[bg] (0,0) rectangle (6.16,4.52);
+\fill[bgL,ink] (0.6,0) -- (0.6,3.2) arc (180:0:1.0) -- (2.6,0) -- cycle;\fill[arch,ink] (4.0,0) -- (4.0,3.0) arc (180:0:0.8) -- (5.6,0) -- cycle;
+% the owl in a judge's robe and gold helm
+\fill[feather,ink] (2.2,0.6) .. controls (2.0,1.8) and (2.2,3.0) .. (3.0,3.2) .. controls (3.8,3.0) and (4.0,1.8) .. (3.8,0.6) -- cycle;
+\foreach \y in {1.2,1.6,2.0,2.4}{\draw[featherD,line width=.6pt] (2.4,\y) .. controls (3.0,\y-0.15) .. (3.6,\y);}
+\fill[robe,ink] (2.1,2.6) .. controls (2.0,1.4) and (2.1,0.6) .. (2.2,0) -- (2.6,0) .. controls (2.5,1.0) and (2.6,2.0) .. (2.8,2.8) -- cycle;
+\fill[robe,ink] (3.9,2.6) .. controls (4.0,1.4) and (3.9,0.6) .. (3.8,0) -- (3.4,0) .. controls (3.5,1.0) and (3.4,2.0) .. (3.2,2.8) -- cycle;
+\draw[trim,line width=1.2pt] (2.7,2.8) .. controls (2.5,1.6) .. (2.5,0);\draw[trim,line width=1.2pt] (3.3,2.8) .. controls (3.5,1.6) .. (3.5,0);
+\fill[feather,ink] (3.0,3.5) ellipse (0.55 and 0.5);
+\fill[gold,ink] (2.5,3.7) .. controls (2.6,4.3) and (3.4,4.3) .. (3.5,3.7) -- (3.3,3.8) -- (3.0,3.5) -- (2.7,3.8) -- cycle;\fill[robe] (3.0,4.05) circle (0.08);
+\fill[eye,ink] (2.78,3.45) circle (0.13);\fill[eye,ink] (3.22,3.45) circle (0.13);\fill[ink] (2.78,3.45) circle (0.05);\fill[ink] (3.22,3.45) circle (0.05);
+\fill[gold,ink] (2.92,3.25) -- (3.0,3.05) -- (3.08,3.25) -- cycle;
+\fill[featherD,ink] (1.6,0) rectangle (4.4,0.6);
+\end{tikzpicture}\end{document}

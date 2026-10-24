@@ -1,0 +1,19 @@
+\input{../preamble}
+\definecolor{sky}{HTML}{8ab8e0}\definecolor{skyL}{HTML}{d8ecf8}\definecolor{hall}{HTML}{6a8ab0}\definecolor{hallD}{HTML}{3a5a80}\definecolor{bolt}{HTML}{e8ffff}
+\definecolor{hide}{HTML}{8aa83a}\definecolor{hideD}{HTML}{4a6a1e}\definecolor{red}{HTML}{b82a2a}\definecolor{orb}{HTML}{8ad8ff}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[top color=skyL,bottom color=sky] (0,0) rectangle (6.16,4.52);
+% a building seen from below, cornice running away to the right
+\fill[hall,ink] (2.2,0) -- (6.16,2.6) -- (6.16,0) -- cycle;\fill[hallD,ink] (2.2,0) -- (6.16,2.6) -- (6.16,2.9) -- (1.8,0) -- cycle;
+\foreach \x in {3.4,4.2,5.0,5.7}{\fill[hallD,ink] (\x,0.2) -- (\x,0.6+0.45*\x-1.4) arc (180:0:0.15) -- (\x+0.3,0.2) -- cycle;}
+\fill[hall,opacity=.5] (1.0,3.2) rectangle (2.0,4.52);
+% sparks of the device
+\foreach \p in {{(2.6,3.4) -- (2.1,3.9) -- (2.3,4.2) -- (1.8,4.52)},{(2.9,3.5) -- (3.4,4.0) -- (3.2,4.3)},{(2.4,3.2) -- (1.6,3.3) -- (1.4,3.7)}}{\draw[bolt,line width=1.2pt] \p;}
+% the viashino leaping, harness on its back, jaws open
+\fill[hide,ink] (1.0,1.8) .. controls (1.6,2.2) and (2.4,3.0) .. (3.0,3.2) .. controls (3.6,3.3) and (4.2,3.0) .. (4.6,2.6) -- (5.4,2.8) -- (4.8,2.3) .. controls (4.0,2.4) and (3.4,2.6) .. (2.8,2.4) .. controls (2.2,2.2) and (1.6,1.8) .. (1.2,1.4) -- cycle;
+\fill[hide,ink] (1.2,1.4) .. controls (0.8,1.3) and (0.5,1.4) .. (0.4,1.6) -- (0.9,1.5) -- (0.5,1.9) .. controls (0.8,2.0) and (1.0,1.9) .. (1.0,1.8) -- cycle;
+\fill[red,ink] (2.2,2.5) .. controls (2.6,3.0) and (3.2,3.2) .. (3.6,3.0) -- (3.4,2.7) .. controls (3.0,2.8) and (2.6,2.6) .. (2.4,2.3) -- cycle;
+\fill[orb,ink] (2.6,3.2) circle (0.13);\fill[orb,ink] (2.95,3.35) circle (0.13);
+\fill[hideD,ink] (2.0,2.2) -- (1.6,1.4) -- (1.75,1.35) -- (2.15,2.05) -- cycle;\fill[hideD,ink] (3.4,2.5) -- (3.6,1.9) -- (3.75,1.95) -- (3.55,2.55) -- cycle;
+\end{tikzpicture}\end{document}

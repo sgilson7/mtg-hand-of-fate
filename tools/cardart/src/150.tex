@@ -1,0 +1,18 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{c8d8a0}\definecolor{bgD}{HTML}{5a6a3a}\definecolor{dryad}{HTML}{4a5a22}\definecolor{dryadL}{HTML}{8a9a4a}\definecolor{light}{HTML}{f8fce8}\definecolor{folk}{HTML}{8a8a6a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\fill[bgD] (0,0) rectangle (6.16,4.52);\shade[inner color=light,outer color=bgD] (3.4,2.8) circle (4.4);
+% a crowd of dryads and folk streaming in behind
+\foreach \x/\y/\s in {4.4/3.0/.7,5.2/2.8/.8,3.6/3.4/.5,4.8/3.6/.5,5.8/3.4/.6,1.4/3.4/.6,0.6/3.0/.7}{\fill[folk,opacity=.6] (\x,\y) ellipse ({0.2*\s} and {0.6*\s});\fill[folk,opacity=.6] (\x,\y+0.75*\s) circle ({0.18*\s});\draw[folk,line width=1pt,opacity=.6] (\x,\y+0.3*\s) -- (\x+0.4*\s,\y+0.9*\s);}
+% the dryad lunging forward, limbs of bark and leaf
+\fill[dryad,ink] (2.4,1.6) .. controls (2.2,2.4) and (2.6,3.0) .. (3.0,3.1) .. controls (3.4,3.0) and (3.6,2.4) .. (3.4,1.6) -- cycle;
+\fill[dryadL,opacity=.7] (2.6,2.0) .. controls (2.7,2.6) and (2.9,2.8) .. (3.0,2.8) -- (3.1,2.0) -- cycle;
+\fill[dryad,ink] (2.6,1.7) -- (1.4,0.4) -- (0.8,0) -- (1.6,0) -- (2.8,1.3) -- cycle;
+\fill[dryad,ink] (3.2,1.7) -- (4.2,0.8) -- (4.6,0) -- (4.9,0.1) -- (4.4,1.0) -- (3.4,1.9) -- cycle;
+\fill[dryad,ink] (2.5,2.8) .. controls (1.6,3.0) and (0.8,2.6) .. (0.2,2.0) -- (0.4,1.8) .. controls (1.0,2.3) and (1.8,2.5) .. (2.5,2.4) -- cycle;
+\fill[dryad,ink] (3.3,2.8) .. controls (4.0,3.4) and (4.8,3.6) .. (5.6,3.4) -- (5.6,3.2) .. controls (4.8,3.3) and (4.0,3.0) .. (3.4,2.5) -- cycle;
+\fill[dryad,ink] (3.0,3.4) ellipse (0.2 and 0.28);
+\foreach \a in {60,90,120,150}{\draw[dryad,line width=1.4pt] (3.0,3.6) -- ++(\a:0.5);}
+\foreach \x/\y in {0.6/2.1,1.6/0.6,4.4/0.6,5.0/3.4}{\fill[dryadL,ink] (\x,\y) ellipse (0.18 and 0.1);}
+\end{tikzpicture}\end{document}

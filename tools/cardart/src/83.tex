@@ -1,0 +1,18 @@
+\input{../preamble}
+\definecolor{light}{HTML}{e8ecd8}\definecolor{vault}{HTML}{4a4a36}\definecolor{vaultL}{HTML}{7a7a5a}\definecolor{stall}{HTML}{6a5a3a}\definecolor{awning}{HTML}{8a7a4a}
+\definecolor{crowd}{HTML}{3a3426}\definecolor{flag}{HTML}{c8b888}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\fill[light] (0,0) rectangle (6.16,4.52);
+% a great vaulted undercity market
+\fill[vault,ink] (0,4.52) -- (0,0) -- (0.6,0) -- (0.8,2.4) .. controls (1.2,3.8) and (3.0,4.2) .. (4.2,4.0) .. controls (5.2,3.8) and (5.8,3.2) .. (6.16,2.6) -- (6.16,4.52) -- cycle;
+\foreach \i in {0,1,2,3}{\draw[vaultL,line width=.6pt] (0.8+\i*0.1,2.4+\i*0.3) .. controls (1.4,3.6+\i*0.1) and (3.0,4.0-\i*0.05) .. (4.2,3.8-\i*0.1);}
+% strings of pennants across the vault
+\foreach \y in {3.6,3.2}{\draw[crowd,line width=.4pt] (0.9,\y) .. controls (2.6,\y-0.4) .. (5.6,\y-0.2);\foreach \x in {1.3,1.9,...,5.3}{\fill[flag] (\x,\y-0.18) -- (\x+0.1,\y-0.38) -- (\x+0.2,\y-0.18) -- cycle;}}
+% stalls stepping down both sides
+\foreach \x/\y in {0.8/1.0,1.6/1.4,2.3/1.7}{\fill[stall,ink] (\x,0) rectangle (\x+0.9,\y);\fill[awning,ink] (\x-0.1,\y) -- (\x+1.0,\y) -- (\x+0.9,\y+0.25) -- (\x,\y+0.25) -- cycle;}
+\foreach \x/\y in {5.0/1.8,4.4/1.6,3.9/1.5}{\fill[stall,ink] (\x,0.6) rectangle (\x+0.9,\y);\fill[awning,ink] (\x-0.1,\y) -- (\x+1.0,\y) -- (\x+0.9,\y+0.25) -- (\x,\y+0.25) -- cycle;}
+\fill[vaultL] (2.0,0) -- (3.0,1.6) -- (3.6,1.6) -- (4.4,0) -- cycle;
+% the crowd moving along the walkway
+\foreach \x/\y/\s in {2.4/0.4/1,2.8/0.8/.8,3.2/1.1/.6,3.6/0.6/.9,3.0/0.2/1.1,3.4/1.3/.5,4.0/0.3/1}{\fill[crowd] (\x,\y) ellipse ({0.08*\s} and {0.22*\s});\fill[crowd] (\x,\y+0.28*\s) circle ({0.06*\s});}
+\end{tikzpicture}\end{document}

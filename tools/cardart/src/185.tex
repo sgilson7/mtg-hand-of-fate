@@ -1,0 +1,15 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{8a5a4a}\definecolor{bgL}{HTML}{e8a878}\definecolor{fur}{HTML}{2a2a2e}\definecolor{furL}{HTML}{5a5a62}\definecolor{fire}{HTML}{f05a1a}\definecolor{fireL}{HTML}{ffc050}\definecolor{teeth}{HTML}{f0e8d8}\definecolor{chain}{HTML}{a82a2a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[left color=bg,right color=bgL] (0,0) rectangle (6.16,4.52);
+% the burning hound rearing up, mouth spewing sparks
+\fill[fur,ink] (0.4,0) .. controls (0.6,1.4) and (1.4,2.6) .. (2.4,3.2) .. controls (3.2,3.6) and (4.0,3.6) .. (4.4,3.2) -- (4.0,2.6) .. controls (3.4,2.4) and (2.8,2.0) .. (2.6,1.4) .. controls (2.4,0.8) and (2.4,0.4) .. (2.6,0) -- cycle;
+\foreach \x/\y in {0.8/1.0,1.2/1.6,1.6/2.2,2.0/2.7,2.6/3.1,3.2/3.4}{\fill[furL,ink] (\x,\y) -- (\x-0.2,\y+0.5) -- (\x+0.15,\y+0.15) -- cycle;}
+\fill[fur,ink] (3.4,3.4) .. controls (3.6,4.0) and (4.4,4.2) .. (5.0,3.8) -- (5.2,3.4) -- (4.6,3.4) -- (5.2,3.0) -- (4.4,2.8) -- cycle;
+\foreach \x in {4.5,4.7,4.9}{\fill[teeth] (\x,3.45) -- (\x+0.05,3.3) -- (\x+0.1,3.45) -- cycle;}\fill[fireL] (4.1,3.75) circle (0.06);
+\fill[fire,opacity=.9] (5.0,3.2) .. controls (5.6,3.0) and (6.0,3.2) .. (6.16,3.0) -- (6.16,2.4) .. controls (5.6,2.6) and (5.2,2.8) .. (4.9,3.0) -- cycle;
+\fill[fire,opacity=.9] (1.4,1.2) .. controls (2.0,1.6) and (2.6,1.0) .. (3.4,1.2) .. controls (3.0,0.6) and (2.0,0.4) .. (1.4,1.2);\fill[fireL] (2.2,1.1) circle (0.2);
+\fill[fur,ink] (2.8,2.0) -- (3.6,1.6) -- (3.8,1.0) -- (4.0,1.1) -- (3.8,1.8) -- (3.0,2.4) -- cycle;
+\foreach \i in {0,...,6}{\draw[chain,line width=1.2pt] (2.0-\i*0.3,2.6-\i*0.05) ellipse (0.1 and 0.06);}
+\end{tikzpicture}\end{document}

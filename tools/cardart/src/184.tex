@@ -1,0 +1,14 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{c86a2a}\definecolor{bgL}{HTML}{f0a860}\definecolor{fire}{HTML}{f04a1a}\definecolor{fireL}{HTML}{ffc050}\definecolor{iron}{HTML}{3a3a3a}\definecolor{ironL}{HTML}{6a6a6a}\definecolor{wood}{HTML}{8a5a2a}\definecolor{figure}{HTML}{8a4a2a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[inner color=bgL,outer color=bg] (0,0) rectangle (6.16,4.52);
+\fill[figure,opacity=.5] (1.4,2.6) .. controls (1.4,3.6) and (2.6,4.2) .. (3.0,4.52) -- (0.6,4.52) .. controls (0.8,3.8) and (1.0,3.2) .. (1.4,2.6);
+% the charm: a flaming iron-shod cleaver thrust toward us
+\fill[wood,ink] (0,0.4) -- (2.8,2.2) -- (3.0,1.8) -- (0.2,0) -- cycle;
+\foreach \t in {0.3,0.5,0.7}{\fill[iron,ink] ({0.2+2.6*\t},{0.2+1.8*\t}) circle (0.18);\fill[ironL] ({0.2+2.6*\t},{0.2+1.8*\t}) circle (0.06);}
+\fill[iron,ink] (2.6,1.4) -- (3.0,2.6) -- (5.0,4.52) -- (6.16,4.52) -- (6.16,2.2) -- (4.6,0.6) -- cycle;
+\fill[fire,ink] (3.2,2.2) -- (4.6,3.8) -- (5.8,4.2) -- (5.8,2.4) -- (4.4,1.0) -- cycle;
+\fill[fireL] (4.0,2.4) .. controls (4.6,3.2) and (5.2,3.4) .. (5.4,3.0) .. controls (5.0,2.6) and (4.6,2.2) .. (4.0,2.4);
+\foreach \x/\y in {3.0/2.6,4.6/0.6,5.6/2.0,4.8/4.2}{\fill[ironL,ink] (\x,\y) circle (0.08);}
+\end{tikzpicture}\end{document}

@@ -1,0 +1,19 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{e8c880}\definecolor{bgL}{HTML}{fff0c8}\definecolor{hall}{HTML}{c8a060}\definecolor{horse}{HTML}{2a2a32}\definecolor{armor}{HTML}{8a9aa0}\definecolor{armorL}{HTML}{c8d0d4}
+\definecolor{cape}{HTML}{3a7a9a}\definecolor{skin}{HTML}{e8c8b0}\definecolor{crowd}{HTML}{3a3a3a}\definecolor{shaft}{HTML}{4a3a2a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[inner color=bgL,outer color=bg] (0,0) rectangle (6.16,4.52);
+\fill[hall,opacity=.6] (4.0,1.6) rectangle (6.16,4.52);\foreach \x in {4.3,4.9,5.5}{\fill[bg,opacity=.8] (\x,2.8) -- (\x,3.6) arc (180:0:0.2) -- (\x+0.4,2.8) -- cycle;}
+% the crowd parting at the sides
+\foreach \x/\s in {0.2/1.1,0.8/.9,5.0/1.0,5.6/1.2}{\fill[crowd,ink] (\x,0) -- (\x+0.05,1.6*\s) .. controls (\x+0.1,1.9*\s) and (\x+0.5,1.9*\s) .. (\x+0.55,1.6*\s) -- (\x+0.6,0) -- cycle;\fill[skin,ink] (\x+0.3,1.85*\s) circle (0.13);}
+% the armoured horse coming at us
+\fill[horse,ink] (1.8,0) -- (2.0,1.2) .. controls (1.8,2.2) and (2.2,2.8) .. (2.8,2.8) .. controls (3.6,2.8) and (4.2,2.2) .. (4.2,1.2) -- (4.4,0) -- (3.8,0) -- (3.6,0.8) -- (2.6,0.8) -- (2.4,0) -- cycle;
+\fill[armor,ink] (2.2,1.4) .. controls (2.4,2.2) and (3.6,2.2) .. (3.8,1.4) .. controls (3.4,1.0) and (2.6,1.0) .. (2.2,1.4);\foreach \x in {2.6,3.0,3.4}{\fill[armorL] (\x,1.5) circle (0.1);}
+\fill[horse,ink] (1.6,2.4) .. controls (1.4,3.0) and (1.8,3.4) .. (2.2,3.2) -- (2.6,2.6) -- cycle;\fill[armor,ink] (1.55,2.6) -- (1.8,3.2) -- (2.0,2.6) -- cycle;
+% the rider, cape streaming
+\fill[cape,ink] (3.6,3.6) .. controls (4.4,4.2) and (5.4,4.0) .. (6.16,4.4) -- (6.16,3.6) .. controls (5.4,3.4) and (4.4,3.2) .. (3.8,3.0) -- cycle;
+\fill[armor,ink] (2.8,2.6) -- (2.9,3.6) .. controls (3.0,3.9) and (3.5,3.9) .. (3.6,3.6) -- (3.7,2.6) -- cycle;
+\fill[skin,ink] (3.25,4.0) ellipse (0.17 and 0.22);\fill[armor,ink] (3.07,4.05) .. controls (3.1,4.4) and (3.4,4.4) .. (3.43,4.05) -- cycle;
+\draw[shaft,line width=1.4pt] (2.6,2.2) -- (2.2,4.52);\fill[armorL,ink] (2.15,4.4) -- (2.2,4.52) -- (2.28,4.4) -- cycle;
+\end{tikzpicture}\end{document}

@@ -1,0 +1,16 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{5a7a3a}\definecolor{bgD}{HTML}{2a2a1a}\definecolor{bone}{HTML}{c8b8a0}\definecolor{boneD}{HTML}{6a5a4a}\definecolor{robe}{HTML}{2a3a24}\definecolor{robeL}{HTML}{4a5a3a}\definecolor{skin}{HTML}{c8b8a0}\definecolor{staff}{HTML}{5a4a32}\definecolor{mist}{HTML}{8ac85a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\fill[bgD] (0,0) rectangle (6.16,4.52);\shade[inner color=bg,outer color=bgD] (3.6,2.8) circle (3.0);
+% a field of bones and skulls
+\foreach \x/\y/\a in {0.4/2.6/20,0.8/1.8/-30,1.4/3.0/60,0.2/0.8/10,1.6/1.2/-50,2.2/2.2/30,5.6/3.0/-20,5.2/1.6/40,5.8/0.8/-10,4.8/2.6/70,2.6/0.4/0,4.2/0.6/30}{\fill[bone,ink,rotate around={\a:(\x,\y)}] (\x,\y) rectangle (\x+0.6,\y+0.1);}
+\foreach \x/\y/\r in {1.2/0.5/0.35,2.0/1.0/0.25,5.0/0.4/0.3,0.6/1.4/0.22}{\fill[bone,ink] (\x,\y) circle (\r);\fill[boneD] (\x-\r*0.35,\y+\r*0.1) circle ({\r*0.22});\fill[boneD] (\x+\r*0.35,\y+\r*0.1) circle ({\r*0.22});}
+% the shaman in a green hood, a skull lifted in his hand
+\fill[robe,ink] (3.0,0) -- (3.2,2.4) .. controls (3.4,3.4) and (4.2,3.4) .. (4.4,2.4) -- (4.6,0) -- cycle;
+\fill[robeL,ink] (3.4,2.6) .. controls (3.4,3.6) and (4.2,3.6) .. (4.2,2.6) .. controls (4.0,2.4) and (3.6,2.4) .. (3.4,2.6);
+\fill[skin,ink] (3.8,2.85) ellipse (0.18 and 0.22);
+\fill[robe,ink] (3.3,2.2) -- (2.6,3.0) -- (2.75,3.1) -- (3.45,2.4) -- cycle;\fill[bone,ink] (2.6,3.35) circle (0.2);\fill[boneD] (2.53,3.38) circle (0.04);\fill[boneD] (2.67,3.38) circle (0.04);
+\draw[staff,line width=1.8pt] (4.8,0) -- (5.0,3.8);
+\fill[mist,opacity=.3] (3.8,0.6) ellipse (2.0 and 0.5);
+\end{tikzpicture}\end{document}

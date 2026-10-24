@@ -196,7 +196,8 @@ export function makeUi(root, labelRoot, act) {
   }
 
   function label(l) {
-    const n = make("div", `lbl ${l.hot ? "hot" : ""}`, l.text);
+    const n = make("div", `lbl ${l.hot ? "hot" : ""}`);
+    n.append(make("span", "", l.text));
     if (l.sub) n.append(make("small", "", l.sub));
     n.style.setProperty("--x", l.x);
     n.style.setProperty("--y", l.y);

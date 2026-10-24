@@ -1,0 +1,22 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{4a7a5a}\definecolor{bgL}{HTML}{a8d8b8}\definecolor{arch}{HTML}{3a5a4a}\definecolor{suit}{HTML}{a82a2a}\definecolor{suitD}{HTML}{5a1a1a}\definecolor{brass}{HTML}{c89a4a}
+\definecolor{skin}{HTML}{e8c0a0}\definecolor{hair}{HTML}{f0f0f0}\definecolor{portal}{HTML}{6a5aa8}\definecolor{swirl}{HTML}{e8f0ff}\definecolor{tube}{HTML}{2a3a5a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[inner color=bgL,outer color=bg] (0,0) rectangle (6.16,4.52);
+\foreach \x in {0.4,5.0}{\fill[arch,ink] (\x,1.0) -- (\x,3.4) arc (180:0:0.4) -- (\x+0.8,1.0) -- cycle;}
+% the portal on the floor
+\fill[portal,ink] (3.0,0.5) ellipse (2.4 and 0.5);\foreach \r in {0.6,1.2,1.8}{\draw[swirl,line width=1pt] (3.0,0.5) ellipse ({\r} and {\r*0.2});}
+% the old wizard in an Izzet rig stepping out of it
+\fill[brass,ink] (3.2,3.0) -- (4.8,4.0) -- (5.2,3.4) -- (3.6,2.4) -- cycle;\fill[suit,ink] (5.0,3.7) circle (0.4);\fill[suitD] (5.0,3.7) circle (0.18);
+\fill[suitD,ink] (2.2,0.6) -- (2.4,1.8) -- (3.6,1.8) -- (3.8,0.6) -- (3.3,0.6) -- (3.0,1.3) -- (2.7,0.6) -- cycle;
+\fill[suit,ink] (2.2,1.7) .. controls (2.0,2.6) and (2.4,3.2) .. (3.0,3.3) .. controls (3.6,3.2) and (4.0,2.6) .. (3.8,1.7) -- cycle;
+\fill[brass,ink] (2.6,2.4) circle (0.25);\fill[brass,ink] (3.4,2.4) circle (0.25);
+\fill[suit,ink] (2.2,2.9) -- (1.6,2.4) -- (1.7,2.25) -- (2.3,2.7) -- cycle;\fill[skin,ink] (1.6,2.3) circle (0.12);
+\fill[suit,ink] (3.8,2.8) -- (4.4,2.0) -- (4.55,2.1) -- (3.95,2.95) -- cycle;
+\foreach \a in {-60,-30,0}{\fill[brass,ink] (4.5,2.05) -- ++(\a:0.35) -- ++(\a+90:0.05) -- cycle;}
+\fill[skin,ink] (3.0,3.6) ellipse (0.22 and 0.28);
+\fill[hair,ink] (2.75,3.7) .. controls (2.5,4.2) and (3.2,4.4) .. (3.3,3.9) .. controls (3.5,4.2) and (3.6,3.8) .. (3.25,3.65) -- cycle;
+\fill[hair,ink] (2.85,3.45) .. controls (2.9,3.0) and (3.1,3.0) .. (3.15,3.45) -- cycle;
+\draw[tube,line width=1.6pt] (2.4,1.8) .. controls (1.4,1.4) and (1.4,0.8) .. (2.0,0.6);
+\end{tikzpicture}\end{document}

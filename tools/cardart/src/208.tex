@@ -1,0 +1,15 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{c8d86a}\definecolor{bgD}{HTML}{3a4a22}\definecolor{tower}{HTML}{8a9a5a}\definecolor{skin}{HTML}{6a8a4a}\definecolor{skinL}{HTML}{9ab86a}\definecolor{dress}{HTML}{2a3a1e}\definecolor{tendril}{HTML}{3a5a2a}\definecolor{eye}{HTML}{f0e040}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[left color=bgD,right color=bg] (0,0) rectangle (6.16,4.52);
+\fill[tower,opacity=.5] (0.4,1.0) rectangle (1.4,4.0);\foreach \x in {0.6,0.9,1.2}{\draw[bgD,line width=.6pt,opacity=.6] (\x,1.2) -- (\x,3.8);}
+% Vraska: tendril hair writhing out, thorny dark gown
+\foreach \a/\l in {30/1.6,60/1.8,90/1.4,120/1.8,150/1.6,10/1.2,170/1.3}{\draw[ink,line width=4pt] (3.0,3.8) .. controls ++(\a+40:{\l*0.5}) and ++(\a-30:-0.4) .. ++(\a:\l);\draw[tendril,line width=2.8pt] (3.0,3.8) .. controls ++(\a+40:{\l*0.5}) and ++(\a-30:-0.4) .. ++(\a:\l);}
+\fill[dress,ink] (2.0,0) .. controls (2.2,1.2) and (2.4,2.2) .. (2.6,2.8) -- (3.4,2.8) .. controls (3.6,2.2) and (3.8,1.2) .. (4.0,0) -- cycle;
+\foreach \x/\y in {2.4/1.0,3.6/1.0,2.6/1.8,3.4/1.8,3.0/1.4,2.2/0.4,3.8/0.4}{\fill[skinL,ink] (\x,\y) -- (\x+0.1,\y+0.3) -- (\x+0.2,\y) -- cycle;}
+\fill[skin,ink] (2.6,2.8) .. controls (2.6,3.2) and (3.4,3.2) .. (3.4,2.8) -- (3.0,2.4) -- cycle;
+\fill[skin,ink] (2.6,2.7) -- (2.0,1.8) -- (1.8,1.2) -- (1.95,1.15) -- (2.2,1.7) -- (2.75,2.4) -- cycle;\fill[skin,ink] (3.4,2.7) -- (4.0,1.8) -- (4.2,1.2) -- (4.05,1.15) -- (3.8,1.7) -- (3.25,2.4) -- cycle;
+\foreach \a in {-110,-90,-70}{\fill[dress] (1.85,1.15) -- ++(\a:0.3) -- ++(\a+90:0.04) -- cycle;\fill[dress] (4.1,1.15) -- ++(\a:0.3) -- ++(\a+90:0.04) -- cycle;}
+\fill[skin,ink] (3.0,3.5) ellipse (0.24 and 0.32);\fill[eye] (2.9,3.55) ellipse (0.06 and 0.03);\fill[eye] (3.1,3.55) ellipse (0.06 and 0.03);
+\end{tikzpicture}\end{document}

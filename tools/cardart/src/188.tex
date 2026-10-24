@@ -1,0 +1,17 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{f08a2a}\definecolor{bgL}{HTML}{ffe08a}\definecolor{fire}{HTML}{e84a1a}\definecolor{body}{HTML}{6a1a3a}\definecolor{bodyL}{HTML}{a83a5a}\definecolor{horn}{HTML}{2a1a1a}\definecolor{rock}{HTML}{3a1a14}\definecolor{chain}{HTML}{2a2020}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\fill[bg] (0,0) rectangle (6.16,4.52);\shade[inner color=bgL,outer color=bg] (3.8,2.6) circle (4.0);
+\fill[rock,ink] (4.6,0) -- (5.0,1.6) -- (6.16,2.6) -- (6.16,0) -- cycle;\fill[rock,ink] (0,4.52) -- (0,3.4) -- (0.8,3.8) -- (1.2,4.52) -- cycle;
+\foreach \p in {{(3.6,4.52) .. controls (3.2,3.8) and (4.2,3.0) .. (3.8,2.2)},{(5.2,4.52) .. controls (4.6,3.6) and (5.4,2.6) .. (4.8,1.8)},{(4.2,0) .. controls (4.6,0.8) and (4.0,1.4) .. (4.4,2.0)}}{\draw[fire,line width=3pt] \p;}
+% Rakdos diving out of the fire, horns forward
+\fill[body,ink] (0.4,0.6) .. controls (0.8,1.6) and (1.6,2.6) .. (2.6,3.0) .. controls (3.2,3.2) and (3.6,2.8) .. (3.4,2.2) .. controls (2.8,1.6) and (2.0,1.0) .. (1.6,0) -- (0.6,0) -- cycle;
+\fill[bodyL,opacity=.6] (1.4,1.4) .. controls (1.8,2.2) and (2.6,2.6) .. (3.0,2.4) .. controls (2.4,1.8) and (1.8,1.4) .. (1.4,1.4);
+\fill[body,ink] (2.6,3.0) .. controls (2.6,3.6) and (3.2,3.8) .. (3.6,3.4) -- (3.7,3.0) -- (3.3,2.6) -- cycle;
+\fill[horn,ink] (2.8,3.5) .. controls (2.0,4.0) and (1.2,3.8) .. (0.8,3.2) .. controls (1.4,3.5) and (2.1,3.5) .. (2.7,3.2) -- cycle;
+\fill[horn,ink] (3.4,3.6) .. controls (3.6,4.2) and (3.4,4.52) .. (3.1,4.52) .. controls (3.3,4.2) and (3.2,3.9) .. (3.1,3.7) -- cycle;
+\fill[bgL] (3.25,3.25) circle (0.05);\fill[bgL] (3.45,3.2) circle (0.05);
+\fill[body,ink] (3.2,2.4) -- (4.0,1.6) -- (4.4,1.6) -- (4.2,1.4) -- (3.8,1.4) -- (3.0,2.2) -- cycle;
+\foreach \i in {0,...,7}{\draw[chain,line width=1.2pt] (1.6+\i*0.22,0.9+\i*0.12) ellipse (0.08 and 0.05);}
+\end{tikzpicture}\end{document}

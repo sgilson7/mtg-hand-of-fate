@@ -1,0 +1,18 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{e8e4d0}\definecolor{bgS}{HTML}{b8b4a0}\definecolor{robe}{HTML}{f0ece0}\definecolor{blue}{HTML}{3a5ab0}\definecolor{gold}{HTML}{c8a050}\definecolor{orb}{HTML}{4a7ad8}
+\definecolor{skin}{HTML}{8a9ab8}\definecolor{desk}{HTML}{d8d0b8}\definecolor{metal}{HTML}{a8a8a0}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\fill[bg] (0,0) rectangle (6.16,4.52);
+\fill[metal,ink] (0.3,1.6) rectangle (0.9,4.52);\fill[metal,ink] (4.9,2.6) rectangle (5.3,4.52);\fill[metal,ink] (5.1,2.4) circle (0.25);\fill[metal,ink] (1.8,3.6) circle (0.25);\draw[metal,line width=1.4pt] (1.8,3.85) -- (1.8,4.52);
+% the vedalken judge behind his bench, robed in white and blue
+\fill[robe,ink] (1.6,1.0) -- (2.0,2.8) .. controls (2.4,3.2) and (3.6,3.2) .. (4.0,2.8) -- (4.6,1.0) -- cycle;
+\foreach \x in {2.2,2.7,3.5,4.0}{\fill[blue,ink] (\x,1.1) -- (\x+0.1,2.6) -- (\x+0.4,2.6) -- (\x+0.5,1.1) -- cycle;}
+\fill[gold,ink] (2.6,2.6) -- (3.0,2.0) -- (3.4,2.6) -- cycle;\fill[orb,ink] (3.0,2.3) circle (0.14);
+\fill[orb,ink] (2.3,2.8) circle (0.12);\fill[orb,ink] (3.7,2.8) circle (0.12);\fill[orb,ink] (3.0,1.4) circle (0.16);
+\fill[skin,ink] (3.0,3.45) ellipse (0.24 and 0.32);\fill[skin] (2.85,3.2) rectangle (3.15,3.0);
+\fill[ink] (2.92,3.5) ellipse (0.04 and 0.02);\fill[ink] (3.08,3.5) ellipse (0.04 and 0.02);
+% the bench and its gavel
+\fill[desk,ink] (0,0) -- (0,1.0) -- (6.16,1.4) -- (6.16,0) -- cycle;\draw[bgS,line width=.8pt] (0.4,0.6) -- (5.8,0.9);
+\fill[metal,ink] (1.0,1.2) -- (2.0,1.6) -- (2.1,1.45) -- (1.1,1.05) -- cycle;
+\end{tikzpicture}\end{document}

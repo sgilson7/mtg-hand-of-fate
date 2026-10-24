@@ -1,0 +1,16 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{e8ecf0}\definecolor{arch}{HTML}{a8a8a0}\definecolor{archD}{HTML}{6a6a64}\definecolor{trunk}{HTML}{6a4a2a}\definecolor{leaf}{HTML}{5a8a2a}\definecolor{iron}{HTML}{1e2230}\definecolor{ironL}{HTML}{4a5068}\definecolor{flash}{HTML}{fff8d0}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\fill[arch] (0,0) rectangle (6.16,4.52);
+\fill[bg,ink] (1.2,0) -- (1.2,2.6) arc (180:0:1.9) -- (5.0,0) -- cycle;\draw[archD,line width=2pt] (1.0,0) -- (1.0,2.6) arc (180:0:2.1) -- (5.2,0);
+\fill[leaf,ink] (3.1,4.0) ellipse (1.2 and 0.5);
+% a tree bursting up through an iron construct, splitting it apart
+\fill[trunk,ink] (2.6,0) .. controls (2.8,1.4) and (2.6,2.6) .. (3.0,3.8) -- (3.3,3.8) .. controls (3.4,2.6) and (3.6,1.4) .. (3.8,0) -- cycle;
+\draw[trunk,line width=3pt] (3.0,2.6) .. controls (2.4,3.0) and (2.0,3.4) .. (1.8,3.8);\draw[trunk,line width=3pt] (3.3,2.8) .. controls (3.8,3.2) and (4.2,3.4) .. (4.4,3.8);
+\fill[iron,ink] (1.4,1.4) -- (1.6,2.8) -- (2.8,2.6) -- (2.7,1.2) -- cycle;\fill[ironL] (1.8,2.2) circle (0.15);
+\fill[iron,ink] (1.2,1.4) -- (1.0,0.6) -- (1.4,0.4) -- (1.6,1.2) -- cycle;
+\fill[iron,ink] (3.6,1.6) -- (3.8,3.0) -- (5.0,2.6) -- (4.8,1.4) -- cycle;\fill[ironL] (4.4,2.2) circle (0.15);
+\fill[iron,ink] (4.8,1.6) -- (5.4,1.0) -- (5.2,0.6) -- (4.6,1.2) -- cycle;
+\fill[flash,opacity=.9] (3.2,0.4) circle (0.35);\foreach \a in {0,45,...,315}{\draw[flash,line width=1.4pt] (3.2,0.4) -- ++(\a:0.6);}
+\end{tikzpicture}\end{document}

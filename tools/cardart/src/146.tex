@@ -1,0 +1,23 @@
+\input{../preamble}
+\definecolor{sky}{HTML}{8ab0d0}\definecolor{skyL}{HTML}{e8f0f4}\definecolor{moon}{HTML}{f4f0e0}\definecolor{ruin}{HTML}{c8c0b0}\definecolor{leaf}{HTML}{4a7a2a}
+\definecolor{hide}{HTML}{f0ece4}\definecolor{hideS}{HTML}{b8b4ac}\definecolor{gold}{HTML}{d8a83a}\definecolor{skin}{HTML}{a8704a}\definecolor{hair}{HTML}{1e1a1e}\definecolor{shaft}{HTML}{4a3a2a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[top color=sky,bottom color=skyL] (0,0) rectangle (6.16,4.52);
+\fill[moon] (1.6,3.6) circle (0.45);
+\fill[ruin,ink] (0,0) rectangle (0.6,3.4);\fill[ruin,opacity=.6] (5.0,1.6) -- (5.2,3.6) -- (5.4,4.0) -- (5.6,3.6) -- (5.8,1.6) -- cycle;
+\fill[leaf] (4.6,0) .. controls (4.8,1.2) and (5.6,1.8) .. (6.16,1.6) -- (6.16,0) -- cycle;\fill[ruin,ink] (0.6,0) -- (0.6,1.2) -- (2.0,1.4) -- (2.2,0) -- cycle;
+% the centaur: white horse body, gold harness
+\fill[hide,ink] (1.2,1.0) .. controls (1.0,1.8) and (1.8,2.2) .. (2.8,2.2) .. controls (3.6,2.2) and (4.2,1.8) .. (4.2,1.2) .. controls (4.0,0.8) and (3.4,0.8) .. (3.0,0.9) -- cycle;
+\fill[hideS] (1.4,1.2) .. controls (2.0,1.5) and (3.0,1.4) .. (3.6,1.1) -- cycle;
+\foreach \x/\y in {1.4/0.2,2.0/0,3.4/0,3.9/0.3}{\fill[hide,ink] (\x,\y) -- (\x+0.05,1.1) -- (\x+0.25,1.1) -- (\x+0.25,\y) -- cycle;}
+\fill[gold,ink] (2.8,2.0) rectangle (3.4,1.0);
+% the woman's torso, armour and hair
+\fill[hide,ink] (2.7,2.0) .. controls (2.6,2.8) and (2.8,3.3) .. (3.1,3.4) .. controls (3.4,3.3) and (3.6,2.8) .. (3.5,2.0) -- cycle;
+\fill[gold,ink] (2.75,2.7) .. controls (2.9,3.0) and (3.3,3.0) .. (3.45,2.7) -- (3.4,2.5) -- (2.8,2.5) -- cycle;
+\fill[skin,ink] (3.1,3.65) ellipse (0.18 and 0.24);\fill[gold] (2.95,3.85) rectangle (3.25,3.92);
+\fill[hair,ink] (2.95,3.85) .. controls (3.2,4.52) and (3.8,4.4) .. (3.9,3.8) .. controls (3.8,3.4) and (3.6,3.0) .. (3.6,2.6) .. controls (3.4,3.0) and (3.3,3.6) .. (3.25,3.85) -- cycle;
+% the long glaive held low across the body
+\draw[shaft,line width=1.6pt] (0.4,2.6) -- (4.6,1.6);\fill[gold,ink] (0.4,2.6) -- (0.0,2.9) -- (0.2,2.75) -- (0,2.5) -- cycle;
+\fill[skin,ink] (2.7,2.2) circle (0.1);\fill[skin,ink] (3.6,2.0) circle (0.1);
+\end{tikzpicture}\end{document}

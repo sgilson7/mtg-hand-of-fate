@@ -1,0 +1,19 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{8a8a90}\definecolor{bgD}{HTML}{3a3a42}\definecolor{tower}{HTML}{b8b0b0}\definecolor{hidescale}{HTML}{2a2a30}\definecolor{scaleL}{HTML}{5a5a62}
+\definecolor{armor}{HTML}{4a4a52}\definecolor{cloth}{HTML}{8a8a96}\definecolor{teeth}{HTML}{f0e8d8}\definecolor{mouth}{HTML}{a83a3a}\definecolor{gold}{HTML}{c8a040}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[left color=bgD,right color=bg] (0,0) rectangle (6.16,4.52);
+\fill[tower,opacity=.7] (3.6,1.2) rectangle (5.2,4.52);\foreach \y in {1.6,2.4,3.2,4.0}{\fill[bgD,opacity=.5] (3.9,\y) rectangle (4.1,\y+0.4);\fill[bgD,opacity=.5] (4.6,\y) rectangle (4.8,\y+0.4);}
+\fill[bgD] (0,0) -- (0,4.52) -- (0.8,4.52) .. controls (0.6,3.0) and (0.9,1.4) .. (1.2,0) -- cycle;\fill[bgD] (5.6,0) rectangle (6.16,4.52);
+% the viashino crouched to spring, jaws open
+\fill[hidescale,ink] (1.6,0) .. controls (1.4,1.0) and (1.6,2.2) .. (2.2,2.8) .. controls (2.8,3.2) and (3.4,2.8) .. (3.4,2.0) .. controls (3.4,1.0) and (3.2,0.4) .. (3.0,0) -- cycle;
+\fill[cloth,ink] (2.3,1.4) .. controls (2.4,1.9) and (2.7,2.2) .. (3.1,2.1) -- (3.2,1.5) -- cycle;\fill[armor,ink] (1.7,0.2) rectangle (3.1,0.6);
+\fill[armor,ink] (2.0,2.6) .. controls (2.2,3.0) and (2.8,3.1) .. (3.1,2.8) -- (2.9,2.3) -- (2.1,2.3) -- cycle;
+\fill[hidescale,ink] (2.6,3.0) .. controls (2.6,3.4) and (3.0,3.6) .. (3.4,3.5) -- (4.0,3.3) -- (3.6,3.1) -- (4.0,2.8) -- (3.4,2.9) .. controls (3.2,2.8) and (2.9,2.8) .. (2.6,3.0);
+\fill[mouth] (3.55,3.15) -- (3.95,3.28) -- (3.6,3.05) -- (3.9,2.85) -- cycle;
+\foreach \x/\y/\a in {2.5/3.4/150,2.6/3.6/120,2.8/3.75/100,3.0/3.8/80}{\fill[scaleL,ink] (\x,\y) -- ++(\a:0.3) -- ++(\a-120:0.15) -- cycle;}
+\fill[gold] (3.1,3.35) circle (0.04);
+\fill[hidescale,ink] (3.2,2.2) -- (3.8,1.8) -- (3.85,1.95) -- (3.3,2.4) -- cycle;\fill[scaleL,ink] (3.9,1.85) circle (0.12);
+\fill[hidescale,ink] (1.8,0.6) .. controls (1.0,0.4) and (0.6,0.6) .. (0.4,0.9) -- (0.6,0.4) .. controls (1.0,0.2) and (1.4,0.2) .. (1.8,0.3) -- cycle;
+\end{tikzpicture}\end{document}

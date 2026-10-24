@@ -1,0 +1,15 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{2a2a6a}\definecolor{bgL}{HTML}{6a5ac8}\definecolor{ring}{HTML}{a8a0f0}\definecolor{hide}{HTML}{5a2a6a}\definecolor{hideL}{HTML}{a84a8a}\definecolor{eye}{HTML}{f0c040}\definecolor{whisker}{HTML}{f08a3a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[inner color=bgL,outer color=bg] (0,0) rectangle (6.16,4.52);
+\foreach \r in {1.8,2.6,3.4}{\draw[ring,line width=1pt,opacity=.6] (3.6,2.6) circle (\r);}
+\foreach \a in {20,70,130,200,250,310}{\fill[ring,opacity=.8] (3.6,2.6) ++(\a:2.6) circle (0.08);}
+% Niv-Mizzet's head in profile, facing left, whisker-tendrils trailing
+\fill[hide,ink] (6.16,4.0) .. controls (5.4,4.52) and (4.4,4.2) .. (3.8,3.6) .. controls (3.2,3.0) and (2.8,2.6) .. (2.4,2.2) .. controls (2.8,1.8) and (3.4,1.8) .. (4.0,1.6) .. controls (4.8,1.4) and (5.6,1.2) .. (6.16,0.8) -- cycle;
+\foreach \i in {0,1,2,3,4}{\draw[hideL,line width=1pt] (4.0+\i*0.4,3.5-\i*0.05) .. controls (4.3+\i*0.4,2.8) .. (4.2+\i*0.4,1.8);}
+\foreach \a/\b in {4.4/4.3,4.9/4.5,5.4/4.52}{\fill[hide,ink] (\a,\b-0.3) -- (\a+0.3,\b+0.4) -- (\a+0.4,\b-0.2) -- cycle;}
+\fill[eye] (3.7,3.1) ellipse (0.18 and 0.08);\fill[ink] (3.72,3.1) circle (0.03);
+\foreach \y in {0.4,0.8,1.2}{\draw[whisker,line width=1.4pt] (2.6,2.1) .. controls (2.2,1.8-\y*0.3) and (1.6,1.6-\y) .. (1.0,1.6-\y*1.2);}
+\foreach \y in {0.3,0.7}{\draw[whisker,line width=1.2pt] (2.5,2.3) .. controls (2.0,2.4+\y) and (1.4,2.6+\y) .. (0.8,2.4+\y*1.4);}
+\end{tikzpicture}\end{document}

@@ -1,0 +1,14 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{2a7a6a}\definecolor{bgL}{HTML}{6ac8a8}\definecolor{tower}{HTML}{2a5a5a}\definecolor{towerL}{HTML}{4a8a8a}\definecolor{leaf}{HTML}{3a8a2a}\definecolor{leafL}{HTML}{7ac84a}\definecolor{root}{HTML}{c86a2a}\definecolor{bird}{HTML}{f0f0f0}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[left color=bg,right color=bgL] (0,0) rectangle (6.16,4.52);
+% two round towers seen from above, gardens bursting from their tops
+\foreach \x/\w in {1.3/1.4,4.6/1.6}{\fill[tower,ink] (\x-\w,0) -- (\x-\w,2.8) arc (180:0:{\w} and 0.5) -- (\x+\w,0) -- cycle;
+ \foreach \i in {-3,...,3}{\draw[towerL,line width=1.4pt] (\x+\i*\w/4,0.3) -- (\x+\i*\w/4,2.6);}
+ \draw[towerL,line width=2pt] (\x-\w,2.2) arc (180:360:{\w} and 0.4);
+ \fill[leaf,ink] (\x-\w,2.8) .. controls (\x-\w-0.2,3.6) and (\x-0.4,4.52) .. (\x,4.52) .. controls (\x+0.6,4.52) and (\x+\w+0.2,3.8) .. (\x+\w,2.8) arc (0:180:{\w} and 0.5);
+ \foreach \i in {-1,0,1}{\draw[root,line width=1pt] (\x+\i*0.4,3.0) -- (\x+\i*0.5,3.8) -- (\x+\i*0.3,4.2);}
+ \fill[leafL,opacity=.7] (\x-0.5,3.6) circle (0.3);}
+\foreach \x/\y in {1.8/1.2,2.2/1.6,2.6/1.0,3.0/1.4,3.2/0.6,2.4/0.4}{\draw[bird,line width=.6pt] (\x-0.06,\y+0.03) -- (\x,\y) -- (\x+0.06,\y+0.03);}
+\end{tikzpicture}\end{document}

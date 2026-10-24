@@ -1,0 +1,18 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{2a3a5a}\definecolor{bgL}{HTML}{6a8ab0}\definecolor{fall}{HTML}{8ac8f0}\definecolor{fallL}{HTML}{e0f4ff}\definecolor{armor}{HTML}{c89a3a}\definecolor{cloth}{HTML}{6a5a4a}
+\definecolor{burst}{HTML}{c87af0}\definecolor{metal}{HTML}{4a4a5a}\definecolor{skin}{HTML}{c8a080}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[top color=bg,bottom color=bgL] (0,0) rectangle (6.16,4.52);
+% a sheet of blue magic pouring down, the caster thrown back from it
+\fill[fall,opacity=.8] (2.6,4.52) -- (3.6,4.52) .. controls (3.4,3.0) and (3.8,1.4) .. (4.2,0) -- (2.8,0) .. controls (3.0,1.4) and (2.6,3.0) .. (2.6,4.52);
+\foreach \x in {2.9,3.2,3.4}{\draw[fallL,line width=.8pt] (\x,4.52) .. controls (\x-0.1,2.8) .. (\x+0.4,0);}
+\fill[burst,opacity=.9] (3.0,3.8) circle (0.35);\foreach \a in {0,45,...,315}{\draw[burst,line width=1.2pt] (3.0,3.8) -- ++(\a:0.6);}
+% the falling soldier, legs flung up
+\fill[cloth,ink] (2.8,3.5) -- (1.6,2.0) -- (1.0,0.8) -- (1.3,0.7) -- (2.0,1.8) -- (2.4,1.2) -- (2.2,0.2) -- (2.5,0.2) -- (2.8,1.4) -- (3.1,3.2) -- cycle;
+\fill[armor,ink] (2.4,3.0) .. controls (2.3,3.6) and (2.8,4.0) .. (3.1,3.8) -- (3.3,3.3) .. controls (3.0,3.0) and (2.6,2.8) .. (2.4,3.0);
+\fill[armor,ink] (1.4,1.8) -- (1.1,1.0) -- (1.35,0.95) -- (1.6,1.7) -- cycle;\fill[armor,ink] (2.25,1.0) -- (2.2,0.3) -- (2.45,0.3) -- (2.5,1.0) -- cycle;
+% the dropped hammer and an arm flung out
+\fill[cloth,ink] (2.6,3.6) -- (1.8,4.1) -- (1.85,4.2) -- (2.7,3.75) -- cycle;\fill[skin,ink] (1.8,4.15) circle (0.08);
+\draw[metal,line width=1.6pt] (0.2,2.4) -- (1.6,3.6);\fill[metal,ink] (0,2.0) -- (0.5,2.6) -- (0.2,2.9) -- (-0.2,2.3) -- cycle;
+\end{tikzpicture}\end{document}

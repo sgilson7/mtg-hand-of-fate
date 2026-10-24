@@ -1,0 +1,24 @@
+\input{../preamble}
+\definecolor{sky}{HTML}{d8a070}\definecolor{skyD}{HTML}{6a4a3a}\definecolor{hall}{HTML}{8a5a4a}\definecolor{demon}{HTML}{1e1418}\definecolor{eye}{HTML}{ff3a2a}
+\definecolor{steel}{HTML}{4a4a52}\definecolor{steelL}{HTML}{8a8a92}\definecolor{cape}{HTML}{e8e4dc}\definecolor{capeS}{HTML}{a8a49c}\definecolor{blade}{HTML}{c8ccd0}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[top color=sky,bottom color=skyD] (0,0) rectangle (6.16,4.52);
+\fill[hall,opacity=.6] (0,0) rectangle (1.0,3.2);\fill[skyD] (0,0) -- (6.16,0) -- (6.16,0.8) -- (0,1.1) -- cycle;
+% the demon lunging from the left, wings spread
+\fill[demon,ink] (2.0,3.0) -- (0.2,4.4) -- (0.6,3.8) -- (0,3.6) -- (0.8,3.2) -- (0.2,2.8) -- (1.4,2.6) -- cycle;
+\fill[demon,ink] (1.2,1.2) .. controls (1.0,2.2) and (1.4,3.0) .. (2.0,3.2) .. controls (2.6,3.2) and (2.9,2.6) .. (2.8,1.8) -- (2.4,1.0) -- cycle;
+\fill[demon,ink] (1.9,3.1) .. controls (1.7,3.6) and (2.1,3.9) .. (2.4,3.7) .. controls (2.6,3.4) and (2.4,3.1) .. (2.3,3.0) -- cycle;
+\fill[demon,ink] (1.95,3.6) .. controls (1.6,4.0) and (1.6,4.4) .. (1.8,4.52) .. controls (1.9,4.2) and (2.0,3.9) .. (2.1,3.75) -- cycle;
+\fill[demon,ink] (2.3,3.65) .. controls (2.5,4.0) and (2.6,4.3) .. (2.5,4.52) .. controls (2.7,4.3) and (2.6,3.9) .. (2.4,3.55) -- cycle;
+\fill[eye] (2.1,3.45) circle (0.05);\fill[eye] (2.3,3.45) circle (0.05);
+\fill[demon,ink] (2.6,2.4) -- (3.6,2.1) -- (3.6,1.9) -- (2.6,2.1) -- cycle;
+% the knight meeting it, cape flying
+\fill[cape,ink] (4.2,3.0) .. controls (5.0,3.4) and (5.8,3.0) .. (6.16,2.4) -- (6.16,1.0) .. controls (5.6,1.4) and (5.0,1.6) .. (4.6,1.6) -- cycle;
+\foreach \i in {0,1,2}{\draw[capeS,line width=.6pt] (4.6+\i*0.4,2.9-\i*0.2) .. controls (5.0+\i*0.4,2.4) .. (4.9+\i*0.5,1.5);}
+\fill[steel,ink] (3.6,0.8) -- (3.8,2.0) -- (4.6,2.0) -- (4.8,0.8) -- (4.4,0.8) -- (4.2,1.5) -- (4.0,0.8) -- cycle;
+\fill[steel,ink] (3.75,1.95) .. controls (3.7,2.6) and (3.9,3.0) .. (4.2,3.05) .. controls (4.5,3.0) and (4.7,2.6) .. (4.65,1.95) -- cycle;
+\fill[steelL,ink] (4.2,3.3) ellipse (0.18 and 0.24);\fill[steel] (4.2,3.55) -- (4.1,3.8) -- (4.3,3.8) -- cycle;
+% swords crossing
+\fill[blade,ink] (3.8,2.5) -- (1.0,2.0) -- (1.05,1.9) -- (3.8,2.35) -- cycle;\fill[blade,ink] (4.6,2.7) -- (5.6,3.9) -- (5.7,3.85) -- (4.7,2.6) -- cycle;
+\end{tikzpicture}\end{document}

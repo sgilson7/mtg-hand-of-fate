@@ -1,0 +1,16 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{e8c880}\definecolor{bgL}{HTML}{fff4d0}\definecolor{arch}{HTML}{b8884a}\definecolor{tower}{HTML}{8a5a32}\definecolor{towerL}{HTML}{b8784a}\definecolor{tree}{HTML}{4a7a2a}\definecolor{trunk}{HTML}{5a3a22}\definecolor{gold}{HTML}{ffd860}\definecolor{grass}{HTML}{7aa83a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[inner color=bgL,outer color=bg] (0,0) rectangle (6.16,4.52);
+% vaulted arches running back on both sides
+\foreach \i in {0,1,2}{\draw[arch,line width=2pt] (0.2+\i*0.5,0.8+\i*0.3) -- (0.2+\i*0.5,3.0) arc (180:0:0.5);\draw[arch,line width=2pt] (5.0-\i*0.5,0.8+\i*0.3) -- (5.0-\i*0.5,3.0) arc (180:0:0.5);}
+% the great tower with a tree growing out of its crown and a golden tree-sigil
+\fill[tower,ink] (2.6,0.6) -- (2.6,3.0) -- (2.2,3.4) -- (3.96,3.4) -- (3.56,3.0) -- (3.56,0.6) -- cycle;
+\fill[towerL] (2.8,0.6) rectangle (3.0,3.0);
+\fill[tree,ink] (3.08,4.3) ellipse (1.2 and 0.4);\fill[trunk,ink] (2.9,3.4) rectangle (3.26,4.1);
+\fill[gold,ink] (3.08,2.8) circle (0.3);\draw[tower,line width=1pt] (3.08,2.55) -- (3.08,3.0);\foreach \a in {50,90,130}{\draw[tower,line width=.8pt] (3.08,2.85) -- ++(\a:0.2);}
+% little trees along the floor
+\foreach \x/\s in {0.5/1.2,1.4/.8,4.8/.8,5.6/1.2,1.0/.6,5.2/.6}{\fill[trunk] (\x-0.04*\s,0.6) rectangle (\x+0.04*\s,0.6+0.5*\s);\fill[tree,ink] (\x,0.6+0.6*\s) ellipse ({0.35*\s} and {0.25*\s});}
+\fill[grass] (0,0) -- (0,0.6) -- (6.16,0.6) -- (6.16,0) -- cycle;\fill[bgL,opacity=.6] (2.6,0) -- (2.9,0.6) -- (3.3,0.6) -- (3.6,0) -- cycle;
+\end{tikzpicture}\end{document}

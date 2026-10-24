@@ -1,0 +1,15 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{e8902a}\definecolor{bgL}{HTML}{fff0a0}\definecolor{candle}{HTML}{f8e8b0}\definecolor{flame}{HTML}{ffd040}\definecolor{back}{HTML}{b86a3a}\definecolor{skin}{HTML}{e8a888}\definecolor{nail}{HTML}{2a1a1a}\definecolor{needle}{HTML}{3a2a2a}\definecolor{red}{HTML}{c82a2a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[top color=bgL,bottom color=bg] (0,0) rectangle (6.16,4.52);
+\foreach \x in {0.6,1.2,1.8,4.4,5.0,5.6}{\fill[candle] (\x,3.0) rectangle (\x+0.15,3.8);\fill[flame] (\x+0.075,3.95) ellipse (0.06 and 0.12);}
+% the back of a figure, and the hands holding the needle up
+\fill[back,ink] (1.4,0) .. controls (1.4,2.4) and (2.2,3.8) .. (3.2,4.0) .. controls (4.2,3.8) and (4.8,2.4) .. (4.8,0) -- cycle;
+\fill[skin,ink] (0.4,0.6) .. controls (1.0,1.4) and (1.6,1.6) .. (2.2,1.6) -- (2.4,1.2) .. controls (1.8,1.0) and (1.2,0.6) .. (0.8,0) -- (0.2,0) -- cycle;
+\fill[skin,ink] (5.6,1.0) .. controls (5.0,2.0) and (4.4,2.4) .. (3.8,2.6) -- (3.6,2.2) .. controls (4.2,1.8) and (4.8,1.2) .. (5.2,0.4) -- (6.0,0.4) -- cycle;
+\foreach \x/\y in {2.2/1.4,3.8/2.4}{\fill[nail] (\x,\y) circle (0.05);}
+\fill[needle,ink] (1.6,0.8) -- (4.8,3.4) -- (4.9,3.3) -- (1.7,0.6) -- cycle;
+\foreach \t in {0.2,0.4,0.6,0.8}{\fill[red] ({1.65+3.2*\t},{0.7+2.65*\t}) circle (0.05);}
+\fill[needle,ink] (4.8,3.4) -- (5.4,3.9) -- (4.9,3.3) -- cycle;
+\end{tikzpicture}\end{document}

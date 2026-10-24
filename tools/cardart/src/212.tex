@@ -1,0 +1,13 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{3a5a6a}\definecolor{bgD}{HTML}{14181e}\definecolor{body}{HTML}{2a1e1e}\definecolor{bodyL}{HTML}{5a3a2a}\definecolor{ember}{HTML}{f08a3a}\definecolor{fire}{HTML}{e85a1a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[top color=bg,bottom color=bgD] (0,0) rectangle (6.16,4.52);
+\foreach \x/\y in {0.6/3.6,1.4/2.4,2.0/4.0,4.6/3.4,5.4/2.2,3.8/4.2,0.4/1.2,5.8/3.8,4.8/1.0,1.0/0.6}{\fill[ember] (\x,\y) circle (0.04);}
+\fill[fire,opacity=.8] (4.4,0) .. controls (4.6,0.6) and (5.2,0.8) .. (6.16,0.4) -- (6.16,0) -- cycle;
+% the horror: a hunched many-legged body, spined crest
+\foreach \a/\b in {0.4/0,1.2/0,4.8/0,5.6/0.2,0.2/2.0,6.0/2.2}{\draw[ink,line width=6pt] (3.0,2.2) .. controls (3.0+0.4*\a-1.2,3.0) and (\a,2.4) .. (\a,\b);\draw[body,line width=4.6pt] (3.0,2.2) .. controls (3.0+0.4*\a-1.2,3.0) and (\a,2.4) .. (\a,\b);}
+\fill[body,ink] (3.0,2.6) ellipse (1.2 and 1.0);\fill[bodyL,opacity=.6] (3.0,2.9) ellipse (0.7 and 0.4);
+\foreach \a in {50,70,90,110,130}{\fill[body] (3.0,3.2) ++(\a:0.6) -- ++(\a:0.8) -- ++(\a-100:0.12) -- cycle;}
+\fill[ember] (2.8,2.4) circle (0.08);\fill[ember] (3.2,2.4) circle (0.08);
+\end{tikzpicture}\end{document}

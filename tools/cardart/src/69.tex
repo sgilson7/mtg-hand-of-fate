@@ -1,0 +1,21 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{8a6a3a}\definecolor{bgD}{HTML}{4a3420}\definecolor{tower}{HTML}{6a5030}\definecolor{skin}{HTML}{d0987a}\definecolor{skinD}{HTML}{9a6a4a}
+\definecolor{fire}{HTML}{f07a2a}\definecolor{fireL}{HTML}{ffd070}\definecolor{leather}{HTML}{2a1e1a}\definecolor{skull}{HTML}{e8dcc8}\definecolor{steel}{HTML}{8a8a8a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[top color=bg,bottom color=bgD] (0,0) rectangle (6.16,4.52);
+\fill[tower,ink] (4.2,0) -- (4.4,3.2) -- (4.8,4.52) -- (6.16,4.52) -- (6.16,0) -- cycle;\foreach \y in {0.6,1.4,2.2,3.0}{\fill[bgD] (4.9,\y) rectangle (5.2,\y+0.4);}
+% the fire trail he rides down on
+\fill[fire,opacity=.9] (2.6,2.4) .. controls (3.0,1.6) and (3.4,0.8) .. (3.4,0) -- (4.4,0) .. controls (4.0,1.0) and (3.6,1.8) .. (3.3,2.4) -- cycle;
+\fill[fireL] (2.9,2.2) .. controls (3.2,1.6) and (3.5,0.8) .. (3.6,0) -- (3.9,0) .. controls (3.7,1.0) and (3.4,1.6) .. (3.1,2.2) -- cycle;
+% the goblin hurtling through, arms flung back
+\fill[skin,ink] (1.6,2.0) .. controls (1.5,2.8) and (2.0,3.4) .. (2.6,3.5) .. controls (3.2,3.5) and (3.6,3.0) .. (3.5,2.3) .. controls (3.2,1.8) and (2.2,1.6) .. (1.6,2.0);
+\fill[skinD,opacity=.5] (2.0,2.2) .. controls (2.3,2.6) and (2.9,2.6) .. (3.2,2.3) -- cycle;
+\fill[leather,ink] (1.6,3.0) -- (3.4,3.4) -- (3.45,3.1) -- (1.65,2.7) -- cycle;\foreach \x in {1.9,2.4,2.9}{\fill[steel] (\x,3.0) circle (0.05);}
+\fill[skin,ink] (2.0,3.8) ellipse (0.45 and 0.5);\fill[skinD,ink] (1.8,3.4) .. controls (1.9,3.3) and (2.2,3.3) .. (2.3,3.45) -- cycle;
+\fill[ink] (1.85,3.85) circle (0.04);\fill[ink] (2.15,3.9) circle (0.04);\draw[skinD,line width=.6pt] (1.7,4.15) -- (2.3,4.2);
+\fill[skin,ink] (1.7,3.3) -- (0.8,3.9) -- (0.9,4.1) -- (1.8,3.6) -- cycle;\fill[skin,ink] (3.4,3.2) -- (4.2,4.0) -- (4.35,3.85) -- (3.5,2.95) -- cycle;
+% skulls hung on the tower
+\fill[skull,ink] (4.6,2.2) circle (0.22);\fill[ink] (4.52,2.22) circle (0.04);\fill[ink] (4.68,2.22) circle (0.04);
+\fill[skull,ink] (5.6,1.6) circle (0.25);\fill[ink] (5.5,1.62) circle (0.05);\fill[ink] (5.7,1.62) circle (0.05);
+\end{tikzpicture}\end{document}

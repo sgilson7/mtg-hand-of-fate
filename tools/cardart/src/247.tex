@@ -1,0 +1,13 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{8a4a3a}\definecolor{bgL}{HTML}{e8a888}\definecolor{pipe}{HTML}{6a8ab0}\definecolor{pipeL}{HTML}{c8d8f0}\definecolor{steam}{HTML}{f0f0f0}\definecolor{brick}{HTML}{6a3a2a}\definecolor{fire}{HTML}{f06a2a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[inner color=bgL,outer color=bg] (0,0) rectangle (6.16,4.52);
+\fill[brick,ink] (0,0) -- (6.16,0) -- (6.16,0.8) -- (0,0.6) -- cycle;\foreach \x in {0.4,1.2,...,6.0}{\draw[bg,line width=.5pt] (\x,0) -- (\x+0.1,0.7);}
+% great pipes running in from the left, venting steam
+\foreach \y/\r in {3.4/0.3,2.4/0.35,1.4/0.3}{\fill[pipe,ink] (0,\y-\r) -- (3.2,\y-\r*0.6) -- (3.2,\y+\r*0.6) -- (0,\y+\r) -- cycle;\draw[pipeL,line width=1.4pt] (0,\y+\r*0.4) -- (3.2,\y+\r*0.3);\fill[pipe,ink] (3.2,\y) ellipse ({\r*0.3} and {\r*0.6});}
+\foreach \y in {3.4,2.4,1.4}{\fill[steam,opacity=.7] (3.3,\y) .. controls (4.0,\y+0.4) and (4.6,\y+0.2) .. (5.2,\y+0.6) .. controls (4.8,\y-0.1) and (4.2,\y-0.3) .. (3.3,\y-0.1) -- cycle;}
+% the furnace at the right
+\fill[brick,ink] (5.0,0.6) rectangle (6.16,3.0);\fill[fire] (5.4,1.2) -- (5.4,2.0) arc (180:0:0.3) -- (6.0,1.2) -- cycle;
+\fill[steam,opacity=.6] (5.2,3.0) .. controls (5.0,3.8) and (5.6,4.2) .. (5.4,4.52) -- (6.0,4.52) .. controls (6.2,4.0) and (5.8,3.4) .. (5.8,3.0) -- cycle;
+\end{tikzpicture}\end{document}

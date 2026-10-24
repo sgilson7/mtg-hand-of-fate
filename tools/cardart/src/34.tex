@@ -1,0 +1,20 @@
+\input{../preamble}
+\definecolor{sky}{HTML}{d8e4e8}\definecolor{tower}{HTML}{c8b498}\definecolor{towerD}{HTML}{8a7058}\definecolor{street}{HTML}{6a5040}
+\definecolor{skin}{HTML}{5aa8b0}\definecolor{cape}{HTML}{f0ece0}\definecolor{capeS}{HTML}{b8b0a0}\definecolor{coat}{HTML}{3a3a48}\definecolor{red}{HTML}{b02a2a}\definecolor{bag}{HTML}{6a4028}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\fill[sky] (0,0) rectangle (6.16,4.52);
+% towers and the high bridge
+\fill[tower,ink] (3.9,1.2) rectangle (4.5,3.6);\fill[tower,ink] (3.9,3.6) -- (4.2,4.4) -- (4.5,3.6) -- cycle;
+\fill[tower,ink] (4.6,1.2) rectangle (4.9,3.3);\fill[tower,ink] (4.6,3.3) -- (4.75,3.9) -- (4.9,3.3) -- cycle;
+\fill[tower,ink] (4.9,2.8) -- (6.16,3.2) -- (6.16,3.0) -- (4.9,2.6) -- cycle;
+\fill[towerD,ink] (0,0) -- (0,4.52) -- (0.9,4.52) -- (1.6,2.0) -- (1.6,0.8) -- cycle;\fill[tower,opacity=.6] (1.6,0.8) rectangle (2.4,2.4);
+\fill[street] (0,0) -- (6.16,0) -- (6.16,0.9) -- (3.4,1.2) -- (1.6,0.8) -- cycle;
+% the vedalken courier striding toward us
+\fill[coat,ink] (2.5,0) -- (2.75,1.6) -- (3.55,1.6) -- (3.8,0) -- (3.4,0) -- (3.15,1.0) -- (2.9,0) -- cycle;
+\fill[coat,ink] (2.6,1.5) .. controls (2.5,2.3) and (2.7,2.9) .. (3.15,3.0) .. controls (3.6,2.9) and (3.8,2.3) .. (3.7,1.5) -- cycle;
+\fill[cape,ink] (2.45,2.9) .. controls (2.3,2.4) and (2.4,1.9) .. (2.6,1.7) -- (2.9,2.4) -- (3.15,2.9) -- (3.5,2.4) -- (3.8,1.8) .. controls (3.95,2.3) and (3.9,2.8) .. (3.75,3.0) .. controls (3.3,3.2) and (2.9,3.2) .. (2.45,2.9);
+\fill[red,ink] (2.95,2.95) -- (3.15,2.6) -- (3.35,2.95) -- cycle;
+\fill[bag,ink] (2.2,1.2) rectangle (2.65,1.7);\draw[bag,line width=1pt] (2.4,1.7) -- (3.4,2.9);
+\fill[skin,ink] (3.15,3.3) ellipse (0.2 and 0.26);\fill[skin,ink] (3.75,1.5) circle (0.1);
+\end{tikzpicture}\end{document}

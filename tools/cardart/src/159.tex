@@ -1,0 +1,19 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{3a2a2a}\definecolor{metal}{HTML}{5a5a5e}\definecolor{metalL}{HTML}{8a8a90}\definecolor{copper}{HTML}{a85a2a}\definecolor{bolt}{HTML}{e8e0ff}\definecolor{boltD}{HTML}{6a4ad8}
+\definecolor{robe}{HTML}{2a3a6a}\definecolor{skin}{HTML}{8ab0d8}\definecolor{eye}{HTML}{ff3a2a}\definecolor{hot}{HTML}{f05a2a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\fill[bg] (0,0) rectangle (6.16,4.52);
+% the machine hall: boilers, pipes and a red eye-lens
+\fill[metal,ink] (0,0) rectangle (1.4,4.0);\fill[metal,ink] (0.2,4.0) -- (0.7,4.52) -- (1.2,4.0) -- cycle;\foreach \y in {0.6,1.4,2.2,3.0}{\draw[metalL,line width=1pt] (0,\y) -- (1.4,\y);}
+\fill[metal,ink] (4.6,0) rectangle (6.16,3.6);\fill[metal,ink] (4.8,2.0) circle (0.8);\fill[metalL] (4.8,2.0) circle (0.5);
+\fill[metal,ink] (2.8,3.8) circle (0.4);\fill[eye] (2.8,3.8) circle (0.18);
+\draw[copper,line width=3pt] (1.4,3.2) .. controls (2.0,3.6) and (2.2,3.0) .. (2.6,3.6);\draw[copper,line width=3pt] (3.2,3.8) -- (4.6,3.4);
+\draw[hot,line width=2.4pt] (5.0,1.0) .. controls (5.4,0.4) and (5.6,0.2) .. (5.8,0);
+% the experimenter, arms raised, lightning crackling between the machines
+\fill[robe,ink] (3.0,0) -- (3.2,1.8) .. controls (3.2,2.2) and (3.6,2.3) .. (3.8,2.0) -- (4.2,0) -- cycle;
+\fill[skin,ink] (3.5,2.4) ellipse (0.18 and 0.24);\fill[robe,ink] (3.3,2.45) .. controls (3.3,2.8) and (3.7,2.8) .. (3.7,2.45) -- cycle;
+\fill[robe,ink] (3.3,1.8) -- (2.9,2.6) -- (3.05,2.7) -- (3.45,1.9) -- cycle;\fill[skin,ink] (2.95,2.7) circle (0.09);
+\fill[robe,ink] (3.7,1.8) -- (3.9,2.7) -- (4.05,2.65) -- (3.85,1.8) -- cycle;\fill[skin,ink] (3.98,2.75) circle (0.09);
+\foreach \p in {{(2.95,2.8) -- (2.4,3.2) -- (2.6,3.6) -- (2.0,4.0) -- (1.4,3.8)},{(4.0,2.85) -- (4.4,3.2) -- (4.2,3.6) -- (4.8,4.0)},{(3.0,2.8) -- (3.4,3.2) -- (3.2,3.5) -- (3.9,2.9)},{(1.4,2.0) -- (2.0,2.4) -- (1.8,2.8) -- (2.6,3.0)}}{\draw[boltD,line width=2.6pt] \p;\draw[bolt,line width=1pt] \p;}
+\end{tikzpicture}\end{document}

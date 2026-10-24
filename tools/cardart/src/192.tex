@@ -1,0 +1,17 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{e86a2a}\definecolor{bgD}{HTML}{6a1a1a}\definecolor{armor}{HTML}{2a2224}\definecolor{armorL}{HTML}{5a4a4a}\definecolor{skin}{HTML}{c8b0a8}\definecolor{hair}{HTML}{1e1416}
+\definecolor{bolt}{HTML}{ff3a5a}\definecolor{boltL}{HTML}{ffc0c8}\definecolor{skull}{HTML}{e8dcc8}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[left color=bg,right color=bgD] (0,0) rectangle (6.16,4.52);
+% the guildmage striding, a bolt of red magic from her hand
+\fill[armor,ink] (2.0,0) -- (2.4,1.6) .. controls (2.2,2.6) and (2.6,3.2) .. (3.0,3.2) .. controls (3.4,3.2) and (3.8,2.6) .. (3.6,1.6) -- (4.0,0) -- (3.4,0) -- (3.0,1.0) -- (2.6,0) -- cycle;
+\foreach \y in {1.8,2.2,2.6}{\draw[armorL,line width=.8pt] (2.5,\y) -- (3.5,\y+0.05);}
+\fill[armor,ink] (3.5,2.8) -- (4.4,2.6) -- (4.4,2.4) -- (3.5,2.5) -- cycle;\fill[skin,ink] (4.5,2.5) circle (0.1);
+\draw[bolt,line width=3pt] (4.6,2.6) .. controls (5.2,3.0) and (5.6,3.6) .. (6.16,3.8);\draw[boltL,line width=1pt] (4.6,2.6) .. controls (5.2,3.0) and (5.6,3.6) .. (6.16,3.8);
+\fill[armor,ink] (2.4,2.6) -- (1.6,2.2) -- (1.65,2.05) -- (2.45,2.4) -- cycle;
+\fill[skin,ink] (3.0,3.5) ellipse (0.2 and 0.26);
+\foreach \a in {100,120,140,160,180,200}{\draw[hair,line width=2pt] (3.0,3.7) .. controls ++(\a-10:0.5) and ++(\a+40:-0.3) .. ++(\a:1.0);}
+% skulls hanging from her belt chains
+\foreach \x/\y in {2.2/0.6,1.8/1.2,3.8/0.8}{\draw[hair,line width=.8pt] (2.8,1.6) -- (\x,\y+0.2);\fill[skull,ink] (\x,\y) circle (0.16);\fill[hair] (\x-0.05,\y+0.02) circle (0.03);\fill[hair] (\x+0.05,\y+0.02) circle (0.03);}
+\end{tikzpicture}\end{document}

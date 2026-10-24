@@ -1,0 +1,19 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{e8a050}\definecolor{bgL}{HTML}{fff0c0}\definecolor{stand}{HTML}{a8582a}\definecolor{beast}{HTML}{4a3226}\definecolor{beastL}{HTML}{7a5a40}
+\definecolor{horn}{HTML}{c8b490}\definecolor{fire}{HTML}{f07a1a}\definecolor{rider}{HTML}{2a1e1a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[inner color=bgL,outer color=bg] (0,0) rectangle (6.16,4.52);
+\fill[stand,ink] (0,1.6) -- (1.6,3.0) -- (1.6,4.52) -- (0,4.52) -- cycle;\foreach \y in {2.2,2.8,3.4,4.0}{\draw[bg,line width=.6pt] (0,\y-0.6) -- (1.6,\y+0.4);}
+% dust and fire kicked up on the track
+\fill[fire,opacity=.7] (0,0) .. controls (1.0,0.8) and (2.4,0.6) .. (3.4,0.2) -- (3.4,0) -- cycle;\fill[fire,opacity=.6] (0.4,0.8) circle (0.4);
+% a racing beast with a rider far back
+\fill[beast,ink] (1.2,2.4) ellipse (0.45 and 0.3);\fill[rider] (1.2,2.75) circle (0.12);\fill[horn] (1.6,2.6) -- (1.9,2.7) -- (1.65,2.45) -- cycle;
+% the huge horned beast thundering past
+\fill[beast,ink] (2.2,0.4) .. controls (1.8,1.8) and (2.4,3.2) .. (3.6,3.6) .. controls (4.8,3.8) and (5.8,3.2) .. (6.0,2.2) .. controls (6.16,1.4) and (5.6,0.6) .. (5.0,0.4) -- cycle;
+\fill[beastL,opacity=.6] (3.0,1.4) .. controls (3.2,2.6) and (4.0,3.2) .. (4.8,3.0) .. controls (5.0,2.4) and (4.6,1.6) .. (3.0,1.4);
+\fill[horn,ink] (4.2,3.4) .. controls (4.0,4.2) and (4.6,4.52) .. (5.2,4.4) .. controls (4.8,4.2) and (4.5,3.9) .. (4.5,3.5) -- cycle;
+\foreach \x in {3.6,4.0,4.4,4.8,5.2}{\fill[beastL] (\x,3.6-0.1*\x+0.4) -- (\x+0.1,4.0-0.1*\x+0.4) -- (\x+0.2,3.6-0.1*\x+0.4) -- cycle;}
+\fill[beast,ink] (2.6,0.8) -- (2.0,0) -- (2.8,0) -- (3.2,0.6) -- cycle;\fill[beast,ink] (4.6,0.6) -- (4.4,0) -- (5.2,0) -- (5.2,0.6) -- cycle;
+\fill[rider,ink] (3.6,3.6) -- (3.7,4.2) -- (3.9,4.2) -- (4.0,3.6) -- cycle;\fill[rider] (3.8,4.35) circle (0.13);
+\end{tikzpicture}\end{document}

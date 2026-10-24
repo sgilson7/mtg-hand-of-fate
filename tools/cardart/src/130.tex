@@ -1,0 +1,16 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{3a4a3a}\definecolor{fall}{HTML}{e8e4d0}\definecolor{bloom}{HTML}{7ab8f0}\definecolor{bloomL}{HTML}{d8f0ff}\definecolor{bloomD}{HTML}{3a6ab0}\definecolor{ground}{HTML}{2a3020}\definecolor{ember}{HTML}{f0a03a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\fill[bg] (0,0) rectangle (6.16,4.52);
+\fill[fall,opacity=.6] (0.4,1.2) rectangle (1.0,4.52);\fill[fall,opacity=.6] (5.2,1.4) rectangle (5.7,4.52);
+\fill[ground] (0,0) -- (0,1.0) .. controls (2,1.4) and (4,1.2) .. (6.16,1.0) -- (6.16,0) -- cycle;
+\foreach \x in {0.3,0.5,0.7,5.6,5.8}{\fill[ember] (\x,0.6) circle (0.04);}
+% the bloom: a glowing branching tree of mana
+\fill[bloomD,ink] (2.8,0.4) -- (3.0,2.4) -- (3.3,2.4) -- (3.5,0.4) -- cycle;
+\foreach \a in {200,240,300,340}{\draw[bloomD,line width=2pt] (3.15,0.5) -- ++(\a:0.7);}
+\foreach \y/\w in {1.4/1.4,2.2/1.6,3.0/1.4,3.7/1.0}{\fill[bloom,ink] (3.15,\y) ellipse ({\w} and 0.2);\fill[bloomL,opacity=.8] (3.15,\y+0.05) ellipse ({\w*0.6} and 0.08);
+ \foreach \s in {-1,1}{\draw[bloom,line width=1.6pt] (3.15+\s*\w*0.8,\y) -- ++(90-\s*30:0.45);\draw[bloom,line width=1.6pt] (3.15+\s*\w*0.4,\y) -- ++(90-\s*10:0.35);}}
+\fill[bloom,ink] (3.15,4.1) ellipse (0.5 and 0.28);\fill[bloomL] (3.15,4.1) circle (0.12);
+\fill[bloomL,opacity=.25] (3.15,2.4) ellipse (2.0 and 2.0);
+\end{tikzpicture}\end{document}

@@ -1,0 +1,14 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{f08a3a}\definecolor{bgL}{HTML}{fff0c0}\definecolor{tower}{HTML}{a84a2a}\definecolor{body}{HTML}{1e2a3a}\definecolor{plate}{HTML}{a8e8f0}\definecolor{bolt}{HTML}{e8ffff}\definecolor{boltD}{HTML}{4ab8f0}\definecolor{core}{HTML}{ff4a2a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[inner color=bgL,outer color=bg] (0,0) rectangle (6.16,4.52);
+\fill[tower,opacity=.6] (5.0,1.4) -- (5.2,3.6) -- (5.6,4.2) -- (6.0,3.6) -- (6.16,1.4) -- cycle;
+% the elemental: a figure of crackling energy, arms flung wide
+\foreach \p in {{(3.0,3.0) -- (2.2,4.0) -- (2.4,4.2) -- (1.6,4.52)},{(3.1,3.0) -- (4.0,4.0) -- (3.8,4.2) -- (4.6,4.52)},{(3.0,1.0) -- (2.4,0.4) -- (2.6,0.2) -- (2.0,0)},{(3.1,1.0) -- (3.8,0.4) -- (3.6,0.2) -- (4.2,0)},{(1.2,2.4) -- (0.6,3.2) -- (0.8,3.4) -- (0,4.0)},{(5.0,2.4) -- (5.6,1.6) -- (5.4,1.4) -- (6.16,0.8)}}{\draw[boltD,line width=3pt] \p;\draw[bolt,line width=1.2pt] \p;}
+\fill[body,ink] (2.6,1.0) .. controls (2.4,1.8) and (2.6,2.8) .. (3.05,3.0) .. controls (3.5,2.8) and (3.7,1.8) .. (3.5,1.0) -- cycle;
+\fill[plate,ink] (2.75,2.3) .. controls (2.85,2.8) and (3.25,2.8) .. (3.35,2.3) -- (3.05,2.0) -- cycle;\fill[core] (3.05,1.8) circle (0.1);
+\fill[body,ink] (2.6,2.7) -- (1.4,2.6) -- (1.4,2.3) -- (2.6,2.4) -- cycle;\fill[plate,ink] (1.2,2.45) circle (0.3);\fill[body] (1.2,2.45) circle (0.12);
+\fill[body,ink] (3.5,2.7) -- (4.7,2.6) -- (4.7,2.3) -- (3.5,2.4) -- cycle;\fill[plate,ink] (4.9,2.45) circle (0.3);\fill[body] (4.9,2.45) circle (0.12);
+\fill[plate,ink] (3.05,3.3) ellipse (0.2 and 0.26);\fill[body] (2.97,3.32) rectangle (3.13,3.38);
+\end{tikzpicture}\end{document}

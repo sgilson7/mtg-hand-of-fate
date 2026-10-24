@@ -1,0 +1,18 @@
+\input{../preamble}
+\definecolor{haze}{HTML}{e8c888}\definecolor{hazeD}{HTML}{a8783a}\definecolor{hall}{HTML}{c8a060}\definecolor{beast}{HTML}{a8703a}\definecolor{beastD}{HTML}{6a4022}
+\definecolor{horn}{HTML}{e8dcc0}\definecolor{folk}{HTML}{3a2a1e}\definecolor{skin}{HTML}{c8906a}\definecolor{tent}{HTML}{8a4a2a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[top color=haze,bottom color=hazeD] (0,0) rectangle (6.16,4.52);
+\fill[hall,opacity=.6] (4.6,1.6) rectangle (6.16,4.52);\foreach \x in {4.8,5.3,5.8}{\fill[hazeD,opacity=.6] (\x,3.0) -- (\x,3.6) arc (180:0:0.15) -- (\x+0.3,3.0) -- cycle;}
+\fill[tent,ink] (0,1.6) -- (1.4,2.6) -- (1.6,1.4) -- cycle;\fill[tent,ink] (4.4,1.8) -- (5.6,2.4) -- (6.16,1.6) -- (6.16,1.2) -- cycle;
+% the batterhorn charging through the market
+\fill[beastD,ink] (1.4,1.4) .. controls (1.2,2.6) and (2.0,3.6) .. (3.0,3.8) .. controls (3.8,3.8) and (4.4,3.2) .. (4.4,2.4) .. controls (4.2,1.6) and (3.6,1.2) .. (3.0,1.2) -- cycle;
+\fill[beast,ink] (2.2,2.4) .. controls (2.1,3.2) and (2.6,3.6) .. (3.1,3.6) .. controls (3.6,3.5) and (3.9,3.0) .. (3.8,2.4) .. controls (3.4,2.0) and (2.6,2.0) .. (2.2,2.4);
+\fill[horn,ink] (2.5,3.4) .. controls (2.0,3.8) and (1.6,4.2) .. (1.7,4.52) .. controls (2.0,4.2) and (2.4,3.9) .. (2.7,3.6) -- cycle;
+\fill[horn,ink] (3.6,3.4) .. controls (4.1,3.8) and (4.5,4.2) .. (4.4,4.52) .. controls (4.1,4.2) and (3.7,3.9) .. (3.4,3.6) -- cycle;
+\fill[horn,ink] (2.8,2.6) -- (3.0,2.0) -- (3.2,2.6) -- cycle;
+\fill[ink] (2.75,3.0) circle (0.05);\fill[ink] (3.35,3.0) circle (0.05);
+% market folk fleeing in front
+\foreach \x/\y/\s in {0.5/0/1.3,1.8/0/.9,3.0/0/.8,4.4/0/1.2,5.4/0/1.0}{\fill[folk,ink] (\x,\y) -- (\x+0.15*\s,\y+1.2*\s) -- (\x+0.45*\s,\y+1.2*\s) -- (\x+0.6*\s,\y) -- cycle;\fill[skin,ink] (\x+0.3*\s,\y+1.4*\s) circle ({0.15*\s});\draw[folk,line width=1.2pt] (\x+0.4*\s,\y+1.1*\s) -- (\x+0.8*\s,\y+1.3*\s);}
+\end{tikzpicture}\end{document}

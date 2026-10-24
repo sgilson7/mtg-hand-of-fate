@@ -32,7 +32,13 @@ use serde::Serialize;
 use crate::content::{ty, Card};
 use crate::mana::{self, Bank, Cost};
 use crate::rng::Rng;
-use crate::rules::{kw, Ability, Aura, Eff, Filter, OnCast, Release, Rules, Static, Tgt, Token, Who};
+
+#[path = "duel_more.rs"]
+mod more;
+use crate::rules::{
+    kw, Ability, Aura, Eff, Entry, Extra, Filter, GraveKind, OnCast, Release, Rules, SpellKind, Static, Tgt,
+    Token, When, Who,
+};
 
 pub const OPENING_HAND: usize = 6;
 pub const MAX_HAND: usize = 6;
@@ -209,6 +215,28 @@ pub struct Perm {
     /// Cards it exiled, returned when it leaves: (owner, card).
     pub held: Vec<(usize, usize)>,
     pub dealt_first: bool,
+    /// A planeswalker's loyalty.
+    pub loyalty: i32,
+    /// Charge counters (Mana Bloom), filibuster counters (Azor's Elocutors).
+    pub charge: i32,
+    /// An Ooze token's size.
+    pub size: i32,
+    /// Controlled until end of turn: the side it goes back to (Traitorous Instinct).
+    pub borrowed: Option<usize>,
+    /// It dealt damage this turn (Avenging Arrow).
+    pub dealt: bool,
+    /// The planeswalker it attacks, when not the player.
+    pub aim: Option<u32>,
+    /// Vraska's ward, until her controller's next turn.
+    pub ward: bool,
+    /// A loyalty ability or a once-a-turn ability used this turn.
+    pub used: bool,
+    /// Colours it has gained (a Zombie returned by Grave Betrayal).
+    pub extra_colours: u8,
+    /// The card name chosen as it entered (Pithing Needle).
+    pub named: String,
+    /// The two colours chosen as it entered (Tablet of the Guilds).
+    pub chosen_colours: u8,
 }
 
 /// Where a target is.
@@ -220,6 +248,8 @@ pub enum Target {
     Item(u32),
     /// A card in a graveyard: (owner, card).
     Grave(usize, usize),
+    /// A card in the chooser's hand, by its place (a cost: discard it).
+    Hand(usize),
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -232,6 +262,10 @@ pub enum Source {
     Ability {
         perm: u32,
         card: Option<usize>,
+    },
+    /// A copy of a spell (Nivix Guildmage): it resolves like the spell, and leaves no card.
+    Copy {
+        card: usize,
     },
 }
 
@@ -261,6 +295,8 @@ pub struct Trig {
     pub ability: Ability,
     pub x: i32,
     pub name: String,
+    /// Targets fixed by what triggered it (the creature that dealt the damage).
+    pub fixed: Vec<Target>,
 }
 
 /// What a side may do when it holds priority.
@@ -283,6 +319,11 @@ pub enum Action {
     Scavenge {
         grave: usize,
     },
+    /// Activate an ability of the card at this place in the graveyard (Jarad).
+    GraveAbility {
+        grave: usize,
+        n: usize,
+    },
     Pass,
 }
 
@@ -294,10 +335,18 @@ pub enum Then {
         card: usize,
         mode: usize,
         overload: bool,
+        /// X, once chosen.
+        x: Option<i32>,
+        /// The creature sacrificed to cast it, once chosen (Launch Party).
+        pick: Option<Target>,
+        /// Cast without paying, from exile (Epic Experiment, Jace).
+        free: bool,
     },
     Activate {
         perm: u32,
         n: usize,
+        x: Option<i32>,
+        pick: Option<Target>,
     },
     Scavenge {
         grave: usize,
@@ -347,6 +396,50 @@ pub enum Ask {
         n: u8,
         item: u32,
     },
+    /// Choose X, up to this much.
+    ChooseX {
+        max: i32,
+        then: Box<Then>,
+    },
+    /// Choose what pays a cost beyond mana: a creature to sacrifice, a card to discard.
+    CostPick {
+        legal: Vec<Target>,
+        then: Box<Then>,
+    },
+    /// A "you may" with no target.
+    May {
+        what: May,
+    },
+    /// Name a card.
+    Name {
+        options: Vec<String>,
+        perm: u32,
+    },
+    /// Take one of two piles (Jace).
+    Piles {
+        a: Vec<usize>,
+        b: Vec<usize>,
+    },
+    /// Sacrifice a creature to tap Desecration Demon, or don't.
+    Offer {
+        legal: Vec<u32>,
+        demon: u32,
+    },
+}
+
+/// What a "you may" offers.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum May {
+    /// Pay 2 life, or this shock land enters tapped.
+    Shock(u32),
+    /// Pay {1}, or sacrifice Transguild Promenade.
+    Promenade(u32),
+    /// Discard a card, to draw one (Viashino Racketeer).
+    Rummage,
+    /// Pay {B}: the target player discards (Drainpipe Vermin).
+    Vermin(usize),
+    /// Pay the enchanted permanent's mana value, or sacrifice it (Soul Tithe).
+    Tithe(u32, u8),
 }
 
 #[derive(Debug, Clone)]
@@ -361,6 +454,8 @@ pub enum Answer {
     Act(Action),
     Targets(Vec<Target>),
     Attack(Vec<u32>),
+    /// Attackers, and those of them that attack a planeswalker: (attacker, planeswalker).
+    AttackAt(Vec<u32>, Vec<(u32, u32)>),
     Block(Vec<(u32, u32)>),
     Yes(bool),
     /// A card in hand, or one of the listed permanents; None declines.
@@ -375,6 +470,8 @@ enum Resume {
     Enter { perm: u32 },
     /// Cleanup: discard down to the hand size, then end the turn.
     Cleanup,
+    /// Draw a card (Viashino Racketeer, after its discard).
+    Draw { who: usize },
 }
 
 #[derive(Debug, Clone, Default)]
@@ -392,6 +489,18 @@ pub struct Side {
     pub regrowth_used: bool,
     pub regen_used: bool,
     pub turns: u32,
+    /// Life lost this turn.
+    pub lost: i32,
+    /// No combat damage to this side this turn (Druid's Deliverance).
+    pub no_combat_damage: bool,
+    /// Damage still to be prevented this turn (Security Blockade).
+    pub shield: i32,
+    /// Jace's +1: attackers against this side get -1/-0, until its next turn.
+    pub jace: bool,
+    /// Extra turns to take after this one.
+    pub extra_turns: u32,
+    /// Creature cards to return under this side's control at the next end step (Grave Betrayal): (owner, card).
+    pub betrayal: Vec<(usize, usize)>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize)]
@@ -414,6 +523,8 @@ pub struct PermSnap {
     pub attached: i32,
     pub counters: i32,
     pub fresh: bool,
+    /// A planeswalker's loyalty; 0 for anything else.
+    pub loyalty: i32,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize)]
@@ -468,6 +579,14 @@ pub struct Duel {
     pub outcome: Option<Outcome>,
     /// The player's answers, in order: with the seed, the game replays.
     pub answers: u32,
+    /// Cards to cast without paying, in order: (caster, card).
+    free_casts: Vec<(usize, usize)>,
+    /// The player's draft of attackers aimed at planeswalkers.
+    pub draft_aims: Vec<(u32, u32)>,
+    /// Combat damage is being dealt (Druid's Deliverance prevents only that).
+    in_combat_damage: bool,
+    /// Who made the pending discard happen (Loxodon Smiter cares).
+    forcer: usize,
 }
 
 fn other(side: usize) -> usize {
@@ -503,6 +622,10 @@ impl Duel {
             events: Vec::new(),
             outcome: None,
             answers: 0,
+            free_casts: Vec::new(),
+            draft_aims: Vec::new(),
+            in_combat_damage: false,
+            forcer: P,
         };
         d.start(setup);
         d
@@ -555,6 +678,9 @@ impl Duel {
             for &c in &setup.sides[side].in_play {
                 let id = self.make_perm(side, c);
                 self.set(id, |p| p.fresh = false);
+                if let Some(l) = self.rules(c).loyalty {
+                    self.set(id, |p| p.loyalty = l);
+                }
                 self.log(
                     Ev::Enter,
                     side as u8,
@@ -663,6 +789,7 @@ impl Duel {
                 attached: p.attached.map(|a| a as i32).unwrap_or(-1),
                 counters: p.counters,
                 fresh: p.fresh,
+                loyalty: if self.is_walker(p) { p.loyalty } else { 0 },
             })
             .collect();
         perms.sort_by_key(|p| p.id);
@@ -757,6 +884,17 @@ impl Duel {
             unleashed: false,
             held: Vec::new(),
             dealt_first: false,
+            loyalty: 0,
+            charge: 0,
+            size: 0,
+            borrowed: None,
+            dealt: false,
+            aim: None,
+            ward: false,
+            used: false,
+            extra_colours: 0,
+            named: String::new(),
+            chosen_colours: 0,
         }
     }
 
@@ -787,11 +925,32 @@ impl Duel {
     }
 
     pub fn is_land(&self, p: &Perm) -> bool {
-        p.card.map(|c| self.card(c).is(ty::LAND)).unwrap_or(false)
+        p.card.map(|c| self.card(c).is(ty::LAND)).unwrap_or(false) && p.token.is_none()
+    }
+
+    pub fn is_walker(&self, p: &Perm) -> bool {
+        p.card.map(|c| self.card(c).is(ty::PLANESWALKER)).unwrap_or(false)
+    }
+
+    fn is_artifact(&self, p: &Perm) -> bool {
+        p.card.map(|c| self.card(c).is(ty::ARTIFACT)).unwrap_or(false)
     }
 
     fn is_enchantment(&self, p: &Perm) -> bool {
         p.card.map(|c| self.card(c).is(ty::ENCHANTMENT)).unwrap_or(false)
+    }
+
+    fn has_subtype(&self, p: &Perm, sub: &str) -> bool {
+        p.card
+            .map(|c| self.card(c).subtypes.iter().any(|t| t == sub))
+            .unwrap_or(false)
+    }
+
+    /// Whether a side controls a Gate (Armory Guard, Ogre Jailbreaker).
+    fn has_gate(&self, side: usize) -> bool {
+        self.perms
+            .iter()
+            .any(|p| p.ctrl == side && self.has_subtype(p, "Gate"))
     }
 
     fn aura_of(&self, p: &Perm) -> Option<Aura> {
@@ -804,29 +963,52 @@ impl Duel {
     }
 
     pub fn colours(&self, p: &Perm) -> u8 {
-        if p.animated {
-            return p
-                .card
+        let base = if p.animated {
+            p.card
                 .and_then(|c| self.rules(c).animate)
                 .map(|a| a.1)
-                .unwrap_or(0);
-        }
-        match (p.card, p.token) {
-            (Some(c), _) => self.card(c).colours,
-            (None, Some(t)) => t.stats().3,
-            _ => 0,
-        }
+                .unwrap_or(0)
+        } else {
+            match (p.card, p.token) {
+                (Some(c), _) => self.card(c).colours,
+                (None, Some(t)) => t.stats().3,
+                _ => 0,
+            }
+        };
+        base | p.extra_colours
     }
 
     fn base_pt(&self, p: &Perm) -> (i32, i32) {
         if p.animated {
-            return (KEYRUNE_SIZE, KEYRUNE_SIZE);
+            return p
+                .card
+                .map(|c| self.rules(c).animate_pt)
+                .unwrap_or((KEYRUNE_SIZE, KEYRUNE_SIZE));
         }
-        match (p.card, p.token) {
-            (Some(c), _) => (self.card(c).power, self.card(c).toughness),
-            (None, Some(t)) => (t.stats().0, t.stats().1),
-            _ => (0, 0),
+        if p.token == Some(Token::Ooze) {
+            return (p.size, p.size);
         }
+        let Some(c) = p.card else {
+            return p.token.map(|t| (t.stats().0, t.stats().1)).unwrap_or((0, 0));
+        };
+        let r = self.rules(c);
+        if r.statics.contains(&Static::RatCount) {
+            let n = self
+                .perms
+                .iter()
+                .filter(|q| q.ctrl == p.ctrl && self.has_subtype(q, "Rat"))
+                .count() as i32;
+            return (n, n);
+        }
+        if r.statics.contains(&Static::CreatureCount) {
+            let n = self
+                .perms
+                .iter()
+                .filter(|q| q.ctrl == p.ctrl && self.is_creature(q))
+                .count() as i32;
+            return (n, n);
+        }
+        (self.card(c).power, self.card(c).toughness)
     }
 
     fn statics_count(&self, side: usize, s: Static) -> i32 {
@@ -853,28 +1035,49 @@ impl Duel {
             dt += b;
         }
         for a in self.attachments(p.id) {
-            match self.aura_of(a) {
-                Some(Aura::StabWound) => {
-                    dp -= 2;
-                    dt -= 2;
-                }
+            let (x, y) = match self.aura_of(a) {
+                Some(Aura::StabWound) => (-2, -2),
                 Some(Aura::EtherealArmor) => {
                     let n = self
                         .perms
                         .iter()
                         .filter(|e| e.ctrl == a.ctrl && self.is_enchantment(e))
                         .count() as i32;
-                    dp += n;
-                    dt += n;
+                    (n, n)
                 }
-                _ => {}
-            }
+                Some(Aura::KnightlyValor) | Some(Aura::PursuitOfFlight) => (2, 2),
+                Some(Aura::DeviantGlee) => (2, 1),
+                Some(Aura::RighteousAuthority) => {
+                    let n = self.s[p.ctrl].hand.len() as i32;
+                    (n, n)
+                }
+                _ => (0, 0),
+            };
+            dp += x;
+            dt += y;
             if a.card.map(|c| self.rules(c).equip.is_some()).unwrap_or(false) {
                 dp += mana::count_colours(self.colours(p)) as i32;
             }
         }
         if p.token.is_some() {
             let n = self.statics_count(p.ctrl, Static::TokenAnthem);
+            dp += n;
+            dt += n;
+        }
+        if self.is_creature(p) {
+            let n = self.statics_count(p.ctrl, Static::Blessing) * 3;
+            dp += n;
+            dt += n;
+        }
+        if p.card
+            .map(|c| self.rules(c).statics.contains(&Static::GraveCreatures))
+            .unwrap_or(false)
+        {
+            let n = self.s[p.ctrl]
+                .grave
+                .iter()
+                .filter(|&&c| self.card(c).is(ty::CREATURE))
+                .count() as i32;
             dp += n;
             dt += n;
         }
@@ -908,8 +1111,19 @@ impl Duel {
             k |= m;
         }
         for a in self.attachments(p.id) {
-            if self.aura_of(a) == Some(Aura::EtherealArmor) {
-                k |= kw::FIRST_STRIKE;
+            match self.aura_of(a) {
+                Some(Aura::EtherealArmor) => k |= kw::FIRST_STRIKE,
+                Some(Aura::KnightlyValor) => k |= kw::VIGILANCE,
+                _ => {}
+            }
+        }
+        if let Some(c) = p.card {
+            let r = self.rules(c);
+            if r.statics.contains(&Static::VigilanceWithGate) && self.has_gate(p.ctrl) {
+                k |= kw::VIGILANCE;
+            }
+            if r.statics.contains(&Static::TrampleWithCounter) && p.counters > 0 {
+                k |= kw::TRAMPLE;
             }
         }
         if p.unleashed && p.counters > 0 && self.s[p.ctrl].perks & perk::UNLEASH_HASTE != 0 {
@@ -932,10 +1146,19 @@ impl Duel {
         p.detained_by.is_some() || self.arrested(p)
     }
 
+    /// A Pithing Needle names this permanent's card.
+    fn needled(&self, p: &Perm) -> bool {
+        let name = self.perm_name(p);
+        self.perms.iter().any(|q| !q.named.is_empty() && q.named == name)
+    }
+
     /// A rough worth, for the computer's choices and "best" picks.
     pub fn value_of(&self, id: u32) -> i32 {
         let Some(p) = self.perm(id) else { return 0 };
         let mv = p.card.map(|c| self.card(c).value as i32).unwrap_or(1);
+        if self.is_walker(p) {
+            return mv * 3 + p.loyalty * 2;
+        }
         if !self.is_creature(p) {
             return mv * 2;
         }
@@ -963,23 +1186,47 @@ impl Duel {
 
     // ---------- mana ----------
 
-    /// The mana a side could make now: (permanent, the colours of its unit).
+    /// The mana a side could make now: one entry a unit, (permanent, the
+    /// colours the unit can be). Axebane Guardian makes several; Mana Bloom
+    /// one a turn while it has charge counters.
     pub fn sources(&self, side: usize, except: Option<u32>) -> Vec<(u32, u8)> {
         let lantern = self.statics_count(side, Static::Lantern) > 0;
-        self.perms
+        let mut out = Vec::new();
+        for p in self
+            .perms
             .iter()
-            .filter(|p| p.ctrl == side && !p.tapped && Some(p.id) != except && !self.silenced(p))
-            .filter(|p| !(self.is_creature(p) && p.fresh && !self.has(p, kw::HASTE)))
-            .filter_map(|p| {
-                let unit = p.card.and_then(|c| self.rules(c).mana)?;
-                let unit = if lantern && self.is_land(p) {
-                    mana::ANY
-                } else {
-                    unit
-                };
-                Some((p.id, unit))
-            })
-            .collect()
+            .filter(|p| p.ctrl == side && Some(p.id) != except && !self.silenced(p))
+        {
+            let Some(c) = p.card else { continue };
+            let r = self.rules(c);
+            let Some(unit) = r.mana else { continue };
+            let name = self.card(c).name.as_str();
+            if name == "Mana Bloom" {
+                if p.charge > 0 && !p.used {
+                    out.push((p.id, mana::ANY));
+                }
+                continue;
+            }
+            if p.tapped || (self.is_creature(p) && p.fresh && !self.has(p, kw::HASTE)) {
+                continue;
+            }
+            if name == "Axebane Guardian" {
+                let n = self
+                    .perms
+                    .iter()
+                    .filter(|q| q.ctrl == side && self.is_creature(q) && self.has(q, kw::DEFENDER))
+                    .count();
+                out.extend(std::iter::repeat_n((p.id, mana::ANY), n));
+                continue;
+            }
+            let unit = if lantern && self.is_land(p) {
+                mana::ANY
+            } else {
+                unit
+            };
+            out.push((p.id, unit));
+        }
+        out
     }
 
     pub fn can_pay(&self, side: usize, cost: &Cost, except: Option<u32>) -> bool {
@@ -987,7 +1234,7 @@ impl Duel {
         Bank {
             units: src.iter().map(|s| s.1).collect(),
         }
-        .can_pay(cost)
+        .can_pay(&cost.with_x(0))
     }
 
     /// Taps sources to pay `cost`; false, with nothing tapped, if it can't.
@@ -996,11 +1243,30 @@ impl Duel {
         let bank = Bank {
             units: src.iter().map(|s| s.1).collect(),
         };
-        let Some(picks) = bank.plan(cost) else {
+        let Some(picks) = bank.plan(&cost.with_x(0)) else {
             return false;
         };
+        let mut done: Vec<u32> = Vec::new();
         for i in picks {
-            self.set(src[i].0, |p| p.tapped = true);
+            let id = src[i].0;
+            if done.contains(&id) {
+                continue;
+            }
+            done.push(id);
+            let bloom = self
+                .perm(id)
+                .and_then(|p| p.card)
+                .map(|c| self.card(c).name == "Mana Bloom")
+                .unwrap_or(false);
+            if bloom {
+                self.set(id, |p| {
+                    p.charge -= 1;
+                    p.used = true;
+                });
+            } else {
+                self.set(id, |p| p.tapped = true);
+                self.tapped_for_mana(id);
+            }
         }
         true
     }
@@ -1017,7 +1283,7 @@ impl Duel {
             .count()
     }
 
-    /// What a card costs `side` to cast now, overloaded or not.
+    /// What a card costs `side` to cast now, overloaded or not, X still X.
     pub fn cast_cost(&self, side: usize, card: usize, overload: bool) -> Cost {
         let c = self.card(card);
         let base = if overload {
@@ -1029,9 +1295,25 @@ impl Duel {
             let off = self.statics_count(side, Static::SpellsCheaper)
                 + i32::from(self.s[side].perks & perk::SET_SPELL_CHEAP != 0);
             base.reduced(off.max(0) as u8)
+        } else if c.is(ty::CREATURE) && self.statics_count(side, Static::RakdosLord) > 0 {
+            let lost = self.s[other(side)].lost.max(0);
+            base.reduced((lost * self.statics_count(side, Static::RakdosLord)).min(255) as u8)
         } else {
             base
         }
+    }
+
+    /// The most X `side` could pay for this cost now.
+    pub fn max_x(&self, side: usize, cost: &Cost) -> i32 {
+        let xs = cost.xs() as i32;
+        if xs == 0 {
+            return 0;
+        }
+        let mut x = 0;
+        while x < 20 && self.can_pay(side, &cost.with_x(x + 1), None) {
+            x += 1;
+        }
+        x
     }
 
     fn scavenge_cost(&self, side: usize, card: usize) -> Option<Cost> {
@@ -1057,10 +1339,20 @@ impl Duel {
         if f.land {
             return self.is_land(p);
         }
-        if self.is_land(p) {
+        if self.is_land(p) && !self.is_creature(p) {
             return false;
         }
-        if f.creature && !self.is_creature(p) {
+        let walker = self.is_walker(p);
+        if f.creature && !self.is_creature(p) && !(f.or_walker && walker) {
+            return false;
+        }
+        if f.artifact && !self.is_artifact(p) {
+            return false;
+        }
+        if f.enchantment && !self.is_enchantment(p) {
+            return false;
+        }
+        if f.art_or_ench && !(self.is_artifact(p) || self.is_enchantment(p)) {
             return false;
         }
         if let Some(mv) = f.max_value {
@@ -1070,6 +1362,11 @@ impl Duel {
         }
         if let Some(mp) = f.min_power {
             if self.power(p) < mp {
+                return false;
+            }
+        }
+        if let Some(mt) = f.max_toughness {
+            if self.toughness(p) > mt {
                 return false;
             }
         }
@@ -1091,6 +1388,21 @@ impl Duel {
         if f.other && Some(p.id) == source {
             return false;
         }
+        if f.combat && !(p.attacking || p.blocking.is_some()) {
+            return false;
+        }
+        if f.attacking && !p.attacking {
+            return false;
+        }
+        if f.blocking && p.blocking.is_none() {
+            return false;
+        }
+        if f.damaged && !p.dealt {
+            return false;
+        }
+        if f.nontoken && p.token.is_some() {
+            return false;
+        }
         true
     }
 
@@ -1103,45 +1415,124 @@ impl Duel {
             .collect()
     }
 
+    /// Whether `side` may target this permanent at all: hexproof, and Oak
+    /// Street Innkeeper's tapped creatures in their controller's opponent's turn.
+    fn targetable(&self, side: usize, p: &Perm) -> bool {
+        if p.ctrl == side {
+            return true;
+        }
+        if self.has(p, kw::HEXPROOF) {
+            return false;
+        }
+        !(p.tapped
+            && self.is_creature(p)
+            && self.active != p.ctrl
+            && self.statics_count(p.ctrl, Static::TappedHexproof) > 0)
+    }
+
+    fn spell_fits(&self, side: usize, kind: SpellKind, i: &Item) -> bool {
+        let card = match i.src {
+            Source::Spell { card, .. } | Source::Copy { card } => card,
+            _ => return false,
+        };
+        let c = self.card(card);
+        match kind {
+            SpellKind::Any => true,
+            SpellKind::OnlyInstants => c.is(ty::INSTANT),
+            SpellKind::InstantOrSorcery => c.is_spell(),
+            SpellKind::Creature => c.is(ty::CREATURE),
+            SpellKind::Noncreature => !c.is(ty::CREATURE),
+            SpellKind::NotYours => i.ctrl != side,
+        }
+    }
+
+    fn grave_fits(&self, kind: GraveKind, c: usize) -> bool {
+        let k = self.card(c);
+        match kind {
+            GraveKind::Any => true,
+            GraveKind::Creature => k.is(ty::CREATURE),
+            GraveKind::Land => k.is(ty::LAND),
+            GraveKind::InstantOrSorcery => k.is_spell(),
+        }
+    }
+
     /// What `side` may target with `spec`, from `source` (a permanent, for abilities).
     pub fn legal_targets(&self, side: usize, spec: &Tgt, source: Option<u32>) -> Vec<Target> {
-        let targetable = |p: &Perm| !(p.ctrl != side && self.has(p, kw::HEXPROOF));
-        match spec {
-            Tgt::One(f) | Tgt::UpTo(_, f) => self
-                .perms
+        let perms = |f: &Filter| -> Vec<Target> {
+            self.perms
                 .iter()
-                .filter(|p| self.matches(f, p, side, source) && targetable(p))
+                .filter(|p| self.matches(f, p, side, source) && self.targetable(side, p))
                 .map(|p| Target::Perm(p.id))
-                .collect(),
+                .collect()
+        };
+        let walkers = || -> Vec<Target> {
+            self.perms
+                .iter()
+                .filter(|p| self.is_walker(p) && self.targetable(side, p))
+                .map(|p| Target::Perm(p.id))
+                .collect()
+        };
+        match spec {
+            Tgt::One(f) | Tgt::UpTo(_, f) | Tgt::Twice(f) => perms(f),
+            Tgt::Two(a, b) => {
+                let mut v = perms(a);
+                for t in perms(b) {
+                    if !v.contains(&t) {
+                        v.push(t);
+                    }
+                }
+                v
+            }
             Tgt::Any(f) => {
-                let mut v: Vec<Target> = self
-                    .perms
-                    .iter()
-                    .filter(|p| self.matches(f, p, side, source) && targetable(p))
-                    .map(|p| Target::Perm(p.id))
-                    .collect();
+                let mut v = perms(f);
+                for t in walkers() {
+                    if !v.contains(&t) {
+                        v.push(t);
+                    }
+                }
                 v.push(Target::Player(other(side)));
                 v.push(Target::Player(side));
                 v
             }
             Tgt::Player => vec![Target::Player(other(side)), Target::Player(side)],
-            Tgt::Spell(creature) => self
+            Tgt::Opponent => vec![Target::Player(other(side))],
+            Tgt::PlayerOrWalker => {
+                let mut v = vec![Target::Player(other(side)), Target::Player(side)];
+                v.extend(walkers());
+                v
+            }
+            Tgt::Spell(kind) => self
                 .stack
                 .iter()
-                .filter(|i| match i.src {
-                    Source::Spell { card, .. } => match creature {
-                        Some(want) => self.card(card).is(ty::CREATURE) == *want,
-                        None => true,
-                    },
-                    _ => false,
-                })
+                .filter(|i| self.spell_fits(side, *kind, i))
                 .map(|i| Target::Item(i.id))
                 .collect(),
+            Tgt::Grave(kind, who) => {
+                let mut v = Vec::new();
+                for owner in [P, F] {
+                    let ok = match who {
+                        Who::Mine => owner == side,
+                        Who::Theirs => owner != side,
+                        Who::Any => true,
+                    };
+                    if !ok {
+                        continue;
+                    }
+                    let mut seen: Vec<usize> = Vec::new();
+                    for &c in &self.s[owner].grave {
+                        if self.grave_fits(*kind, c) && !seen.contains(&c) {
+                            seen.push(c);
+                            v.push(Target::Grave(owner, c));
+                        }
+                    }
+                }
+                v
+            }
             Tgt::Angel => {
                 let mut v: Vec<Target> = self
                     .perms
                     .iter()
-                    .filter(|p| self.is_creature(p) && Some(p.id) != source && targetable(p))
+                    .filter(|p| self.is_creature(p) && Some(p.id) != source && self.targetable(side, p))
                     .map(|p| Target::Perm(p.id))
                     .collect();
                 for owner in [P, F] {
@@ -1162,6 +1553,7 @@ impl Duel {
         match spec {
             Tgt::UpTo(n, _) => (0, *n as usize),
             Tgt::Angel => (0, 3),
+            Tgt::Two(_, _) | Tgt::Twice(_) => (2, 2),
             _ => (1, 1),
         }
     }
@@ -1184,13 +1576,33 @@ impl Duel {
         if overload {
             return true;
         }
+        if r.sac_to_cast && !self.perms.iter().any(|p| p.ctrl == side && self.is_creature(p)) {
+            return false;
+        }
+        if r.statics.contains(&Static::RakdosLord) && self.s[other(side)].lost <= 0 {
+            return false;
+        }
         match r.modes.get(mode).and_then(|m| m.target) {
+            Some(Tgt::Two(a, b)) => {
+                let la = self.legal_targets(side, &Tgt::One(a), None);
+                let lb = self.legal_targets(side, &Tgt::One(b), None);
+                la.iter().any(|x| lb.iter().any(|y| x != y))
+            }
             Some(spec) => {
                 let (min, _) = Duel::spec_bounds(&spec);
                 min == 0 || !self.legal_targets(side, &spec, None).is_empty()
             }
             None => true,
         }
+    }
+
+    /// Whether `side` may cast this card now, by its timing.
+    fn in_time(&self, side: usize, card: usize, sorcery: bool) -> bool {
+        let c = self.card(card);
+        let fast = c.is(ty::INSTANT)
+            || c.rules.kw & kw::FLASH != 0
+            || (c.is(ty::SORCERY) && self.statics_count(side, Static::SorceryFlash) > 0);
+        fast || sorcery
     }
 
     /// Everything `side` may do now with priority, Pass last.
@@ -1211,11 +1623,7 @@ impl Duel {
         }
         for (i, &c) in self.s[side].hand.iter().enumerate() {
             let card = self.card(c);
-            if card.is(ty::LAND) {
-                continue;
-            }
-            let fast = card.is(ty::INSTANT) || card.rules.kw & kw::FLASH != 0;
-            if !(fast || sorcery) {
+            if card.is(ty::LAND) || !self.in_time(side, c, sorcery) {
                 continue;
             }
             let modes = card.rules.modes.len().max(1);
@@ -1241,8 +1649,22 @@ impl Duel {
         for p in self.perms.iter().filter(|p| p.ctrl == side) {
             let Some(c) = p.card else { continue };
             for (n, a) in self.rules(c).activated.iter().enumerate() {
-                if self.can_activate(side, p, a, sorcery) {
+                if !a.from_grave && self.can_activate(side, p, a, sorcery) {
                     out.push(Action::Activate { perm: p.id, n });
+                }
+            }
+        }
+        // abilities that work from the graveyard (Jarad)
+        for (g, &c) in self.s[side].grave.iter().enumerate() {
+            if self.s[side].grave[..g].contains(&c) {
+                continue;
+            }
+            for (n, a) in self.rules(c).activated.iter().enumerate() {
+                if a.from_grave
+                    && self.extra_payable(side, None, a.extra)
+                    && self.can_pay(side, &a.cost, None)
+                {
+                    out.push(Action::GraveAbility { grave: g, n });
                 }
             }
         }
@@ -1252,7 +1674,7 @@ impl Duel {
                     let any_creature = self
                         .perms
                         .iter()
-                        .any(|p| self.is_creature(p) && !(p.ctrl != side && self.has(p, kw::HEXPROOF)));
+                        .any(|p| self.is_creature(p) && self.targetable(side, p));
                     if any_creature
                         && self.can_pay(side, &cost, None)
                         && !self.s[side].grave[..g].contains(&c)
@@ -1266,14 +1688,99 @@ impl Duel {
         out
     }
 
+    /// What could pay a cost beyond mana: the creatures to sacrifice, the cards to discard.
+    pub fn extra_options(&self, side: usize, source: Option<u32>, extra: Extra) -> Vec<Target> {
+        let mine = |pred: &dyn Fn(&Perm) -> bool| -> Vec<Target> {
+            self.perms
+                .iter()
+                .filter(|p| p.ctrl == side && Some(p.id) != source && pred(p))
+                .map(|p| Target::Perm(p.id))
+                .collect()
+        };
+        let hand = |pred: &dyn Fn(usize) -> bool| -> Vec<Target> {
+            (0..self.s[side].hand.len())
+                .filter(|&i| pred(self.s[side].hand[i]))
+                .map(Target::Hand)
+                .collect()
+        };
+        match extra {
+            Extra::SacAnother => mine(&|p| self.is_creature(p)),
+            Extra::SacNontoken => mine(&|p| self.is_creature(p) && p.token.is_none()),
+            Extra::Discard => hand(&|_| true),
+            Extra::DiscardCreature => hand(&|c| self.card(c).is(ty::CREATURE)),
+            Extra::DiscardPair => hand(&|c| {
+                !self.card(c).is(ty::LAND)
+                    && self.s[side]
+                        .hand
+                        .iter()
+                        .filter(|&&d| self.card(d).name == self.card(c).name)
+                        .count()
+                        >= 2
+            }),
+            _ => Vec::new(),
+        }
+    }
+
+    /// Whether a cost beyond mana can be paid now.
+    fn extra_payable(&self, side: usize, source: Option<&Perm>, extra: Extra) -> bool {
+        let host = source.and_then(|p| p.attached).and_then(|h| self.perm(h));
+        match extra {
+            Extra::None => true,
+            Extra::PayLife(n) => self.s[side].life >= n,
+            Extra::TapTwo => {
+                self.perms
+                    .iter()
+                    .filter(|p| {
+                        p.ctrl == side
+                            && self.is_creature(p)
+                            && !p.tapped
+                            && Some(p.id) != source.map(|s| s.id)
+                    })
+                    .count()
+                    >= 2
+            }
+            Extra::SwampAndForest => {
+                let has = |n: &str| {
+                    self.perms.iter().any(|p| {
+                        p.ctrl == side
+                            && p.card
+                                .map(|c| self.card(c).subtypes.iter().any(|t| t == n))
+                                .unwrap_or(false)
+                    })
+                };
+                has("Swamp") && has("Forest")
+            }
+            Extra::ExileOwnSpell => self.stack.iter().any(|i| {
+                i.ctrl == side && matches!(i.src, Source::Spell { card, .. } if self.card(card).is_spell())
+            }),
+            Extra::TapHost => host.map(|h| !h.tapped).unwrap_or(false),
+            Extra::TapHostPayLife => host.map(|h| !h.tapped).unwrap_or(false) && self.s[side].life >= 1,
+            other => !self.extra_options(side, source.map(|s| s.id), other).is_empty(),
+        }
+    }
+
     fn can_activate(&self, side: usize, p: &Perm, a: &crate::rules::Activated, sorcery: bool) -> bool {
         if self.silenced(p) || (a.sorcery && !sorcery) {
+            return false;
+        }
+        if a.loyalty.is_none() && self.needled(p) {
             return false;
         }
         if a.tap && (p.tapped || (self.is_creature(p) && p.fresh && !self.has(p, kw::HASTE))) {
             return false;
         }
         if a.ability.effects.contains(&Eff::Animate) && p.animated {
+            return false;
+        }
+        if let Some(l) = a.loyalty {
+            if p.used || p.loyalty + l < 0 {
+                return false;
+            }
+        }
+        if a.once && p.used {
+            return false;
+        }
+        if !self.extra_payable(side, Some(p), a.extra) {
             return false;
         }
         if let Some(spec) = a.ability.target {
@@ -1290,7 +1797,12 @@ impl Duel {
 
     fn begin_turn(&mut self) {
         self.turn += 1;
-        self.active = other(self.active);
+        // an extra turn: the same side again (Search the City)
+        if self.s[self.active].extra_turns > 0 && self.turn > 1 {
+            self.s[self.active].extra_turns -= 1;
+        } else {
+            self.active = other(self.active);
+        }
         if self.turn > TURN_CAP {
             self.outcome = Some(Outcome::Withdrew);
             self.log(
@@ -1305,11 +1817,23 @@ impl Duel {
         let a = self.active;
         self.s[a].land_played = false;
         self.s[a].turns += 1;
-        // untap
+        self.s[a].jace = false;
+        for side in [P, F] {
+            self.s[side].lost = 0;
+            self.s[side].no_combat_damage = false;
+            self.s[side].shield = 0;
+        }
+        // untap; Urban Burgeoning's land untaps in every untap step
         let grasped: Vec<u32> = self
             .perms
             .iter()
             .filter(|p| p.attached.is_some() && self.aura_of(p) == Some(Aura::Grasp))
+            .filter_map(|p| p.attached)
+            .collect();
+        let burgeoning: Vec<u32> = self
+            .perms
+            .iter()
+            .filter(|p| p.attached.is_some() && self.aura_of(p) == Some(Aura::Burgeoning))
             .filter_map(|p| p.attached)
             .collect();
         for p in self.perms.iter_mut() {
@@ -1318,6 +1842,10 @@ impl Duel {
                     p.tapped = false;
                 }
                 p.fresh = false;
+                p.used = false;
+                p.ward = false;
+            } else if burgeoning.contains(&p.id) {
+                p.tapped = false;
             }
             if p.detained_by == Some(a) {
                 p.detained_by = None;
@@ -1344,7 +1872,17 @@ impl Duel {
                 if self.turn > 1 {
                     self.draw(a, 1);
                 }
+                // Righteous Authority: an extra card for the enchanted creature's controller
+                let extra = self
+                    .perms
+                    .iter()
+                    .filter(|p| self.aura_of(p) == Some(Aura::RighteousAuthority))
+                    .filter_map(|p| p.attached.and_then(|h| self.perm(h)))
+                    .filter(|h| h.ctrl == a)
+                    .count();
+                self.draw(a, extra);
             }
+            Step::Combat => self.combat_begins(),
             Step::Attackers => {
                 let legal: Vec<u32> = self
                     .perms
@@ -1355,12 +1893,15 @@ impl Duel {
                 if legal.is_empty() {
                     self.enter_step(Step::EndCombat);
                 } else {
+                    // creatures that attack each combat if able are chosen already
+                    let chosen: Vec<u32> = legal
+                        .iter()
+                        .copied()
+                        .filter(|&id| self.perm(id).map(|p| self.must_attack(p)).unwrap_or(false))
+                        .collect();
                     self.pending = Some(Pending {
                         who: a,
-                        ask: Ask::Attackers {
-                            legal,
-                            chosen: Vec::new(),
-                        },
+                        ask: Ask::Attackers { legal, chosen },
                     });
                 }
             }
@@ -1406,6 +1947,7 @@ impl Duel {
                     self.enter_step(Step::EndCombat);
                 }
             }
+            Step::End => self.end_step_begins(),
             Step::EndCombat => {}
             Step::Cleanup => self.resume.push(Resume::Cleanup),
             _ => {}
@@ -1419,6 +1961,7 @@ impl Duel {
                 p.blocked = false;
                 p.blocking = None;
                 p.dealt_first = false;
+                p.aim = None;
             }
         }
         match self.step.next() {
@@ -1435,6 +1978,10 @@ impl Duel {
     fn upkeep_triggers(&mut self) {
         let a = self.active;
         let mut trigs = Vec::new();
+        let empty = || Ability {
+            target: None,
+            effects: Vec::new(),
+        };
         for p in &self.perms {
             let Some(c) = p.card else { continue };
             let r = self.rules(c);
@@ -1443,32 +1990,37 @@ impl Duel {
                     trigs.push(self.trig_of(p, ab.clone(), 0));
                 }
             }
+            for (w, ab) in &r.when {
+                if *w == When::EachUpkeep {
+                    let mut t = self.trig_of(p, ab.clone(), 0);
+                    t.fixed = vec![Target::Player(a)];
+                    trigs.push(t);
+                }
+            }
             if p.ctrl != a {
                 if let Some((n, loss)) = r.opponent_upkeep {
                     if self.s[a].hand.len() <= n {
-                        trigs.push(self.trig_of(
-                            p,
-                            Ability {
-                                target: None,
-                                effects: Vec::new(),
-                            },
-                            loss,
-                        ));
+                        trigs.push(self.trig_of(p, empty(), loss));
                     }
                 }
             }
-            if r.aura == Some(Aura::StabWound) {
-                if let Some(host) = p.attached.and_then(|h| self.perm(h)) {
-                    if host.ctrl == a {
-                        trigs.push(self.trig_of(
-                            p,
-                            Ability {
-                                target: None,
-                                effects: Vec::new(),
-                            },
-                            2,
-                        ));
-                    }
+            let host = p.attached.and_then(|h| self.perm(h));
+            if r.aura == Some(Aura::StabWound) && host.map(|h| h.ctrl == a).unwrap_or(false) {
+                trigs.push(self.trig_of(p, empty(), 2));
+            }
+            if r.aura == Some(Aura::SoulTithe) {
+                if let Some(h) = host.filter(|h| h.ctrl == a) {
+                    let mv = h.card.map(|c| self.card(c).value).unwrap_or(0) as u8;
+                    let mut t = self.trig_of(
+                        p,
+                        Ability {
+                            target: None,
+                            effects: vec![Eff::TitheCheck],
+                        },
+                        mv as i32,
+                    );
+                    t.fixed = vec![Target::Perm(h.id)];
+                    trigs.push(t);
                 }
             }
         }
@@ -1483,6 +2035,7 @@ impl Duel {
                 },
                 x: 0,
                 name: String::new(),
+                fixed: Vec::new(),
             });
         }
         self.triggers.extend(trigs);
@@ -1496,17 +2049,44 @@ impl Duel {
             ability,
             x,
             name: self.perm_name(p),
+            fixed: Vec::new(),
         }
     }
 
+    /// Attacks each combat if able: Volatile Rig, or a creature under Chemister's Trick.
+    fn must_attack(&self, p: &Perm) -> bool {
+        self.has(p, kw::MUST_ATTACK)
+            || p.card
+                .map(|c| self.rules(c).statics.contains(&Static::MustAttack))
+                .unwrap_or(false)
+    }
+
     pub fn can_attack(&self, p: &Perm) -> bool {
+        let defender = self.has(p, kw::DEFENDER)
+            && !(p
+                .card
+                .map(|c| self.rules(c).statics.contains(&Static::AttacksWithGate))
+                .unwrap_or(false)
+                && self.has_gate(p.ctrl));
         p.ctrl == self.active
             && self.is_creature(p)
             && !p.tapped
             && (!p.fresh || self.has(p, kw::HASTE))
-            && !self.has(p, kw::DEFENDER)
+            && !defender
             && p.detained_by.is_none()
             && !self.arrested(p)
+    }
+
+    /// Sphere of Safety: what each creature attacking `side` costs its controller.
+    pub fn attack_tax(&self, side: usize) -> i32 {
+        if self.statics_count(side, Static::AttackTax) == 0 {
+            return 0;
+        }
+        self.perms
+            .iter()
+            .filter(|p| p.ctrl == side && self.is_enchantment(p))
+            .count() as i32
+            * self.statics_count(side, Static::AttackTax)
     }
 
     pub fn can_block(&self, b: &Perm, attacker: u32) -> bool {
@@ -1528,6 +2108,9 @@ impl Duel {
         if self.has(a, kw::UNBLOCKABLE) {
             return false;
         }
+        if self.has(a, kw::INTIMIDATE) && !self.is_artifact(b) && self.colours(a) & self.colours(b) == 0 {
+            return false;
+        }
         if self.has(a, kw::FLYING) && !self.has(b, kw::FLYING) && !self.has(b, kw::REACH) {
             return false;
         }
@@ -1535,7 +2118,7 @@ impl Duel {
             && self
                 .perms
                 .iter()
-                .any(|l| l.ctrl == b.ctrl && l.card.map(|c| self.card(c).name == "Swamp").unwrap_or(false))
+                .any(|l| l.ctrl == b.ctrl && self.is_land(l) && self.has_subtype(l, "Swamp"))
         {
             return false;
         }
@@ -1604,6 +2187,9 @@ impl Duel {
             ],
             vec![id],
         );
+        self.land_entered(side, id);
+        let name = self.card(c).name.clone();
+        self.played_name(side, &name);
     }
 
     // ---------- the engine loop ----------
@@ -1659,6 +2245,12 @@ impl Duel {
                 Ask::Sacrifice { .. } => Answer::Pick(Some(0)),
                 Ask::Impostor { .. } => Answer::Pick(None),
                 Ask::Pay { .. } => Answer::Yes(false),
+                Ask::ChooseX { .. } => Answer::Pick(Some(0)),
+                Ask::CostPick { .. } => Answer::Pick(Some(0)),
+                Ask::May { .. } => Answer::Yes(false),
+                Ask::Name { .. } => Answer::Pick(Some(0)),
+                Ask::Piles { .. } => Answer::Pick(Some(0)),
+                Ask::Offer { .. } => Answer::Pick(None),
             },
             None => Answer::Act(Action::Pass),
         }
@@ -1693,6 +2285,9 @@ impl Duel {
     fn advance(&mut self) {
         if let Some(r) = self.resume.pop() {
             self.continue_resume(r);
+            return;
+        }
+        if self.next_free_cast() {
             return;
         }
         if self.state_based() {
@@ -1765,6 +2360,7 @@ impl Duel {
             }
             (
                 Ask::Targets {
+                    spec,
                     legal,
                     min,
                     max,
@@ -1776,22 +2372,129 @@ impl Duel {
                 if ts.len() < min || ts.len() > max || ts.iter().any(|t| !legal.contains(t)) {
                     return Err("Those targets can't be chosen.".to_string());
                 }
-                let mut seen = Vec::new();
-                for t in &ts {
-                    if seen.contains(t) {
-                        return Err("A target is chosen twice.".to_string());
+                // Common Bond may name the same creature twice; nothing else may
+                if !matches!(spec, Tgt::Twice(_)) {
+                    let mut seen = Vec::new();
+                    for t in &ts {
+                        if seen.contains(t) {
+                            return Err("A target is chosen twice.".to_string());
+                        }
+                        seen.push(*t);
                     }
-                    seen.push(*t);
+                }
+                if let Tgt::Two(a, b) = spec {
+                    let fits =
+                        |t: &Target, f: Filter| self.legal_targets(who, &Tgt::One(f), None).contains(t);
+                    if ts.len() == 2 && !(fits(&ts[0], a) && fits(&ts[1], b)) {
+                        return Err("The first target and the second are of different kinds.".to_string());
+                    }
                 }
                 self.pending = None;
                 self.after_targets(who, *then, ts);
             }
             (Ask::Attackers { legal, .. }, Answer::Attack(ids)) => {
-                if ids.iter().any(|i| !legal.contains(i)) {
-                    return Err("That creature can't attack.".to_string());
-                }
+                let pairs: Vec<(u32, u32)> = Vec::new();
+                self.check_attack(who, &legal, &ids, &pairs)?;
                 self.pending = None;
                 self.declare_attackers(ids);
+            }
+            (Ask::Attackers { legal, .. }, Answer::AttackAt(ids, pairs)) => {
+                self.check_attack(who, &legal, &ids, &pairs)?;
+                self.pending = None;
+                for (a, w) in &pairs {
+                    let w = *w;
+                    self.set(*a, |p| p.aim = Some(w));
+                }
+                self.declare_attackers(ids);
+            }
+            (Ask::ChooseX { max, then }, Answer::Pick(Some(x))) => {
+                if x as i32 > max {
+                    return Err("That X can't be paid.".to_string());
+                }
+                self.pending = None;
+                let then = match *then {
+                    Then::Cast {
+                        hand,
+                        card,
+                        mode,
+                        overload,
+                        pick,
+                        free,
+                        ..
+                    } => Then::Cast {
+                        hand,
+                        card,
+                        mode,
+                        overload,
+                        x: Some(x as i32),
+                        pick,
+                        free,
+                    },
+                    Then::Activate { perm, n, pick, .. } => Then::Activate {
+                        perm,
+                        n,
+                        x: Some(x as i32),
+                        pick,
+                    },
+                    other => other,
+                };
+                self.prepare(who, then);
+            }
+            (Ask::CostPick { legal, then }, Answer::Pick(Some(i))) => {
+                let Some(&t) = legal.get(i) else {
+                    return Err("That can't pay the cost.".to_string());
+                };
+                self.pending = None;
+                let then = match *then {
+                    Then::Cast {
+                        hand,
+                        card,
+                        mode,
+                        overload,
+                        x,
+                        free,
+                        ..
+                    } => Then::Cast {
+                        hand,
+                        card,
+                        mode,
+                        overload,
+                        x,
+                        pick: Some(t),
+                        free,
+                    },
+                    Then::Activate { perm, n, x, .. } => Then::Activate {
+                        perm,
+                        n,
+                        x,
+                        pick: Some(t),
+                    },
+                    other => other,
+                };
+                self.prepare(who, then);
+            }
+            (Ask::May { what }, Answer::Yes(y)) => {
+                self.pending = None;
+                self.answer_may(who, what, y);
+            }
+            (Ask::Name { options, perm }, Answer::Pick(Some(i))) => {
+                let Some(n) = options.get(i).cloned() else {
+                    return Err("There is no such name.".to_string());
+                };
+                self.pending = None;
+                self.named(who, perm, n);
+            }
+            (Ask::Piles { a, b }, Answer::Pick(Some(i))) => {
+                self.pending = None;
+                let (take, rest) = if i == 0 { (a, b) } else { (b, a) };
+                self.take_piles(who, take, rest);
+            }
+            (Ask::Offer { legal, demon }, Answer::Pick(choice)) => {
+                self.pending = None;
+                if let Some(id) = choice.and_then(|i| legal.get(i).copied()) {
+                    self.sacrifice(id);
+                    self.demon_fed(demon);
+                }
             }
             (Ask::Blockers { legal, .. }, Answer::Block(pairs)) => {
                 let mut used = Vec::new();
@@ -1810,10 +2513,8 @@ impl Duel {
             (Ask::Unleash { perm }, Answer::Yes(y)) => {
                 self.pending = None;
                 if y {
-                    self.set(perm, |p| {
-                        p.counters += 1;
-                        p.unleashed = true;
-                    });
+                    self.set(perm, |p| p.unleashed = true);
+                    self.add_counters(perm, 1);
                 }
                 self.resume.push(Resume::Enter { perm });
                 let name = self.name_of(perm);
@@ -1831,7 +2532,8 @@ impl Duel {
                     return Err("There is no such card in hand.".to_string());
                 }
                 self.pending = None;
-                self.discard_at(who, i);
+                let by = self.forcer;
+                self.discard_by(who, i, by);
                 if n > 1 && !self.s[who].hand.is_empty() {
                     self.pending = Some(Pending {
                         who,
@@ -1894,10 +2596,19 @@ impl Duel {
         }
         match ask {
             Ask::Targets {
-                legal, chosen, max, ..
+                spec,
+                legal,
+                chosen,
+                max,
+                ..
             } => {
                 let t = *legal.get(i).ok_or("There is no such target.")?;
-                if let Some(k) = chosen.iter().position(|c| *c == t) {
+                let twice = matches!(spec, Tgt::Twice(_));
+                if let Some(k) = chosen
+                    .iter()
+                    .position(|c| *c == t)
+                    .filter(|_| !twice || chosen.len() >= *max)
+                {
                     chosen.remove(k);
                 } else if chosen.len() < *max {
                     chosen.push(t);
@@ -1906,8 +2617,39 @@ impl Duel {
             }
             Ask::Attackers { legal, chosen } => {
                 let id = *legal.get(i).ok_or("There is no such creature.")?;
+                // each click: attack the player, then each of the opponent's planeswalkers, then not at all
+                let walkers: Vec<u32> = self
+                    .perms
+                    .iter()
+                    .filter(|p| {
+                        p.ctrl != who
+                            && p.card
+                                .map(|c| self.cards[c].is(ty::PLANESWALKER))
+                                .unwrap_or(false)
+                    })
+                    .map(|p| p.id)
+                    .collect();
                 if let Some(k) = chosen.iter().position(|c| *c == id) {
-                    chosen.remove(k);
+                    let now = self.draft_aims.iter().position(|(a, _)| *a == id);
+                    let next = match now {
+                        None => walkers.first().copied(),
+                        Some(j) => {
+                            let w = self.draft_aims[j].1;
+                            self.draft_aims.remove(j);
+                            walkers
+                                .iter()
+                                .position(|&x| x == w)
+                                .and_then(|q| walkers.get(q + 1))
+                                .copied()
+                        }
+                    };
+                    match next {
+                        Some(w) => self.draft_aims.push((id, w)),
+                        None if now.is_some() || walkers.is_empty() => {
+                            chosen.remove(k);
+                        }
+                        None => {}
+                    }
                 } else {
                     chosen.push(id);
                 }
@@ -2009,7 +2751,20 @@ impl Duel {
             Some(Pending { ask, .. }) => match ask {
                 Ask::Priority => Answer::Act(Action::Pass),
                 Ask::Targets { chosen, .. } => Answer::Targets(chosen.clone()),
-                Ask::Attackers { chosen, .. } => Answer::Attack(chosen.clone()),
+                Ask::Attackers { chosen, .. } => {
+                    let aims: Vec<(u32, u32)> = self
+                        .draft_aims
+                        .iter()
+                        .copied()
+                        .filter(|(a, _)| chosen.contains(a))
+                        .collect();
+                    self.draft_aims.clear();
+                    if aims.is_empty() {
+                        Answer::Attack(chosen.clone())
+                    } else {
+                        Answer::AttackAt(chosen.clone(), aims)
+                    }
+                }
                 Ask::Blockers { chosen, .. } => Answer::Block(chosen.clone()),
                 _ => return Err("Choose one of the answers.".to_string()),
             },
@@ -2044,26 +2799,29 @@ impl Duel {
             }
             Action::Cast { hand, mode, overload } => {
                 let card = self.s[who].hand[hand];
-                let then = Then::Cast {
-                    hand,
-                    card,
-                    mode,
-                    overload,
-                };
-                let spec = if overload {
-                    None
-                } else {
-                    self.rules(card).modes.get(mode).and_then(|m| m.target)
-                };
-                self.ask_targets(who, spec, None, then);
+                self.prepare(
+                    who,
+                    Then::Cast {
+                        hand,
+                        card,
+                        mode,
+                        overload,
+                        x: None,
+                        pick: None,
+                        free: false,
+                    },
+                );
             }
-            Action::Activate { perm, n } => {
-                let Some(c) = self.perm(perm).and_then(|p| p.card) else {
-                    return;
-                };
-                let spec = self.rules(c).activated[n].ability.target;
-                self.ask_targets(who, spec, Some(perm), Then::Activate { perm, n });
-            }
+            Action::Activate { perm, n } => self.prepare(
+                who,
+                Then::Activate {
+                    perm,
+                    n,
+                    x: None,
+                    pick: None,
+                },
+            ),
+            Action::GraveAbility { grave, n } => self.grave_ability(who, grave, n),
             Action::Scavenge { grave } => {
                 let card = self.s[who].grave[grave];
                 self.ask_targets(
@@ -2076,6 +2834,84 @@ impl Duel {
         }
     }
 
+    /// Readies a spell or an ability: X, then a cost beyond mana, then targets.
+    fn prepare(&mut self, who: usize, then: Then) {
+        match then {
+            Then::Cast {
+                card,
+                overload,
+                mode,
+                x,
+                pick,
+                free,
+                ..
+            } => {
+                let cost = self.cast_cost(who, card, overload);
+                if cost.xs() > 0 && x.is_none() && !free {
+                    let max = self.max_x(who, &cost);
+                    self.pending = Some(Pending {
+                        who,
+                        ask: Ask::ChooseX {
+                            max,
+                            then: Box::new(then),
+                        },
+                    });
+                    return;
+                }
+                if self.rules(card).sac_to_cast && pick.is_none() {
+                    let legal = self.extra_options(who, None, Extra::SacAnother);
+                    if legal.is_empty() {
+                        return;
+                    }
+                    self.pending = Some(Pending {
+                        who,
+                        ask: Ask::CostPick {
+                            legal,
+                            then: Box::new(then),
+                        },
+                    });
+                    return;
+                }
+                let spec = if overload {
+                    None
+                } else {
+                    self.rules(card).modes.get(mode).and_then(|m| m.target)
+                };
+                self.ask_targets(who, spec, None, then);
+            }
+            Then::Activate { perm, n, pick, .. } => {
+                let Some(c) = self.perm(perm).and_then(|p| p.card) else {
+                    return;
+                };
+                let a = self.rules(c).activated[n].clone();
+                let needs_pick = matches!(
+                    a.extra,
+                    Extra::SacAnother
+                        | Extra::SacNontoken
+                        | Extra::Discard
+                        | Extra::DiscardCreature
+                        | Extra::DiscardPair
+                );
+                if needs_pick && pick.is_none() {
+                    let legal = self.extra_options(who, Some(perm), a.extra);
+                    if legal.is_empty() {
+                        return;
+                    }
+                    self.pending = Some(Pending {
+                        who,
+                        ask: Ask::CostPick {
+                            legal,
+                            then: Box::new(then),
+                        },
+                    });
+                    return;
+                }
+                self.ask_targets(who, a.ability.target, Some(perm), then);
+            }
+            other => self.after_targets(who, other, Vec::new()),
+        }
+    }
+
     fn ask_targets(&mut self, who: usize, spec: Option<Tgt>, source: Option<u32>, then: Then) {
         let Some(spec) = spec else {
             self.after_targets(who, then, Vec::new());
@@ -2083,13 +2919,19 @@ impl Duel {
         };
         let legal = self.legal_targets(who, &spec, source);
         let (min, max) = Duel::spec_bounds(&spec);
-        let max = max.min(legal.len());
-        if legal.len() < min {
+        let max = if matches!(spec, Tgt::Twice(_)) {
+            max
+        } else {
+            max.min(legal.len())
+        };
+        if legal.len() < min.min(if matches!(spec, Tgt::Twice(_)) { 1 } else { min })
+            || legal.is_empty() && min > 0
+        {
             // nothing to target: a trigger is removed; a spell or ability is not begun
             return;
         }
         // a land target that cannot matter is picked for the player (Street Sweeper)
-        if matches!(spec, Tgt::One(f) if f.land) {
+        if matches!(spec, Tgt::One(f) if f.land && !matches!(then, Then::Cast { .. })) {
             let t = vec![legal[0]];
             self.after_targets(who, then, t);
             return;
@@ -2114,8 +2956,21 @@ impl Duel {
                 card,
                 mode,
                 overload,
-            } => self.cast(who, hand, card, mode, overload, targets),
-            Then::Activate { perm, n } => self.activate(who, perm, n, targets),
+                x,
+                pick,
+                free,
+            } => self.cast(
+                who,
+                hand,
+                card,
+                mode,
+                overload,
+                x.unwrap_or(0),
+                pick,
+                free,
+                targets,
+            ),
+            Then::Activate { perm, n, x, pick } => self.activate(who, perm, n, x, pick, targets),
             Then::Scavenge { grave, card } => {
                 let Some(cost) = self.scavenge_cost(who, card) else {
                     return;
@@ -2156,6 +3011,11 @@ impl Duel {
             }
             Then::Trigger(t) => {
                 let id = self.id();
+                let targets = if targets.is_empty() {
+                    t.fixed.clone()
+                } else {
+                    targets
+                };
                 self.stack.push(Item {
                     id,
                     ctrl: t.ctrl,
@@ -2174,6 +3034,7 @@ impl Duel {
         }
     }
 
+    #[allow(clippy::too_many_arguments)]
     fn cast(
         &mut self,
         who: usize,
@@ -2181,16 +3042,26 @@ impl Duel {
         card: usize,
         mode: usize,
         overload: bool,
+        x: i32,
+        pick: Option<Target>,
+        free: bool,
         targets: Vec<Target>,
     ) {
-        if self.s[who].hand.get(hand) != Some(&card) {
+        if !free && self.s[who].hand.get(hand) != Some(&card) {
             return;
         }
-        let cost = self.cast_cost(who, card, overload);
-        if !self.pay(who, &cost, None) {
-            return;
+        if !free {
+            let cost = self.cast_cost(who, card, overload).with_x(x);
+            if !self.pay(who, &cost, None) {
+                return;
+            }
         }
-        self.s[who].hand.remove(hand);
+        if let Some(Target::Perm(id)) = pick {
+            self.sacrifice(id);
+        }
+        if !free {
+            self.s[who].hand.remove(hand);
+        }
         let c = self.card(card).clone();
         let ability = if c.rules.modes.is_empty() {
             Ability {
@@ -2208,11 +3079,10 @@ impl Duel {
             ability,
             targets: targets.clone(),
             each: overload,
-            x: 0,
+            x,
             name: c.name.clone(),
             tctrl: Vec::new(),
         });
-        let key = if overload { "log.cast_overload" } else { "log.cast" };
         let focus: Vec<u32> = targets
             .iter()
             .filter_map(|t| match t {
@@ -2224,16 +3094,21 @@ impl Duel {
         if let Some(t) = targets.first() {
             args.push(("target", self.target_name(t)));
         }
-        let key = if !targets.is_empty() && !overload {
+        let key = if free {
+            "log.cast_free"
+        } else if overload {
+            "log.cast_overload"
+        } else if !targets.is_empty() {
             "log.cast_at"
         } else {
-            key
+            "log.cast"
         };
         self.log(Ev::Cast, who as u8, key, args, focus);
         if c.is(ty::CREATURE) {
             self.s[who].creatures_cast += 1;
         }
         self.cast_triggers(who, &c);
+        self.played_name(who, &c.name);
         self.passes = 0;
         self.priority = who;
     }
@@ -2249,6 +3124,7 @@ impl Duel {
                 .map(|x| x.name.clone())
                 .unwrap_or_default(),
             Target::Grave(_, c) => self.card(*c).name.clone(),
+            Target::Hand(_) => String::new(),
         }
     }
 
@@ -2256,36 +3132,36 @@ impl Duel {
         let multi = c.multicoloured();
         let spell = c.is_spell();
         let mut trigs = Vec::new();
+        let ab = |target: Option<Tgt>, effects: Vec<Eff>| Ability { target, effects };
         for p in self.perms.iter().filter(|p| p.ctrl == who) {
             let Some(pc) = p.card else { continue };
             match self.rules(pc).on_cast {
-                Some(OnCast::SpellBurn) if spell => trigs.push(self.trig_of(
-                    p,
-                    Ability {
-                        target: None,
-                        effects: vec![Eff::DamageEachOpponent(2)],
-                    },
-                    0,
-                )),
+                Some(OnCast::SpellBurn) if spell => {
+                    trigs.push(self.trig_of(p, ab(None, vec![Eff::DamageEachOpponent(2)]), 0))
+                }
                 Some(OnCast::MulticolourBurn) if multi => trigs.push(self.trig_of(
                     p,
-                    Ability {
-                        target: Some(Tgt::Any(crate::rules::creatures(Who::Any))),
-                        effects: vec![Eff::Damage(2)],
-                    },
+                    ab(
+                        Some(Tgt::Any(crate::rules::creatures(Who::Any))),
+                        vec![Eff::Damage(2)],
+                    ),
                     0,
                 )),
                 Some(OnCast::MulticolourUntap) if multi => {
-                    let mut t = self.trig_of(
-                        p,
-                        Ability {
-                            target: None,
-                            effects: vec![Eff::Untap],
-                        },
-                        0,
-                    );
+                    let mut t = self.trig_of(p, ab(None, vec![Eff::Untap]), 0);
                     t.x = p.id as i32;
                     trigs.push(t)
+                }
+                Some(OnCast::SpellGrow) if spell => {
+                    let mut t = self.trig_of(p, ab(None, vec![Eff::PumpSelf(1, 1), Eff::Untap]), 0);
+                    t.x = p.id as i32;
+                    trigs.push(t)
+                }
+                Some(OnCast::Tablet) => {
+                    let n = mana::count_colours(c.colours & p.chosen_colours) as i32;
+                    if n > 0 {
+                        trigs.push(self.trig_of(p, ab(None, vec![Eff::Gain(n)]), 0));
+                    }
                 }
                 _ => {}
             }
@@ -2295,18 +3171,24 @@ impl Duel {
                 ctrl: who,
                 perm: 0,
                 card: None,
-                ability: Ability {
-                    target: None,
-                    effects: vec![Eff::DamageEachOpponent(1)],
-                },
+                ability: ab(None, vec![Eff::DamageEachOpponent(1)]),
                 x: 0,
                 name: self.side_name(who),
+                fixed: Vec::new(),
             });
         }
         self.triggers.extend(trigs);
     }
 
-    fn activate(&mut self, who: usize, perm: u32, n: usize, targets: Vec<Target>) {
+    fn activate(
+        &mut self,
+        who: usize,
+        perm: u32,
+        n: usize,
+        x: Option<i32>,
+        pick: Option<Target>,
+        targets: Vec<Target>,
+    ) {
         let Some(p) = self.perm(perm).cloned() else { return };
         let Some(c) = p.card else { return };
         let a = self.rules(c).activated[n].clone();
@@ -2316,8 +3198,20 @@ impl Duel {
         }
         if a.tap {
             self.set(perm, |q| q.tapped = true);
+            self.tapped_for_mana(perm);
+        }
+        if let Some(l) = a.loyalty {
+            self.set(perm, |q| {
+                q.loyalty += l;
+                q.used = true;
+            });
+        } else if a.once {
+            self.set(perm, |q| q.used = true);
         }
         let name = self.perm_name(&p);
+        // what the ability counts: the source's power, or what paid its cost
+        let mut x = x.unwrap_or(self.power(&p));
+        x = self.pay_extra(who, &p, a.extra, pick).unwrap_or(x);
         if a.sac {
             self.sacrifice(perm);
         }
@@ -2329,7 +3223,7 @@ impl Duel {
             ability: a.ability.clone(),
             targets: targets.clone(),
             each: false,
-            x: 0,
+            x,
             name: name.clone(),
             tctrl: Vec::new(),
         });
@@ -2339,7 +3233,22 @@ impl Duel {
                 focus.push(*x);
             }
         }
-        self.log(Ev::Ability, who as u8, "log.ability", vec![("card", name)], focus);
+        let key = match a.loyalty {
+            Some(l) if l >= 0 => "log.loyalty_up",
+            Some(_) => "log.loyalty_down",
+            None => "log.ability",
+        };
+        let change = a
+            .loyalty
+            .map(|l| if l >= 0 { format!("+{l}") } else { l.to_string() })
+            .unwrap_or_default();
+        self.log(
+            Ev::Ability,
+            who as u8,
+            key,
+            vec![("card", name), ("n", change)],
+            focus,
+        );
         self.passes = 0;
         self.priority = who;
     }
@@ -2348,14 +3257,14 @@ impl Duel {
         let spec = t.ability.target;
         let who = t.ctrl;
         let source = if t.perm > 0 { Some(t.perm) } else { None };
+        if !t.fixed.is_empty() {
+            let fixed = t.fixed.clone();
+            self.after_targets(who, Then::Trigger(t), fixed);
+            return;
+        }
         match spec {
             Some(s) => {
-                let legal = self.legal_targets(who, &s, source);
-                let (min, _) = Duel::spec_bounds(&s);
-                if legal.is_empty() && min > 0 {
-                    return;
-                }
-                if legal.is_empty() {
+                if self.legal_targets(who, &s, source).is_empty() {
                     return;
                 }
                 self.ask_targets(who, Some(s), source, Then::Trigger(t));
@@ -2397,6 +3306,16 @@ impl Duel {
             }
         }
         if item.each {
+            // Counterflux overloaded: each spell you don't control
+            if let Some(Tgt::Spell(kind)) = item.ability.target {
+                let ctrl = item.ctrl;
+                item.targets = self
+                    .stack
+                    .iter()
+                    .filter(|i| self.spell_fits(ctrl, kind, i))
+                    .map(|i| Target::Item(i.id))
+                    .collect();
+            }
             let filter = match item.ability.target {
                 Some(Tgt::One(f)) | Some(Tgt::UpTo(_, f)) | Some(Tgt::Any(f)) => Some(f),
                 _ => None,
@@ -2422,6 +3341,7 @@ impl Duel {
                     .map(|x| x.ctrl)
                     .unwrap_or(item.ctrl),
                 Target::Grave(o, _) => *o,
+                Target::Hand(_) => item.ctrl,
             })
             .collect();
         match item.src {
@@ -2429,6 +3349,10 @@ impl Duel {
                 // a permanent spell enters the battlefield
                 let ctrl = item.ctrl;
                 let id = self.make_perm(ctrl, card);
+                if self.rules(card).x_counters {
+                    let x = item.x;
+                    self.set(id, |p| p.charge = x);
+                }
                 if self.rules(card).aura.is_some() {
                     match item.targets.first() {
                         Some(Target::Perm(host)) if self.perm(*host).is_some() => {
@@ -2463,6 +3387,7 @@ impl Duel {
     fn entering(&mut self, ctrl: usize, id: u32) {
         let card = self.perm(id).and_then(|p| p.card);
         let Some(c) = card else { return };
+        self.as_it_enters(ctrl, id, c);
         if self.card(c).is(ty::CREATURE)
             && self.s[ctrl].perks & perk::HASTE_FIRST != 0
             && self.s[ctrl].creatures_cast == 1
@@ -2495,12 +3420,17 @@ impl Duel {
             let t = self.trig_of(&p, ab, 0);
             self.triggers.push(t);
         }
+        self.ally_entered(&p);
     }
 
     fn finish_spell(&mut self, item: &Item) {
         // a spell's card goes to the graveyard; a permanent spell that could not enter does too
         if let Source::Spell { card, .. } = item.src {
-            self.put_in_grave(item.ctrl, card);
+            if self.rules(card).exile_after && self.card(card).is_spell() {
+                self.s[item.ctrl].exile.push(card);
+            } else {
+                self.put_in_grave(item.ctrl, card);
+            }
         }
     }
 
@@ -2509,6 +3439,7 @@ impl Duel {
             Resume::Effects { item, next } => self.run_effects(item, next),
             Resume::Enter { perm } => self.enter_triggers(perm),
             Resume::Cleanup => self.cleanup(),
+            Resume::Draw { who } => self.draw(who, 1),
         }
     }
 
@@ -2634,30 +3565,20 @@ impl Duel {
                 }
             }
             Eff::Counters(n) => {
-                for id in perm_targets {
-                    self.set(id, |p| p.counters += *n);
-                    let name = self.name_of(id);
-                    self.log(
-                        Ev::Ability,
-                        ctrl as u8,
-                        "log.counters",
-                        vec![("card", name), ("n", n.to_string())],
-                        vec![id],
-                    );
+                // with no target, the source (Gobbling Ooze, Lotleth Troll, Nivmagus Elemental)
+                let ids = if perm_targets.is_empty() && item.ability.target.is_none() {
+                    src.into_iter().collect()
+                } else {
+                    perm_targets
+                };
+                for id in ids {
+                    self.add_counters(id, *n);
                 }
             }
             Eff::CountersFromDied => {
                 let n = item.x;
                 for id in perm_targets {
-                    self.set(id, |p| p.counters += n);
-                    let name = self.name_of(id);
-                    self.log(
-                        Ev::Ability,
-                        ctrl as u8,
-                        "log.counters",
-                        vec![("card", name), ("n", n.to_string())],
-                        vec![id],
-                    );
+                    self.add_counters(id, n);
                 }
             }
             Eff::Chorus => {
@@ -2690,13 +3611,13 @@ impl Duel {
             Eff::TargetDiscards(n) => {
                 for t in &item.targets {
                     if let Target::Player(pl) = t {
-                        return self.discard(*pl, *n as usize);
+                        return self.discard_or_ask(*pl, *n as usize, ctrl);
                     }
                 }
             }
             Eff::ItsControllerDiscards(n) => {
                 if let Some(&pl) = item.tctrl.first() {
-                    return self.discard(pl, *n as usize);
+                    return self.discard_or_ask(pl, *n as usize, ctrl);
                 }
             }
             Eff::Counter => {
@@ -2895,6 +3816,7 @@ impl Duel {
                     }
                 }
             }
+            other => return self.effect_more(item, other),
         }
         false
     }
@@ -2918,7 +3840,7 @@ impl Duel {
     }
 
     fn gain(&mut self, side: usize, n: i32) {
-        if n <= 0 {
+        if n <= 0 || self.any_static(Static::NoLifeGain) {
             return;
         }
         self.s[side].life += n;
@@ -2935,11 +3857,30 @@ impl Duel {
         let best = self
             .perms
             .iter()
-            .filter(|p| p.ctrl == side && p.token.is_some())
+            .filter(|p| p.ctrl == side && p.token.is_some() && self.is_creature(p))
             .max_by_key(|p| (self.base_pt(p).0 + self.base_pt(p).1, p.id))
-            .and_then(|p| p.token);
-        if let Some(t) = best {
-            self.make_token(side, t, 1);
+            .cloned();
+        match best {
+            Some(b) if matches!(b.token, Some(Token::Copy) | Some(Token::Ooze)) => {
+                let p = self.blank(side, b.card, b.token);
+                let id = p.id;
+                self.perms.push(p);
+                self.set(id, |q| q.size = b.size);
+                let name = self.perm_name(&b);
+                self.log(
+                    Ev::Token,
+                    side as u8,
+                    "log.token",
+                    vec![("side", self.side_name(side)), ("token", name)],
+                    vec![id],
+                );
+            }
+            Some(b) => {
+                if let Some(t) = b.token {
+                    self.make_token(side, t, 1);
+                }
+            }
+            None => {}
         }
     }
 
@@ -2948,6 +3889,7 @@ impl Duel {
         if n == 0 || self.s[who].hand.is_empty() {
             return false;
         }
+        self.forcer = who;
         if self.human[who] {
             self.pending = Some(Pending {
                 who,
@@ -3015,8 +3957,16 @@ impl Duel {
 
     /// A card goes to its owner's graveyard, or to exile under Dryad Militant.
     fn put_in_grave(&mut self, owner: usize, card: usize) {
-        if self.card(card).is_spell() && self.any_static(Static::SpellsToExile) {
+        if self.any_static(Static::NoGraveyards)
+            || (self.card(card).is_spell() && self.any_static(Static::SpellsToExile))
+        {
             self.s[owner].exile.push(card);
+        } else if self.rules(card).statics.contains(&Static::ShuffleBack) {
+            // Worldspine Wurm: shuffled into its owner's library instead
+            self.s[owner].library.push(card);
+            let mut lib = std::mem::take(&mut self.s[owner].library);
+            self.shuffle(&mut lib);
+            self.s[owner].library = lib;
         } else {
             self.s[owner].grave.push(card);
         }
@@ -3027,6 +3977,33 @@ impl Duel {
     /// `by` is the side whose spell or creature deals it.
     fn damage_perm(&mut self, by: usize, src: Option<u32>, src_name: &str, id: u32, n: i32) {
         if n <= 0 || self.perm(id).is_none() {
+            return;
+        }
+        // Palisade Giant takes the damage to its controller's other permanents
+        let owner = self.perm(id).map(|p| p.ctrl).unwrap_or(by);
+        let id = self.palisade(owner, Some(id)).unwrap_or(id);
+        if let Some(s) = src {
+            self.set(s, |p| p.dealt = true);
+        }
+        if self
+            .perm(id)
+            .map(|p| self.is_walker(p) && !self.is_creature(p))
+            .unwrap_or(false)
+        {
+            self.set(id, |p| p.loyalty -= n);
+            let name = self.name_of(id);
+            self.log(
+                Ev::Hit,
+                by as u8,
+                "log.damage",
+                vec![
+                    ("source", src_name.to_string()),
+                    ("n", n.to_string()),
+                    ("target", name),
+                ],
+                src.into_iter().chain([id]).collect(),
+            );
+            self.lifelink(src, n);
             return;
         }
         let deathtouch = src
@@ -3057,13 +4034,24 @@ impl Duel {
             focus,
         );
         self.lifelink(src, n);
+        self.was_damaged(id);
     }
 
     fn damage_player(&mut self, src: Option<u32>, src_name: &str, ctrl: usize, side: usize, n: i32) {
+        let n = self.prevented(side, n, self.in_combat_damage);
         if n <= 0 {
             return;
         }
+        if let Some(giant) = self.palisade(side, None) {
+            self.damage_perm(ctrl, src, src_name, giant, n);
+            return;
+        }
+        if let Some(s) = src {
+            self.set(s, |p| p.dealt = true);
+        }
         self.s[side].life -= n;
+        self.s[side].lost += n;
+        self.side_damaged(side);
         let name = if src_name.is_empty() {
             self.side_name(ctrl)
         } else {
@@ -3171,6 +4159,9 @@ impl Duel {
                 let t = self.trig_of(&p, ab, 0);
                 self.triggers.push(t);
             }
+        }
+        if creature {
+            self.enemy_died(&p);
         }
         if creature {
             let watchers: Vec<Perm> = self
@@ -3340,6 +4331,19 @@ impl Duel {
         let ids: Vec<u32> = self.perms.iter().map(|p| p.id).collect();
         for id in ids {
             let Some(p) = self.perm(id).cloned() else { continue };
+            if self.is_walker(&p) && !self.is_creature(&p) && p.loyalty <= 0 {
+                let name = self.perm_name(&p);
+                self.log(
+                    Ev::Dies,
+                    p.ctrl as u8,
+                    "log.walker_falls",
+                    vec![("card", name)],
+                    vec![id],
+                );
+                self.dies(id);
+                changed = true;
+                continue;
+            }
             if self.is_creature(&p) {
                 let t = self.toughness(&p);
                 if t <= 0 {
@@ -3435,13 +4439,14 @@ impl Duel {
             vec![("side", self.side_name(a)), ("cards", names.join(", "))],
             ids.clone(),
         );
-        for id in ids {
+        for &id in &ids {
             let Some(p) = self.perm(id).cloned() else { continue };
             if let Some(ab) = p.card.and_then(|c| self.rules(c).attacks.clone()) {
                 let t = self.trig_of(&p, ab, 0);
                 self.triggers.push(t);
             }
         }
+        self.attacks_declared(&ids);
     }
 
     fn declare_blockers(&mut self, pairs: Vec<(u32, u32)>) {
@@ -3457,6 +4462,7 @@ impl Duel {
                 vec![b, at],
             );
         }
+        self.lure_blocks();
     }
 
     fn strikes_now(&self, p: &Perm, first: bool) -> bool {
@@ -3545,24 +4551,77 @@ impl Duel {
                 self.set(s, |p| p.dealt_first = true);
             }
         }
+        self.in_combat_damage = true;
+        let mut warded: Vec<u32> = Vec::new();
         for (s, t, n) in hits {
             let sname = self.name_of(s);
-            match t {
-                Some(t) => {
-                    let by = self.perm(s).map(|p| p.ctrl).unwrap_or(self.active);
-                    self.damage_perm(by, Some(s), &sname, t, n)
+            // an attacker aimed at a planeswalker strikes it, not the player
+            let aim = self
+                .perm(s)
+                .and_then(|p| p.aim)
+                .filter(|w| self.perm(*w).is_some());
+            let by = self.perm(s).map(|p| p.ctrl).unwrap_or(self.active);
+            match (t, aim) {
+                (Some(t), _) => self.damage_perm(by, Some(s), &sname, t, n),
+                (None, Some(w)) => {
+                    if self.perm(w).map(|p| p.ward).unwrap_or(false) {
+                        warded.push(s);
+                    }
+                    self.damage_perm(by, Some(s), &sname, w, n);
                 }
-                None => {
-                    let ctrl = self.perm(s).map(|p| p.ctrl).unwrap_or(self.active);
-                    self.damage_player(Some(s), &sname, ctrl, defender, n);
-                    if let Some(p) = self.perm(s).cloned() {
-                        if let Some(ab) = p.card.and_then(|c| self.rules(c).hits.clone()) {
-                            let tr = self.trig_of(&p, ab, 0);
-                            self.triggers.push(tr);
-                        }
+                (None, None) => {
+                    let before = self.s[defender].life;
+                    self.damage_player(Some(s), &sname, by, defender, n);
+                    let dealt = before - self.s[defender].life;
+                    if dealt <= 0 {
+                        continue;
+                    }
+                    let Some(p) = self.perm(s).cloned() else { continue };
+                    if p.token == Some(Token::Assassin) {
+                        self.s[defender].life = 0;
+                        self.log(
+                            Ev::End,
+                            by as u8,
+                            "log.assassin",
+                            vec![("side", self.side_name(defender))],
+                            vec![s],
+                        );
+                    }
+                    if let Some(ab) = p.card.and_then(|c| self.rules(c).hits.clone()) {
+                        let tr = self.trig_of(&p, ab, dealt);
+                        self.triggers.push(tr);
+                    }
+                    // Necropolis Regent: that many +1/+1 counters on the creature that hit
+                    let regents: Vec<Perm> = self
+                        .perms
+                        .iter()
+                        .filter(|w| {
+                            w.ctrl == by
+                                && w.card
+                                    .map(|c| self.rules(c).when.iter().any(|(x, _)| *x == When::AllyHits))
+                                    .unwrap_or(false)
+                        })
+                        .cloned()
+                        .collect();
+                    for r in regents {
+                        let mut tr = self.trig_of(
+                            &r,
+                            Ability {
+                                target: None,
+                                effects: vec![Eff::CountersX],
+                            },
+                            dealt,
+                        );
+                        tr.fixed = vec![Target::Perm(s)];
+                        self.triggers.push(tr);
                     }
                 }
             }
+        }
+        self.in_combat_damage = false;
+        // Vraska's ward: a creature that dealt her combat damage is destroyed
+        for s in warded {
+            self.destroy(s);
         }
     }
 
@@ -3585,6 +4644,11 @@ impl Duel {
             p.animated = false;
             p.regen = 0;
             p.exile_if_dies = false;
+            p.dealt = false;
+            // Traitorous Instinct's loan ends
+            if let Some(back) = p.borrowed.take() {
+                p.ctrl = back;
+            }
         }
         if self.state_based() {
             // a toughness boost ending can kill; triggers then get their turn next turn
@@ -3822,6 +4886,84 @@ mod tests {
         let id = d.make_perm(side, c);
         d.set(id, |p| p.fresh = false);
         id
+    }
+
+    /// What the computer does when it has priority at its own main phase.
+    fn ai_move(d: &mut Duel, who: usize) -> Action {
+        d.active = who;
+        d.step = Step::Main1;
+        d.s[who].pile.clear();
+        d.pending = Some(Pending {
+            who,
+            ask: Ask::Priority,
+        });
+        match crate::duel_ai::answer(d, who) {
+            Answer::Act(a) => a,
+            other => panic!("expected an action, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn swampwalk_counts_any_land_with_the_swamp_type() {
+        let c = cards();
+        let mut d = table(&c);
+        let shambler = put(&mut d, P, "Sewer Shambler"); // swampwalk
+        d.set(shambler, |p| p.attacking = true);
+        let blocker = put(&mut d, F, "Cobblebrute");
+        let b = d.perm(blocker).unwrap().clone();
+        assert!(d.can_block(&b, shambler), "no Swamp yet: it can be blocked");
+        put(&mut d, F, "Overgrown Tomb"); // a Swamp Forest, not named Swamp
+        assert!(
+            !d.can_block(&b, shambler),
+            "a land with the Swamp type lets it walk"
+        );
+    }
+
+    #[test]
+    fn the_computer_draws_with_an_ability_at_the_end_of_your_turn_not_its_own() {
+        let c = cards();
+        let mut d = table(&c);
+        let chem = put(&mut d, F, "Mercurial Chemister"); // {U}, tap: draw two
+        put(&mut d, F, "Island");
+        // its own main phase: it keeps the Chemister back
+        assert_ne!(ai_move(&mut d, F), Action::Activate { perm: chem, n: 0 });
+        // your end step: it draws
+        d.active = P;
+        d.step = Step::End;
+        d.pending = Some(Pending {
+            who: F,
+            ask: Ask::Priority,
+        });
+        assert_eq!(
+            crate::duel_ai::answer(&d, F),
+            Answer::Act(Action::Activate { perm: chem, n: 0 })
+        );
+    }
+
+    #[test]
+    fn the_computer_spends_a_planeswalkers_loyalty() {
+        let c = cards();
+        // Vraska at 5 facing a creature: -3 destroys it (ability 1), leaving her at 2
+        let mut d = table(&c);
+        let v = put(&mut d, F, "Vraska the Unseen");
+        d.set(v, |p| p.loyalty = 5);
+        put(&mut d, P, "Cobblebrute");
+        assert_eq!(ai_move(&mut d, F), Action::Activate { perm: v, n: 1 });
+        // nothing to destroy: the +1 (ability 0)
+        let mut d = table(&c);
+        let v = put(&mut d, F, "Vraska the Unseen");
+        d.set(v, |p| p.loyalty = 5);
+        assert_eq!(ai_move(&mut d, F), Action::Activate { perm: v, n: 0 });
+        // Jace at 8 can afford his -8 ultimate (ability 2) and takes it
+        let mut d = table(&c);
+        let j = put(&mut d, F, "Jace, Architect of Thought");
+        d.set(j, |p| p.loyalty = 8);
+        assert_eq!(ai_move(&mut d, F), Action::Activate { perm: j, n: 2 });
+        // Jace at 2: his -2 would kill him, so the +1
+        let mut d = table(&c);
+        let j = put(&mut d, F, "Jace, Architect of Thought");
+        d.set(j, |p| p.loyalty = 2);
+        assert_eq!(ai_move(&mut d, F), Action::Activate { perm: j, n: 0 });
     }
 
     #[test]

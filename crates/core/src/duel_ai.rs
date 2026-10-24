@@ -7,7 +7,7 @@
 //! The same habits play the player's side in the balance tests.
 
 use crate::content::ty;
-use crate::duel::{Action, Answer, Ask, Duel, Perm, Source, Step, Target, Then, P};
+use crate::duel::{Action, Answer, Ask, Duel, May, Perm, Source, Step, Target, Then, P};
 use crate::rules::{kw, Aura, Eff, Tgt};
 
 fn other(side: usize) -> usize {
@@ -22,13 +22,34 @@ pub fn answer(d: &Duel, who: usize) -> Answer {
     match &p.ask {
         Ask::Priority => Answer::Act(priority(d, who)),
         Ask::Targets {
+            spec,
             legal,
             min,
             max,
             then,
             ..
-        } => Answer::Targets(choose_targets(d, who, then, legal, *min, *max)),
-        Ask::Attackers { legal, .. } => Answer::Attack(attackers(d, who, legal)),
+        } => Answer::Targets(match spec {
+            Tgt::Two(a, b) => two_targets(d, who, then, *a, *b),
+            Tgt::Twice(_) => {
+                let one = choose_targets(d, who, then, legal, 1, 1);
+                one.iter().chain(one.iter()).copied().collect()
+            }
+            _ => choose_targets(d, who, then, legal, *min, *max),
+        }),
+        Ask::Attackers { legal, chosen } => {
+            let mut ids = attackers(d, who, legal);
+            for id in chosen {
+                if !ids.contains(id) {
+                    ids.push(*id);
+                }
+            }
+            let aims = walker_aims(d, who, &ids);
+            if aims.is_empty() {
+                Answer::Attack(ids)
+            } else {
+                Answer::AttackAt(ids, aims)
+            }
+        }
         Ask::Blockers { legal, attackers, .. } => Answer::Block(blockers(d, who, legal, attackers)),
         Ask::Unleash { .. } => Answer::Yes(unleash(d, who)),
         Ask::Discard { .. } => Answer::Pick(Some(discard_choice(d, who))),
@@ -51,7 +72,93 @@ pub fn answer(d: &Duel, who: usize) -> Answer {
             Answer::Pick(i)
         }
         Ask::Pay { .. } => Answer::Yes(true),
+        // X: as much as there is mana for
+        Ask::ChooseX { max, .. } => Answer::Pick(Some((*max).max(0) as usize)),
+        Ask::CostPick { legal, .. } => {
+            let worth = |t: &Target| match t {
+                Target::Perm(id) => d.value_of(*id),
+                Target::Hand(i) => d.s[who]
+                    .hand
+                    .get(*i)
+                    .map(|&c| d.card(c).value as i32 * 3)
+                    .unwrap_or(0),
+                _ => 0,
+            };
+            let i = (0..legal.len())
+                .min_by_key(|&i| (worth(&legal[i]), i))
+                .unwrap_or(0);
+            Answer::Pick(Some(i))
+        }
+        Ask::May { what } => Answer::Yes(may(d, who, *what)),
+        Ask::Name { options, .. } => {
+            let n = name_choice(d, who, options);
+            Answer::Pick(options.iter().position(|o| *o == n).or(Some(0)))
+        }
+        Ask::Piles { a, b } => Answer::Pick(Some(if pile_worth(d, a) >= pile_worth(d, b) {
+            0
+        } else {
+            1
+        })),
+        Ask::Offer { legal, demon } => {
+            let pick = demon_offer(d, who, legal, *demon);
+            Answer::Pick(pick.and_then(|id| legal.iter().position(|&l| l == id)))
+        }
     }
+}
+
+/// A "you may" the computer answers.
+pub fn may(d: &Duel, who: usize, what: May) -> bool {
+    match what {
+        May::Shock(_) => d.s[who].life > 8,
+        May::Promenade(_) | May::Vermin(_) | May::Tithe(..) => true,
+        May::Rummage => !d.s[who].hand.is_empty(),
+    }
+}
+
+/// Whether the computer pays an "unless pays" cost it can pay.
+pub fn pays(_d: &Duel, _who: usize) -> bool {
+    true
+}
+
+/// The card name to choose: the opponent's most valuable it has seen.
+pub fn name_choice(d: &Duel, _who: usize, options: &[String]) -> String {
+    options
+        .iter()
+        .max_by_key(|n| {
+            d.cards
+                .iter()
+                .find(|c| &c.name == *n)
+                .map(|c| c.value)
+                .unwrap_or(0)
+        })
+        .cloned()
+        .unwrap_or_default()
+}
+
+/// How an opponent splits Jace's three cards: the best alone, the rest together.
+pub fn split_piles(d: &Duel, top: &[usize]) -> (Vec<usize>, Vec<usize>) {
+    let Some(best) = (0..top.len()).max_by_key(|&i| (d.card(top[i]).value, i)) else {
+        return (Vec::new(), Vec::new());
+    };
+    let a = vec![top[best]];
+    let b = top
+        .iter()
+        .enumerate()
+        .filter(|(i, _)| *i != best)
+        .map(|(_, &c)| c)
+        .collect();
+    (a, b)
+}
+
+pub fn pile_worth(d: &Duel, pile: &[usize]) -> i32 {
+    pile.iter().map(|&c| d.card(c).value as i32 + 2).sum()
+}
+
+/// Whether to feed Desecration Demon a creature: a token or a small one, to keep it from attacking.
+pub fn demon_offer(d: &Duel, _who: usize, legal: &[u32], demon: u32) -> Option<u32> {
+    let cheapest = legal.iter().copied().min_by_key(|&id| (d.value_of(id), id))?;
+    let tapped = d.perm(demon).map(|p| p.tapped).unwrap_or(true);
+    (!tapped && d.value_of(cheapest) < 8).then_some(cheapest)
 }
 
 /// The card to discard: the one worth least.
@@ -80,11 +187,29 @@ fn unleash(d: &Duel, who: usize) -> bool {
 
 /// How much `who` gains from an effect landing on `t`: above 0 is good.
 fn target_score(d: &Duel, who: usize, effects: &[Eff], aura: Option<Aura>, t: &Target) -> i32 {
-    let harmful = aura.map(|a| a != Aura::EtherealArmor).unwrap_or(false)
+    let helping = matches!(
+        aura,
+        Some(
+            Aura::EtherealArmor
+                | Aura::KnightlyValor
+                | Aura::DeviantGlee
+                | Aura::PursuitOfFlight
+                | Aura::RighteousAuthority
+                | Aura::Blockade
+                | Aura::Connections
+                | Aura::Racecourse
+                | Aura::Burgeoning
+        )
+    );
+    let harmful = (aura.is_some() && !helping)
         || effects.iter().any(|e| {
             matches!(
                 e,
                 Eff::Damage(_)
+                    | Eff::DamageX
+                    | Eff::DamageSourcePower
+                    | Eff::DamageDiscarded
+                    | Eff::DamageSameName(_)
                     | Eff::Destroy
                     | Eff::Exile
                     | Eff::Bounce
@@ -92,19 +217,47 @@ fn target_score(d: &Duel, who: usize, effects: &[Eff], aura: Option<Aura>, t: &T
                     | Eff::Tap
                     | Eff::Counter
                     | Eff::CounterUnlessPays(_)
+                    | Eff::CounterUnlessPaysX
+                    | Eff::CounterBacklash
                     | Eff::TargetDiscards(_)
+                    | Eff::TargetDiscardsX
                     | Eff::ExileHeld
                     | Eff::ExileHeldSameName
                     | Eff::ItsControllerDiscards(_)
-            ) || matches!(e, Eff::Pump(p, _, _) if *p < 0)
+                    | Eff::ItsControllerLoses(_)
+                    | Eff::TargetLoses(_)
+                    | Eff::TargetToLibraryTop
+                    | Eff::Mill(_)
+                    | Eff::MillX
+                    | Eff::MillDefenders
+                    | Eff::SpiralMill
+                    | Eff::BorrowUntilEnd
+                    | Eff::Exchange
+                    | Eff::ExileGraveyard
+                    | Eff::MillUntilLand
+            ) || matches!(e, Eff::Pump(p, t, _) if *p < 0 || *t < 0)
         });
+    let x_guess = d.mana_available(who).saturating_sub(1) as i32;
     let damage: i32 = effects
         .iter()
         .map(|e| match e {
-            Eff::Damage(n) => *n,
+            Eff::Damage(n) | Eff::DamageSameName(n) => *n,
+            Eff::DamageX => x_guess,
+            Eff::Pump(_, t, _) if *t < 0 => -*t,
             _ => 0,
         })
         .sum();
+    // copying a spell: one's own is worth copying
+    if effects.contains(&Eff::CopySpell) {
+        if let Target::Item(i) = t {
+            return d
+                .stack
+                .iter()
+                .find(|x| x.id == *i)
+                .map(|it| if it.ctrl == who { 20 } else { -20 })
+                .unwrap_or(0);
+        }
+    }
     match t {
         Target::Perm(id) => {
             let Some(p) = d.perm(*id) else { return 0 };
@@ -172,12 +325,15 @@ fn target_score(d: &Duel, who: usize, effects: &[Eff], aura: Option<Aura>, t: &T
         }
         Target::Grave(owner, c) => {
             let v = d.card(*c).value as i32;
-            if *owner == who {
-                v
-            } else {
-                1
+            let back = effects.contains(&Eff::CardToHand);
+            match (*owner == who, back) {
+                (true, true) => v + 1,
+                (true, false) => -1,
+                (false, false) => v.max(1),
+                (false, true) => -v,
             }
         }
+        Target::Hand(_) => 0,
     }
 }
 
@@ -190,7 +346,7 @@ fn then_effects(d: &Duel, then: &Then) -> (Vec<Eff>, Option<Aura>) {
                 r.aura,
             )
         }
-        Then::Activate { perm, n } => {
+        Then::Activate { perm, n, .. } => {
             let effects = d
                 .perm(*perm)
                 .and_then(|p| p.card)
@@ -207,6 +363,58 @@ fn then_effects(d: &Duel, then: &Then) -> (Vec<Eff>, Option<Aura>) {
         Then::Scavenge { .. } => (vec![Eff::Counters(1)], None),
         Then::Trigger(t) => (t.ability.effects.clone(), None),
     }
+}
+
+/// Rites of Reaping: the best of the first kind for the first effect, the best of the second for the second.
+fn two_targets(
+    d: &Duel,
+    who: usize,
+    then: &Then,
+    a: crate::rules::Filter,
+    b: crate::rules::Filter,
+) -> Vec<Target> {
+    let (effects, _) = then_effects(d, then);
+    let inner = |k: u8| -> Vec<Eff> {
+        effects
+            .iter()
+            .filter_map(|e| match e {
+                Eff::Nth(i, inner) if *i == k => Some((**inner).clone()),
+                _ => None,
+            })
+            .collect()
+    };
+    let la = d.legal_targets(who, &Tgt::One(a), None);
+    let first = ranked(d, who, &inner(0), None, &la, 1, 1);
+    let lb: Vec<Target> = d
+        .legal_targets(who, &Tgt::One(b), None)
+        .into_iter()
+        .filter(|t| !first.contains(t))
+        .collect();
+    let second = ranked(d, who, &inner(1), None, &lb, 1, 1);
+    first.into_iter().chain(second).collect()
+}
+
+/// Which attackers go at the opponent's planeswalkers: the strongest at
+/// the most valuable, while the player is not the better target.
+fn walker_aims(d: &Duel, who: usize, ids: &[u32]) -> Vec<(u32, u32)> {
+    let opp = other(who);
+    let mut walkers: Vec<u32> = d
+        .perms
+        .iter()
+        .filter(|p| p.ctrl == opp && d.is_walker(p))
+        .map(|p| p.id)
+        .collect();
+    if walkers.is_empty() {
+        return Vec::new();
+    }
+    let total: i32 = ids.iter().filter_map(|&id| d.perm(id)).map(|p| d.power(p)).sum();
+    if total >= d.s[opp].life {
+        return Vec::new();
+    }
+    walkers.sort_by_key(|&w| std::cmp::Reverse(d.value_of(w)));
+    let mut by_power: Vec<u32> = ids.to_vec();
+    by_power.sort_by_key(|&id| std::cmp::Reverse(d.perm(id).map(|p| d.power(p)).unwrap_or(0)));
+    by_power.into_iter().zip(walkers).collect()
 }
 
 fn choose_targets(
@@ -449,6 +657,16 @@ fn main_ability(d: &Duel, who: usize, acts: &[Action]) -> Option<Action> {
                         }
                     }
                     Use::SacForToken if d.step == Step::Main2 => return Some(*a),
+                    Use::Loyalty => {
+                        if let Some(l) = loyalty_choice(d, who, acts, perm) {
+                            return Some(l);
+                        }
+                    }
+                    Use::Removal => {
+                        if spec.is_some() && aim_worth(d, who, spec, &effects, None, Some(perm)).is_some() {
+                            return Some(*a);
+                        }
+                    }
                     Use::Ping if d.step == Step::Main2 => {
                         if spec.is_none() || aim_worth(d, who, spec, &effects, None, Some(perm)).is_some() {
                             return Some(*a);
@@ -477,6 +695,40 @@ fn main_ability(d: &Duel, who: usize, acts: &[Action]) -> Option<Action> {
         }
     }
     None
+}
+
+/// Which loyalty ability a planeswalker uses this turn: the ultimate when its
+/// loyalty reaches it; a minus that leaves it alive and has something worth
+/// aiming at (or needs no aim); otherwise the plus.
+fn loyalty_choice(d: &Duel, who: usize, acts: &[Action], perm: u32) -> Option<Action> {
+    let p = d.perm(perm)?;
+    let card = d.card(p.card?);
+    let mut options: Vec<(i32, Action)> = Vec::new();
+    for a in acts {
+        if let Action::Activate { perm: q, n } = *a {
+            if q == perm {
+                if let Some(c) = card.rules.activated.get(n).and_then(|x| x.loyalty) {
+                    options.push((c, *a));
+                }
+            }
+        }
+    }
+    options.sort_by_key(|&(c, _)| c);
+    for &(c, a) in &options {
+        if c >= 0 {
+            continue;
+        }
+        let Action::Activate { n, .. } = a else {
+            continue;
+        };
+        let (effects, spec, _) = ability_effects(d, perm, n);
+        let ultimate = c == options[0].0 && options.len() > 2 && p.loyalty + c >= 0;
+        let worth = spec.is_none() || aim_worth(d, who, spec, &effects, None, Some(perm)).is_some();
+        if ultimate || (p.loyalty + c > 0 && worth) {
+            return Some(a);
+        }
+    }
+    options.iter().rev().find(|&&(c, _)| c >= 0).map(|&(_, a)| a)
 }
 
 /// The damage a creature in combat takes from what it fights.
@@ -702,6 +954,10 @@ fn end_step(d: &Duel, who: usize, acts: &[Action]) -> Option<Action> {
                 if when == Use::Ping
                     && (spec.is_none() || aim_worth(d, who, spec, &effects, None, Some(perm)).is_some())
                 {
+                    return Some(*a);
+                }
+                // draw and dig at the end of the opponent's turn, with mana they no longer threaten
+                if when == Use::Draw {
                     return Some(*a);
                 }
             }

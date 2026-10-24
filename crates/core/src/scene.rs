@@ -432,8 +432,13 @@ pub fn battle_spots<'a>(s: &Session, snap: &'a Snap) -> Vec<(V3, &'a PermSnap)> 
             let z = dir * (ONE * 4 / 10 + row * ONE * 6 / 10);
             out.push((v3(x, 0, z), **p));
         }
-        // enchantments and artifacts: the same in the right corner
-        let cols = if others.len() > 8 { 3 } else { 2 };
+        // enchantments, artifacts and planeswalkers: the same in the right
+        // corner, a column more each time it fills
+        let cols = match others.len() {
+            0..=8 => 2,
+            9..=15 => 3,
+            _ => 4,
+        };
         for (i, p) in others.iter().enumerate() {
             let col = (i % cols) as i32;
             let row = (i / cols) as i32;
@@ -1289,6 +1294,7 @@ mod tests {
             attached: -1,
             counters: 0,
             fresh: false,
+            loyalty: 0,
         };
         let snap = Snap {
             life: [1, 1],

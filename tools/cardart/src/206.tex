@@ -1,0 +1,16 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{c8d8a0}\definecolor{bgD}{HTML}{3a5a2a}\definecolor{tree}{HTML}{4a3a22}\definecolor{leaf}{HTML}{2a4a1e}\definecolor{robe}{HTML}{8aa83a}\definecolor{robeL}{HTML}{c8d87a}
+\definecolor{skin}{HTML}{e8d0b0}\definecolor{hair}{HTML}{6a4a2a}\definecolor{halo}{HTML}{f8fcd8}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\fill[bgD] (0,0) rectangle (6.16,4.52);\shade[inner color=bg,outer color=bgD] (3.0,3.0) circle (3.0);
+\fill[tree,ink] (0,0) -- (0.6,4.52) -- (1.2,4.52) -- (1.0,0) -- cycle;\fill[tree,ink] (5.2,0) -- (5.0,4.52) -- (5.6,4.52) -- (6.0,0) -- cycle;
+\fill[leaf] (0,0) .. controls (1.4,1.0) and (2.0,0.4) .. (3.0,0.6) .. controls (4.0,0.4) and (5.0,1.0) .. (6.16,0.4) -- (6.16,0) -- cycle;
+% the three dryads of Trostani, the tallest in the middle
+\foreach \i in {0,...,7}{\fill[halo] (3.0,4.0) ++({\i*45}:0.6) circle (0.05);}
+\foreach \x/\y/\s in {3.0/1.8/1.2,2.1/1.4/.85,3.9/1.4/.85}{
+ \fill[robe,ink] (\x-0.4*\s,0.4) -- (\x-0.3*\s,\y) .. controls (\x-0.2*\s,\y+0.5*\s) and (\x+0.2*\s,\y+0.5*\s) .. (\x+0.3*\s,\y) -- (\x+0.4*\s,0.4) -- cycle;
+ \fill[robeL,opacity=.7] (\x-0.1*\s,0.5) -- (\x,\y+0.3*\s) -- (\x+0.1*\s,0.5) -- cycle;
+ \fill[skin,ink] (\x,\y+0.75*\s) ellipse ({0.16*\s} and {0.22*\s});
+ \fill[hair,ink] (\x-0.17*\s,\y+0.8*\s) .. controls (\x-0.2*\s,\y+1.1*\s) and (\x+0.2*\s,\y+1.1*\s) .. (\x+0.17*\s,\y+0.8*\s) -- (\x+0.2*\s,\y+0.4*\s) -- (\x+0.1*\s,\y+0.7*\s) -- (\x-0.1*\s,\y+0.7*\s) -- (\x-0.2*\s,\y+0.4*\s) -- cycle;}
+\end{tikzpicture}\end{document}

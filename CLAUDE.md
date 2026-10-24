@@ -45,6 +45,7 @@ From the journal's opening entry (rules MTG-1 to MTG-11) and the person's answer
 - MTG-11. Every decision, visible change, divergence and deploy gets a journal entry.
 - Scope (2026-10-24): the first region; 20 cards of each colour (108 with guild cards, gates and artifacts); a 3D model for every creature; TikZ art and rules for every card.
 - MVP 2 (2026-10-24, T1): a fight is a game of Magic the player plays, with the land pile against screw and flood. The engine is `duel.rs`; the computer player `duel_ai.rs`.
+- T10 (2026-10-24): all of Return to Ravnica (254 cards): rules, a story and TikZ art for each, and a 3D model for each creature, planeswalker, token, enchantment and artifact.
 - No subagents in this project unless the person asks (2026-10-24: "no more subagents, its taking wayy too many tokens").
 
 ## Stopping

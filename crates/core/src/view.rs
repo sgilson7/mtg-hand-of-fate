@@ -400,6 +400,7 @@ fn cost_text(c: &crate::mana::Cost) -> String {
             Sym::Generic(n) => format!("{{{n}}}"),
             Sym::Colour(k) => format!("{{{}}}", mana::letter_of(*k)),
             Sym::Hybrid(a, b) => format!("{{{}/{}}}", mana::letter_of(*a), mana::letter_of(*b)),
+            Sym::X => "{X}".to_string(),
         })
         .collect()
 }
@@ -453,6 +454,10 @@ fn action_label(s: &Session, f: &crate::session::Fight, a: &Action) -> String {
                 &[("card", s.cards[c].name.clone()), ("cost", cost)],
             )
         }
+        Action::GraveAbility { grave, .. } => {
+            let c = d.s[P].grave[grave];
+            s.f("duel.from_grave", &[("card", s.cards[c].name.clone())])
+        }
         Action::Pass => {
             let key = if !d.stack.is_empty() {
                 "duel.pass_resolve"
@@ -482,6 +487,12 @@ fn target_row(s: &Session, f: &crate::session::Fight, t: &Target) -> (String, St
                 Some(p) if d.is_creature(p) => {
                     format!("{}/{} · {whose}", d.power(p), d.toughness(p) - p.damage)
                 }
+                Some(p) if d.is_walker(p) => {
+                    format!(
+                        "{} · {whose}",
+                        s.f("duel.loyalty", &[("n", p.loyalty.to_string())])
+                    )
+                }
                 _ => whose,
             };
             (d.name_of(*id), sub)
@@ -509,6 +520,14 @@ fn target_row(s: &Session, f: &crate::session::Fight, t: &Target) -> (String, St
             } else {
                 "duel.their_grave"
             }),
+        ),
+        Target::Hand(i) => (
+            d.s[P]
+                .hand
+                .get(*i)
+                .map(|&c| s.cards[c].name.clone())
+                .unwrap_or_default(),
+            s.s("duel.in_hand"),
         ),
     }
 }
@@ -655,6 +674,9 @@ fn peek(s: &Session, p: &crate::duel::PermSnap) -> Value {
                 ("toughness", p.toughness.to_string()),
             ],
         ));
+    }
+    if p.loyalty > 0 {
+        lines.push(s.f("duel.loyalty", &[("n", p.loyalty.to_string())]));
     }
     if p.damage > 0 {
         lines.push(s.f("duel.peek_damage", &[("n", p.damage.to_string())]));
@@ -858,7 +880,79 @@ fn controls(s: &Session, f: &crate::session::Fight, ask: Option<&Ask>, acts: &[A
             json!({"id": "controls", "place": "br", "heading": s.f("duel.pay", &[("n", n.to_string())]), "text": s.f("duel.pay_text", &[("card", name), ("n", n.to_string())]),
                 "actions": [action(s.s("duel.pay_yes"), "duel.yes", "", true), action(s.s("duel.pay_no"), "duel.no", "", true)]})
         }
+        Ask::ChooseX { max, .. } => {
+            let list: Vec<Value> = (0..=*max)
+                .map(|x| {
+                    action(
+                        s.f("duel.x_is", &[("n", x.to_string())]),
+                        "duel.pick",
+                        &x.to_string(),
+                        true,
+                    )
+                })
+                .collect();
+            json!({"id": "controls", "place": "br", "heading": s.s("duel.choose_x"), "text": s.f("duel.choose_x_text", &[("n", max.to_string())]), "list": list,
+                "actions": [action(s.s("duel.take_back"), "duel.cancel", "", true)]})
+        }
+        Ask::CostPick { legal, .. } => {
+            let list: Vec<Value> = legal
+                .iter()
+                .enumerate()
+                .map(|(i, t)| {
+                    let (label, sub) = target_row(s, f, t);
+                    json!({"label": label, "sub": sub, "act": "duel.pick", "value": i.to_string(), "enabled": true})
+                })
+                .collect();
+            json!({"id": "controls", "place": "br", "heading": s.s("duel.pay_cost"), "text": s.s("duel.pay_cost_text"), "list": list,
+                "actions": [action(s.s("duel.take_back"), "duel.cancel", "", true)]})
+        }
+        Ask::May { what } => {
+            let (key, card) = match what {
+                crate::duel::May::Shock(id) => ("duel.may_shock", d.name_of(*id)),
+                crate::duel::May::Promenade(id) => ("duel.may_promenade", d.name_of(*id)),
+                crate::duel::May::Rummage => ("duel.may_rummage", String::new()),
+                crate::duel::May::Vermin(_) => ("duel.may_vermin", String::new()),
+                crate::duel::May::Tithe(id, n) => ("duel.may_tithe", format!("{} ({n})", d.name_of(*id))),
+            };
+            json!({"id": "controls", "place": "br", "heading": s.s("duel.may"), "text": s.f(key, &[("card", card)]),
+                "actions": [action(s.s("duel.yes"), "duel.yes", "", true), action(s.s("duel.no"), "duel.no", "", true)]})
+        }
+        Ask::Name { options, .. } => {
+            let list: Vec<Value> = options
+                .iter()
+                .enumerate()
+                .map(|(i, n)| action(n.clone(), "duel.pick", &i.to_string(), true))
+                .collect();
+            json!({"id": "controls", "place": "br", "heading": s.s("duel.name"), "text": s.s("duel.name_text"), "list": list})
+        }
+        Ask::Piles { a, b } => {
+            let names = |pile: &[usize]| {
+                pile.iter()
+                    .map(|&c| s.cards[c].name.clone())
+                    .collect::<Vec<_>>()
+                    .join(", ")
+            };
+            json!({"id": "controls", "place": "br", "heading": s.s("duel.piles"), "text": s.s("duel.piles_text"),
+                "list": [action(names(a), "duel.pick", "0", true), action(names(b), "duel.pick", "1", true)]})
+        }
+        Ask::Offer { legal, .. } => {
+            let list: Vec<Value> = legal
+                .iter()
+                .enumerate()
+                .map(|(i, id)| action(d.name_of(*id), "duel.pick", &i.to_string(), true))
+                .collect();
+            json!({"id": "controls", "place": "br", "heading": s.s("duel.offer"), "text": s.s("duel.offer_text"), "list": list,
+                "actions": [action(s.s("duel.offer_no"), "duel.none", "", true)]})
+        }
     }
+}
+
+/// Whether a permanent on the table carries a floating label. Creatures and
+/// planeswalkers always do; lands never; enchantments and artifacts only
+/// while play turns to them (in focus, chosen, or a legal target), since their
+/// labels would crowd the corner: hovering one shows its card.
+fn labelled(p: &crate::duel::PermSnap, in_play: bool) -> bool {
+    !p.land && (p.creature || p.loyalty > 0 || in_play)
 }
 
 fn battle_labels(s: &Session, f: &crate::session::Fight) -> Vec<Value> {
@@ -877,12 +971,16 @@ fn battle_labels(s: &Session, f: &crate::session::Fight) -> Vec<Value> {
     };
     let mut out = Vec::new();
     for (pt, p) in scene::battle_spots(s, &ev.snap) {
-        if p.land {
+        let hot = ev.focus.contains(&p.id) || chosen.contains(&p.id);
+        let aimable =
+            matches!(f.asking(), Some(Ask::Targets { legal, .. }) if legal.contains(&Target::Perm(p.id)));
+        if !labelled(p, hot || aimable) {
             continue;
         }
-        let hot = ev.focus.contains(&p.id) || chosen.contains(&p.id);
         let mut sub = if p.creature {
             format!("{}/{}", p.power, p.toughness - p.damage.min(p.toughness))
+        } else if p.loyalty > 0 {
+            s.f("duel.loyalty", &[("n", p.loyalty.to_string())])
         } else {
             String::new()
         };
@@ -1347,6 +1445,47 @@ pub fn ui(s: &mut Session) -> Value {
 
 #[cfg(test)]
 mod tests {
+
+    #[test]
+    fn idle_enchantments_and_artifacts_go_unlabelled_but_creatures_and_walkers_do_not() {
+        let base = crate::duel::PermSnap {
+            id: 1,
+            side: 0,
+            card: 0,
+            token: String::new(),
+            name: String::new(),
+            power: 0,
+            toughness: 0,
+            damage: 0,
+            tapped: false,
+            attacking: false,
+            blocking: -1,
+            detained: false,
+            creature: false,
+            land: false,
+            attached: -1,
+            counters: 0,
+            fresh: false,
+            loyalty: 0,
+        };
+        let creature = crate::duel::PermSnap {
+            creature: true,
+            ..base.clone()
+        };
+        let walker = crate::duel::PermSnap {
+            loyalty: 3,
+            ..base.clone()
+        };
+        let land = crate::duel::PermSnap {
+            land: true,
+            ..base.clone()
+        };
+        assert!(!labelled(&base, false), "an idle artifact");
+        assert!(labelled(&base, true), "an artifact play turns to");
+        assert!(labelled(&creature, false));
+        assert!(labelled(&walker, false), "a planeswalker shows its loyalty");
+        assert!(!labelled(&land, true));
+    }
     use super::*;
 
     #[test]
@@ -1425,6 +1564,7 @@ mod tests {
                 .filter(|t| {
                     s.strings.contains_key(t.as_str())
                         || (t.contains('.')
+                            && t.chars().any(|c| c.is_ascii_lowercase())
                             && !t.contains(' ')
                             && t.chars().all(|c| c.is_ascii_lowercase() || c == '.' || c == '_'))
                 })

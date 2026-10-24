@@ -133,6 +133,128 @@ def growing_ranks():
     return out
 
 
+def knightly_valor():
+    # a knight's helm with a white plume
+    return [ball(10, STEEL, 0, 0, 0, 1, 1.1, 1), box(14, 3, 3, DARK, 0, 0, 9),
+            part("cone", (0, 14, -2), (5, 16, 10), COL["W"], t=(-150, 0, 0), g=500)]
+
+
+def martial_law():
+    # a raised gavel over a seal
+    return [cyl(12, 3, BRASS, 0, -10, 0), box(18, 8, 8, "#6a4a2a", 0, 8, 0), box(3, 20, 3, "#5a3a2a", 0, -2, 0),
+            ball(3, COL["W"], 0, -8, 12, g=700)]
+
+
+def rest_in_peace():
+    # a gravestone, a white flower on it
+    return [box(18, 24, 5, STONE, 0, 0, 0), ball(9, STONE, 0, 12, 0, 1, 0.6, 0.28), ball(4, COL["W"], 0, 2, 4, g=700)]
+
+
+def security_blockade():
+    # a tower shield with a bar across it
+    return [box(18, 26, 3, STEEL, 0, 0, 0), box(22, 4, 5, BRASS, 0, 0, 2), ball(3, COL["W"], 0, 8, 3, g=700)]
+
+
+def soul_tithe():
+    # a pair of scales
+    out = [box(2, 22, 2, BRASS, 0, 0, 0), box(26, 2, 2, BRASS, 0, 10, 0)]
+    for x in (-12, 12):
+        out += [cyl(6, 1.5, BRASS, x, 0, 0), ball(2.5, COL["W"], x, 3, 0, g=700)]
+    return out
+
+
+def sphere_of_safety():
+    # a shell of light round a small tower
+    return [box(6, 14, 6, STONE, 0, -4, 0), part("cone", (0, 6, 0), (8, 6, 8), COL["W"]),
+            ball(15, COL["W"], 0, 0, 0, g=200)]
+
+
+def chronic_flooding():
+    # a wave curling over
+    out = []
+    for i in range(6):
+        a = math.pi * i / 5
+        out.append(ball(5 - i * 0.4, COL["U"], 12 * math.cos(a), 10 * math.sin(a), 0, g=400))
+    return out + [ball(4, "#e8f6ff", -12, 0, 2, g=700)]
+
+
+def conjured_currency():
+    # a stack of coins of light
+    return [part("cyl", (0, -7 + 3 * i, 0), (16, 2, 16), BRASS, g=200 * i) for i in range(5)] + [ball(3, COL["U"], 0, 10, 0, g=900)]
+
+
+def search_the_city():
+    # a magnifying glass over five face-down cards
+    out = [part("cube", (-14 + 7 * i, -10, 0), (6, 1, 9), COL["U"], g=300) for i in range(5)]
+    return out + [cyl(9, 2, BRASS, 0, 6, 0, t=(250, 0, 0)), box(3, 12, 3, "#5a3a2a", 6, -2, 0)]
+
+
+def deviant_glee():
+    # a grinning mask
+    return [ball(12, "#e8e0cc", 0, 0, 0, 1, 1.1, 0.5), ball(3, DARK, -5, 3, 6), ball(3, DARK, 5, 3, 6),
+            part("cube", (0, -5, 6), (12, 2, 2), COL["B"], g=600)]
+
+
+def grave_betrayal():
+    # a hand rising from an open grave
+    return [box(22, 4, 12, STONE_D, 0, -12, 0), box(4, 14, 4, "#a8b0a0", 0, -2, 0)] + [
+        part("cone", (x, 8, 0), (2.5, 8, 2.5), "#a8b0a0") for x in (-3, -1, 1, 3)] + [ball(4, COL["B"], 0, -10, 6, g=800)]
+
+
+def underworld_connections():
+    # a chain of black links running down
+    return beads_ring(0, 6, 0, 6, 10, DARK, 2, "z") + beads_ring(0, -6, 0, 6, 10, DARK, 2, "z") + [ball(3, COL["B"], 0, 0, 0, g=800)]
+
+
+def guild_feud():
+    # two crossed swords, red and black
+    return [part("cone", (0, 0, 0), (4, 34, 2), STEEL, t=(0, 0, 300)), part("cone", (0, 0, 0), (4, 34, 2), STEEL, t=(0, 0, -300)),
+            ball(4, COL["R"], -8, -10, 2, g=700), ball(4, COL["B"], 8, -10, 2, g=700)]
+
+
+def pursuit_of_flight():
+    # a single red wing
+    return [part("cone", (-6 + 4 * i, 4 * i, 0), (5, 16 + 4 * i, 2), COL["R"], t=(0, 0, -200 + 60 * i), g=400) for i in range(4)]
+
+
+def racecourse_fury():
+    # a hoof print in fire
+    return [ball(8, DARK, 0, -6, 0, 1, 0.5, 1)] + [part("cone", (x, 6, 0), (5, 16, 5), COL["R"], g=800) for x in (-6, 0, 6)]
+
+
+def mana_bloom():
+    # a flower opening, charge at its heart
+    out = [ball(4, "#ffd24a", 0, 0, 0, g=900)]
+    for i in range(6):
+        a = 2 * math.pi * i / 6
+        out.append(ball(6, COL["G"], 8 * math.sin(a), 0, 8 * math.cos(a), 1, 0.4, 1))
+    return out
+
+
+def urban_burgeoning():
+    # a sprout through a broken paving stone
+    return [box(20, 3, 20, STONE, 0, -10, 0), cyl(1.5, 16, "#4f8f3a", 0, -8, 0), ball(5, COL["G"], -4, 6, 0, 1.4, 0.5, 0.8),
+            ball(5, COL["G"], 4, 8, 0, 1.4, 0.5, 0.8)]
+
+
+def collective_blessing():
+    # three figures under a halo
+    out = [ball(4, COL["G"], x, -4, 0) for x in (-8, 0, 8)] + [part("cone", (x, -12, 0), (7, 12, 7), COL["W"]) for x in (-8, 0, 8)]
+    return out + beads_ring(0, 8, 0, 12, 10, "#ffd24a", 2, "y", g=900)
+
+
+def havoc_festival():
+    # a flaming jester's cap
+    return [part("cone", (x, 4, 0), (6, 20, 6), c, t=(0, 0, 160 * s)) for x, c, s in ((-6, COL["R"], 1), (6, COL["B"], -1))] + [
+        ball(3, "#ffd24a", -12, 12, 0, g=900), ball(3, "#ffd24a", 12, 12, 0, g=900), ball(6, DARK, 0, -6, 0)]
+
+
+def righteous_authority():
+    # a crown with a blue gem
+    return [cyl(10, 6, BRASS, 0, 0, 0)] + [part("cone", (8 * math.sin(a), 6, 8 * math.cos(a)), (3, 8, 3), BRASS) for a in (0, 1.6, 3.2, 4.8)] + [
+        ball(3.5, COL["U"], 0, 0, 10, g=900)]
+
+
 # ---------------------------------------------------------------- the objects
 
 def keyrune(c1, c2, emblem):
@@ -184,6 +306,30 @@ def civic_saber():
     ]
 
 
+def codex_shredder():
+    # a carved stone beast's head, mouth full of grinding teeth
+    out = [ball(26, STONE, 0, 30, 0, 1, 1.1, 1.2), ball(18, STONE_D, 0, 24, 22, 1.1, 0.8, 0.8)]
+    for y in (16, 22, 28):
+        out.append(box(28, 3, 4, DARK, 0, y, 34))
+    out += [ball(4, COL["U"], -10, 42, 22, g=800), ball(4, COL["U"], 10, 42, 22, g=800)]
+    for i in range(3):
+        out.append(part("cone", (-12 + 12 * i, 56, -4), (8, 14, 8), STONE_D))
+    return out
+
+
+def pithing_needle():
+    # a long needle through a stone ring
+    return [cyl(12, 6, STONE, 0, 0, 0), part("cone", (0, 34, 0), (4, 60, 4), STEEL), ball(4, BRASS, 0, 66, 0), ball(3, COL["C"], 0, 10, 10, g=700)]
+
+
+def tablet_of_the_guilds():
+    # a stone tablet with ten guild marks
+    out = [box(36, 48, 6, STONE, 0, 24, 0), box(40, 4, 8, STONE_D, 0, 2, 0)]
+    for i, c in enumerate("WUBRGWUBRG"):
+        out.append(ball(2.6, COL[c], -12 + 6 * (i % 5), 34 - 14 * (i // 5), 3.5, g=800))
+    return out
+
+
 MODELS = {
     "c3": sigil("W", arrest()),
     "c9": sigil("W", ethereal_armor()),
@@ -198,4 +344,30 @@ MODELS = {
     "c229": keyrune("B", "G", insect_marks("G")),
     "c226": chromatic_lantern(),
     "c227": civic_saber(),
+    "c13": sigil("W", knightly_valor()),
+    "c14": sigil("W", martial_law()),
+    "c18": sigil("W", rest_in_peace()),
+    "c20": sigil("W", security_blockade()),
+    "c23": sigil("W", soul_tithe()),
+    "c24": sigil("W", sphere_of_safety()),
+    "c32": sigil("U", chronic_flooding()),
+    "c33": sigil("U", conjured_currency()),
+    "c49": sigil("U", search_the_city()),
+    "c65": sigil("B", deviant_glee()),
+    "c67": sigil("B", grave_betrayal()),
+    "c83": sigil("B", underworld_connections()),
+    "c97": sigil("R", guild_feud()),
+    "c102": sigil("R", pursuit_of_flight()),
+    "c104": sigil("R", racecourse_fury()),
+    "c130": sigil("G", mana_bloom()),
+    "c138": sigil("G", urban_burgeoning()),
+    "c150": sigil("GW", collective_blessing()),
+    "c166": sigil("BR", havoc_festival()),
+    "c189": sigil("UW", righteous_authority()),
+    "c230": keyrune("U", "R", bird_marks("R")),
+    "c232": keyrune("B", "R", insect_marks("R")),
+    "c233": keyrune("G", "W", bird_marks("G")),
+    "c228": codex_shredder(),
+    "c231": pithing_needle(),
+    "c235": tablet_of_the_guilds(),
 }

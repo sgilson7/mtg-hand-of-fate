@@ -1,0 +1,20 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{e8682a}\definecolor{bgL}{HTML}{f8a05a}\definecolor{wall}{HTML}{c84a1a}\definecolor{skin}{HTML}{8a4a3a}\definecolor{skinL}{HTML}{b86a50}\definecolor{spike}{HTML}{2a1a14}
+\definecolor{chain}{HTML}{3a2a24}\definecolor{skull}{HTML}{d8c8b0}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[inner color=bgL,outer color=bg] (0,0) rectangle (6.16,4.52);
+\fill[wall,opacity=.6] (4.6,1.0) rectangle (6.16,4.52);\fill[wall,opacity=.6] (0,1.2) rectangle (0.8,4.52);
+% chains whirling out from his fists
+\foreach \i in {0,...,12}{\draw[chain,line width=1.2pt] ({3.0+2.4*cos(200-\i*12)},{2.8+1.4*sin(200-\i*12)}) circle (0.07);}
+\foreach \i in {0,...,10}{\draw[chain,line width=1.2pt] ({3.2+2.6*cos(-20+\i*14)},{2.6+1.6*sin(-20+\i*14)}) circle (0.07);}
+% the hulking flailer, spiked and masked
+\fill[spike,ink] (2.2,0) -- (2.4,1.4) -- (3.8,1.4) -- (4.0,0) -- (3.4,0) -- (3.1,0.9) -- (2.8,0) -- cycle;
+\fill[skin,ink] (1.8,1.4) .. controls (1.6,2.4) and (2.0,3.2) .. (3.1,3.3) .. controls (4.2,3.2) and (4.6,2.4) .. (4.4,1.4) -- cycle;
+\fill[skinL,opacity=.6] (2.4,2.0) .. controls (2.6,2.8) and (3.6,2.8) .. (3.8,2.0) .. controls (3.4,1.8) and (2.8,1.8) .. (2.4,2.0);
+\foreach \a in {100,120,140,160,40,60,80,20}{\fill[spike] (3.1,2.8) ++(\a:0.9) -- ++(\a+8:0.5) -- ++(\a-90:0.12) -- cycle;}
+\fill[skin,ink] (1.9,2.8) -- (1.0,2.0) -- (1.2,1.8) -- (2.0,2.4) -- cycle;\fill[skin,ink] (4.3,2.8) -- (5.2,2.0) -- (5.0,1.8) -- (4.2,2.4) -- cycle;
+\fill[spike,ink] (1.0,1.9) circle (0.22);\fill[spike,ink] (5.1,1.9) circle (0.22);
+\fill[skull,ink] (3.1,3.5) ellipse (0.3 and 0.32);\fill[spike] (3.0,3.55) circle (0.06);\fill[spike] (3.2,3.55) circle (0.06);
+\fill[spike] (2.85,3.75) -- (2.6,4.4) -- (2.95,3.8) -- cycle;\fill[spike] (3.35,3.75) -- (3.6,4.4) -- (3.25,3.8) -- cycle;
+\end{tikzpicture}\end{document}
