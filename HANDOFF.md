@@ -45,7 +45,7 @@ The rules in `CLAUDE.md` under "Rules agreed for this project" (MTG-1 to MTG-11)
 
 ## Open for the person
 
-- R1.1: whether and how the game may use Wizards' card text and art in public (MTG-Q1).
+- R1.1: whether and how the game may use Wizards' card text and art in public (MTG-Q1). The person asked for a public page; the Fan Content notice is the only safeguard.
 - R1.2: the game's public name (MTG-Q2).
 - R1.3: the rules of the childhood grid game (MTG-Q3).
 - R1.10: read the story text and labels the agent wrote for the mockup.
@@ -53,6 +53,7 @@ The rules in `CLAUDE.md` under "Rules agreed for this project" (MTG-1 to MTG-11)
 - R2.11: the working title "Tenth District" and the Fan Content notice on the title screen.
 - R2.12: read the agent-written strings and the 108 stories.
 - R2.13: decide whether the weaker TikZ pictures get a second pass (MTG-Q12).
+- R2.17: set `git config user.name` (and email) so `scripts/publish.sh` can commit the page.
 - R2.16: the repository's name, `mtg-hand-of-fate`, chosen by the agent from the project folder.
 
 ## Mistakes so far
@@ -64,6 +65,8 @@ The rules in `CLAUDE.md` under "Rules agreed for this project" (MTG-1 to MTG-11)
 ## What passed
 
 2026-10-24: `./scripts/check.sh` ended `BROWSER CHECK PASSED in chromium, firefox, webkit` and `BUILDER CHECK PASSED`; `./scripts/count-tests.sh`: 116 passed, 0 failed; `scripts/break_tests.py`: 16 of 16 caught.
+
+2026-10-24, deploy: `./scripts/check.sh` passed again (`BUILDER CHECK PASSED`); `dist/` built from b39eda7 (build 86992f96dcd0) pushed to gh-pages; `BUILDER_ORIGIN=https://sgilson7.github.io/mtg-hand-of-fate python3 tests/browser/check.py` ended `BROWSER CHECK PASSED in chromium, firefox, webkit`.
 
 ## The next action
 

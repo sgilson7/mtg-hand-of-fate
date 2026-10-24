@@ -34,6 +34,7 @@ One row per assumption, surprise or open item. **Kind** is *divergence* (what wa
 | R2.14 | finding | A bot that takes every fight and the first choice could beat Niv-Mizzet. | It reaches him (43 fights) but loses: it never edits its deck or buys armour. Built decks in `balance.rs` win 35 to 53 of 60. | The playthrough test asserts the guardian is reached, not beaten. | `crates/core/tests/playthrough.rs` | open |
 | R2.15 | finding | Two tests from the first build looked strong. | Breaking detain's length and the per-chunk seed left them passing. | The detain test now reads the detained flag through the turns; the chunk test also checks two chunks of one quarter differ. | `tests/breaks.json` (16 rows, all caught) | done |
 | R2.16 | worklist | The person named the repository when granting a publish (MTG-Q5). | The grant said "a public github repo" without a name. | The repository is `sgilson7/mtg-hand-of-fate`, after the project folder; renaming it is the person's call with MTG-Q2. | `BRIEF.md` Autonomy | person |
+| R2.17 | finding | `scripts/publish.sh` could commit the built page. | It takes the author from `git config user.name`, which is unset on this machine (commits get the system's name), so the gh-pages commit failed after the check passed. | The agent ran the script's remaining steps by hand with the same author as the project's commits. Setting `git config user.name` is the person's call. | `scripts/publish.sh` | person |
 
 ## Strings written by the agent
 
