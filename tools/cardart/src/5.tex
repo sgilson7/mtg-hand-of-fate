@@ -1,0 +1,67 @@
+\input{../preamble}
+\definecolor{sky}{HTML}{f4d8c0}\definecolor{stone}{HTML}{c8c2c8}\definecolor{stoneD}{HTML}{8e8696}
+\definecolor{stoneL}{HTML}{e6e0e2}\definecolor{water}{HTML}{f4f2fa}\definecolor{cape}{HTML}{2a4aa8}
+\definecolor{capeD}{HTML}{18286a}\definecolor{capeL}{HTML}{5a7ad0}\definecolor{plate}{HTML}{9a96b8}
+\definecolor{plateD}{HTML}{5a5478}\definecolor{plateL}{HTML}{d4d2e6}\definecolor{skin}{HTML}{e0a890}
+\definecolor{gold}{HTML}{e0c070}\definecolor{hood}{HTML}{2a2630}\definecolor{gob}{HTML}{6a8a4a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\fill[sky] (0,0) rectangle (6.16,4.52);
+% viaduct with two tiers of arches
+\fill[stone,ink] (0.6,2.3) -- (0.6,4.3) -- (6.16,4.4) -- (6.16,2.3) -- cycle;
+\foreach \x in {1.3,2.35,3.4,4.45,5.5}{\fill[sky!80!stoneL,ink] (\x-0.38,2.3) -- (\x-0.38,3.2) arc (180:0:0.38) -- (\x+0.38,2.3) -- cycle;}
+\foreach \x in {0.95,1.5,2.05,2.6,3.15,3.7,4.25,4.8,5.35,5.9}{\fill[stoneD,ink,line width=.4pt] (\x-0.16,3.75) -- (\x-0.16,3.95) arc (180:0:0.16) -- (\x+0.16,3.75) -- cycle;}
+\draw[ink] (0.6,3.65) -- (6.16,3.68); \draw[ink] (0.6,4.25) -- (6.16,4.3);
+\foreach \x in {1.2,2.0,2.8,3.6,4.4}{\fill[hood] (\x,4.33) rectangle (\x+0.05,4.45);}
+% left building edge
+\fill[stoneL,ink] (0,0) rectangle (0.62,4.52);
+\foreach \y in {1.2,2.3,3.4}{\fill[stoneD,ink,line width=.4pt] (0.15,\y) rectangle (0.45,\y+0.55);}
+% waterfall at right
+\fill[water,ink] (5.65,2.3) .. controls (5.7,1.6) and (5.6,1.0) .. (5.5,0.5) -- (6.16,0.4) -- (6.16,2.3) -- cycle;
+% hooded goblin captives with chain collars
+\fill[hood,ink] (0.65,0.9) .. controls (0.6,2.0) and (0.8,2.7) .. (1.05,3.15) -- (1.65,2.75) .. controls (1.8,2.0) and (1.8,1.4) .. (1.75,0.9) -- cycle;
+\fill[gob,ink] (1.5,2.6) -- (2.0,2.75) -- (1.6,2.45) -- cycle;
+\fill[stoneD,ink] (0.85,2.2) rectangle (1.75,2.45);
+\fill[hood,ink] (1.9,1.8) .. controls (1.9,2.4) and (2.0,2.7) .. (2.15,2.95) -- (2.5,2.7) .. controls (2.5,2.3) and (2.45,2.0) .. (2.4,1.8) -- cycle;
+\fill[gob,ink] (2.4,2.6) -- (2.7,2.6) -- (2.45,2.45) -- cycle;
+\fill[stoneD,ink] (1.95,2.2) rectangle (2.5,2.38);
+\draw[stoneD,line width=1pt] (1.3,2.2) -- (1.25,1.2) (2.2,2.2) -- (2.3,1.6);
+% blue cape billowing across the bottom-left
+\fill[cape,ink] (3.4,3.0) .. controls (2.6,2.3) and (1.8,1.6) .. (0.9,1.1) .. controls (0.6,0.6) and (0.4,0.2) .. (0.5,0) -- (3.4,0) -- cycle;
+\fill[capeD] (2.6,2.0) .. controls (2.0,1.4) and (1.6,0.8) .. (1.6,0) -- (2.2,0) .. controls (2.3,0.7) and (2.6,1.3) .. (3.0,1.7) -- cycle;
+\fill[capeL] (3.0,2.6) .. controls (2.4,2.0) and (1.7,1.5) .. (1.1,1.2) .. controls (1.8,1.4) and (2.5,1.9) .. (3.2,2.4) -- cycle;
+\fill[cape,ink] (5.0,3.3) .. controls (5.3,3.0) and (5.5,2.5) .. (5.6,2.0) -- (5.2,2.0) -- cycle;
+% gold banner streamers
+\fill[gold,ink] (1.4,2.0) -- (3.2,1.7) -- (3.25,1.5) -- (1.5,1.8) -- cycle;
+\fill[gold,ink] (1.8,1.3) -- (3.1,1.15) -- (3.1,0.95) -- (1.9,1.1) -- cycle;
+\fill[gold,ink] (0.0,0.4) -- (0.9,0.6) -- (0.95,0.45) -- (0.0,0.2) -- cycle;
+\fill[cape,ink] (4.9,3.2) .. controls (5.6,3.0) and (5.9,2.0) .. (5.9,1.0) .. controls (6.0,0.6) and (5.9,0.2) .. (6.0,0) -- (3.4,0) -- (3.5,1.2) -- cycle;
+\fill[capeD] (5.4,2.4) .. controls (5.6,1.6) and (5.6,0.8) .. (5.5,0) -- (5.8,0) .. controls (5.8,0.9) and (5.75,1.8) .. (5.4,2.4);
+% legs and lower armour
+\fill[plateD,ink] (3.6,1.2) -- (3.5,0) -- (5.4,0) -- (5.2,1.2) -- cycle;
+\fill[plate,ink] (4.4,1.1) .. controls (4.5,0.7) and (4.6,0.3) .. (4.6,0) -- (5.3,0) .. controls (5.3,0.4) and (5.2,0.8) .. (5.15,1.1) -- cycle;
+\fill[plateL,ink] (4.6,0.4) ellipse (0.3 and 0.22);
+% torso plate
+\fill[plate,ink] (3.65,3.0) .. controls (3.5,2.4) and (3.5,1.7) .. (3.6,1.15) -- (5.2,1.1) .. controls (5.3,1.8) and (5.3,2.5) .. (5.05,3.05) -- cycle;
+\fill[plateL] (3.9,2.7) .. controls (4.1,2.2) and (4.5,2.1) .. (4.7,2.4) .. controls (4.5,2.8) and (4.1,2.9) .. (3.9,2.7);
+\fill[plateL] (4.4,1.9) ellipse (0.35 and 0.3);
+\draw[capeD,line width=1.5pt] (3.8,3.0) -- (5.0,1.2);
+\fill[plateD,ink] (3.6,1.15) rectangle (5.2,1.35);
+\fill[gold,ink] (4.3,1.1) rectangle (4.5,1.4);
+% arms
+\fill[plate,ink] (3.35,2.9) .. controls (3.0,2.4) and (3.0,1.8) .. (3.1,1.3) -- (3.65,1.3) .. controls (3.6,1.8) and (3.65,2.3) .. (3.75,2.7) -- cycle;
+\fill[plateD,ink] (3.05,1.35) rectangle (3.7,0.75);
+\fill[plateL,ink] (3.38,1.9) ellipse (0.25 and 0.2);
+\fill[plate,ink] (5.0,3.0) .. controls (5.4,2.6) and (5.6,2.0) .. (5.55,1.4) -- (5.15,1.35) .. controls (5.15,1.9) and (5.0,2.4) .. (4.85,2.7) -- cycle;
+\fill[plateD,ink] (5.1,1.4) -- (5.75,1.35) -- (5.8,0.75) -- (5.15,0.8) -- cycle;
+% great pauldrons
+\fill[plateL,ink] (3.0,3.0) .. controls (3.1,3.4) and (3.8,3.5) .. (4.15,3.25) .. controls (4.1,2.9) and (3.6,2.75) .. (3.0,3.0);
+\fill[plate,ink] (3.05,2.85) .. controls (3.3,2.7) and (3.8,2.7) .. (4.05,2.95) .. controls (3.7,3.0) and (3.3,3.0) .. (3.05,2.85);
+\fill[plateL,ink] (4.6,3.35) .. controls (4.9,3.6) and (5.4,3.4) .. (5.45,3.05) .. controls (5.2,2.85) and (4.8,2.95) .. (4.6,3.35);
+% helmeted head
+\fill[plateD,ink] (4.0,3.25) rectangle (4.5,3.5);
+\fill[plate,ink] (3.9,3.6) .. controls (3.85,4.2) and (4.1,4.4) .. (4.3,4.4) .. controls (4.55,4.4) and (4.75,4.2) .. (4.7,3.6) .. controls (4.5,3.4) and (4.1,3.4) .. (3.9,3.6);
+\fill[skin,ink] (4.15,3.5) .. controls (4.15,3.8) and (4.25,3.9) .. (4.4,3.9) .. controls (4.55,3.85) and (4.6,3.7) .. (4.58,3.5) .. controls (4.45,3.4) and (4.25,3.4) .. (4.15,3.5);
+\fill[plateD,ink,line width=.4pt] (4.12,3.88) rectangle (4.62,3.98);
+\fill[plateL] (4.05,4.0) .. controls (4.1,4.25) and (4.25,4.32) .. (4.35,4.32) -- (4.3,4.1) -- cycle;
+\end{tikzpicture}\end{document}

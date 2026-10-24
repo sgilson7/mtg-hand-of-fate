@@ -1,0 +1,59 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{4a2622}\definecolor{lava}{HTML}{c8321e}\definecolor{lavaL}{HTML}{f07a30}
+\definecolor{stone}{HTML}{3a2c28}\definecolor{stoneL}{HTML}{463631}\definecolor{stoneD}{HTML}{1e1614}
+\definecolor{glowY}{HTML}{ffd060}\definecolor{glowO}{HTML}{e88a28}\definecolor{tusk}{HTML}{8a6e62}
+\definecolor{tuskL}{HTML}{c8b0a0}\definecolor{rock}{HTML}{6a2418}\definecolor{rockL}{HTML}{b84a28}
+\definecolor{wood}{HTML}{3a201a}\definecolor{floor}{HTML}{5a2a1e}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\fill[bg] (0,0) rectangle (6.16,4.52);
+% lava glow on both sides
+\shade[left color=lava!70!bg,right color=bg] (0,0.6) rectangle (1.9,4.52);
+\shade[left color=bg,right color=lava!70!bg] (4.5,0.6) rectangle (6.16,4.52);
+\foreach \x in {0.4,0.9,5.3,5.8}{\fill[lavaL,opacity=.5] (\x,1.0) rectangle (\x+.08,4.52);}
+% hanging chains
+\foreach \x/\a/\b in {5.3/4.6/3.0,0.55/4.6/3.4}{\foreach \t in {0,0.1,...,1}{\draw[stoneD,line width=1.4pt] ($(\x,\a)!\t!(\x,\b)$) ellipse (.06 and .1);}}
+% scaffolding at the right
+\foreach \x in {5.1,5.7}{\fill[wood,ink] (\x,0.9) rectangle (\x+.14,3.0);}
+\foreach \y in {1.6,2.4}{\fill[wood,ink] (4.6,\y) -- (6.16,\y+.35) -- (6.16,\y+.5) -- (4.6,\y+.15) -- cycle;}
+\fill[wood,ink] (0.3,0.9) rectangle (0.44,3.0);
+\fill[wood,ink] (0,1.9) -- (1.6,2.3) -- (1.6,2.45) -- (0,2.05) -- cycle;
+% the central gate tower
+\fill[stone,ink] (1.9,0.6) -- (1.9,4.52) -- (4.5,4.52) -- (4.5,0.6) -- cycle;
+\fill[stoneL,ink] (2.15,0.75) rectangle (4.25,3.75);
+\fill[stoneD] (1.9,0.6) rectangle (2.15,4.52); \fill[stoneD] (4.25,0.6) rectangle (4.5,4.52);
+\foreach \y in {1.0,1.5,...,3.5}{\fill[stoneD,ink] (2.25,\y) circle (.07); \fill[stoneD,ink] (4.15,\y) circle (.07);}
+\fill[stoneD,ink] (2.15,3.75) -- (4.25,3.75) -- (4.1,4.05) -- (2.3,4.05) -- cycle;
+% horned mask above the windows
+\fill[tuskL,ink] (2.85,3.9) .. controls (3.0,4.0) and (3.4,4.0) .. (3.55,3.9) -- (3.5,3.75) -- (2.9,3.75) -- cycle;
+\fill[stoneD,ink] (2.95,3.75) .. controls (2.85,3.4) and (2.9,3.05) .. (3.2,2.85) .. controls (3.1,3.15) and (3.1,3.45) .. (3.2,3.75) -- cycle;
+\fill[stoneD,ink] (3.45,3.75) .. controls (3.55,3.4) and (3.5,3.05) .. (3.2,2.85) .. controls (3.3,3.15) and (3.3,3.45) .. (3.2,3.75) -- cycle;
+\fill[tuskL,ink] (2.7,3.7) .. controls (2.75,3.3) and (2.95,3.0) .. (3.12,2.9) .. controls (2.95,3.15) and (2.88,3.4) .. (2.88,3.72) -- cycle;
+\fill[tuskL,ink] (3.7,3.7) .. controls (3.65,3.3) and (3.45,3.0) .. (3.28,2.9) .. controls (3.45,3.15) and (3.52,3.4) .. (3.52,3.72) -- cycle;
+\foreach \x in {2.4,2.6,3.85,4.05}{\fill[stoneD,ink] (\x,3.0) rectangle (\x+.12,3.6);}
+% three glowing arched windows, candle flames above
+\foreach \l/\r/\t in {2.55/2.85/2.6,2.85/3.45/2.77,3.45/3.7/2.6}{
+ \shade[top color=glowO,bottom color=glowY,ink] (\l,0.87) -- (\l,\t-.25) .. controls (\l,\t) and ({(\l+\r)/2},\t+.05) .. ({(\l+\r)/2},\t+.05) .. controls ({(\l+\r)/2},\t+.05) and (\r,\t) .. (\r,\t-.25) -- (\r,0.87) -- cycle;
+ \fill[glowY,ink] ({(\l+\r)/2-.04},\t+.1) .. controls ({(\l+\r)/2-.06},\t+.2) and ({(\l+\r)/2},\t+.3) .. ({(\l+\r)/2},\t+.38) .. controls ({(\l+\r)/2+.02},\t+.28) and ({(\l+\r)/2+.06},\t+.2) .. ({(\l+\r)/2+.04},\t+.1) -- cycle;}
+\foreach \x in {2.85,3.45}{\fill[stoneD,ink] (\x-.03,0.87) rectangle (\x+.03,2.5);}
+% steps
+\fill[stoneD,ink] (2.3,0.57) -- (4.2,0.57) -- (4.15,0.87) -- (2.35,0.87) -- cycle;
+\fill[stoneL,ink] (2.1,0.4) -- (4.4,0.4) -- (4.3,0.57) -- (2.2,0.57) -- cycle;
+% cracked lava floor
+\fill[floor,ink] (0,0) -- (0,0.6) -- (6.16,0.6) -- (6.16,0) -- cycle;
+\foreach \x in {-3.5,-2.5,-1.5,-0.5,0.5,1.5,2.5,3.5}{\draw[lavaL,line width=.9pt] (3.2+\x*0.35,0.6) -- (3.2+\x*1.6,0);}
+\foreach \y in {0.15,0.35,0.5}{\draw[lavaL,line width=.7pt] (0,\y) -- (6.16,\y);}
+% great curved tusks rising from the floor
+\fill[tusk,ink] (0.9,0.6) .. controls (1.1,1.6) and (1.4,2.4) .. (1.75,2.8) .. controls (1.55,2.3) and (1.5,1.4) .. (1.5,0.6) -- cycle;
+\fill[tuskL] (1.0,0.7) .. controls (1.2,1.6) and (1.45,2.3) .. (1.72,2.75) .. controls (1.4,2.2) and (1.25,1.5) .. (1.2,0.7) -- cycle;
+\fill[tusk,ink] (5.3,0.6) .. controls (5.1,1.6) and (4.8,2.4) .. (4.55,2.85) .. controls (4.7,2.3) and (4.7,1.4) .. (4.65,0.6) -- cycle;
+\fill[tuskL] (5.0,0.7) .. controls (4.95,1.6) and (4.8,2.3) .. (4.6,2.75) .. controls (4.75,2.2) and (4.85,1.5) .. (4.85,0.7) -- cycle;
+\fill[tusk,ink] (0,3.3) .. controls (0.5,3.8) and (0.9,4.1) .. (1.15,4.52) -- (1.45,4.52) .. controls (1.1,4.0) and (0.6,3.5) .. (0,3.0) -- cycle;
+\fill[tusk,ink] (6.16,3.6) .. controls (5.6,3.9) and (5.2,4.2) .. (5.0,4.52) -- (4.8,4.52) .. controls (5.1,4.0) and (5.6,3.6) .. (6.16,3.3) -- cycle;
+% jagged rocks at both sides
+\fill[rock,ink] (0,0) -- (0,1.7) -- (0.25,1.2) -- (0.5,1.9) -- (0.7,1.0) -- (0.95,0.85) -- (1.15,1.2) -- (1.3,0.6) -- (1.6,0.45) -- (1.2,0) -- cycle;
+\fill[rockL] (0.5,1.9) -- (0.55,1.0) -- (0.7,1.0) -- cycle;
+\fill[rock,ink] (6.16,0) -- (6.16,1.6) -- (5.9,1.15) -- (5.7,1.85) -- (5.5,0.95) -- (5.25,0.85) -- (5.05,1.2) -- (4.9,0.6) -- (4.6,0.45) -- (5.0,0) -- cycle;
+\fill[rockL] (5.7,1.85) -- (5.65,0.95) -- (5.5,0.95) -- cycle;
+\foreach \x/\h in {0.25/0.5,1.1/0.45,5.0/0.5,5.8/0.4}{\fill[rock,ink] (\x-.12,0) -- (\x,\h) -- (\x+.12,0) -- cycle;}
+\end{tikzpicture}\end{document}

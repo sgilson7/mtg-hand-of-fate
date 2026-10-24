@@ -1,0 +1,39 @@
+\input{../preamble}
+\definecolor{sky}{HTML}{a8c4d8}\definecolor{fac}{HTML}{e8d8a8}\definecolor{facD}{HTML}{b8a478}\definecolor{roof}{HTML}{6a6a70}
+\definecolor{haze}{HTML}{c8c0a8}\definecolor{stone}{HTML}{6a645a}\definecolor{stoneD}{HTML}{3a3630}\definecolor{stoneL}{HTML}{8a8478}
+\definecolor{fist}{HTML}{8a5a42}\definecolor{cob}{HTML}{7a7268}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\fill[haze] (0,0) rectangle (6.16,4.52);
+\fill[sky] (3.6,3.6) rectangle (6.16,4.52);
+% baroque facade at right
+\fill[roof,ink] (3.8,3.75) -- (4.3,4.4) -- (6.16,4.4) -- (6.16,3.75) -- cycle;
+\fill[fac,ink] (3.75,1.4) rectangle (6.16,3.75);
+\foreach \x in {4.0,4.5,5.0,5.5,6.0}{\foreach \y in {1.7,2.4,3.1}{\fill[facD,ink,line width=.4pt] (\x,\y) rectangle (\x+.25,\y+.4);}}
+\draw[facD,line width=1pt] (3.75,2.2) -- (6.16,2.2); \draw[facD,line width=1pt] (3.75,2.9) -- (6.16,2.9);
+% hazy building at left
+\fill[fac!70!haze,ink] (0,2.0) rectangle (0.8,4.52);
+\foreach \y in {2.4,3.1,3.8}{\fill[facD!70!haze] (0.25,\y) rectangle (0.5,\y+.35);}
+% the street heaving up
+\fill[cob,ink] (1.0,0) -- (1.6,0.9) -- (3.2,1.15) -- (6.16,1.1) -- (6.16,0) -- cycle;
+\foreach \x/\y in {1.6/0.5,2.2/0.7,2.8/0.8,3.4/0.9,4.0/0.85,4.6/0.75,5.2/0.6,5.7/0.4,2.6/0.3,3.4/0.4,4.2/0.3,5.0/0.15}{\fill[stoneL,ink,line width=.4pt] (\x,\y) -- ++(.45,.08) -- ++(.0,-.16) -- ++(-.45,-.08) -- cycle;}
+% braced arm planted on the street at left
+\fill[stone,ink] (0.95,3.2) .. controls (0.6,2.6) and (0.55,1.7) .. (0.75,0.9) -- (0.6,0.45) -- (1.55,0.4) -- (1.6,0.9) .. controls (1.55,1.6) and (1.6,2.3) .. (1.9,2.9) -- cycle;
+\fill[stoneD,ink] (0.6,0.45) -- (0.75,0.9) -- (1.6,0.9) -- (1.55,0.4) -- cycle;
+% bent legs
+\fill[stone!85!black,ink] (2.3,2.2) .. controls (2.2,1.6) and (2.3,1.0) .. (2.6,0.6) -- (3.4,0.65) .. controls (3.3,1.0) and (3.3,1.4) .. (3.5,1.8) -- (3.9,1.3) -- (4.2,1.05) -- (4.5,1.2) .. controls (4.3,1.6) and (4.0,2.0) .. (3.6,2.4) -- cycle;
+% hunched torso, huge shoulders
+\fill[stone,ink] (0.85,3.0) .. controls (0.9,3.8) and (1.5,4.4) .. (2.4,4.45) .. controls (3.2,4.45) and (3.8,4.0) .. (3.95,3.4) .. controls (3.9,2.9) and (3.6,2.4) .. (3.2,2.15) .. controls (2.6,1.9) and (1.9,2.1) .. (1.5,2.5) .. controls (1.2,2.6) and (0.95,2.8) .. (0.85,3.0) -- cycle;
+% head sunk low and forward between the shoulders
+\fill[stoneD,ink] (2.3,2.95) .. controls (2.3,3.35) and (2.65,3.55) .. (3.0,3.45) .. controls (3.25,3.3) and (3.3,2.95) .. (3.15,2.65) .. controls (2.9,2.45) and (2.5,2.55) .. (2.3,2.95) -- cycle;
+\fill[stoneL,ink,line width=.4pt] (2.55,3.05) -- (2.95,3.15) -- (3.0,3.0) -- (2.6,2.92) -- cycle;
+% cobble plating
+\foreach \x/\y/\r in {1.3/3.6/30,1.8/4.05/15,2.5/4.2/0,3.2/4.05/-15,3.6/3.6/-40,1.0/2.6/80,0.9/1.8/85,1.1/1.1/85,1.4/2.5/80,1.5/1.7/85,1.6/3.1/45,2.0/3.6/20,1.9/2.6/30,3.5/2.85/-50,2.6/1.6/80,3.0/1.0/80,4.1/1.4/40}{\fill[stoneL,ink,line width=.4pt,rotate around={\r:(\x,\y)}] (\x-.2,\y-.11) rectangle (\x+.2,\y+.11);}
+% near arm swinging forward and down to the fist
+\fill[stone,ink] (3.3,3.9) .. controls (3.9,3.7) and (4.3,3.2) .. (4.5,2.5) -- (4.6,2.2) -- (4.15,2.0) .. controls (4.0,2.5) and (3.7,2.9) .. (3.3,3.1) -- cycle;
+\fill[stoneL,ink,line width=.4pt,rotate around={-55:(4.0,3.0)}] (3.8,2.9) rectangle (4.2,3.12);
+\fill[fist,ink] (4.2,2.5) .. controls (4.7,2.6) and (5.35,2.3) .. (5.45,1.9) .. controls (5.5,1.5) and (5.1,1.2) .. (4.7,1.25) .. controls (4.3,1.4) and (4.05,1.9) .. (4.2,2.5) -- cycle;
+\fill[stoneD,ink] (4.5,2.15) .. controls (4.75,2.25) and (5.05,2.1) .. (5.1,1.85) -- (4.8,1.6) .. controls (4.65,1.75) and (4.55,1.95) .. (4.5,2.15) -- cycle;
+% flying debris
+\foreach \x/\y/\r in {0.2/3.2/30,0.4/2.4/-20,0.15/1.4/60,0.6/3.9/10,4.0/4.1/-30,4.6/3.4/45,5.2/3.0/15,5.8/2.4/-40,3.6/1.6/20,5.6/3.6/70,4.9/4.2/-10}{\fill[stoneD,ink,line width=.4pt,rotate around={\r:(\x,\y)}] (\x-.13,\y-.06) rectangle (\x+.13,\y+.06);}
+\end{tikzpicture}\end{document}

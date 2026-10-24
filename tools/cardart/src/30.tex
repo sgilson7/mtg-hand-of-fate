@@ -1,0 +1,67 @@
+\input{../preamble}
+\definecolor{skyP}{HTML}{c8a0a8}\definecolor{skyL}{HTML}{e8c4c0}\definecolor{dust}{HTML}{8a8a9c}
+\definecolor{windL}{HTML}{dce6f0}\definecolor{windB}{HTML}{5a7290}\definecolor{windD}{HTML}{34465c}
+\definecolor{spire}{HTML}{a88890}\definecolor{skin}{HTML}{d8906c}\definecolor{skinD}{HTML}{a8604a}
+\definecolor{hair}{HTML}{2c2024}\definecolor{brass}{HTML}{c48a3c}\definecolor{brassD}{HTML}{7a5024}
+\definecolor{coil}{HTML}{3aa0c8}\definecolor{red}{HTML}{b4402c}\definecolor{redD}{HTML}{7a2820}
+\definecolor{blue}{HTML}{3c64a8}\definecolor{leaf}{HTML}{3a3628}\definecolor{leafG}{HTML}{6c7040}
+\definecolor{leather}{HTML}{5a3a2a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+% sky left, storm right
+\shade[left color=skyL,right color=windB] (0,0) rectangle (6.16,4.52);
+\shade[left color=skyP,right color=windL] (0,0) rectangle (2.62,4.52);
+\shade[left color=windL,right color=windB] (2.6,0) rectangle (4.6,4.52);
+\shade[left color=windB,right color=windB!80!black] (4.6,0) rectangle (6.16,4.52);
+\shade[top color=dust,bottom color=windL,opacity=.6] (0,0) rectangle (3.0,1.6);
+% distant spires left
+\foreach \x/\h in {0.35/3.3,0.7/2.9,1.05/3.6}{\fill[spire,ink] (\x-.12,1.2) -- (\x-.12,\h) -- (\x,\h+.6) -- (\x+.12,\h) -- (\x+.12,1.2) -- cycle;}
+% wind vortex swirls
+\fill[windL,opacity=.85] (3.0,4.52) .. controls (4.6,4.0) and (5.0,2.6) .. (4.2,1.6) .. controls (3.8,1.2) and (3.2,1.4) .. (3.0,1.9) .. controls (3.6,1.7) and (4.2,2.2) .. (4.0,3.0) .. controls (3.8,3.7) and (3.3,4.1) .. (2.6,4.52) -- cycle;
+\fill[windL,opacity=.6] (3.6,2.3) .. controls (4.4,2.0) and (4.8,1.2) .. (4.2,0.5) .. controls (3.8,0.2) and (3.4,0.4) .. (3.4,0.8) .. controls (3.9,0.7) and (4.2,1.1) .. (4.0,1.6) .. controls (3.9,1.9) and (3.7,2.1) .. (3.5,2.2) -- cycle;
+\fill[windL,opacity=.4] (4.2,4.52) .. controls (5.6,4.0) and (5.9,2.6) .. (5.2,1.4) .. controls (5.5,2.6) and (5.2,3.8) .. (4.0,4.4) -- cycle;
+\fill[windL,opacity=.5] (0,2.2) .. controls (0.6,1.6) and (1.4,1.2) .. (2.2,1.2) .. controls (1.4,1.4) and (0.6,1.9) .. (0,2.6) -- cycle;
+% rubble bottom
+\fill[windD,ink] (0,0) -- (0,0.9) -- (0.5,1.1) -- (0.9,0.6) -- (1.2,0) -- cycle;
+\fill[windD,ink] (5.3,0) -- (5.5,0.9) -- (6.16,1.2) -- (6.16,0) -- cycle;
+% back leg
+\fill[red,ink] (1.5,1.4) .. controls (1.3,1.0) and (1.6,0.5) .. (1.9,0) -- (2.6,0) .. controls (2.4,0.5) and (2.3,1.0) .. (2.4,1.4) -- cycle;
+\fill[brassD,ink] (1.85,0) rectangle (2.55,0.55);
+\draw[blue,line width=2pt] (1.7,1.2) .. controls (1.8,0.9) and (2.0,0.7) .. (2.1,0.6);
+% front leg with knee forward
+\fill[red,ink] (2.3,1.6) .. controls (2.7,1.6) and (3.1,1.3) .. (3.3,1.0) .. controls (3.4,0.6) and (3.3,0.3) .. (3.2,0) -- (2.7,0) .. controls (2.8,0.4) and (2.8,0.7) .. (2.7,0.9) .. controls (2.5,1.1) and (2.2,1.15) .. (2.0,1.2) -- cycle;
+\draw[blue,line width=2pt] (2.3,1.35) .. controls (2.7,1.3) and (3.0,1.1) .. (3.15,0.8);
+\fill[brassD,ink] (2.7,0) -- (2.75,0.5) -- (3.3,0.45) -- (3.25,0) -- cycle;
+% back arm reaching left
+\fill[skin,ink] (1.3,2.3) .. controls (1.0,2.1) and (0.7,1.9) .. (0.5,1.75) .. controls (0.4,1.7) and (0.4,1.9) .. (0.5,1.95) .. controls (0.8,2.1) and (1.0,2.4) .. (1.2,2.6) -- cycle;
+% torso
+\fill[leather,ink] (1.35,1.4) .. controls (1.4,1.9) and (1.2,2.4) .. (1.2,2.85) .. controls (1.5,3.15) and (2.0,3.15) .. (2.35,2.95) .. controls (2.2,2.5) and (2.25,1.9) .. (2.4,1.4) .. controls (2.0,1.3) and (1.7,1.3) .. (1.35,1.4) -- cycle;
+\fill[blue,ink] (1.4,2.0) .. controls (1.5,2.4) and (1.8,2.6) .. (2.1,2.7) -- (2.2,2.4) .. controls (1.9,2.3) and (1.6,2.1) .. (1.5,1.9) -- cycle;
+\foreach \y in {1.6,1.8,2.0}{\fill[brass,ink] (1.38,\y) rectangle (2.3,\y+.07);}
+\fill[skin,ink] (1.7,2.7) .. controls (1.8,2.95) and (2.0,3.05) .. (2.15,3.0) -- (2.05,2.75) -- cycle;
+% shoulder pad brass left
+\fill[brass,ink] (1.05,2.6) .. controls (1.0,3.0) and (1.3,3.15) .. (1.55,3.05) -- (1.5,2.6) -- cycle;
+% front arm with gauntlet
+\fill[brass,ink] (2.1,3.05) .. controls (2.5,3.4) and (3.0,3.4) .. (3.2,3.1) -- (3.35,2.2) .. controls (3.1,1.9) and (2.7,1.95) .. (2.55,2.2) -- (2.3,2.7) -- cycle;
+\fill[coil,ink] (2.5,3.15) .. controls (2.7,3.3) and (3.0,3.25) .. (3.1,3.05) -- (3.05,2.55) .. controls (2.9,2.5) and (2.65,2.55) .. (2.55,2.65) -- cycle;
+\foreach \y in {2.65,2.8,2.95,3.1}{\draw[coil!60!black,line width=.5pt] (2.58,\y) -- (3.05,\y);}
+\fill[brass,ink] (2.65,2.3) .. controls (3.0,2.4) and (3.4,2.3) .. (3.55,2.05) -- (3.4,1.8) .. controls (3.1,1.8) and (2.8,1.9) .. (2.6,2.0) -- cycle;
+\draw[brassD,line width=1pt] (2.7,1.8) .. controls (2.4,1.5) and (2.8,1.2) .. (3.0,1.5);
+% open hand
+\fill[skin,ink] (3.5,2.05) .. controls (3.7,2.25) and (3.9,2.3) .. (4.05,2.25) -- (3.85,2.12) -- (4.1,2.1) -- (3.85,2.0) -- (4.0,1.9) -- (3.75,1.9) .. controls (3.6,1.8) and (3.5,1.85) .. (3.45,1.9) -- cycle;
+\fill[skinD!50!blue,ink] (3.55,2.05) -- (3.65,2.25) -- (3.75,2.2) -- (3.65,2.0) -- cycle;
+% hair blowing right
+\fill[hair,ink] (1.6,3.6) .. controls (1.4,3.9) and (1.5,4.2) .. (1.8,4.3) .. controls (2.2,4.4) and (2.6,4.3) .. (3.2,4.1) .. controls (2.8,4.0) and (2.9,3.8) .. (3.1,3.6) .. controls (2.8,3.7) and (2.6,3.6) .. (2.45,3.45) .. controls (2.3,3.7) and (2.0,3.8) .. (1.8,3.55) -- cycle;
+% face profile looking right
+\fill[skin,ink] (1.85,3.55) .. controls (1.85,3.3) and (2.0,3.15) .. (2.15,3.15) .. controls (2.3,3.2) and (2.4,3.3) .. (2.45,3.45) -- (2.5,3.55) -- (2.43,3.6) .. controls (2.4,3.8) and (2.2,3.9) .. (2.0,3.85) -- cycle;
+\fill[hair] (2.25,3.62) circle (.025);
+\draw[ink,line width=.5pt] (2.25,3.32) -- (2.38,3.36);
+% goggles on head
+\fill[brass,ink] (2.05,3.95) circle (.09); \fill[brass,ink] (2.25,3.92) circle (.08);
+\fill[coil] (2.05,3.95) circle (.04); \fill[coil] (2.25,3.92) circle (.035);
+\draw[brassD,line width=1pt] (1.65,4.0) .. controls (1.7,4.3) and (1.8,4.4) .. (1.9,4.45);
+% flying leaves and debris
+\foreach \x/\y/\a in {0.2/4.0/30,0.1/2.9/-20,0.6/2.4/40,0.3/1.4/10,3.3/3.8/60,3.7/4.1/-30,3.9/3.2/20,4.4/4.2/50,4.5/2.8/-40,5.3/3.0/30,5.9/3.4/-20,5.4/1.6/10,4.6/1.3/70,5.8/2.2/-50,4.1/0.4/20,5.0/0.6/-30,0.6/0.3/40,2.9/0.2/-20,5.5/4.4/40,4.0/1.0/-60}{
+ \fill[leaf,ink,rotate around={\a:(\x,\y)}] (\x-.12,\y) .. controls (\x-.05,\y+.08) and (\x+.05,\y+.08) .. (\x+.12,\y) .. controls (\x+.05,\y-.08) and (\x-.05,\y-.08) .. (\x-.12,\y) -- cycle;}
+\fill[leafG,ink] (3.2,3.4) -- (3.4,3.55) -- (3.35,3.3) -- cycle;
+\end{tikzpicture}\end{document}

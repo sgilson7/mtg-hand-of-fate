@@ -1,0 +1,56 @@
+\input{../preamble}
+\definecolor{skyA}{HTML}{8aa08a}\definecolor{skyB}{HTML}{4f6a5a}\definecolor{brick}{HTML}{8b4630}
+\definecolor{brickD}{HTML}{4a2a1f}\definecolor{brickL}{HTML}{b0603e}\definecolor{ground}{HTML}{8a5030}
+\definecolor{groundL}{HTML}{b07040}\definecolor{skin}{HTML}{c07048}\definecolor{skinL}{HTML}{e0986a}
+\definecolor{skinD}{HTML}{7a3a22}\definecolor{leather}{HTML}{1e1818}\definecolor{steel}{HTML}{d8d8d0}
+\definecolor{steelD}{HTML}{8a8a88}\definecolor{hair}{HTML}{141012}\definecolor{eye}{HTML}{e83a2a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[top color=skyA,bottom color=skyB] (0,0) rectangle (6.16,4.52);
+% ground
+\fill[ground,ink] (0,0) -- (0,1.2) .. controls (2.0,1.5) and (4.0,1.3) .. (6.16,1.1) -- (6.16,0) -- cycle;
+\fill[groundL,opacity=.6] (1.2,0.9) .. controls (2.0,1.3) and (3.2,1.2) .. (4.0,1.0) .. controls (3.0,0.7) and (2.0,0.6) .. (1.2,0.9);
+% brick wall at the left, ruined pillar at the right
+\fill[brick,ink] (0,0.6) -- (0,4.52) -- (1.8,4.52) -- (1.55,3.2) -- (1.7,1.3) -- (1.3,0.8) -- cycle;
+\fill[brickD] (0.55,0.9) rectangle (0.95,4.52);
+\foreach \y in {1.2,1.5,...,4.5}{\draw[brickD,line width=.5pt] (0,\y) -- (0.55,\y); \draw[brickD,line width=.5pt] (0.95,\y) -- (1.65,\y);}
+\fill[brickL,opacity=.5] (1.15,1.0) -- (1.55,1.3) -- (1.45,4.52) -- (1.2,4.52) -- cycle;
+\fill[brick,ink] (5.7,1.0) -- (5.6,4.52) -- (6.16,4.52) -- (6.16,1.0) -- cycle;
+\fill[brickD,opacity=.6] (2.0,1.3) rectangle (2.3,3.6);
+% barrel at the lower left
+\fill[brickD,ink] (0.3,0.15) -- (0.35,0.85) -- (1.1,0.95) -- (1.05,0.2) -- cycle;
+\foreach \x in {0.5,0.7,0.9}{\draw[ink,line width=.5pt] (\x,0.18) -- (\x+.02,0.9);}
+% legs and dark hanging blades at the lower right
+\fill[leather,ink] (4.3,1.3) .. controls (4.4,0.6) and (4.6,0.2) .. (4.7,0) -- (6.16,0) -- (6.16,1.0) .. controls (5.8,1.3) and (5.3,1.4) .. (4.9,1.5) -- cycle;
+\foreach \x/\y/\a in {4.6/0.9/-110,5.0/0.8/-95,5.5/0.85/-80,5.9/0.9/-60}{\fill[steel,ink] (\x-.06,\y) -- ($(\x,\y)+(\a:.6)$) -- (\x+.06,\y) -- cycle;}
+% hair streaming out to the right
+\fill[hair,ink] (3.6,3.1) .. controls (4.2,3.8) and (4.9,3.9) .. (5.5,3.65) -- (5.1,3.5) -- (5.7,3.3) -- (5.2,3.15) -- (5.6,2.85) -- (4.9,2.9) .. controls (4.5,2.7) and (4.1,2.6) .. (3.9,2.6) -- cycle;
+\fill[hair,ink] (3.6,3.3) -- (3.9,4.1) -- (4.0,3.4) -- (4.5,4.2) -- (4.3,3.4) -- cycle;
+% bare torso with harness and chains
+\fill[skin,ink] (3.7,2.5) .. controls (4.3,2.7) and (5.0,2.6) .. (5.4,2.2) .. controls (5.5,1.8) and (5.3,1.4) .. (5.0,1.25) -- (4.3,1.25) .. controls (4.0,1.6) and (3.8,2.0) .. (3.7,2.5) -- cycle;
+\fill[skinL] (4.3,2.5) .. controls (4.8,2.55) and (5.2,2.35) .. (5.3,2.1) .. controls (4.9,2.25) and (4.6,2.3) .. (4.3,2.3) -- cycle;
+\fill[skinD] (4.4,1.3) .. controls (4.5,1.7) and (4.9,1.9) .. (5.2,1.8) .. controls (5.3,1.5) and (5.1,1.3) .. (5.0,1.25) -- cycle;
+\fill[leather,ink] (3.8,2.35) -- (5.45,2.15) -- (5.45,2.0) -- (3.85,2.2) -- cycle;
+\fill[leather,ink] (4.2,1.25) -- (5.1,1.25) -- (5.1,1.45) -- (4.25,1.45) -- cycle;
+\draw[steelD,line width=1pt] (4.7,2.1) circle (.09);
+\foreach \t in {0,0.1,...,1}{\draw[steelD!60!black,line width=.9pt] ($(5.4,2.1)!\t!(6.2,2.35)$) ellipse (.05 and .03);}
+\foreach \t in {0,0.12,...,1}{\draw[steelD!60!black,line width=.9pt] ($(5.0,2.3)!\t!(5.8,1.7)$) ellipse (.04 and .03);}
+% lower arm thrust forward, spiked bracers and a fan of blades
+\fill[skin,ink] (4.3,2.0) .. controls (3.8,2.1) and (3.2,2.1) .. (2.6,2.0) -- (2.55,1.75) .. controls (3.1,1.75) and (3.8,1.7) .. (4.3,1.55) -- cycle;
+\fill[leather,ink] (2.3,1.6) rectangle (3.15,2.15);
+\fill[leather,ink] (3.4,1.65) rectangle (3.75,2.12);
+\foreach \x in {2.4,2.65,2.9,3.5}{\fill[steelD,ink] (\x,2.15) -- (\x+.06,2.4) -- (\x+.12,2.15) -- cycle;}
+\foreach \a/\l in {178/2.2,190/2.0,203/1.85,218/1.6,236/1.4,255/1.25,272/1.1}{\fill[steel,ink] (2.3,1.92) +(\a+90:.04) -- +(\a+4:{\l*0.6}) -- +(\a:\l) -- +(\a-4:{\l*0.6}) -- +(\a-90:.04) -- cycle; \fill[steelD] (2.3,1.92) +(\a-90:.03) -- +(\a-4:{\l*0.6}) -- +(\a:\l) -- cycle;}
+% head: spiked black mask, red eyes
+\fill[skin,ink] (3.65,2.45) .. controls (3.5,2.6) and (3.5,2.8) .. (3.6,2.95) -- (3.95,2.85) -- (3.95,2.45) -- cycle;
+\fill[leather,ink] (3.45,2.75) .. controls (3.4,3.2) and (3.6,3.5) .. (3.9,3.45) .. controls (4.1,3.3) and (4.1,2.9) .. (4.0,2.6) .. controls (3.85,2.5) and (3.6,2.55) .. (3.45,2.75) -- cycle;
+\foreach \x/\y in {3.5/3.2,3.65/3.42,3.85/3.5,4.0/3.35}{\fill[steelD,ink] (\x-.04,\y) -- (\x,\y+.15) -- (\x+.04,\y) -- cycle;}
+\fill[eye] (3.6,3.0) circle (.04); \fill[eye] (3.78,3.02) circle (.04);
+\fill[skinD,ink] (3.52,2.72) -- (3.7,2.68) -- (3.62,2.58) -- cycle;
+% raised upper arm with its own fan of blades
+\fill[skin,ink] (4.3,3.2) .. controls (3.7,3.45) and (3.0,3.65) .. (2.5,3.75) -- (2.4,3.45) .. controls (2.9,3.35) and (3.5,3.1) .. (4.0,2.85) -- cycle;
+\fill[leather,ink] (1.85,3.45) -- (2.6,4.0) -- (2.95,3.6) -- (2.2,3.05) -- cycle;
+\fill[leather,ink] (3.15,3.25) -- (3.5,3.6) -- (3.7,3.4) -- (3.35,3.05) -- cycle;
+\foreach \x/\y in {2.0/3.52,2.3/3.74,2.6/3.94,3.3/3.52}{\fill[steelD,ink] (\x-.05,\y) -- (\x-.02,\y+.25) -- (\x+.06,\y) -- cycle;}
+\foreach \a/\l in {130/1.2,145/1.25,160/1.15,175/1.05,192/0.95,210/0.85}{\fill[steel,ink] (1.95,3.35) +(\a+90:.04) -- +(\a+5:{\l*0.6}) -- +(\a:\l) -- +(\a-5:{\l*0.6}) -- +(\a-90:.04) -- cycle; \fill[steelD] (1.95,3.35) +(\a-90:.03) -- +(\a-5:{\l*0.6}) -- +(\a:\l) -- cycle;}
+\end{tikzpicture}\end{document}

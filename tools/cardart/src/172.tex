@@ -1,0 +1,53 @@
+\input{../preamble}
+\definecolor{bgA}{HTML}{e08a68}\definecolor{bgB}{HTML}{b8482e}\definecolor{robe}{HTML}{8e3a28}
+\definecolor{robeL}{HTML}{b0583e}\definecolor{robeD}{HTML}{5e2418}\definecolor{skin}{HTML}{c08068}
+\definecolor{hair}{HTML}{7a4a34}\definecolor{brass}{HTML}{9a4a30}\definecolor{brassL}{HTML}{c27052}
+\definecolor{brassD}{HTML}{5a281a}\definecolor{glass}{HTML}{7ec0e8}\definecolor{glassL}{HTML}{d8f2ff}
+\definecolor{glassD}{HTML}{3a7ab8}\definecolor{hose}{HTML}{4a3028}\definecolor{bolt}{HTML}{e8fbff}
+\definecolor{boltB}{HTML}{6ac8ff}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[left color=bgB,right color=bgA] (0,0) rectangle (6.16,4.52);
+% the mage behind: robe, chest strap, head and hair at top right
+\fill[robe,ink] (2.6,4.6) -- (6.2,4.6) -- (6.2,1.4) .. controls (5.6,1.6) and (5.0,2.2) .. (4.4,2.8) .. controls (3.8,3.4) and (3.0,3.8) .. (2.6,4.6) -- cycle;
+\fill[robeL] (3.2,4.6) .. controls (3.6,4.0) and (4.2,3.6) .. (4.6,3.3) -- (4.9,3.5) .. controls (4.5,3.9) and (4.1,4.3) .. (3.9,4.6) -- cycle;
+\fill[robeD,ink] (3.4,3.6) .. controls (4.2,3.3) and (5.2,3.1) .. (6.2,3.2) -- (6.2,2.95) .. controls (5.2,2.85) and (4.2,3.05) .. (3.3,3.35) -- cycle;
+\fill[brassL,ink] (4.72,3.35) ellipse (.2 and .24); \fill[brassD,ink] (4.72,3.35) ellipse (.1 and .13);
+\fill[hair,ink] (4.6,4.6) .. controls (4.9,4.0) and (5.4,3.6) .. (5.6,3.0) .. controls (5.8,3.4) and (6.0,3.9) .. (6.2,4.0) -- (6.2,4.6) -- cycle;
+\fill[skin,ink] (4.7,4.6) .. controls (4.8,4.1) and (5.1,3.85) .. (5.35,3.85) .. controls (5.5,4.1) and (5.5,4.4) .. (5.45,4.6) -- cycle;
+\draw[robeD,line width=.6pt] (4.95,4.2) -- (5.25,4.05);
+\fill[brassL,ink] (5.55,4.35) circle (.2); \fill[glassL,ink] (5.55,4.35) circle (.12);
+\foreach \x in {5.5,5.7,5.9}{\draw[hair,line width=1pt] (\x,4.2) .. controls (\x+.1,3.6) .. (\x+.05,2.9);}
+% ribbed hose looping from the device off to the left
+\foreach \t in {0,0.03,...,1.0}{\pgfmathsetmacro\u{1-\t}
+ \fill[hose,ink] ({\u^3*1.35+3*\u^2*\t*0.9+3*\u*\t^2*0.1+\t^3*0.0},{\u^3*3.0+3*\u^2*\t*4.5+3*\u*\t^2*4.6+\t^3*2.5}) circle (.22);}
+% the gauntlet shell
+\fill[brass,ink] (1.3,3.5) .. controls (2.6,4.0) and (3.9,3.3) .. (4.4,2.6) .. controls (5.0,1.8) and (5.4,1.0) .. (5.6,0) -- (0.9,0) .. controls (0.8,0.8) and (0.8,2.6) .. (1.3,3.5) -- cycle;
+\fill[brassL] (1.6,3.5) .. controls (2.6,3.8) and (3.6,3.3) .. (4.1,2.7) .. controls (3.5,3.0) and (2.6,3.3) .. (1.6,3.3) -- cycle;
+\fill[brassD] (4.4,2.6) .. controls (5.0,1.8) and (5.4,1.0) .. (5.6,0) -- (4.9,0) .. controls (4.8,1.0) and (4.5,1.8) .. (4.0,2.4) -- cycle;
+% cuff bands at the wrist
+\fill[brass,ink] (2.9,0) .. controls (3.4,0.9) and (4.6,1.3) .. (6.2,1.2) -- (6.2,0.7) .. controls (4.8,0.85) and (3.7,0.5) .. (3.4,0) -- cycle;
+\fill[brassL] (3.05,0.1) .. controls (3.5,0.85) and (4.6,1.15) .. (6.2,1.08) -- (6.2,1.0) .. controls (4.6,1.05) and (3.55,0.75) .. (3.15,0.05) -- cycle;
+\foreach \x/\y in {3.5,4.0,4.6,5.2,5.8}{\fill[brassD,ink] ({\x},{0.55+0.2*(\x-3.4)/2.8+0.18}) circle (.05);}
+% side cap and blue light
+\fill[brass,ink] (3.95,2.35) -- (4.4,2.95) -- (5.05,2.45) -- (4.6,1.85) -- cycle;
+\fill[brassL,ink] (4.4,2.95) .. controls (4.7,3.1) and (5.0,2.8) .. (5.05,2.45) .. controls (4.8,2.7) and (4.6,2.8) .. (4.4,2.95);
+\shade[inner color=white,outer color=boltB,ink] (4.1,1.5) circle (.09);
+% pipe knobs on top
+\foreach \x in {1.95,2.55}{\fill[brassD,ink] (\x,3.55) rectangle (\x+.25,4.0); \fill[brassL,ink] (\x+.125,4.0) ellipse (.125 and .05);}
+% hose connector at the left
+\fill[brassD,ink] (0.3,1.4) rectangle (0.95,1.8);
+\fill[brassL,ink] (0.3,1.6) ellipse (.08 and .2);
+% the porthole: brass rim, glowing glass and the guild swirl
+\begin{scope}[shift={(2.25,1.95)},rotate=-12]
+ \fill[brassD,ink] (0,0) ellipse (1.12 and 1.4);
+ \fill[brassL,ink] (0,0) ellipse (1.02 and 1.3);
+ \shade[inner color=glassL,outer color=glassD,ink] (0.05,0) ellipse (0.88 and 1.15);
+ \foreach \a in {100,120,...,260}{\fill[glassL,ink] (\a:{0.9} and {1.17}) -- (\a+5:{0.75} and {1.0}) -- (\a+10:{0.9} and {1.17}) -- cycle;}
+ \fill[glassD!70!glass,opacity=.85] (0.15,0.75) .. controls (-0.4,0.75) and (-0.6,0.2) .. (-0.35,-0.15) .. controls (-0.1,-0.45) and (0.35,-0.3) .. (0.3,0.05) .. controls (0.2,0.3) and (-0.1,0.2) .. (-0.05,0.0) .. controls (-0.25,0.2) and (-0.1,0.55) .. (0.25,0.55) .. controls (0.5,0.5) and (0.55,0.2) .. (0.45,0.0) .. controls (0.75,0.3) and (0.55,0.75) .. (0.15,0.75) -- cycle;
+ \fill[glassD!70!glass,opacity=.85] (-0.2,-0.4) .. controls (0.0,-0.9) and (0.5,-0.8) .. (0.55,-0.45) .. controls (0.35,-0.6) and (0.1,-0.6) .. (-0.2,-0.4) -- cycle;
+\end{scope}
+% lightning crackling off the device
+\foreach \p in {{(1.6,4.6) -- (1.45,4.3) -- (1.7,4.1) -- (1.55,3.8) -- (1.9,3.6) -- (1.85,3.2) -- (2.1,2.9)},{(1.3,1.3) -- (0.9,1.45) -- (0.7,1.2) -- (0.35,1.35) -- (0.2,1.0) -- (-0.1,1.1)},{(0.7,1.2) -- (0.55,0.8) -- (0.25,0.65) -- (0.3,0.3)},{(2.1,3.9) -- (2.4,4.2) -- (2.6,4.1) -- (2.8,4.5)},{(1.4,2.2) -- (1.0,2.3) -- (0.85,2.1) -- (0.55,2.25)}}{
+ \draw[boltB,line width=2pt,line join=round] \p; \draw[bolt,line width=.7pt,line join=round] \p;}
+\end{tikzpicture}\end{document}

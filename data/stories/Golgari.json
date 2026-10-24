@@ -1,0 +1,44 @@
+{"stories": [
+ {"number": "158", "name": "Dreg Mangler", "kind": "creature",
+  "intro": "A hulking thing of bone and fungus bursts from a sewer grate. It charges before you can draw breath. Rot spreads where its hooves land.",
+  "win": "The mangler falls and rises again, yours to command.",
+  "lose": "It tramples you into the muck and lumbers away.",
+  "flee": "You dive into a side tunnel as it thunders past."},
+
+ {"number": "198", "name": "Sluiceway Scorpion", "kind": "creature",
+  "intro": "A scorpion as long as a man scuttles out of a sluice gate. Its sting kills anything it touches. It raises its tail and comes for you.",
+  "win": "The scorpion curls up, beaten. It skitters along behind you now.",
+  "lose": "The sting grazes you, and poison burns in your veins.",
+  "flee": "You splash back through the sluice and up a ladder."},
+
+ {"number": "141", "name": "Abrupt Decay", "kind": "magic",
+  "title": "Rot that cannot be stopped",
+  "text": "An Izzet machine has been sold with a lifetime guarantee, and it is rotting to dust. A Golgari shaman stands beside it, chanting. No counterspell slows her. The Izzet merchant begs you to stop her.",
+  "choices": [
+   {"text": "Ask the shaman to teach you", "needs": {"style": ["Golgari", 1]},
+    "outcome": {"text": "She smiles and presses a handful of spores into your palm.", "effects": [{"take": true}]}},
+   {"text": "Break her chant",
+    "outcome": {"text": "Her rot turns toward you.",
+     "fate": {"faces": [0, 2, 1, 1],
+      "success": {"text": "You break the chant, and the spell drops into your hands. The merchant pays you.", "effects": [{"gold": 6}, {"take": true}]},
+      "failure": {"text": "The rot creeps into your supplies before you pull away.", "effects": [{"supplies": -2}]},
+      "huge_failure": {"text": "The rot bites into your skin, and you stagger back.", "effects": [{"health": -3}]}}}},
+   {"text": "Let the machine rot",
+    "outcome": {"text": "You leave the merchant to his loss.", "effects": [{"leave": true}]}}
+  ]},
+
+ {"number": "229", "name": "Golgari Keyrune", "kind": "story",
+  "title": "A key to the undercity",
+  "text": "A carved stone beetle lies in a gutter, twitching. When you lift it, it clicks and points toward the sewers. A Golgari scout says it is a key to the undercity. Like a single ant, it hints at the colony below.",
+  "choices": [
+   {"text": "Follow where it points",
+    "outcome": {"text": "The beetle leads you to a door that wants to be opened.", "effects": [{"quest_start": "undercity"}, {"take": true}]}},
+   {"text": "Ask the scout for help", "needs": {"charisma": 3},
+    "outcome": {"text": "She tells you where the door lies and gives you rations for the journey.", "effects": [{"supplies": 2}, {"quest_start": "undercity"}, {"take": true}]}},
+   {"text": "Drop it back in the gutter",
+    "outcome": {"text": "The beetle scuttles out of sight.", "effects": [{"leave": true}]}}
+  ]},
+
+ {"number": "239", "name": "Golgari Guildgate", "kind": "land",
+  "text": "A gate of moss and bone opens into the undercity, where the outcast are welcome. You can claim it for a tile you have walked."}
+]}

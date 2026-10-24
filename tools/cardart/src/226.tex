@@ -1,0 +1,61 @@
+\input{../preamble}
+% Chromatic Lantern: a great brass lantern crowned by a spread-winged owl, stained-glass panes glowing, hung in a pale gothic vault
+\definecolor{bg}{HTML}{4a4a32}\definecolor{light}{HTML}{e8e6c8}\definecolor{col}{HTML}{6a6a4c}
+\definecolor{gold}{HTML}{c4983a}\definecolor{goldL}{HTML}{ecca6a}\definecolor{goldD}{HTML}{6a4a1a}
+\definecolor{gR}{HTML}{c86a8a}\definecolor{gG}{HTML}{6ab43a}\definecolor{gGL}{HTML}{b8e070}\definecolor{gY}{HTML}{e8c83a}\definecolor{gT}{HTML}{3a8a8a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\fill[bg] (0,0) rectangle (6.16,4.52);
+\shade[inner color=light,outer color=bg] (3.1,3.6) ellipse (3.0 and 2.2);
+% gothic columns and ribbed vault
+\foreach \x/\w in {0.3/.4,1.2/.3,4.75/.3,5.5/.45}{\fill[col,opacity=.7] (\x,0) rectangle (\x+\w,3.6);}
+\foreach \x in {0.5,1.35,4.9,5.7}{\draw[col,line width=1.5pt,opacity=.7] (\x,3.6) .. controls (\x,4.3) and ({3.1-(3.1-\x)*.3},4.6) .. (3.1,4.6);}
+\begin{scope}[shift={(3.6,0)},xscale=1.12,shift={(-3.3,0)}]
+% chains
+\foreach \x/\d in {2.9/-.12,3.5/.12}{\foreach \i in {0,1,2}{\draw[ink,goldD,line width=.9pt] (\x+\d*\i*.4,4.45-\i*.18) ellipse (.05 and .1);}}
+% crown cap
+\fill[gold,ink] (2.85,4.52) -- (2.85,4.35) -- (3.75,4.35) -- (3.75,4.52) -- cycle;
+\fill[goldL,ink] (3.3,4.4) ellipse (.25 and .1);
+\fill[gold,ink] (2.55,3.95) .. controls (2.7,4.3) and (3.9,4.3) .. (4.05,3.95) -- (3.9,3.75) -- (2.7,3.75) -- cycle;
+% side brackets with hooks
+\fill[gold,ink] (1.6,3.3) .. controls (1.5,3.05) and (1.6,2.8) .. (1.85,2.7) -- (2.3,2.55) -- (2.35,3.1) -- cycle;
+\fill[gold,ink] (5.0,3.3) .. controls (5.1,3.05) and (5.0,2.8) .. (4.75,2.7) -- (4.3,2.55) -- (4.25,3.1) -- cycle;
+\fill[goldD,ink] (1.75,3.05) circle (.07); \fill[goldD,ink] (4.85,3.05) circle (.07);
+% owl wings spread wide
+\fill[gold,ink] (3.0,3.4) .. controls (2.4,3.8) and (1.8,3.7) .. (1.5,3.05) .. controls (1.85,3.0) and (2.0,2.8) .. (2.3,2.5) -- (3.0,2.5) -- cycle;
+\fill[goldL,opacity=.6] (2.6,3.5) .. controls (2.1,3.6) and (1.7,3.4) .. (1.5,3.15) .. controls (1.9,3.25) and (2.3,3.3) .. (2.6,3.5);
+\fill[gold,ink] (3.6,3.4) .. controls (4.2,3.8) and (4.8,3.7) .. (5.1,3.05) .. controls (4.75,3.0) and (4.6,2.8) .. (4.3,2.5) -- (3.6,2.5) -- cycle;
+\foreach \i in {0,1,2,3}{\draw[ink,goldD] (2.85-\i*.3,3.4-\i*.05) .. controls (2.75-\i*.3,3.1) .. (2.7-\i*.2,2.7);
+ \draw[ink,goldD] (3.75+\i*.3,3.4-\i*.05) .. controls (3.85+\i*.3,3.1) .. (3.9+\i*.2,2.7);}
+\fill[goldL,opacity=.6] (4.0,3.5) .. controls (4.5,3.6) and (4.9,3.4) .. (5.1,3.15) .. controls (4.7,3.25) and (4.3,3.3) .. (4.0,3.5);
+% owl body and head
+\fill[gold,ink] (3.3,2.7) ellipse (.42 and .62);
+\fill[goldL] (3.3,2.55) ellipse (.25 and .38);
+\fill[gold,ink] (3.3,3.48) ellipse (.36 and .3);
+\fill[goldD,ink] (3.17,3.52) circle (.1); \fill[goldD,ink] (3.43,3.52) circle (.1);
+\fill[goldL] (3.17,3.52) circle (.04); \fill[goldL] (3.43,3.52) circle (.04);
+\fill[goldD,ink] (3.25,3.4) -- (3.3,3.25) -- (3.35,3.4) -- cycle;
+\draw[ink,goldD] (3.3,2.15) .. controls (3.1,2.5) .. (3.3,2.95) .. controls (3.5,2.5) .. (3.3,2.15);
+% lantern cage: outer frame flaring at top
+\fill[goldD,ink] (2.0,2.45) .. controls (2.2,2.2) and (2.3,1.6) .. (2.45,0.95) -- (4.15,0.95) .. controls (4.3,1.6) and (4.4,2.2) .. (4.6,2.45) -- cycle;
+% stained-glass panes
+\fill[gR,ink] (2.35,2.25) -- (2.85,2.25) -- (2.85,1.95) -- (2.45,1.95) -- cycle;
+\fill[gR,ink] (3.75,2.25) -- (4.25,2.25) -- (4.15,1.95) -- (3.75,1.95) -- cycle;
+\fill[gG,ink] (2.48,1.85) -- (2.85,1.85) -- (2.85,1.5) -- (2.55,1.5) -- cycle;
+\fill[gY,ink] (2.57,1.4) -- (2.85,1.4) -- (2.85,1.08) -- (2.62,1.08) -- cycle;
+\fill[gGL,ink] (2.95,1.85) rectangle (3.65,1.5); \fill[gY,ink] (2.95,1.4) rectangle (3.65,1.08);
+\fill[gG,ink] (3.75,1.85) -- (4.12,1.85) -- (4.05,1.5) -- (3.75,1.5) -- cycle;
+\fill[gY,ink] (3.75,1.4) -- (4.03,1.4) -- (3.98,1.08) -- (3.75,1.08) -- cycle;
+\shade[inner color=white,outer color=gGL,opacity=.6] (3.3,1.5) ellipse (.3 and .25);
+\draw[ink,gold,line width=1.8pt] (2.9,2.3) -- (2.9,1.0); \draw[ink,gold,line width=1.8pt] (3.7,2.3) -- (3.7,1.0);
+\draw[ink,gold,line width=1.6pt] (2.0,2.45) .. controls (2.2,2.2) and (2.3,1.6) .. (2.45,0.95);
+\draw[ink,gold,line width=1.6pt] (4.6,2.45) .. controls (4.4,2.2) and (4.3,1.6) .. (4.15,0.95);
+% base bands and teal bowl
+\fill[gold,ink] (2.3,0.98) rectangle (4.3,0.7);
+\foreach \x in {2.4,2.55,...,4.2}{\fill[goldD] (\x,0.84) circle (.03);}
+\fill[gold,ink] (2.45,0.7) -- (4.15,0.7) -- (4.0,0.5) -- (2.6,0.5) -- cycle;
+\fill[gT,ink] (2.6,0.5) .. controls (2.7,0.15) and (3.9,0.15) .. (4.0,0.5) -- cycle;
+\fill[gold,ink] (2.9,0.25) .. controls (3.1,0.0) and (3.5,0.0) .. (3.7,0.25) -- (3.7,0) -- (2.9,0) -- cycle;
+\draw[ink,goldD,line width=.8pt] (2.7,0.2) -- (2.7,0); \draw[ink,goldD,line width=.8pt] (3.9,0.2) -- (3.9,0);
+\end{scope}
+\end{tikzpicture}\end{document}

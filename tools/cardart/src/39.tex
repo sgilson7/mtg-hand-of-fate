@@ -1,0 +1,59 @@
+\input{../preamble}
+\definecolor{skyW}{HTML}{c4ccdc}\definecolor{skyB}{HTML}{8a96c0}\definecolor{spire}{HTML}{7a6ca4}
+\definecolor{spireD}{HTML}{4c4278}\definecolor{bulk}{HTML}{3a3468}\definecolor{bulkD}{HTML}{242240}
+\definecolor{bulkR}{HTML}{5a3a64}\definecolor{amber}{HTML}{c88a70}\definecolor{navy}{HTML}{1e2230}
+\definecolor{wing}{HTML}{c8e8c0}\definecolor{skin}{HTML}{c08a90}\definecolor{hair}{HTML}{3a2030}
+\definecolor{armor}{HTML}{4a5a9c}\definecolor{ribbon}{HTML}{b0507a}\definecolor{crowd}{HTML}{2a2c4c}
+\definecolor{glowG}{HTML}{b8e0c8}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[top color=skyB,bottom color=skyW] (0,0) rectangle (6.16,4.52);
+\shade[inner color=glowG,outer color=skyW,opacity=.8] (2.5,3.2) circle (1.0);
+% clouds
+\fill[white,opacity=.4] (0.2,3.6) .. controls (0.6,4.0) and (1.4,4.0) .. (1.8,3.7) .. controls (1.4,3.5) and (0.6,3.4) .. (0.2,3.6);
+% spires left
+\foreach \x/\b/\h in {0.15/0.4/3.2,0.65/0.6/3.4,1.25/1.0/1.9,1.45/2.1/2.9}{\fill[spire,ink] (\x-.16,\b) -- (\x,\b+\h) -- (\x+.16,\b) -- cycle;}
+\fill[spireD,ink] (0,0) -- (0,4.52) -- (0.25,4.52) -- (0.45,2.0) -- (0.9,1.4) -- (1.3,0.9) -- (1.5,0) -- cycle;
+\fill[spire,ink] (1.2,2.0) -- (1.3,2.95) -- (1.45,2.2) -- cycle;
+% crowd silhouettes bottom left
+\foreach \x in {0.3,0.6,0.9,1.2,1.5,1.8}{\fill[crowd,ink] (\x-.12,0) -- (\x-.1,0.3) .. controls (\x-.08,0.4) and (\x+.08,0.4) .. (\x+.1,0.3) -- (\x+.12,0) -- cycle; \fill[crowd,ink] (\x,0.45) circle (.07);}
+% amber crystal shards and spires behind
+\fill[spire,ink] (3.0,2.8) -- (3.5,4.0) -- (3.7,2.8) -- cycle;
+\fill[amber,ink] (3.6,2.6) -- (3.75,4.2) -- (4.3,3.0) -- cycle;
+\fill[amber!60!spire,ink] (4.0,4.52) -- (4.3,3.2) -- (4.7,4.52) -- cycle;
+\fill[spire,ink] (5.4,1.4) -- (5.6,3.2) -- (6.16,3.6) -- (6.16,1.4) -- cycle;
+\fill[navy] (5.0,3.3) .. controls (5.4,3.4) and (5.8,3.4) .. (6.16,3.2) -- (6.16,4.52) -- (4.8,4.52) -- cycle;
+% hooded dark figure
+\fill[bulk,ink] (1.25,0) .. controls (1.3,0.8) and (1.6,1.4) .. (1.95,1.9) .. controls (2.3,2.3) and (2.6,2.7) .. (2.9,3.05) .. controls (3.1,3.3) and (3.5,3.35) .. (3.75,3.1) .. controls (3.95,2.8) and (3.9,2.4) .. (4.2,2.2) .. controls (4.5,1.9) and (4.6,1.4) .. (4.6,0.9) -- (4.7,0) -- cycle;
+\fill[bulkR,opacity=.7] (1.7,1.3) .. controls (2.2,1.7) and (3.2,1.8) .. (4.0,1.6) .. controls (3.4,1.2) and (2.4,1.0) .. (1.7,1.3);
+\fill[bulkD,opacity=.6] (2.6,2.1) .. controls (3.0,2.6) and (3.5,2.7) .. (3.9,2.5) .. controls (3.6,2.0) and (3.0,1.9) .. (2.6,2.1) -- cycle;
+\fill[bulkD] (1.6,0) .. controls (2.2,0.8) and (3.5,1.0) .. (4.7,0.6) -- (4.7,0) -- cycle;
+\fill[bulk,ink] (4.6,0) -- (4.6,1.2) .. controls (5.2,1.5) and (5.8,1.4) .. (6.16,1.2) -- (6.16,0) -- cycle;
+\fill[skin!50!bulk,ink] (5.85,1.6) circle (.18);
+% shadowy arm and hand reaching down from top right
+\begin{scope}[shift={(-0.2,-0.5)},scale around={1.35:(5.0,2.4)}]
+\fill[navy,ink] (6.6,4.0) -- (6.16,3.7) .. controls (5.8,3.5) and (5.5,3.2) .. (5.3,2.95) .. controls (5.4,2.7) and (5.5,2.4) .. (5.55,2.2) .. controls (5.4,2.3) and (5.3,2.45) .. (5.2,2.55) .. controls (5.2,2.3) and (5.15,2.1) .. (5.05,1.95) .. controls (5.0,2.2) and (4.95,2.4) .. (4.9,2.55) .. controls (4.8,2.3) and (4.7,2.1) .. (4.55,1.95) .. controls (4.55,2.2) and (4.6,2.45) .. (4.65,2.65) .. controls (4.5,2.5) and (4.35,2.3) .. (4.2,2.25) .. controls (4.25,2.6) and (4.4,2.95) .. (4.6,3.2) .. controls (4.8,3.5) and (4.9,3.8) .. (5.0,4.0) .. controls (5.1,4.3) and (5.0,4.45) .. (4.95,4.52) -- (5.2,5.2) -- (6.6,5.2) -- (6.6,3.8) -- cycle;
+\end{scope}
+% wings
+\fill[wing,ink,opacity=.75] (2.25,3.75) .. controls (2.5,4.3) and (3.0,4.6) .. (3.3,4.52) .. controls (3.1,4.1) and (2.8,3.8) .. (2.4,3.6) -- cycle;
+\fill[wing,ink,opacity=.65] (2.3,3.55) .. controls (2.8,3.7) and (3.3,3.7) .. (3.6,3.5) .. controls (3.2,3.3) and (2.7,3.3) .. (2.35,3.4) -- cycle;
+\fill[wing,ink,opacity=.6] (2.1,3.9) .. controls (2.0,4.3) and (2.2,4.52) .. (2.5,4.52) -- (2.3,3.9) -- cycle;
+% faerie: ribbons
+\draw[ribbon,line width=1pt] (2.3,3.1) .. controls (2.6,2.9) and (2.8,3.2) .. (3.1,3.0);
+\draw[ribbon,line width=.8pt] (1.75,2.8) .. controls (1.6,2.5) and (1.8,2.3) .. (1.7,2.0);
+\draw[ribbon,line width=.8pt] (1.85,2.7) .. controls (1.95,2.4) and (1.85,2.2) .. (1.95,1.95);
+% legs folded
+\fill[skin!80!bulkR,ink] (1.75,3.05) .. controls (1.55,2.85) and (1.6,2.6) .. (1.75,2.45) .. controls (1.95,2.4) and (2.15,2.5) .. (2.2,2.65) -- (2.0,2.75) .. controls (2.1,2.9) and (2.05,3.05) .. (1.95,3.1) -- cycle;
+\fill[skin!80!bulkR,ink] (1.95,2.75) .. controls (2.15,2.7) and (2.3,2.5) .. (2.25,2.3) -- (2.1,2.3) .. controls (2.05,2.5) and (1.95,2.6) .. (1.85,2.65) -- cycle;
+% torso and armour
+\fill[skin,ink] (1.75,3.0) .. controls (1.7,3.3) and (1.75,3.5) .. (1.85,3.65) -- (2.25,3.6) .. controls (2.3,3.4) and (2.2,3.15) .. (2.05,3.0) -- cycle;
+\fill[armor,ink] (1.8,3.35) .. controls (1.8,3.55) and (1.9,3.7) .. (2.0,3.7) -- (2.3,3.62) .. controls (2.3,3.45) and (2.25,3.35) .. (2.15,3.3) -- cycle;
+\fill[armor,ink] (2.15,3.65) .. controls (2.3,3.75) and (2.45,3.7) .. (2.5,3.55) -- (2.3,3.45) -- cycle;
+% arm stretched right
+\fill[skin,ink] (2.3,3.55) .. controls (2.5,3.45) and (2.6,3.35) .. (2.65,3.25) -- (2.75,3.3) .. controls (2.65,3.45) and (2.5,3.6) .. (2.35,3.65) -- cycle;
+% head
+\fill[hair,ink] (1.5,3.85) .. controls (1.45,4.2) and (1.65,4.4) .. (1.9,4.4) .. controls (2.15,4.35) and (2.25,4.15) .. (2.2,3.95) .. controls (2.0,4.05) and (1.85,3.95) .. (1.8,3.8) .. controls (1.75,3.6) and (1.6,3.55) .. (1.5,3.85) -- cycle;
+\fill[skin,ink] (1.8,3.8) .. controls (1.8,3.6) and (1.95,3.55) .. (2.05,3.6) .. controls (2.15,3.7) and (2.2,3.85) .. (2.2,3.95) .. controls (2.05,4.05) and (1.85,3.95) .. (1.8,3.8) -- cycle;
+\draw[ink,line width=.5pt] (1.97,3.68) .. controls (2.02,3.65) .. (2.08,3.7);
+\fill[skin,ink] (2.15,3.9) -- (2.32,3.98) -- (2.18,4.0) -- cycle;
+\end{tikzpicture}\end{document}

@@ -1,0 +1,44 @@
+\input{../preamble}
+\definecolor{skyA}{HTML}{9aaa94}\definecolor{skyB}{HTML}{3a4c44}\definecolor{fog}{HTML}{7d8b7a}
+\definecolor{bldg}{HTML}{5e7468}\definecolor{bldgD}{HTML}{36473f}\definecolor{bronze}{HTML}{7f6e4e}
+\definecolor{bronzeL}{HTML}{aa9a78}\definecolor{bronzeD}{HTML}{4f4232}\definecolor{panel}{HTML}{3e6a7a}
+\definecolor{panelL}{HTML}{6fa0a8}\definecolor{orb}{HTML}{2a3a5a}\definecolor{orbL}{HTML}{8aa0c8}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[top color=skyA,bottom color=skyB] (0,0) rectangle (6.16,4.52);
+\fill[skyA!80!white,opacity=.5] (3.5,4.52) .. controls (4.5,3.8) and (5.5,4.0) .. (6.16,3.6) -- (6.16,4.52) -- cycle;
+% misty domed city behind
+\fill[fog,ink] (4.0,0) -- (4.0,1.6) .. controls (4.1,2.5) and (5.6,2.6) .. (5.9,1.6) -- (5.9,0) -- cycle;
+\fill[bldg,ink] (3.7,0) rectangle (6.16,1.4);
+\fill[fog,ink] (5.8,0) -- (5.8,1.9) .. controls (5.9,2.3) and (6.16,2.3) .. (6.16,2.2) -- (6.16,0) -- cycle;
+\fill[bldg,ink] (0,0) rectangle (1.2,2.6);
+\fill[bldgD,ink] (0,2.6) -- (0.6,2.95) -- (1.2,2.6) -- cycle;
+
+\foreach \x in {4.2,4.8,5.4}{\fill[bldgD,ink] (\x,0.3) rectangle (\x+.3,0.9);}
+% the keyrune, along its own axis
+\begin{scope}[shift={(1.1,4.3)},rotate=-48.5,yscale=1.3]
+ % lower-left blade
+ \fill[bronze,ink] (-0.2,-0.5) .. controls (0.5,-1.5) and (2.0,-1.7) .. (3.65,-1.6) .. controls (2.4,-1.2) and (1.4,-0.8) .. (0.9,-0.38) -- cycle;
+ \fill[bronzeL] (0.0,-0.6) .. controls (0.7,-1.3) and (1.8,-1.55) .. (3.3,-1.58) .. controls (2.0,-1.35) and (0.9,-1.0) .. (0.3,-0.55) -- cycle;
+ % upper-right blade
+ \fill[bronze,ink] (0.2,0.35) .. controls (1.2,1.2) and (3.0,1.3) .. (4.35,0.95) .. controls (3.2,0.7) and (2.0,0.5) .. (1.3,0.3) -- cycle;
+ \fill[bronzeD] (1.4,0.4) .. controls (2.3,0.7) and (3.3,0.85) .. (4.2,0.98) .. controls (3.0,1.0) and (2.0,0.85) .. (1.2,0.5) -- cycle;
+ % shaft and pommel ring
+ \fill[bronze,ink] (2.8,-0.28) -- (5.0,-0.25) -- (5.75,0) -- (5.0,0.25) -- (2.8,0.28) -- cycle;
+ \fill[skyB,ink] (4.6,0) ellipse (.3 and .17);
+ \foreach \x in {3.0,3.2,3.4,3.6}{\fill[bronzeD,ink] (\x,0.28) rectangle (\x+.1,0.5);}
+ \fill[bronzeD,ink] (3.9,-0.28) -- (4.2,-0.5) -- (4.3,-0.28) -- cycle;
+ % main body with panels
+ \fill[bronze,ink] (0.4,-0.42) -- (2.9,-0.35) -- (3.1,0) -- (2.9,0.38) -- (0.4,0.45) -- cycle;
+ \fill[bronzeL] (0.45,0.3) -- (2.85,0.3) -- (2.9,0.38) -- (0.4,0.45) -- cycle;
+ \fill[panel,ink] (0.55,-0.3) -- (1.35,0) -- (0.55,0.35) -- cycle;
+ \draw[ink,panelL] (0.8,0.02) circle (.12);
+ \fill[panel,ink] (1.45,-0.3) -- (1.95,-0.3) -- (2.15,0) -- (1.95,0.32) -- (1.45,0.32) -- (1.3,0) -- cycle;
+ \fill[panelL] (1.55,0.05) -- (1.9,0.05) -- (2.0,0.2) -- (1.6,0.22) -- cycle;
+ \foreach \x in {2.1,2.5,2.9}{\shade[inner color=orbL,outer color=orb,ink] (\x,-0.12) circle (.15);}
+ % hawk head at the top
+ \fill[bronze,ink] (0.5,-0.4) .. controls (0.1,-0.4) and (-0.25,-0.1) .. (-0.3,0.15) .. controls (-0.15,0.35) and (0.2,0.45) .. (0.5,0.45) -- cycle;
+ \fill[bronzeL] (-0.25,0.15) .. controls (-0.05,0.35) and (0.2,0.4) .. (0.45,0.4) -- (0.45,0.25) .. controls (0.1,0.25) and (-0.1,0.15) .. (-0.25,0.15);
+ \fill[bronzeD,ink] (0.05,0.08) circle (.05);
+\end{scope}
+\end{tikzpicture}\end{document}

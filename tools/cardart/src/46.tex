@@ -1,0 +1,62 @@
+\input{../preamble}
+\definecolor{dark}{HTML}{101214}\definecolor{wall}{HTML}{5e5c70}\definecolor{wallD}{HTML}{4a4858}
+\definecolor{col}{HTML}{2c2420}\definecolor{tent}{HTML}{c4c2aa}\definecolor{tentD}{HTML}{7a7260}
+\definecolor{tentL}{HTML}{e8e4cc}\definecolor{skin}{HTML}{8c7a66}\definecolor{skinD}{HTML}{4c3e32}
+\definecolor{cloth}{HTML}{4a5488}\definecolor{floor}{HTML}{2a2a30}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\fill[dark] (0,0) rectangle (6.16,4.52);
+% stone wall right
+\fill[wall] (3.4,1.3) rectangle (6.16,4.52);
+\foreach \y in {1.8,2.4,3.0,3.6,4.2}{\draw[wallD,line width=.6pt] (3.4,\y) -- (6.16,\y);}
+\foreach \y/\o in {1.8/0,2.4/.4,3.0/0,3.6/.4,4.2/0}{\foreach \x in {3.8,4.6,5.4}{\draw[wallD,line width=.6pt] (\x+\o,\y) -- (\x+\o,\y+.6);}}
+\fill[dark] (3.4,1.3) rectangle (3.75,4.52);
+\fill[floor] (3.4,0) rectangle (6.16,1.3);
+% column holding the beast, right
+\fill[col,ink] (4.9,0) rectangle (5.6,4.52);
+\fill[col!70!wall,opacity=.5] (5.35,0) rectangle (5.5,4.52);
+% tentacle from the top left, curling, running down behind the figure's back
+\draw[ink,line width=9pt,line cap=round] (0.35,4.2) .. controls (0.6,4.5) and (1.2,4.4) .. (1.6,3.8) .. controls (2.0,3.2) and (1.9,2.4) .. (2.2,1.6);
+\draw[tent,line width=7.6pt,line cap=round] (0.35,4.2) .. controls (0.6,4.5) and (1.2,4.4) .. (1.6,3.8) .. controls (2.0,3.2) and (1.9,2.4) .. (2.2,1.6);
+\draw[ink,line width=5pt,line cap=round] (0.35,4.2) .. controls (0.1,4.0) and (0.2,3.75) .. (0.4,3.8);
+\draw[tent,line width=3.6pt,line cap=round] (0.35,4.2) .. controls (0.1,4.0) and (0.2,3.75) .. (0.4,3.8);
+\draw[tentD,line width=.6pt] (1.05,4.3) .. controls (1.4,4.1) and (1.7,3.6) .. (1.8,3.1);
+% the figure: legs, kneeling
+\fill[skin,ink] (2.9,1.2) .. controls (2.7,0.8) and (2.6,0.4) .. (2.5,0) -- (3.1,0) .. controls (3.2,0.4) and (3.3,0.8) .. (3.4,1.1) -- cycle;
+\fill[cloth,ink] (3.4,1.0) .. controls (3.7,0.7) and (4.0,0.5) .. (4.2,0.3) -- (4.3,0.6) .. controls (4.1,0.8) and (3.8,1.1) .. (3.6,1.3) -- cycle;
+\fill[skin,ink] (4.15,0.25) -- (4.2,0) -- (4.5,0) -- (4.35,0.6) -- cycle;
+% torso arched back
+\fill[skin,ink] (2.6,3.2) .. controls (2.4,2.7) and (2.4,2.2) .. (2.6,1.7) .. controls (2.7,1.4) and (2.8,1.2) .. (2.9,1.1) -- (3.5,1.15) .. controls (3.4,1.6) and (3.3,2.0) .. (3.2,2.4) .. controls (3.1,2.8) and (3.0,3.1) .. (2.95,3.3) -- cycle;
+\foreach \y in {2.2,2.4,2.6}{\draw[skinD,line width=.5pt] (2.65,\y) .. controls (2.8,\y+.05) .. (3.0,\y-.02);}
+\fill[cloth,ink] (2.7,1.6) .. controls (3.0,1.45) and (3.3,1.4) .. (3.5,1.45) -- (3.45,1.15) .. controls (3.2,1.1) and (2.95,1.15) .. (2.75,1.25) -- cycle;
+% head thrown back, mouth open, long nose
+\fill[skin,ink] (2.55,3.15) .. controls (2.35,3.4) and (2.3,3.7) .. (2.45,3.85) .. controls (2.6,3.95) and (2.8,3.9) .. (2.95,3.75) -- (3.4,3.55) -- (2.98,3.5) .. controls (3.0,3.35) and (2.95,3.2) .. (2.9,3.15) -- cycle;
+\fill[dark] (2.85,3.42) -- (3.05,3.48) -- (2.9,3.3) -- cycle;
+\fill[skinD] (2.62,3.72) circle (.03);
+\draw[skinD,line width=.6pt] (2.45,3.85) .. controls (2.5,3.95) and (2.4,4.0) .. (2.3,3.95);
+\fill[skin,ink] (2.45,3.65) .. controls (2.2,3.7) and (1.9,3.5) .. (1.7,3.2) .. controls (2.0,3.3) and (2.3,3.4) .. (2.5,3.45) -- cycle;
+% arm gripping the tentacle
+\fill[skin,ink] (2.95,3.0) .. controls (3.1,2.6) and (3.3,2.3) .. (3.5,2.0) -- (3.65,2.1) .. controls (3.45,2.4) and (3.25,2.75) .. (3.1,3.05) -- cycle;
+% big tentacle from the column, curving across and wrapping the figure's chest
+\draw[ink,line width=16pt] (5.2,3.7) .. controls (5.0,3.0) and (4.5,2.55) .. (3.9,2.45) .. controls (3.4,2.4) and (2.9,2.5) .. (2.55,2.3);
+\draw[tent,line width=14.6pt] (5.2,3.7) .. controls (5.0,3.0) and (4.5,2.55) .. (3.9,2.45) .. controls (3.4,2.4) and (2.9,2.5) .. (2.55,2.3);
+\draw[tentL,line width=3pt,opacity=.6] (5.25,3.6) .. controls (5.05,3.0) and (4.6,2.68) .. (3.9,2.58);
+\foreach \t in {0.3,0.42,...,0.9}{\fill[tentD] ($(5.0,2.95)!\t!(3.1,2.3)$) circle (.035);}
+% lower tentacle with suckers, sweeping right and up the column
+\draw[ink,line width=18pt] (2.7,1.7) .. controls (3.4,1.0) and (4.6,0.8) .. (5.4,1.3) .. controls (5.8,1.6) and (5.9,2.4) .. (5.7,3.3);
+\draw[tent,line width=16.6pt] (2.7,1.7) .. controls (3.4,1.0) and (4.6,0.8) .. (5.4,1.3) .. controls (5.8,1.6) and (5.9,2.4) .. (5.7,3.3);
+\foreach \x in {3.3,3.6,3.9,4.2,4.5,4.8,5.1}{\fill[tentL,ink] (\x,{1.2-0.25*sin((\x-3.0)*80)}) circle (.065); \fill[tentD] (\x,{1.2-0.25*sin((\x-3.0)*80)}) circle (.025);}
+\draw[ink,line width=6pt] (5.7,3.3) .. controls (5.6,3.7) and (5.9,3.9) .. (6.0,3.6);
+\draw[tent,line width=4.6pt] (5.7,3.3) .. controls (5.6,3.7) and (5.9,3.9) .. (6.0,3.6);
+% wrapping band around the waist
+\draw[ink,line width=9pt] (2.45,1.9) .. controls (2.8,1.7) and (3.2,1.75) .. (3.5,1.95);
+\draw[tent,line width=7.6pt] (2.45,1.9) .. controls (2.8,1.7) and (3.2,1.75) .. (3.5,1.95);
+% hand on the lower tentacle
+\fill[skin,ink] (3.35,1.95) .. controls (3.5,1.75) and (3.7,1.65) .. (3.9,1.7) -- (3.95,1.55) -- (3.75,1.5) .. controls (3.55,1.55) and (3.35,1.7) .. (3.25,1.85) -- cycle;
+% dark tentacle ends curling from the column top
+\draw[col,line width=3pt] (4.95,3.6) .. controls (4.5,3.7) and (4.4,3.2) .. (4.7,3.0);
+\draw[col,line width=2.5pt] (5.6,3.9) .. controls (6.0,4.0) and (6.1,3.6) .. (5.85,3.5);
+\draw[col,line width=2.5pt] (5.8,2.6) .. controls (6.1,2.4) and (6.1,2.0) .. (5.9,1.9);
+\draw[ink,line width=9pt] (5.0,0) .. controls (5.4,0.5) and (5.9,0.6) .. (6.2,0.5);
+\draw[tent,line width=7.6pt] (5.0,0) .. controls (5.4,0.5) and (5.9,0.6) .. (6.2,0.5);
+\end{tikzpicture}\end{document}

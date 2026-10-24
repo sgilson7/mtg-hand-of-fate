@@ -1,0 +1,50 @@
+\input{../preamble}
+\definecolor{navy}{HTML}{1e2540}\definecolor{navyL}{HTML}{303e66}\definecolor{plum}{HTML}{4b2c3a}
+\definecolor{redW}{HTML}{8a3036}\definecolor{redL}{HTML}{e04a30}\definecolor{orange}{HTML}{ff8a50}
+\definecolor{blueG}{HTML}{6a8ae8}\definecolor{blueL}{HTML}{b8c8ff}\definecolor{tunnel}{HTML}{3a2a5c}
+\definecolor{tunnelD}{HTML}{140e24}\definecolor{metal}{HTML}{5a6078}\definecolor{metalL}{HTML}{8a90b0}
+\definecolor{stp}{HTML}{3a3458}\definecolor{stpL}{HTML}{6a5a88}\definecolor{orb}{HTML}{c83a2a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[left color=navy,right color=redW] (0,0) rectangle (6.16,4.52);
+\fill[navy,opacity=.6] (0,0) rectangle (3.0,4.52);
+% background machinery columns
+\foreach \x in {0.2,1.45,1.75,4.55,5.05,5.5}{\fill[navyL,ink] (\x,2.2) rectangle (\x+.18,4.52);}
+\fill[redW!70!black,ink] (5.1,0) rectangle (6.16,4.52);
+\foreach \y in {3.9,3.3,2.7}{\draw[ink,line width=.5pt] (5.1,\y) -- (6.16,\y);}
+% light columns rising from the two tanks
+\shade[left color=navy,right color=navy,middle color=blueG] (0.65,2.6) rectangle (1.35,4.52);
+\shade[left color=redW,right color=redW,middle color=redL] (4.0,2.4) rectangle (4.45,4.52);
+% arched blue windows on the right wall
+\foreach \x/\b in {4.55/1.3,5.1/1.4,5.6/1.5}{\shade[top color=blueL,bottom color=blueG,ink] (\x,\b) -- (\x,\b+.6) .. controls (\x,\b+.85) and (\x+.35,\b+.85) .. (\x+.35,\b+.6) -- (\x+.35,\b) -- cycle;}
+% ribbed arch around the tunnel and the medallion above
+\fill[metal,ink] (1.6,1.6) .. controls (1.5,3.2) and (2.2,3.75) .. (2.8,3.75) .. controls (3.5,3.75) and (4.0,3.1) .. (3.95,1.6) -- cycle;
+\foreach \a in {15,35,...,165}{\draw[metalL,line width=.8pt] (2.78,2.6) +(\a:1.05) -- +(\a:1.2);}
+\fill[metal,ink] (2.95,4.07) ellipse (.6 and .55);
+\shade[inner color=orange!60!redL,outer color=plum,ink] (2.95,4.07) ellipse (.42 and .4);
+\fill[plum,opacity=.8] (2.95,4.0) .. controls (2.7,4.1) and (2.8,4.35) .. (3.0,4.3) .. controls (3.2,4.25) and (3.15,4.05) .. (3.05,3.95) .. controls (3.15,3.85) and (3.1,3.75) .. (2.95,3.8) -- cycle;
+\fill[metal,ink] (2.7,3.5) rectangle (3.2,3.75);
+% the tunnel mouth, receding rings
+\fill[tunnel,ink] (2.75,2.57) ellipse (.98 and .87);
+\foreach \r/\c in {0.8/tunnel!85!black,0.62/tunnel!70!black,0.45/tunnel!55!black,0.3/tunnelD}{\fill[\c,ink] ({2.75+0.25*(0.98-\r)},2.57) ellipse ({\r} and {\r*0.9});}
+% blue tank on the left
+\shade[inner color=blueL,outer color=blueG!60!navy,ink] (1.0,2.65) circle (.85);
+\foreach \a in {-0.45,0,0.45}{\draw[metal,line width=1.4pt] (1.0+\a,3.45) .. controls (1.0+\a*1.6,2.65) .. (1.0+\a,1.85);}
+\fill[metal,ink] (0.85,3.45) rectangle (1.15,3.7);
+\shade[inner color=orange,outer color=orb] (0.15,2.5) circle (.15);
+% red tank on the right
+\shade[inner color=orange,outer color=orb!80!black,ink] (4.4,2.27) circle (.62);
+\foreach \a in {-0.3,0.3}{\draw[metal,line width=1.2pt] (4.4+\a,2.85) .. controls (4.4+\a*1.6,2.27) .. (4.4+\a,1.7);}
+\fill[metal,ink] (4.25,2.85) rectangle (4.55,3.05);
+% small pale orbs at the tunnel foot
+\foreach \x/\y in {3.85/1.65,4.0/1.2,3.8/2.25,2.15/1.75}{\shade[inner color=blueL,outer color=metal,ink] (\x,\y) circle (.17);}
+% the stair falling away to the lower right
+\fill[stp,ink] (2.2,1.72) -- (3.75,1.72) -- (5.3,0) -- (3.0,0) -- cycle;
+\foreach \y in {0.15,0.35,...,1.6}{\draw[stpL,line width=.9pt] ({2.2+(1.72-\y)*0.465},\y) -- ({3.75+(1.72-\y)*0.901},\y);}
+\fill[redL,opacity=.35] (3.3,0) -- (4.2,0.8) -- (5.0,0) -- cycle;
+% pipes and red globes at the lower left
+\fill[navy,ink] (0,0) -- (0,2.0) -- (1.6,1.75) -- (2.2,1.72) -- (3.0,0) -- cycle;
+\foreach \y in {1.4,0.95,0.5}{\draw[metal,line width=3pt] (0,\y+.25) -- (2.8,\y-.35); \draw[ink,line width=.4pt] (0,\y+.33) -- (2.8,\y-.27);}
+\foreach \x/\y/\r in {2.4/1.22/.3,2.9/0.62/.28,3.0/0.15/.3,1.6/0.4/.2}{\shade[inner color=orange,outer color=orb!70!black,ink] (\x,\y) circle (\r); \draw[ink,line width=.4pt] (\x-\r,\y) .. controls (\x,\y+.1) .. (\x+\r,\y);}
+\fill[navyL,ink] (5.3,0) -- (6.16,0) -- (6.16,0.9) .. controls (5.6,0.8) and (5.3,0.5) .. (5.0,0.35) -- cycle;
+\end{tikzpicture}\end{document}

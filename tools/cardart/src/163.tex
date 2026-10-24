@@ -1,0 +1,60 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{3a3038}\definecolor{bgD}{HTML}{1e1a1c}\definecolor{mach}{HTML}{6a5e5e}
+\definecolor{machL}{HTML}{8a8080}\definecolor{machD}{HTML}{453b40}\definecolor{skin}{HTML}{6a5a8c}
+\definecolor{skinL}{HTML}{9a8cc0}\definecolor{skinD}{HTML}{3a3052}\definecolor{leather}{HTML}{6a2a22}
+\definecolor{leatherL}{HTML}{8e4436}\definecolor{brass}{HTML}{8a7a5a}\definecolor{teeth}{HTML}{d8d0c0}
+\definecolor{bolt}{HTML}{dceaff}\definecolor{boltB}{HTML}{7a8cff}\definecolor{glow}{HTML}{8a8ae8}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[left color=bgD,right color=bg] (0,0) rectangle (6.16,4.52);
+% machinery behind: pipes and tanks on the right
+\fill[machD,ink] (3.2,2.2) rectangle (4.4,4.52);
+\fill[mach,ink] (4.9,1.0) .. controls (4.9,3.0) and (6.16,3.3) .. (6.16,3.3) -- (6.16,1.0) -- cycle;
+\fill[machL] (5.1,1.4) .. controls (5.2,2.5) and (5.7,2.9) .. (6.0,3.0) .. controls (5.6,2.6) and (5.4,2.1) .. (5.35,1.4) -- cycle;
+\draw[mach,line width=6pt] (3.9,4.6) .. controls (4.6,4.0) and (5.6,4.3) .. (5.9,3.4);
+\draw[ink,line width=.5pt] (3.9,4.83) .. controls (4.6,4.25) and (5.7,4.55) .. (6.12,3.45);
+\foreach \t in {0.1,0.2,...,0.9}{\draw[machD,line width=.5pt] ($(3.9,4.6)!\t!(5.9,3.4)$) ++(0,.1) -- ++(0,-.2);}
+\draw[mach,line width=4pt] (0,3.0) .. controls (0.6,3.2) and (1.0,3.5) .. (1.4,3.6);
+\fill[machD,ink] (3.7,3.2) circle (.25);
+\fill[mach,ink] (4.4,2.3) rectangle (4.9,3.6);
+\shade[inner color=skinL,outer color=machD,ink] (5.9,1.3) circle (.28);
+% body: leather coat and brass pauldron
+\fill[leather,ink] (0.3,0) .. controls (0.2,1.0) and (0.4,2.0) .. (1.2,2.6) -- (2.6,2.5) .. controls (2.8,1.8) and (2.7,0.8) .. (2.6,0) -- cycle;
+\fill[leatherL] (0.6,0.5) .. controls (0.6,1.3) and (0.8,1.9) .. (1.3,2.3) .. controls (1.2,1.6) and (1.1,1.0) .. (1.2,0.5) -- cycle;
+\foreach \y in {1.9,1.4,0.9}{\draw[ink,line width=.5pt] (0.8,\y) .. controls (1.2,\y+.2) .. (1.6,\y);}
+\fill[brass,ink] (0.6,2.3) .. controls (0.8,2.85) and (1.6,3.05) .. (2.2,2.85) -- (2.3,2.4) .. controls (1.8,2.55) and (1.1,2.4) .. (0.8,2.05) -- cycle;
+\foreach \x in {0.9,1.3,1.7}{\draw[ink,line width=.5pt] (\x,2.25) .. controls (\x+.1,2.6) .. (\x+.3,2.75);}
+\fill[leather,ink] (0,0) -- (0,1.2) .. controls (0.4,1.2) and (0.7,0.9) .. (0.8,0.5) -- (0.8,0) -- cycle;
+% head: long bald skull thrust forward, ear swept back
+\fill[skinD,ink] (1.55,3.75) -- (1.05,4.2) -- (1.2,3.7) -- (1.5,3.3) -- cycle;
+\fill[skin,ink] (1.55,2.7) .. controls (1.4,3.3) and (1.5,4.1) .. (2.0,4.4) .. controls (2.5,4.65) and (3.0,4.3) .. (3.15,3.7) -- (3.3,3.45) .. controls (3.35,3.2) and (3.3,3.0) .. (3.2,2.85) .. controls (3.05,2.4) and (2.85,2.2) .. (2.6,2.15) .. controls (2.3,2.15) and (1.8,2.3) .. (1.55,2.7) -- cycle;
+\fill[skinL] (1.95,4.3) .. controls (2.4,4.55) and (2.9,4.3) .. (3.05,3.8) .. controls (2.75,4.1) and (2.4,4.25) .. (1.95,4.3);
+\fill[skinD] (1.6,2.75) .. controls (1.5,3.3) and (1.6,3.9) .. (1.9,4.25) .. controls (1.8,3.7) and (1.85,3.1) .. (2.05,2.6) -- cycle;
+% heavy scowling brow and slit eyes
+\fill[skinD,ink] (2.3,3.55) .. controls (2.6,3.5) and (2.8,3.38) .. (2.95,3.25) .. controls (3.1,3.4) and (3.25,3.5) .. (3.32,3.48) -- (3.3,3.35) .. controls (3.15,3.3) and (3.05,3.2) .. (2.95,3.1) .. controls (2.75,3.25) and (2.55,3.35) .. (2.3,3.4) -- cycle;
+\fill[teeth,ink] (2.45,3.3) -- (2.8,3.22) -- (2.72,3.15) -- (2.5,3.2) -- cycle;
+\fill[teeth,ink] (3.05,3.2) -- (3.25,3.28) -- (3.22,3.18) -- (3.08,3.12) -- cycle;
+\draw[skinD,line width=.6pt] (2.4,3.7) .. controls (2.7,3.65) .. (2.95,3.45);
+\draw[skinD,line width=.6pt] (2.4,3.05) .. controls (2.55,2.9) .. (2.6,2.7);
+% hooked nose down over the grimace
+\fill[skin,ink] (2.95,3.15) .. controls (3.45,3.0) and (3.6,2.5) .. (3.55,1.95) .. controls (3.35,2.25) and (3.15,2.5) .. (2.9,2.65) -- cycle;
+\fill[skinL] (3.08,3.05) .. controls (3.38,2.85) and (3.48,2.5) .. (3.5,2.1) .. controls (3.35,2.45) and (3.2,2.7) .. (3.02,2.85) -- cycle;
+\fill[bgD,ink] (2.45,2.6) .. controls (2.6,2.45) and (2.85,2.4) .. (3.0,2.5) -- (3.05,2.35) .. controls (2.85,2.2) and (2.6,2.25) .. (2.45,2.6) -- cycle;
+\fill[teeth] (2.55,2.52) -- (2.62,2.4) -- (2.7,2.5) -- (2.78,2.37) -- (2.86,2.47) -- (2.95,2.36) -- (2.98,2.46) .. controls (2.8,2.42) and (2.65,2.45) .. (2.55,2.52) -- cycle;
+% earring and pale side-lock
+\draw[brass,line width=1.6pt] (2.25,2.15) circle (.13);
+\draw[ink,line width=.4pt] (2.25,2.15) circle (.2);
+\draw[teeth,line width=1.2pt] (1.85,4.0) -- (1.78,3.4);
+\draw[teeth,line width=1pt] (2.15,3.3) .. controls (2.2,2.9) .. (2.2,2.32);
+\shade[inner color=glow!70!white,outer color=bg] (3.95,1.2) circle (1.25);
+% hands cupping the spark
+\fill[skin,ink] (4.3,2.0) .. controls (4.6,2.3) and (5.1,2.25) .. (5.4,1.95) -- (5.6,1.5) -- (5.4,1.55) -- (5.3,1.8) .. controls (5.2,1.6) and (5.15,1.4) .. (5.2,1.1) -- (5.05,1.15) -- (4.95,1.6) -- (4.8,1.2) -- (4.65,1.3) -- (4.7,1.65) -- (4.4,1.5) -- (4.25,1.65) -- cycle;
+\fill[skinL] (4.4,2.0) .. controls (4.7,2.2) and (5.0,2.15) .. (5.3,1.95) .. controls (5.0,2.0) and (4.7,1.95) .. (4.45,1.85) -- cycle;
+\fill[skin,ink] (2.6,1.0) .. controls (2.9,1.5) and (3.2,1.6) .. (3.4,1.4) -- (3.7,1.65) -- (3.75,1.5) -- (3.5,1.25) -- (3.85,1.2) -- (3.85,1.05) -- (3.45,1.0) -- (3.7,0.75) -- (3.6,0.65) -- (3.3,0.85) .. controls (3.1,0.6) and (2.8,0.5) .. (2.6,0.6) -- cycle;
+\fill[skinL] (2.7,1.0) .. controls (2.9,1.35) and (3.15,1.45) .. (3.35,1.35) .. controls (3.1,1.3) and (2.9,1.15) .. (2.8,0.9) -- cycle;
+% the crackling spark and its bolts
+
+\shade[inner color=white,outer color=boltB] (3.95,1.25) circle (.32);
+\foreach \p in {{(4.1,1.1) -- (4.35,0.85) -- (4.3,0.7) -- (4.6,0.6) -- (4.55,0.4) -- (5.0,0.3) -- (5.05,0.12) -- (5.3,0.0)},{(4.2,1.2) -- (4.55,1.0) -- (4.9,1.05) -- (5.05,0.85) -- (5.35,0.95) -- (5.6,0.7) -- (5.9,0.75) -- (6.2,0.55)},{(3.8,1.0) -- (3.65,0.75) -- (3.5,0.7) -- (3.62,0.45) -- (3.42,0.3) -- (3.5,0.0)},{(3.7,1.3) -- (3.45,1.38) -- (3.3,1.6) -- (3.05,1.55) -- (2.9,1.8) -- (2.65,1.85)},{(4.0,1.5) -- (4.15,1.7) -- (4.05,1.9) -- (4.25,2.05) -- (4.15,2.3) -- (4.35,2.55)},{(4.6,0.6) -- (4.85,0.5) -- (5.1,0.55) -- (5.35,0.35) -- (5.7,0.4) -- (5.85,0.2) -- (6.2,0.25)},{(3.9,1.0) -- (4.0,0.75) -- (3.9,0.6) -- (4.05,0.4) -- (3.95,0.15)},{(4.25,1.35) -- (4.5,1.5) -- (4.7,1.42) -- (4.85,1.6)},{(3.6,1.1) -- (3.3,1.0) -- (3.15,1.12) -- (2.9,1.0)}}{
+ \draw[boltB,line width=2pt,line join=round] \p; \draw[bolt,line width=.7pt,line join=round] \p;}
+\end{tikzpicture}\end{document}

@@ -1,0 +1,51 @@
+\input{../preamble}
+% Selesnya Charm: an elf knight in dark plate turns away behind a round shield blazing with a green sun-tree, hair streaming right
+\definecolor{bgL}{HTML}{d0e48a}\definecolor{bg}{HTML}{98b840}\definecolor{bgD}{HTML}{6a8a2a}
+\definecolor{plate}{HTML}{4a5464}\definecolor{plateL}{HTML}{8a96a8}\definecolor{plateD}{HTML}{262c36}
+\definecolor{hair}{HTML}{2a2a3a}\definecolor{hairL}{HTML}{5a5a72}\definecolor{skin}{HTML}{c8a48e}\definecolor{skinD}{HTML}{8a6a5a}
+\definecolor{glow}{HTML}{b4f04a}\definecolor{glowL}{HTML}{f0ffb0}\definecolor{glowD}{HTML}{5aa020}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\fill[bg] (0,0) rectangle (6.16,4.52);
+\shade[inner color=bgL,outer color=bg] (1.0,3.0) ellipse (1.6 and 1.8);
+\foreach \x/\y in {0.4/1.2,1.2/0.6,5.6/3.9,5.9/2.0,0.3/3.6,5.2/4.3}{\fill[bgD,opacity=.5] (\x,\y) ellipse (.3 and .2);}
+% spear shaft behind, upper right
+\fill[plateD,ink] (4.75,3.95) -- (5.6,4.6) -- (5.75,4.6) -- (4.85,3.85) -- cycle;
+% long dark hair streaming right behind the shield
+\fill[hair,ink] (1.9,4.0) .. controls (3.0,4.6) and (4.5,4.4) .. (5.6,3.5) .. controls (6.0,3.1) and (6.1,2.4) .. (6.16,1.4) -- (6.16,0.9) .. controls (5.8,1.6) and (5.6,2.3) .. (5.2,2.6) .. controls (4.4,3.2) and (3.0,3.4) .. (2.0,3.2) -- cycle;
+\foreach \a in {0,1,2,3}{\draw[hairL,line width=.6pt] (2.4+\a*.3,4.1-\a*.1) .. controls (4.0,4.2-\a*.2) and (5.3,3.4-\a*.3) .. (6.0,2.0-\a*.25);}
+% armoured body, lower left
+\fill[plate,ink] (1.1,0) -- (1.15,1.9) .. controls (1.2,2.6) and (1.6,3.0) .. (2.1,3.1) -- (2.6,2.6) -- (4.5,0.8) -- (4.6,0) -- cycle;
+\fill[plateL,ink] (1.35,1.0) .. controls (1.5,1.6) and (1.9,1.9) .. (2.4,1.9) .. controls (2.2,1.4) and (1.8,1.0) .. (1.35,1.0);
+\fill[plateD,ink] (1.3,2.6) .. controls (1.5,2.9) and (1.9,3.05) .. (2.2,3.0) -- (2.05,2.6) .. controls (1.8,2.6) and (1.5,2.55) .. (1.3,2.6);
+\draw[plateD,line width=.8pt] (1.5,0.3) .. controls (1.8,0.6) and (2.4,0.7) .. (2.9,0.5);
+% gauntlet gripping a sword, left
+\fill[plateD,ink] (0,1.25) -- (0.85,1.45) -- (0.85,1.3) -- (0,1.05) -- cycle;
+\fill[plate,ink] (0.4,2.0) .. controls (0.35,2.45) and (0.7,2.75) .. (1.05,2.7) -- (1.4,2.35) .. controls (1.4,1.9) and (1.2,1.6) .. (0.85,1.55) .. controls (0.55,1.6) and (0.4,1.8) .. (0.4,2.0);
+\foreach \y in {1.75,2.0,2.25}{\draw[plateD,line width=.6pt] (0.5,\y) -- (1.25,\y+.15);}
+\fill[plateL,ink] (1.05,2.7) -- (1.7,3.0) -- (1.75,2.8) -- (1.2,2.5) -- cycle;
+% face in profile looking left, pointed ear
+\fill[skin,ink] (1.2,3.25) .. controls (1.15,3.5) and (1.1,3.75) .. (1.2,4.0) -- (1.12,4.12) -- (1.22,4.2) .. controls (1.3,4.5) and (1.5,4.6) .. (1.7,4.6) -- (2.05,4.6) -- (2.05,3.4) .. controls (1.8,3.2) and (1.5,3.15) .. (1.2,3.25);
+\draw[skinD,line width=.7pt] (1.3,4.12) .. controls (1.45,4.2) and (1.6,4.2) .. (1.7,4.12); \draw[skinD,line width=.6pt] (1.25,3.55) .. controls (1.45,3.45) and (1.7,3.5) .. (1.85,3.7);
+\fill[skin,ink] (1.85,4.1) -- (1.75,4.52) -- (2.05,4.2) -- cycle;
+\fill[hair,ink] (1.75,4.6) .. controls (1.9,4.3) and (2.1,4.0) .. (2.1,3.6) -- (2.4,3.5) -- (2.6,4.6) -- cycle;
+\draw[ink,line width=.6pt] (1.27,3.9) -- (1.4,3.92);
+% collar of the breastplate
+\fill[plate,ink] (1.15,3.3) .. controls (1.3,3.0) and (1.7,2.95) .. (2.1,3.1) -- (2.15,3.5) .. controls (1.8,3.3) and (1.4,3.25) .. (1.15,3.3);
+% the round shield
+\fill[plateD,ink] (3.55,2.62) circle (1.52);
+\fill[plate,ink] (3.55,2.62) circle (1.38);
+\fill[glowD,ink] (3.62,2.68) circle (1.18);
+\foreach \a in {0,24,...,359}{\fill[glow,ink,line width=.4pt] ($(3.62,2.68)+(\a:1.18)$) -- ($(3.62,2.68)+(\a+8:0.98)$) -- ($(3.62,2.68)+(\a+12:1.18)$) -- cycle;}
+\fill[plateD,ink] (3.62,2.68) circle (.97);
+\shade[inner color=glowL,outer color=glow] (3.62,2.68) circle (.85);
+\foreach \a in {0,18,...,359}{\fill[glowD,opacity=.8] ($(3.62,2.68)+(\a-4:.86)$) -- ($(3.62,2.68)+(\a:.4)$) -- ($(3.62,2.68)+(\a+4:.86)$) -- cycle;}
+\fill[glowL] (3.62,2.68) circle (.38);
+\fill[glow,opacity=.7] (3.62,2.68) ellipse (.12 and .4);
+% two dark bosses on the shield face
+\fill[plateD,ink] (3.2,2.05) ellipse (.36 and .4); \fill[plateL] (3.1,2.2) circle (.08);
+\fill[plateD,ink] (4.55,2.55) ellipse (.27 and .36); \fill[plateL] (4.47,2.72) circle (.06);
+% pauldron lower right
+\fill[plate,ink] (4.2,0) .. controls (4.3,0.5) and (4.8,0.9) .. (5.3,0.95) .. controls (5.6,0.6) and (5.6,0.2) .. (5.5,0) -- cycle;
+\foreach \r in {.3,.55}{\draw[plateD,line width=.6pt] (4.5+\r,0) arc [start angle=0,end angle=80,x radius=\r,y radius=\r*1.2];}
+\end{tikzpicture}\end{document}

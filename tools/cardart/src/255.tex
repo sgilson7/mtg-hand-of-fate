@@ -1,0 +1,71 @@
+\input{../preamble}
+\definecolor{skyT}{HTML}{3a3650}\definecolor{skyM}{HTML}{565c8c}\definecolor{skyL}{HTML}{7a8cc4}
+\definecolor{gold}{HTML}{b09a78}\definecolor{tower}{HTML}{4a4a6e}\definecolor{towerD}{HTML}{2e2c40}
+\definecolor{towerL}{HTML}{6c6e98}\definecolor{fall}{HTML}{c4dcf4}\definecolor{fallD}{HTML}{6f8ab8}
+\definecolor{pool}{HTML}{7ccad6}\definecolor{poolD}{HTML}{5e98b0}\definecolor{wood}{HTML}{3c3440}
+\definecolor{mist}{HTML}{c8e4ee}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+% sky / vault
+\shade[top color=skyT,bottom color=skyL] (0,0) rectangle (6.16,4.52);
+% ceiling beams top centre
+\fill[towerD,ink] (2.6,4.52) -- (3.2,4.1) -- (3.8,4.3) -- (6.16,4.52) -- cycle;
+\foreach \x in {2.9,3.2,3.5,3.8,4.1}{\draw[ink,line width=.4pt] (\x,4.52) -- (\x+.25,4.2);}
+% golden light shafts from upper left
+\fill[gold,opacity=.35] (0.3,4.52) -- (1.6,4.52) -- (3.4,1.2) -- (2.6,1.0) -- cycle;
+\fill[gold,opacity=.25] (1.8,4.52) -- (2.4,4.52) -- (3.9,1.6) -- (3.5,1.5) -- cycle;
+% far left wall and waterfall
+\fill[tower,ink] (0,1.0) rectangle (0.55,2.8);
+\fill[fall,opacity=.6] (0.05,1.0) rectangle (0.5,2.6);
+% central gothic tower
+\fill[towerL,ink] (2.4,0.9) rectangle (3.05,3.4);
+\fill[towerL,ink] (2.4,3.4) -- (2.45,3.6) -- (3.0,3.6) -- (3.05,3.4) -- cycle;
+\foreach \x in {2.5,2.65,2.8,2.95}{\fill[towerD,ink] (\x-.03,2.0) rectangle (\x+.03,2.4); \fill[gold] (\x-.02,2.45) rectangle (\x+.02,2.6);}
+\fill[towerL,ink] (3.05,0.9) -- (3.05,2.0) -- (3.3,2.5) -- (3.55,2.0) -- (3.55,0.9) -- cycle;
+\fill[towerL,ink] (2.0,0.9) -- (2.0,2.2) -- (2.2,2.6) -- (2.4,2.2) -- (2.4,0.9) -- cycle;
+% spires and hanging towers in mid distance
+\foreach \x/\y/\h in {1.55/2.9/0.9,2.15/2.6/1.0,3.55/2.3/0.9,4.3/2.6/1.0,2.95/3.7/0.7}{
+ \fill[towerD,ink] (\x-.09,\y) -- (\x-.09,\y+\h) -- (\x,\y+\h+.25) -- (\x+.09,\y+\h) -- (\x+.09,\y) -- (\x,\y-.2) -- cycle;}
+% waterfalls right
+\fill[fallD,ink] (3.95,1.0) rectangle (5.05,3.5);
+\foreach \x in {4.05,4.25,4.45,4.65,4.85}{\fill[fall] (\x,1.0) rectangle (\x+.12,3.45);}
+\fill[tower,ink] (4.6,1.3) rectangle (5.3,2.5);
+\fill[fall] (4.7,0.9) rectangle (4.8,2.0);
+% right edge tower and hanging cylinder
+\fill[tower,ink] (5.55,1.6) rectangle (6.16,3.0);
+\fill[towerD,ink] (5.8,3.0) rectangle (6.16,4.52);
+\fill[towerL,ink] (5.85,3.0) arc (180:360:.3 and .1) -- cycle;
+% top-left hanging cylinders
+\fill[tower,ink] (0.55,3.4) rectangle (1.35,4.52);
+\fill[towerL,ink] (0.55,4.25) rectangle (1.35,4.45);
+\fill[towerD,ink] (0.95,3.4) ellipse (.45 and .14);
+\fill[towerL,ink] (0.95,3.4) ellipse (.3 and .08);
+\fill[gold,opacity=.4] (0.75,3.4) -- (1.15,3.4) -- (1.3,2.6) -- (0.6,2.6) -- cycle;
+\fill[tower,ink] (0,3.6) rectangle (0.2,4.52);
+\fill[towerD,ink] (0.1,3.6) ellipse (.2 and .08);
+% top-right inverted ring
+\fill[towerD,ink] (3.55,4.52) -- (3.6,3.9) .. controls (3.8,3.55) and (5.2,3.55) .. (5.35,3.9) -- (5.4,4.52) -- cycle;
+\fill[tower,ink] (4.45,3.85) ellipse (.65 and .15);
+% big floating ring disk left
+\fill[towerD,ink] (0,2.4) .. controls (0.6,2.5) and (2.2,2.4) .. (2.6,1.8) .. controls (2.2,1.55) and (1.3,1.55) .. (0.8,1.8) .. controls (0.4,1.9) and (0.1,2.0) .. (0,2.1) -- cycle;
+\fill[skyL,ink] (0.9,1.85) .. controls (1.3,1.95) and (2.0,1.95) .. (2.35,1.8) .. controls (2.0,1.65) and (1.3,1.65) .. (0.9,1.85) -- cycle;
+% giant water wheel right
+\draw[wood,line width=2.2pt] (5.6,1.2) circle (1.15);
+\foreach \a in {0,30,...,330}{\draw[wood,line width=1pt] (5.6,1.2) -- ++(\a:1.15);}
+% dock right
+\fill[wood,ink] (4.4,1.0) -- (6.16,1.5) -- (6.16,1.3) -- (4.4,0.85) -- cycle;
+\fill[wood,ink] (4.6,0.45) rectangle (6.16,0.65);
+\foreach \x in {4.9,5.4,5.9}{\fill[wood,ink] (\x,0.3) rectangle (\x+.07,1.3);}
+% left building and small water wheels
+\fill[tower,ink] (0,0.6) -- (0,1.5) -- (1.0,1.4) -- (1.0,0.6) -- cycle;
+\fill[wood,ink] (1.0,1.0) -- (1.4,1.0) -- (1.4,0.9) -- (1.0,0.9) -- cycle;
+\foreach \cx/\r in {1.75/0.42,2.05/0.38}{\draw[wood,line width=1.2pt] (\cx,0.85) circle (\r);
+ \foreach \a in {0,45,...,315}{\draw[wood,line width=.6pt] (\cx,0.85) -- ++(\a:\r);}}
+% falling water veils centre
+\foreach \x/\h in {2.2/1.3,2.5/1.7,2.8/1.5,3.1/1.8,3.4/1.4,3.7/1.9,4.0/1.6}{\fill[mist,opacity=.6] (\x,0.5) rectangle (\x+.1,\h);}
+\shade[top color=skyL,bottom color=mist,opacity=.7] (0,0.6) rectangle (6.16,1.4);
+% pool
+\fill[pool] (0,0) rectangle (6.16,0.7);
+\shade[top color=mist,bottom color=pool,opacity=.8] (0,0.5) rectangle (6.16,0.85);
+\foreach \r in {0.4,0.8,1.2}{\draw[poolD,line width=.8pt] (3.0,0.2) ellipse (\r*1.6 and \r*0.18);}
+\end{tikzpicture}\end{document}

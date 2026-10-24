@@ -1,0 +1,56 @@
+\input{../preamble}
+\definecolor{haze}{HTML}{e6ecd6}\definecolor{leaf}{HTML}{8ac060}\definecolor{leafL}{HTML}{b8dc90}
+\definecolor{trunk}{HTML}{e8c8c8}\definecolor{stone}{HTML}{d8d8d0}\definecolor{stoneD}{HTML}{a8aaa0}
+\definecolor{emblem}{HTML}{a8c870}\definecolor{gold}{HTML}{d09a40}\definecolor{goldL}{HTML}{e8c070}
+\definecolor{brown}{HTML}{7a5030}\definecolor{brownD}{HTML}{3a2416}\definecolor{beak}{HTML}{4a3a30}
+\definecolor{grey}{HTML}{a8968a}\definecolor{claw}{HTML}{1e1410}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\fill[haze] (0,0) rectangle (6.16,4.52);
+% green canopy and soft trunks
+\fill[leaf] (0,2.8) .. controls (0.6,3.4) and (1.2,3.2) .. (1.6,3.8) .. controls (2.0,4.2) and (2.6,4.3) .. (3.0,4.52) -- (0,4.52) -- cycle;
+\fill[leafL] (0,3.3) .. controls (0.5,3.7) and (1.0,3.8) .. (1.3,4.52) -- (0,4.52) -- cycle;
+\fill[leaf] (5.6,4.52) .. controls (5.8,4.0) and (6.0,3.6) .. (6.16,3.4) -- (6.16,4.52) -- cycle;
+\fill[trunk] (0.25,0) -- (0.4,2.4) -- (0.75,2.4) -- (0.8,0) -- cycle;
+\fill[trunk] (1.2,0) -- (1.3,2.0) -- (1.55,2.0) -- (1.65,0) -- cycle;
+\fill[leaf!60!haze] (0,0) -- (2.4,0) -- (2.2,0.6) .. controls (1.4,0.9) and (0.6,0.7) .. (0,1.0) -- cycle;
+% great pale tree-temple on the right
+\fill[stone,ink] (3.6,0) .. controls (3.8,1.0) and (3.7,2.0) .. (3.4,2.8) .. controls (3.2,3.4) and (3.0,4.0) .. (2.9,4.52) -- (6.16,4.52) -- (6.16,0) -- cycle;
+\draw[stoneD,line width=1pt] (3.9,0) .. controls (4.0,1.5) and (3.8,3.0) .. (3.4,4.52);
+\draw[stoneD,line width=1pt] (4.2,2.6) .. controls (4.8,2.2) and (5.5,2.3) .. (6.16,2.0);
+\draw[stoneD,line width=1pt] (4.0,1.6) .. controls (4.8,1.4) and (5.5,1.6) .. (6.16,1.3);
+\foreach \x in {4.3,4.7,5.1,5.5,5.9}{\fill[stoneD,ink,line width=.4pt] (\x,1.75) -- (\x,2.05) arc (180:0:0.1) -- (\x+0.2,1.75) -- cycle;}
+\fill[stoneD,ink] (5.1,3.3) circle (0.52);
+\fill[emblem,ink] (5.1,3.3) circle (0.42);
+\draw[stoneD,line width=1pt] (5.1,2.95) -- (5.1,3.35) (5.1,3.25) -- (4.9,3.5) (5.1,3.25) -- (5.3,3.5) (5.1,3.35) -- (5.1,3.6);
+\fill[stoneD] (5.1,3.55) circle (0.12);
+% --- big hawk ---
+% far wing raised to the top-left
+\fill[brown,ink] (2.6,3.0) .. controls (2.0,3.3) and (1.4,3.6) .. (0.9,4.3) -- (1.3,4.25) -- (1.2,4.52) -- (3.0,4.52) .. controls (3.1,4.0) and (3.0,3.4) .. (2.9,3.05) -- cycle;
+\foreach \x in {1.4,1.8,2.2,2.6}{\draw[brownD,line width=.7pt] (\x+0.3,3.2) -- (\x,4.52);}
+% legs and talons hanging behind
+\fill[gold,ink] (1.6,2.45) .. controls (1.3,2.1) and (1.0,1.8) .. (0.85,1.5) -- (1.05,1.35) .. controls (1.3,1.7) and (1.6,2.0) .. (1.9,2.35) -- cycle;
+\fill[gold,ink] (1.9,2.4) .. controls (1.6,2.0) and (1.4,1.6) .. (1.3,1.3) -- (1.5,1.2) .. controls (1.65,1.6) and (1.9,2.0) .. (2.15,2.35) -- cycle;
+\foreach \x/\y in {0.8/1.4,0.95/1.3,1.25/1.22,1.42/1.12}{\draw[claw,line width=1.2pt] (\x+0.05,\y+0.05) .. controls (\x-0.05,\y) .. (\x,\y-0.15);}
+% body and fanned tail
+\fill[gold,ink] (0.25,2.3) -- (1.2,2.45) .. controls (1.9,2.2) and (3.0,2.45) .. (3.7,2.85) .. controls (3.95,3.0) and (3.95,3.3) .. (3.8,3.4) .. controls (3.0,3.6) and (2.0,3.4) .. (1.2,3.05) -- (0.25,2.95) -- (0.4,2.6) -- cycle;
+\fill[goldL] (1.6,2.45) .. controls (2.4,2.4) and (3.2,2.6) .. (3.6,2.9) .. controls (3.0,2.75) and (2.3,2.6) .. (1.6,2.6) -- cycle;
+\foreach \y in {2.45,2.6,2.75}{\draw[brownD,line width=.5pt] (0.35,\y) -- (1.1,\y+0.07);}
+\draw[brown,line width=1.2pt] (2.6,2.7) .. controls (2.7,3.0) .. (2.6,3.25);
+\fill[goldL,ink,line width=.4pt] (2.65,2.95) circle (.1);
+% near wing raised to the top-right
+\fill[gold,ink] (2.9,3.15) .. controls (3.4,3.6) and (4.0,4.0) .. (4.6,4.2) -- (4.75,4.52) -- (5.1,4.35) -- (4.95,4.1) .. controls (4.5,3.7) and (4.0,3.35) .. (3.6,3.15) -- cycle;
+\fill[brownD,ink] (4.5,4.15) -- (4.6,4.52) -- (4.75,4.52) -- (5.1,4.35) -- (4.95,4.1) -- cycle;
+\foreach \t in {0.2,0.45,0.7}{\draw[brown,line width=.6pt] (3.0+\t*1.8,3.25+\t*0.95) -- (3.5+\t*1.3,3.1+\t*0.9);}
+% head and hooked beak
+\fill[gold,ink] (3.6,3.05) .. controls (3.7,3.35) and (4.0,3.4) .. (4.15,3.25) .. controls (4.25,3.1) and (4.15,2.95) .. (3.95,2.9) .. controls (3.8,2.88) and (3.65,2.92) .. (3.6,3.05);
+\fill[beak,ink] (4.12,3.25) .. controls (4.35,3.25) and (4.4,3.1) .. (4.3,2.95) -- (4.22,3.05) -- (4.12,3.05) -- cycle;
+\fill[claw] (3.98,3.18) circle (.035);
+% --- small hawk below ---
+\fill[grey,ink] (3.3,1.4) .. controls (3.2,1.9) and (3.2,2.3) .. (3.3,2.6) -- (3.6,2.4) -- (3.7,2.7) -- (4.0,2.4) -- (4.2,2.6) -- (4.35,2.2) .. controls (4.3,1.9) and (4.1,1.6) .. (3.9,1.4) -- cycle;
+\fill[gold,ink] (2.55,0.9) -- (3.2,1.05) .. controls (3.7,1.0) and (4.3,1.1) .. (4.65,1.2) .. controls (4.85,1.35) and (4.8,1.55) .. (4.6,1.62) .. controls (4.1,1.75) and (3.5,1.65) .. (3.2,1.5) -- (2.55,1.4) -- cycle;
+\fill[gold,ink] (3.3,1.2) .. controls (3.1,0.9) and (2.95,0.6) .. (2.85,0.45) -- (3.05,0.4) .. controls (3.15,0.65) and (3.35,0.9) .. (3.5,1.15) -- cycle;
+\draw[claw,line width=1.1pt] (2.9,0.45) .. controls (2.8,0.4) .. (2.82,0.28) (3.02,0.42) .. controls (3.0,0.32) .. (3.05,0.25);
+\fill[gold,ink] (4.55,1.3) .. controls (4.6,1.55) and (4.85,1.6) .. (4.95,1.45) .. controls (5.0,1.3) and (4.85,1.2) .. (4.7,1.2) -- cycle;
+\fill[beak,ink] (4.92,1.45) .. controls (5.1,1.42) and (5.12,1.3) .. (5.05,1.2) -- (4.95,1.28) -- cycle;
+\end{tikzpicture}\end{document}

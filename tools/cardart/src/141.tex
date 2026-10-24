@@ -1,0 +1,48 @@
+\input{../preamble}
+% Abrupt Decay: a mossy bronze golem studded with glowing blue portholes crumbling apart in a violet storm
+\definecolor{sky}{HTML}{8e88aa}\definecolor{skyD}{HTML}{5e5878}\definecolor{beam}{HTML}{f2f0ff}
+\definecolor{bronze}{HTML}{b06a2c}\definecolor{bronzeL}{HTML}{d89a48}\definecolor{bronzeD}{HTML}{6e3a18}
+\definecolor{moss}{HTML}{7a8a2e}\definecolor{mossL}{HTML}{a8b448}\definecolor{glow}{HTML}{8ad0f4}\definecolor{glowL}{HTML}{e4f6ff}
+\definecolor{shroom}{HTML}{d8c49a}\definecolor{mist}{HTML}{e8eaf6}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[top color=skyD,bottom color=sky] (0,0) rectangle (6.16,4.52);
+\fill[beam,opacity=.6] (0.8,3.3) -- (2.6,4.52) -- (2.9,4.52) -- (0.9,3.15) -- cycle;
+\fill[beam,opacity=.4] (0,3.9) -- (1.6,3.5) -- (1.6,3.4) -- (0,3.7) -- cycle;
+% coiled bronze tendrils upper left
+\foreach \x/\y/\r in {0.95/3.6/.28,1.4/3.95/.22,1.25/3.15/.2,1.75/4.2/.18,1.9/3.4/.2}{\draw[bronzeD,line width=3.4pt] (\x+\r,\y) arc (0:300:\r); \draw[bronzeL,line width=2pt] (\x+\r,\y) arc (0:300:\r);}
+% flying debris lower left
+\foreach \x/\y/\s in {0.2/2.0/.12,0.5/1.6/.1,0.15/1.2/.14,0.6/0.8/.1,0.35/0.4/.12,0.9/1.9/.08,1.1/0.4/.1,0.8/1.25/.09,1.4/2.5/.08,0.3/2.6/.07,1.0/2.3/.1}{\fill[bronze,ink,line width=.4pt] (\x,\y) -- ++(\s,.03) -- ++(-.03,\s) -- ++(-\s*.8,-.02) -- cycle;}
+% lower body mass
+\fill[bronze,ink] (1.8,0.4) .. controls (1.6,1.4) and (2.0,2.3) .. (2.6,2.6) -- (5.4,2.6) .. controls (5.9,2.0) and (5.8,0.9) .. (5.3,0.3) .. controls (4.3,0.05) and (2.8,0.1) .. (1.8,0.4);
+\fill[moss,ink] (3.2,2.4) .. controls (3.8,2.7) and (4.6,2.6) .. (5.0,2.3) .. controls (5.4,1.7) and (5.0,1.4) .. (4.6,1.5) .. controls (4.0,1.6) and (3.5,1.9) .. (3.2,2.4);
+\fill[bronzeD,ink] (2.5,1.6) .. controls (3.2,1.9) and (4.0,1.6) .. (4.4,1.2) .. controls (3.8,1.3) and (3.0,1.3) .. (2.5,1.6);
+% left arm reaching out, crumbling
+\fill[moss,ink] (0.8,2.4) .. controls (1.4,2.7) and (2.2,2.7) .. (2.8,2.3) -- (2.9,1.5) .. controls (2.2,1.6) and (1.5,1.8) .. (1.1,2.0) -- cycle;
+\fill[bronzeL,ink] (1.3,2.1) .. controls (1.8,2.4) and (2.4,2.3) .. (2.8,2.0) -- (2.85,1.6) .. controls (2.2,1.7) and (1.7,1.8) .. (1.3,2.1);
+% upper torso and head dome
+\fill[bronze,ink] (2.4,3.4) .. controls (2.3,4.3) and (3.2,4.6) .. (3.6,4.6) -- (5.9,4.6) .. controls (6.2,3.8) and (6.0,2.9) .. (5.4,2.5) .. controls (4.5,2.3) and (3.2,2.3) .. (2.4,3.4);
+\fill[bronzeL,ink] (3.3,4.52) .. controls (3.3,3.9) and (3.7,3.6) .. (4.1,3.6) .. controls (4.5,3.7) and (4.6,4.2) .. (4.5,4.52) -- cycle;
+\fill[mossL,ink] (2.4,3.4) .. controls (2.9,3.6) and (3.4,3.4) .. (3.6,3.05) .. controls (3.2,2.8) and (2.7,2.9) .. (2.4,3.4);
+\fill[moss,ink] (4.6,2.6) .. controls (5.0,3.0) and (5.6,2.9) .. (5.8,2.6) .. controls (5.5,2.3) and (5.0,2.3) .. (4.6,2.6);
+\fill[mossL,ink] (4.3,4.52) .. controls (4.6,4.2) and (5.2,4.2) .. (5.6,4.52) -- cycle;
+\fill[bronzeD,opacity=.5] (1.9,0.5) .. controls (3.0,0.3) and (4.5,0.3) .. (5.4,0.4) .. controls (5.5,0.8) and (5.6,1.2) .. (5.55,1.5) .. controls (4.8,0.9) and (3.2,0.7) .. (1.9,0.5);
+\foreach \x/\y in {3.6/4.0,5.4/3.2,2.8/2.6,4.2/0.6,2.2/1.1,5.2/1.8}{\fill[moss,ink,line width=.4pt] (\x,\y) .. controls (\x+.25,\y+.2) and (\x+.5,\y+.1) .. (\x+.55,\y-.1) .. controls (\x+.3,\y-.2) and (\x+.1,\y-.15) .. (\x,\y);}
+% shoulder pod right
+\fill[mossL,ink] (4.6,1.9) circle (.45); \fill[bronzeD,ink] (4.6,1.95) circle (.15);
+% glowing portholes
+\foreach \x/\y/\r in {3.8/3.7/.3,4.82/3.47/.3,2.75/3.37/.15,3.2/2.87/.2,4.0/2.97/.1,2.45/2.12/.42,3.0/0.72/.42,5.1/0.97/.15}{
+ \fill[bronzeD,ink] (\x,\y) circle (\r*1.3); \fill[bronzeL,ink] (\x,\y) circle (\r*1.12);
+ \shade[inner color=glowL,outer color=glow,draw=ink] (\x,\y) circle (\r);}
+% mushrooms
+\foreach \x/\y/\s in {4.3/4.25/.12,4.55/4.35/.1,4.85/4.3/.13,5.15/4.4/.1,5.4/4.25/.12,3.45/1.9/.14,3.7/1.75/.11,2.9/3.6/.08,3.1/3.7/.07}{
+ \fill[shroom!80!black,ink,line width=.4pt] (\x-.02,\y-\s*1.2) rectangle (\x+.02,\y);
+ \fill[shroom,ink,line width=.4pt] (\x-\s,\y) arc [start angle=180,end angle=0,x radius=\s,y radius=\s*.7] -- cycle;}
+% storm mist and lightning swirling below
+\fill[mist,opacity=.8] (0.6,0.9) .. controls (1.2,1.8) and (2.6,1.7) .. (3.3,1.1) .. controls (2.6,1.3) and (1.8,1.2) .. (1.6,0.7) .. controls (1.2,0.4) and (0.8,0.5) .. (0.6,0.9);
+\fill[mist,opacity=.6] (0,0) -- (0,0.6) .. controls (0.8,0.9) and (1.8,0.3) .. (2.4,0.0) -- cycle;
+\fill[mist,opacity=.55] (4.7,0.2) .. controls (5.4,0.7) and (6.0,0.9) .. (6.16,1.4) -- (6.16,0) -- (4.5,0) -- cycle;
+\draw[white,line width=.8pt] (1.3,0.0) -- (1.5,0.35) -- (1.4,0.55) -- (1.7,0.95); \draw[white,line width=.6pt] (2.0,1.1) -- (2.3,1.35) -- (2.2,1.5);
+% broken shell fragments around the edge
+\foreach \x/\y in {1.8/0.7,1.6/1.25,5.65/1.6,5.9/2.1,5.5/0.5,0.95/2.7}{\fill[bronze,ink,line width=.4pt] (\x,\y) arc (0:110:.25) -- ++(.05,-.06) arc (110:0:.18) -- cycle;}
+\end{tikzpicture}\end{document}

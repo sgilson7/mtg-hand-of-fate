@@ -1,0 +1,144 @@
+{"stories": [
+{"number": "265", "name": "Mountain", "kind": "land",
+ "text": "A ridge of old foundation stone juts through the street, warm from the forges below it. You can claim it for a tile you have walked."},
+
+{"number": "88", "name": "Bellows Lizard", "kind": "creature",
+ "intro": "A smith's lizard squats by a cold forge, its throat swelling like a bellows. Each breath it takes, the coals glow hotter. It turns that breath on you.",
+ "win": "The lizard settles on the anvil and wheezes a friendly spark. It is yours now.",
+ "lose": "A blast of furnace air knocks you into the slag heap.",
+ "flee": "You back out of the smithy with your eyebrows singed."},
+
+{"number": "93", "name": "Electrickery", "kind": "magic",
+ "title": "Live wires",
+ "text": "An Izzet apprentice has wired the market awnings to a stolen accumulator. Sparks jump from stall to stall, stinging anyone who touches metal. The apprentice can aim it at one person or let it loose on the whole street.",
+ "choices": [
+   {"text": "Talk the apprentice into a demonstration", "needs": {"charisma": 2},
+    "outcome": {"text": "The apprentice shows off the trick, then hands you the coiled spell to prove it works.", "effects": [{"take": true}]}},
+   {"text": "Pull the cable from the accumulator",
+    "outcome": {"text": "You grab the cable and hope the insulation holds.", "fate": {"faces": [1, 1, 1, 1],
+      "huge_success": {"text": "The charge runs into the ground, and the apprentice pays you to keep quiet.", "effects": [{"take": true}, {"gold": 8}]},
+      "success": {"text": "The sparks die and you pocket the spell coiled in the wire.", "effects": [{"take": true}]},
+      "failure": {"text": "The current throws you against a stall, and the apprentice flees with the spell.", "effects": [{"health": -2}]},
+      "huge_failure": {"text": "The awnings all light at once, with you at the centre of it.", "effects": [{"health": -4}]}}}},
+   {"text": "Keep clear of the metal and walk on",
+    "outcome": {"text": "You leave the market buzzing behind you.", "effects": [{"leave": true}]}}
+ ]},
+
+{"number": "96", "name": "Gore-House Chainwalker", "kind": "creature",
+ "intro": "Chains hang from the gore-house rafters, and a masked Rakdos performer swings between them. Pig's blood drips onto the cobbles. He drops to the street and picks you as his next act.",
+ "win": "He bows from the hook, dripping, and swears to perform for you. He is yours now.",
+ "lose": "The chain wraps your legs and drags you through the blood.",
+ "flee": "You run before the blood can drip on you."},
+
+{"number": "86", "name": "Ash Zealot", "kind": "creature",
+ "intro": "A Boros zealot in ash-grey robes is hunting necromancers through the alleys. She is on you before you hear her boots. Her mace strikes first and asks later.",
+ "win": "She lowers the mace and decides you are no necromancer. She marches with you now.",
+ "lose": "The mace finds you before you raise a hand.",
+ "flee": "You duck through a laundry line and leave her shouting at the sheets."},
+
+{"number": "101", "name": "Mizzium Mortars", "kind": "magic",
+ "title": "Mortars over the tenements",
+ "text": "An Izzet crew has set up mortars on a tenement roof. Shells of glowing mizzium arc over the chimneys and burst in the next street. The crew chief is calibrating, and anything that moves is a target.",
+ "choices": [
+   {"text": "Offer to spot targets for the crew", "needs": {"style": ["Izzet", 2]},
+    "outcome": {"text": "The chief likes your eye and gives you a spare mortar charge.", "effects": [{"take": true}, {"style": ["Izzet", 1]}]}},
+   {"text": "Climb up and seize a mortar",
+    "outcome": {"text": "You scramble across the roof between salvos.", "fate": {"faces": [1, 2, 1, 0],
+      "huge_success": {"text": "You take the mortar and a crate of shells the crew left behind.", "effects": [{"take": true}, {"supplies": 2}]},
+      "success": {"text": "The crew scatters and the mortar is yours.", "effects": [{"take": true}]},
+      "failure": {"text": "A shell lands close, and the blast throws you off the roof.", "effects": [{"health": -3}]}}}},
+   {"text": "Take cover until the shelling stops",
+    "outcome": {"text": "You wait in a doorway and leave once the smoke clears.", "effects": [{"leave": true}]}}
+ ]},
+
+{"number": "99", "name": "Lobber Crew", "kind": "creature",
+ "intro": "Three goblins stand behind a sandbag wall with a sling as wide as the street. They do not aim. They lob burning junk at everything, and you are part of everything.",
+ "win": "The goblins cheer and turn the sling to face your enemies. They are yours now.",
+ "lose": "A flaming kettle hits you square in the chest.",
+ "flee": "You zigzag away as junk rains down behind you."},
+
+{"number": "105", "name": "Splatter Thug", "kind": "creature",
+ "intro": "A thug in a stained leather mask blocks the alley. The mask is there to keep the mess out of his eyes. He swings first, and he swings hard.",
+ "win": "He wipes his mask and grunts that you will do. He follows you now.",
+ "lose": "His first blow lands before you finish raising your guard.",
+ "flee": "You leave him in the alley, wiping his mask."},
+
+{"number": "85", "name": "Annihilating Fire", "kind": "magic",
+ "title": "A one-night show",
+ "text": "A Rakdos madcap is rehearsing a fire act on a stage of crates. The flame burns so hot it leaves no ash behind. She says the best performances can be done once, and she needs a volunteer.",
+ "choices": [
+   {"text": "Volunteer for the act",
+    "outcome": {"text": "You step onto the crates and the madcap grins.", "fate": {"faces": [1, 1, 1, 1],
+      "huge_success": {"text": "You survive the act, the crowd roars, and she gives you the fire and her tips.", "effects": [{"take": true}, {"gold": 10}]},
+      "success": {"text": "The flame misses by a hair, and she rewards you with the spell.", "effects": [{"take": true}]},
+      "failure": {"text": "The fire catches your sleeve, and the act ends without you.", "effects": [{"health": -3}]},
+      "huge_failure": {"text": "The flame takes your coat and your purse with it.", "effects": [{"health": -3}, {"gold": -8}]}}}},
+   {"text": "Buy a seat in the front row", "needs": {"gold": 10},
+    "outcome": {"text": "From the front row you learn how the act works, and the madcap sells you the trick.", "effects": [{"take": true}]}},
+   {"text": "Leave before the show starts",
+    "outcome": {"text": "You slip away as the crowd gathers.", "effects": [{"leave": true}]}}
+ ]},
+
+{"number": "98", "name": "Guttersnipe", "kind": "creature",
+ "intro": "A goblin crouches in the gutter, giggling over a pocket of sparks. Each time a spell is cast nearby, he throws fire at whoever is closest. You are closest.",
+ "win": "The goblin decides you are more fun than the gutter. He is yours now.",
+ "lose": "A spray of sparks sends you rolling into the drain.",
+ "flee": "You leave him to burn someone else."},
+
+{"number": "91", "name": "Cobblebrute", "kind": "creature",
+ "intro": "The street under your feet heaves and stands up. A hulk of cobblestones and mortar has decided to move to a nicer neighbourhood. You are in its way.",
+ "win": "The cobbles settle into a shape that follows you. It is yours now.",
+ "lose": "The street lies down on top of you.",
+ "flee": "You run, and it lumbers off in search of a better address."},
+
+{"number": "89", "name": "Bloodfray Giant", "kind": "creature",
+ "intro": "The star of the Juri Revue bursts out of the club with the crowd spilling after him. He does not hold back. Fans and blood pour into the street, and he wants an encore with you.",
+ "win": "The giant takes a bow and adds you to his tour. He is yours now.",
+ "lose": "He tramples through you and back into the club.",
+ "flee": "You dive into the crowd and let it carry you away."},
+
+{"number": "95", "name": "Goblin Rally", "kind": "magic",
+ "title": "An idea in their heads",
+ "text": "A crowd of goblins loiters outside a closed foundry. Nobody hires goblins. You put ideas in their heads, and then they run with them. The question is which idea.",
+ "choices": [
+   {"text": "Rouse them with a speech", "needs": {"charisma": 3},
+    "outcome": {"text": "The goblins cheer and follow you down the street, waving bits of pipe.", "effects": [{"take": true}]}},
+   {"text": "Toss them a handful of coins", "needs": {"gold": 6},
+    "outcome": {"text": "They scramble for the coins, then fall in behind you to see if there are more.", "effects": [{"take": true}]}},
+   {"text": "Tell them the foundry is unlocked",
+    "outcome": {"text": "The goblins storm the foundry and forget you. You leave with a crate they dropped.", "effects": [{"leave": true}, {"supplies": 1}]}}
+ ]},
+
+{"number": "108", "name": "Tenement Crasher", "kind": "creature",
+ "intro": "A horned beast smashes through a tenement wall and keeps coming. Narrow alleys do not stop it, and a Boros garrison did not stop it. It is on you before the dust falls.",
+ "win": "The beast stops, snorting, and lowers its horns to you. It is yours now.",
+ "lose": "It goes through you the way it went through the wall.",
+ "flee": "You dive into a cellar as it thunders past."},
+
+{"number": "94", "name": "Explosive Impact", "kind": "magic",
+ "title": "Boros subtlety",
+ "text": "A Boros sergeant is clearing a barricade the direct way. A spell crackles in her fist, ready to throw. Behind the barricade, someone is shouting for help.",
+ "choices": [
+   {"text": "Ask her to let you clear it by hand", "needs": {"charisma": 2},
+    "outcome": {"text": "You pull the barricade apart and free the trapped carter. The sergeant hands you the spell she did not need.", "effects": [{"take": true}]}},
+   {"text": "Grab the spell before she throws it",
+    "outcome": {"text": "You lunge for her fist as it starts to glow.", "fate": {"faces": [0, 2, 1, 1],
+      "success": {"text": "You catch the spell and the sergeant, impressed, lets you keep it.", "effects": [{"take": true}]},
+      "failure": {"text": "The spell goes off between you both.", "effects": [{"health": -3}]},
+      "huge_failure": {"text": "The blast flattens the barricade and you with it.", "effects": [{"health": -5}]}}}},
+   {"text": "Stand back and let her work",
+    "outcome": {"text": "The barricade goes up in splinters, and you leave her to sweep up.", "effects": [{"leave": true}]}}
+ ]},
+
+{"number": "103", "name": "Pyroconvergence", "kind": "story",
+ "title": "The equation",
+ "text": "In a cluttered Izzet workshop, a chalkboard covers one wall with a single equation. Wherever two colours of mana meet in the room, the chalk catches fire. A chemister asks you to help her finish the last line.",
+ "choices": [
+   {"text": "Work the equation with her", "needs": {"style": ["Izzet", 1]},
+    "outcome": {"text": "The last line burns into place, and she gives you the formula as thanks.", "effects": [{"take": true}, {"style": ["Izzet", 1]}]}},
+   {"text": "Erase the line that is smoking",
+    "outcome": {"text": "You wipe the board, and the room cools. She grumbles, but lets you carry off the formula.", "effects": [{"take": true}, {"health": -1}]}},
+   {"text": "Leave her to her lunacy",
+    "outcome": {"text": "You close the door on a small explosion.", "effects": [{"leave": true}]}}
+ ]}
+]}

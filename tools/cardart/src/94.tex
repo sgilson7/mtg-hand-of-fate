@@ -1,0 +1,37 @@
+\input{../preamble}
+\definecolor{city}{HTML}{2a3448}\definecolor{cityL}{HTML}{4a5670}\definecolor{fireR}{HTML}{c8401a}\definecolor{fireO}{HTML}{f08a2a}
+\definecolor{fireY}{HTML}{ffd060}\definecolor{fireW}{HTML}{fff2c0}\definecolor{hole}{HTML}{4a160e}\definecolor{armor}{HTML}{b8762e}\definecolor{armorD}{HTML}{6a3a18}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+% night city behind, right
+\fill[city] (0,0) rectangle (6.16,4.52);
+\fill[cityL,ink] (3.8,1.0) rectangle (6.16,4.52);
+\foreach \x in {4.0,4.5,5.0,5.5}{\foreach \y in {1.4,2.2,3.0,3.8}{\fill[city,ink,line width=.4pt] (\x,\y) rectangle (\x+.25,\y+.45);}}
+% the blast: a ragged wall of fire from the left, a dark crater at its heart
+\fill[fireR,ink] (0,0) -- (0,4.52) -- (3.6,4.52) .. controls (3.4,3.8) and (3.6,3.2) .. (3.4,2.6) .. controls (3.2,1.8) and (3.5,1.0) .. (4.6,0) -- cycle;
+\fill[fireO] (0,0) -- (0,4.52) -- (3.0,4.52) .. controls (2.8,3.6) and (3.1,2.6) .. (3.0,2.0) .. controls (2.9,1.2) and (3.3,0.6) .. (3.9,0) -- cycle;
+\fill[fireY] (0,0) -- (0,2.2) .. controls (0.8,2.6) and (1.6,2.2) .. (2.2,1.6) .. controls (2.8,1.0) and (3.3,0.4) .. (3.6,0) -- cycle;
+\fill[fireW] (0.8,0) .. controls (1.4,0.6) and (2.2,0.9) .. (2.8,0.5) .. controls (3.0,0.3) and (3.1,0.1) .. (3.1,0) -- cycle;
+\fill[hole,ink] (0.85,2.9) .. controls (0.7,3.4) and (1.1,3.85) .. (1.6,3.8) .. controls (2.1,3.7) and (2.3,3.2) .. (2.1,2.7) .. controls (1.9,2.3) and (1.2,2.3) .. (0.85,2.9) -- cycle;
+\fill[fireR!70!hole] (1.1,3.0) .. controls (1.1,3.4) and (1.5,3.55) .. (1.75,3.4) .. controls (1.95,3.2) and (1.8,2.75) .. (1.5,2.7) .. controls (1.3,2.7) and (1.15,2.8) .. (1.1,3.0) -- cycle;
+% a column of sparks rising past the figure
+\fill[fireO,opacity=.8] (3.4,0.4) .. controls (3.8,1.6) and (4.3,3.2) .. (4.9,4.52) -- (5.3,4.52) .. controls (4.7,3.1) and (4.2,1.6) .. (3.9,0.4) -- cycle;
+\foreach \x/\y in {0.5/1.2,1.2/1.8,2.3/2.4,2.6/3.6,3.3/3.9,0.3/4.0,4.2/2.0,4.6/3.0,5.1/4.0,3.6/1.2,2.0/0.4,5.6/2.6}{\fill[fireY] (\x,\y) circle (.035);}
+% rubble on the ground
+\foreach \x/\y in {2.8/0.3,3.4/0.15,4.0/0.4,4.6/0.2,5.2/0.35,5.8/0.15,3.7/0.55}{\fill[armorD,ink,line width=.4pt] (\x,\y) -- ++(.3,.12) -- ++(.15,-.15) -- ++(-.1,-.15) -- ++(-.3,0) -- cycle;}
+% armoured brute leaping through the blast
+\fill[armorD,ink] (4.15,1.6) .. controls (4.0,1.2) and (4.1,0.9) .. (4.4,0.75) -- (4.7,0.85) .. controls (4.5,1.1) and (4.5,1.4) .. (4.6,1.6) -- cycle;
+\fill[armorD,ink] (4.7,1.7) .. controls (5.1,1.5) and (5.4,1.2) .. (5.55,0.85) -- (5.85,0.95) .. controls (5.7,1.4) and (5.4,1.8) .. (5.0,2.1) -- cycle;
+\fill[armor,ink] (4.05,1.6) .. controls (3.95,2.2) and (4.1,2.8) .. (4.4,3.2) -- (5.1,3.1) .. controls (5.3,2.6) and (5.2,2.0) .. (4.95,1.6) -- cycle;
+\foreach \y in {1.9,2.2,2.5,2.8}{\draw[armorD,line width=.6pt] (4.15,\y) .. controls (4.5,\y-.08) .. (5.1,\y);}
+% arm raised overhead
+\fill[armor,ink] (4.9,3.1) .. controls (5.2,3.5) and (5.3,3.9) .. (5.15,4.2) -- (4.9,4.1) .. controls (5.0,3.85) and (4.9,3.55) .. (4.7,3.3) -- cycle;
+\fill[armorD,ink] (5.15,4.2) circle (.17);
+% fist thrust down at the left, wreathed in fire
+\fill[armor,ink] (4.15,2.9) .. controls (3.8,2.6) and (3.6,2.2) .. (3.65,1.85) -- (3.95,1.85) .. controls (3.95,2.15) and (4.1,2.45) .. (4.35,2.7) -- cycle;
+\fill[armorD,ink] (3.8,1.85) circle (.18);
+% head: horned helm, crest
+\fill[armor,ink] (4.35,3.15) .. controls (4.3,3.5) and (4.5,3.75) .. (4.7,3.75) .. controls (4.95,3.7) and (5.0,3.4) .. (4.95,3.1) -- cycle;
+\fill[armorD,ink] (4.45,3.6) -- (4.2,4.05) -- (4.6,3.72) -- cycle; \fill[armorD,ink] (4.85,3.65) -- (5.05,4.0) -- (4.92,3.5) -- cycle;
+\fill[fireY] (4.58,3.4) circle (.03); \fill[fireY] (4.78,3.4) circle (.03);
+\end{tikzpicture}\end{document}

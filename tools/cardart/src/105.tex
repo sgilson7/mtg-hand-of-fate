@@ -1,0 +1,52 @@
+\input{../preamble}
+\definecolor{wall}{HTML}{e8884e}\definecolor{wallL}{HTML}{f4a86a}\definecolor{wallD}{HTML}{c8603a}
+\definecolor{rag}{HTML}{7a2018}\definecolor{ragD}{HTML}{4a1410}\definecolor{skin}{HTML}{d88458}\definecolor{skinD}{HTML}{9a4a2e}
+\definecolor{fur}{HTML}{5a2e1e}\definecolor{mask}{HTML}{d8c8c0}\definecolor{pants}{HTML}{6a3a2e}\definecolor{iron}{HTML}{3a2a2e}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[top color=wallD,bottom color=wallL] (0,0) rectangle (6.16,4.52);
+% arcade of the arena wall
+\foreach \x in {0.9,3.5,5.6}{\fill[wallD,opacity=.55] (\x-.6,1.6) -- (\x-.6,3.6) .. controls (\x-.55,4.2) and (\x+.55,4.2) .. (\x+.6,3.6) -- (\x+.6,1.6) -- cycle;}
+\foreach \y in {2.0,2.5,3.0,3.5,4.0}{\draw[wallD,line width=.4pt] (0,\y) -- (6.16,\y);}
+% tattered red cloth arcing in at top left
+\fill[rag,ink] (0.2,4.52) .. controls (0.4,3.8) and (0.6,3.2) .. (0.9,2.7) -- (0.75,2.85) -- (0.6,3.1) -- (0.5,2.9) .. controls (0.3,3.4) and (0.1,3.9) .. (0,4.2) -- (0,4.52) -- cycle;
+\fill[rag,ink] (0.9,4.52) .. controls (1.0,4.2) and (1.15,3.9) .. (1.3,3.7) -- (1.1,3.8) .. controls (0.9,4.1) and (0.75,4.35) .. (0.7,4.52) -- cycle;
+% floor shadow
+\fill[wallD!80!black,opacity=.35] (2.0,0.9) .. controls (3.0,0.6) and (4.5,0.5) .. (5.0,0.7) .. controls (4.0,1.0) and (3.0,1.1) .. (2.0,0.9) -- cycle;
+% the great tattered red mass sweeping down the right
+\fill[rag,ink] (4.2,4.52) -- (4.75,4.52) .. controls (5.05,3.7) and (5.15,3.0) .. (5.05,2.4) -- (5.35,2.2) -- (5.0,1.95) -- (5.3,1.5) -- (4.95,1.4) -- (5.15,0.9) -- (4.8,0.85) -- (4.95,0.3) -- (4.5,0.45) -- (4.3,0.05) -- (3.95,0.35) -- (3.5,0.0) -- (3.4,0.3) -- (2.95,0.25) -- (3.3,0.6) -- (3.05,0.85) -- (3.5,1.0) -- (3.3,1.35) -- (3.75,1.5) -- (3.6,1.95) -- (4.0,2.0) -- (3.9,2.5) -- (4.2,2.6) .. controls (4.35,3.3) and (4.35,3.9) .. (4.2,4.52) -- cycle;
+\fill[ragD,ink] (4.35,3.2) -- (4.7,2.4) -- (4.45,1.9) -- (4.8,1.6) -- (4.4,1.2) -- (4.6,0.7) -- (4.1,0.8) -- (3.8,0.4) -- (3.75,0.9) -- (4.05,1.3) -- (3.95,1.75) -- (4.25,2.1) -- cycle;
+% chains trailing to the lower left
+\foreach \t in {0,0.06,...,1}{\draw[iron,line width=.9pt] ($(1.9,2.3)!\t!(0.05,0.6)$) ellipse (.07 and .04);}
+\foreach \t in {0,0.06,...,1}{\draw[iron,line width=.9pt] ($(2.0,2.2)!\t!(0.4,0.2)$) ellipse (.07 and .04);}
+\foreach \t in {0.1,0.3,...,0.9}{\fill[iron,ink] ($(2.0,2.2)!\t!(0.4,0.2)$) -- ++(0.12,-0.15) -- ++(-0.05,0.2) -- cycle;}
+% legs, crouched, spiked knee guard
+\fill[pants,ink] (2.0,2.4) .. controls (1.95,1.9) and (2.1,1.4) .. (2.4,1.1) -- (3.05,1.05) -- (3.15,1.6) .. controls (3.1,1.9) and (3.05,2.2) .. (3.1,2.5) -- cycle;
+\fill[iron,ink] (2.4,1.25) -- (2.4,1.0) -- (3.05,0.95) -- (3.0,1.25) -- cycle;
+\foreach \x in {2.5,2.65,2.8,2.95}{\fill[mask,ink] (\x,1.1) circle (.03);}
+\fill[skinD,ink] (2.45,1.0) -- (2.35,0.85) -- (3.0,0.82) -- (3.05,0.95) -- cycle;
+% loincloth tatters
+\fill[mask!70!wallD,ink] (2.3,2.4) -- (2.25,1.9) -- (2.45,2.1) -- (2.6,1.75) -- (2.75,2.05) -- (2.95,1.7) -- (3.1,2.1) -- (3.2,2.45) -- cycle;
+\begin{scope}[rotate around={-13:(2.55,2.4)}]
+% hunched bare torso
+\fill[skin,ink] (1.85,3.5) .. controls (1.75,3.0) and (1.85,2.6) .. (2.2,2.35) -- (3.2,2.4) .. controls (3.25,2.9) and (3.1,3.3) .. (2.95,3.55) .. controls (2.6,3.75) and (2.2,3.75) .. (1.85,3.5) -- cycle;
+\draw[skinD,line width=.6pt] (2.2,3.0) .. controls (2.5,2.8) and (2.8,2.9) .. (3.0,3.1);
+\draw[iron,line width=.8pt,dashed] (2.05,3.3) .. controls (2.4,2.85) and (2.8,2.85) .. (3.05,3.0);
+% arm hanging down with chained wrist
+\fill[skin,ink] (1.9,3.4) .. controls (1.7,3.1) and (1.65,2.7) .. (1.8,2.3) -- (2.1,2.25) .. controls (2.1,2.6) and (2.15,2.9) .. (2.25,3.2) -- cycle;
+\fill[iron,ink] (1.75,2.45) rectangle (2.12,2.2);
+\end{scope}
+% far arm reaching down to the chains at right
+\fill[skin,ink] (3.05,3.25) .. controls (3.25,2.8) and (3.3,2.3) .. (3.25,1.95) -- (3.5,1.9) .. controls (3.55,2.3) and (3.5,2.9) .. (3.3,3.4) -- cycle;
+\fill[iron,ink] (3.2,2.15) rectangle (3.52,1.9);
+\begin{scope}[rotate around={-13:(2.55,2.4)}]
+% shaggy fur mantle
+\fill[fur,ink] (1.9,3.45) .. controls (1.9,3.9) and (2.3,4.2) .. (2.8,4.15) .. controls (3.0,4.1) and (3.1,3.9) .. (3.0,3.55) .. controls (2.6,3.75) and (2.2,3.7) .. (1.9,3.45) -- cycle;
+% long hair streaming up and right
+\fill[fur,ink] (3.1,3.9) .. controls (3.3,4.3) and (3.55,4.4) .. (3.7,4.52) -- (3.45,4.52) .. controls (3.3,4.4) and (3.15,4.2) .. (3.0,4.1) -- cycle;
+% white mask with dark eyes
+\fill[mask,ink] (2.95,4.05) .. controls (2.85,3.75) and (2.95,3.25) .. (3.15,3.1) .. controls (3.35,3.2) and (3.45,3.6) .. (3.42,3.95) .. controls (3.35,4.15) and (3.05,4.2) .. (2.95,4.05) -- cycle;
+\fill[ink] (3.07,3.72) ellipse (.05 and .03); \fill[ink] (3.27,3.72) ellipse (.05 and .03);
+\draw[ink,line width=.5pt] (3.17,3.6) -- (3.17,3.3);
+\end{scope}
+\end{tikzpicture}\end{document}

@@ -1,0 +1,56 @@
+\input{../preamble}
+\definecolor{dark}{HTML}{25241f}\definecolor{wallA}{HTML}{3a3628}\definecolor{haze}{HTML}{6e6440}
+\definecolor{floor}{HTML}{4c4434}\definecolor{floorD}{HTML}{302a20}\definecolor{liz}{HTML}{5e5832}
+\definecolor{lizD}{HTML}{3d3820}\definecolor{lizL}{HTML}{8e864e}\definecolor{shroom}{HTML}{b8ad6e}
+\definecolor{shroomD}{HTML}{7e7446}\definecolor{elf}{HTML}{2a2622}\definecolor{skin}{HTML}{b0a490}
+\definecolor{tongue}{HTML}{a06a5a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\fill[dark] (0,0) rectangle (6.16,4.52);
+\shade[inner color=haze,outer color=dark] (3.4,2.8) ellipse (2.4 and 1.9);
+% walls: left building with doorway, right archway
+\fill[wallA,ink] (0,1.2) -- (0,4.52) -- (1.4,4.52) -- (1.35,3.8) -- (1.1,3.6) -- (1.1,1.2) -- cycle;
+\fill[dark,ink] (1.1,1.25) -- (1.1,3.6) -- (1.35,3.8) -- (1.4,1.25) -- cycle;
+\fill[wallA,ink] (5.1,1.0) -- (5.1,2.6) .. controls (5.4,2.9) and (5.8,3.0) .. (6.16,3.0) -- (6.16,1.0) -- cycle;
+\fill[dark,ink] (5.35,1.0) -- (5.35,2.3) .. controls (5.55,2.55) and (5.8,2.55) .. (5.95,2.3) -- (5.95,1.0) -- cycle;
+% machinery wheel at left
+\draw[ink,line width=2pt,haze!50!dark] (0.4,2.2) circle (.26);
+\foreach \a in {0,60,...,300}{\draw[haze!50!dark,line width=.8pt] (0.4,2.2) -- ++(\a:.26);}
+\fill[haze!40!dark,ink] (0.3,1.2) rectangle (0.5,1.95);
+% floor flagstones
+\fill[floor] (0,0) rectangle (6.16,1.15);
+\fill[floorD] (0,0) -- (0,0.45) -- (6.16,0.8) -- (6.16,0) -- cycle;
+\draw[ink,floor!60!haze] (0,0.9) -- (6.16,1.1) (0.6,0) -- (1.5,1.0) (3.1,0) -- (3.3,1.05) (4.9,0) -- (4.5,1.1);
+% club tail rising across the top
+\fill[lizD,ink] (2.0,3.1) .. controls (2.8,3.5) and (3.7,3.9) .. (4.3,4.15) -- (4.45,3.9) .. controls (3.8,3.6) and (2.9,3.2) .. (2.2,2.85) -- cycle;
+\fill[lizD,ink] (4.6,4.05) ellipse (.25 and .17);
+\foreach \a in {20,80,140,200,260,320}{\fill[lizD,ink] ($(4.6,4.05)+(\a:.22 and .15)$) -- ++(\a+15:.1) -- ++(\a-90:.05) -- cycle;}
+\draw[ink,line width=.8pt] (4.75,3.9) .. controls (4.9,3.6) and (4.7,3.5) .. (4.85,3.3);
+% the monitor's body, crouched behind the elf
+\fill[liz,ink] (1.2,1.1) .. controls (1.2,1.9) and (1.6,2.5) .. (2.2,2.7) .. controls (2.8,2.85) and (3.3,2.8) .. (3.5,2.6) -- (3.6,1.6) .. controls (3.3,1.2) and (2.6,1.0) .. (1.2,1.1) -- cycle;
+\fill[lizD,ink] (1.3,1.2) -- (0.95,0.95) -- (1.6,0.95) -- (1.8,1.3) -- cycle;
+\fill[lizD,ink] (3.3,1.4) -- (3.6,0.9) -- (4.1,0.85) -- (3.9,1.1) -- (3.7,1.6) -- cycle;
+\foreach \x in {1.5,1.75,2.0,2.25}{\draw[ink,lizL] (\x,1.3) -- (\x+.1,2.3);}
+% big head with jaws agape, facing right
+\fill[liz,ink] (3.2,2.0) .. controls (3.2,2.5) and (3.5,2.78) .. (4.0,2.8) .. controls (4.4,2.75) and (4.7,2.55) .. (4.85,2.35) -- (4.0,2.12) -- (4.8,1.98) .. controls (4.6,1.75) and (4.3,1.65) .. (3.9,1.58) .. controls (3.5,1.55) and (3.2,1.75) .. (3.2,2.0) -- cycle;
+\fill[lizD,ink] (4.0,2.12) -- (4.85,2.35) -- (4.8,1.98) -- cycle;
+\fill[lizL,opacity=.6] (3.5,2.7) .. controls (3.9,2.85) and (4.3,2.8) .. (4.6,2.55) .. controls (4.2,2.65) and (3.8,2.65) .. (3.5,2.7);
+\fill[shroom,ink] (3.95,2.6) ellipse (.07 and .05); \draw[ink,lizD] (3.7,2.75) .. controls (3.9,2.85) .. (4.15,2.7);
+\foreach \x in {4.2,4.4,4.6}{\fill[skin] (\x,2.26) -- (\x+.04,2.18) -- (\x+.08,2.3) -- cycle;}
+\draw[ink,tongue,line width=1.2pt] (4.6,2.1) .. controls (5.0,1.9) and (4.9,1.4) .. (5.2,1.1) (4.9,1.6) .. controls (5.2,1.3) .. (5.4,1.4);
+\fill[skin!80!dark,ink] (3.95,1.6) circle (.08);
+% mushrooms crowding its back
+\foreach \x/\y/\r in {1.6/2.55/.22,1.9/2.8/.28,2.25/3.05/.25,2.6/2.95/.3,2.95/3.25/.26,3.3/3.05/.3,3.65/3.35/.28,4.0/3.2/.26,4.35/3.05/.22,2.1/3.4/.2,2.7/3.6/.22,3.2/3.7/.24,4.1/3.6/.2,1.75/3.2/.18,1.45/2.9/.15,2.4/3.75/.18,3.5/3.9/.2,3.9/3.95/.16,4.55/3.4/.18,4.7/2.8/.16,1.3/2.3/.16,2.95/3.95/.16}{
+ \fill[shroomD,ink] (\x-.035,\y-.22) rectangle (\x+.035,\y);
+ \fill[shroom,ink] (\x-\r,\y) .. controls (\x-\r*0.7,\y+\r*0.6) and (\x+\r*0.7,\y+\r*0.6) .. (\x+\r,\y) -- cycle;}
+% the elf, standing centre with tall staff
+\fill[elf,ink] (2.5,2.35) -- (2.42,1.6) -- (2.45,0.75) -- (2.6,0.72) -- (2.63,1.5) -- (2.7,1.5) -- (2.75,0.72) -- (2.9,0.75) -- (2.86,1.6) -- (2.82,2.35) -- cycle;
+\fill[skin,ink] (2.6,1.62) -- (2.64,1.1) -- (2.7,1.62) -- cycle;
+\fill[skin,ink] (2.55,1.9) rectangle (2.78,2.05);
+\fill[elf,ink] (2.35,2.55) -- (2.25,2.35) -- (2.45,2.42) -- (2.5,2.05) -- (2.82,2.05) -- (2.88,2.42) -- (3.05,2.35) -- (2.95,2.58) -- cycle;
+\fill[skin,ink] (2.65,2.72) ellipse (.085 and .12);
+\fill[elf,ink] (2.56,2.76) .. controls (2.56,2.96) and (2.75,2.98) .. (2.75,2.76) -- (2.72,2.86) -- (2.6,2.86) -- cycle;
+\draw[ink,line width=1pt] (2.85,2.2) -- (3.05,1.8) -- (3.6,2.05);
+\draw[ink,line width=1.2pt] (2.32,0.72) -- (2.28,3.2);
+\draw[ink,line width=1pt] (2.28,3.2) -- (2.2,3.35) (2.28,3.2) -- (2.36,3.35);
+\end{tikzpicture}\end{document}

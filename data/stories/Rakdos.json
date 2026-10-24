@@ -1,0 +1,34 @@
+{"stories": [
+{"number": "220", "name": "Rakdos Cackler", "kind": "creature",
+ "intro": "A devil with knives for fingers capers along a rooftop, cackling. It drops in front of you, blades clattering. It will not hold back, and it does not care to block.",
+ "win": "The cackler giggles and drums its blades in your honour. It is yours now.",
+ "lose": "Its blades make music on you.",
+ "flee": "You run, and its laughter follows you down the street."},
+
+{"number": "221", "name": "Rakdos Shred-Freak", "kind": "creature",
+ "intro": "A Rakdos shred-freak is muttering about where the soul is kept. She is on you before you see her, knife out. She means to look behind your gallbladder.",
+ "win": "She decides your soul can stay where it is and follows you. She is yours now.",
+ "lose": "Her knife gets close enough to start the search.",
+ "flee": "You run before she finds out."},
+
+{"number": "157", "name": "Dreadbore", "kind": "magic",
+ "title": "Part of the show",
+ "text": "In a Rakdos-held square, a ringmaster calls for a body for the next act. A pit of churning shadow waits at the centre of the stage. In this neighbourhood, everyone is part of the show.",
+ "choices": [
+   {"text": "Offer up a rival instead", "needs": {"style": ["Rakdos", 2]},
+    "outcome": {"text": "The ringmaster cheers your cruelty and gives you the spell that opens the pit.", "effects": [{"take": true}, {"style": ["Rakdos", 1]}]}},
+   {"text": "Take the stage yourself",
+    "outcome": {"text": "The ringmaster sends his performer to drag you to the pit.", "effects": [{"fight": true}]}},
+   {"text": "Slip out through the crowd",
+    "outcome": {"text": "You push through the crowd and lose your purse on the way.", "effects": [{"leave": true}, {"gold": -4}]}}
+ ]},
+
+{"number": "147", "name": "Carnival Hellsteed", "kind": "creature",
+ "intro": "A skeletal horse bursts from the carnival tent, its mane on fire. It favours candied hands and sweet hearts. It is on you before the music stops, and it bites first.",
+ "win": "The hellsteed snorts embers and lets you climb on. It is yours now.",
+ "lose": "It tramples you into the sawdust.",
+ "flee": "You roll under a wagon as it gallops past."},
+
+{"number": "244", "name": "Rakdos Guildgate", "kind": "land",
+ "text": "A gate hung with chains and carnival lanterns marks the way into a Rakdos district. You can claim it for a tile you have walked."}
+]}

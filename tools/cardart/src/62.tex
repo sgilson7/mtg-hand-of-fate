@@ -1,0 +1,46 @@
+\input{../preamble}
+\definecolor{orange}{HTML}{e2662a}\definecolor{orangeL}{HTML}{f4904a}\definecolor{smoke}{HTML}{2a1612}\definecolor{smokeM}{HTML}{6a2a1a}
+\definecolor{flameA}{HTML}{fff4c8}\definecolor{flameB}{HTML}{ffb040}\definecolor{skin}{HTML}{a87a62}\definecolor{skinD}{HTML}{5a3428}
+\definecolor{rot}{HTML}{7a2a22}\definecolor{hair}{HTML}{1e1410}\definecolor{vest}{HTML}{3a2a2a}\definecolor{diam}{HTML}{a82a2a}
+\definecolor{pad}{HTML}{8a6a58}\definecolor{staff}{HTML}{4a3428}\definecolor{ribbon}{HTML}{e8b8b0}\definecolor{chain}{HTML}{5a4a40}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\fill[orange] (0,0) rectangle (6.16,4.52);
+\shade[inner color=orangeL,outer color=orange] (1.4,3.0) circle (1.8);
+% dark smoke masses
+\fill[smoke] (3.2,4.52) .. controls (3.3,3.6) and (2.6,3.0) .. (2.9,2.2) .. controls (3.2,1.6) and (2.6,0.8) .. (2.8,0) -- (6.16,0) -- (6.16,4.52) -- cycle;
+\fill[smokeM] (4.7,4.52) .. controls (5.0,4.0) and (5.6,3.9) .. (6.16,3.6) -- (6.16,4.52) -- cycle;
+\fill[smoke] (0,4.52) -- (0,3.8) .. controls (0.6,4.1) and (1.4,4.2) .. (1.8,4.52) -- cycle;
+\fill[smoke] (1.4,4.52) .. controls (1.8,3.9) and (2.3,3.7) .. (2.6,3.9) .. controls (2.8,4.2) and (2.9,4.4) .. (3.0,4.52) -- cycle;
+\fill[smokeM] (5.8,0) .. controls (5.6,0.8) and (5.9,1.4) .. (6.16,1.6) -- (6.16,0) -- cycle;
+% flames lower left
+\fill[flameB] (0,0) -- (0,1.8) .. controls (0.2,1.5) and (0.35,1.9) .. (0.4,2.3) .. controls (0.6,1.8) and (0.7,1.6) .. (0.9,1.9) .. controls (1.0,1.4) and (1.3,1.2) .. (1.6,1.4) .. controls (1.7,0.9) and (1.9,0.6) .. (1.8,0) -- cycle;
+\fill[flameA] (0,0) -- (0,1.0) .. controls (0.25,1.2) and (0.3,1.6) .. (0.35,1.8) .. controls (0.5,1.4) and (0.7,1.2) .. (0.9,1.4) .. controls (1.0,1.0) and (1.3,0.8) .. (1.4,0.9) .. controls (1.5,0.5) and (1.5,0.2) .. (1.4,0) -- cycle;
+% spear shaft diagonal with ribbons
+\fill[staff,ink] (0,2.75) -- (3.25,4.45) -- (3.3,4.36) -- (0,2.6) -- cycle;
+\foreach \a/\b/\c in {2.6/2.1/1.6,2.7/2.4/2.3,2.9/3.2/3.4,2.5/1.8/1.0}{\draw[ribbon!70!diam,line width=1.1pt] (2.75,4.15) .. controls (\a,3.6) and (\b,3.0) .. (\c,2.4);}
+\fill[ribbon,ink] (3.0,4.3) -- (3.4,4.52) -- (3.5,4.2) -- cycle;
+% torso with patterned vest
+\fill[vest,ink] (2.1,0) .. controls (2.3,0.5) and (2.4,1.0) .. (2.5,1.3) .. controls (2.7,1.6) and (3.0,1.65) .. (3.4,1.62) .. controls (4.0,1.62) and (4.6,1.45) .. (4.9,1.0) .. controls (4.9,0.6) and (4.7,0.3) .. (4.6,0) -- cycle;
+\fill[skin,ink] (4.6,0) .. controls (4.75,0.4) and (4.95,0.7) .. (5.05,1.1) -- (5.3,0.9) .. controls (5.2,0.5) and (5.1,0.2) .. (5.0,0) -- cycle;
+\fill[skin,ink] (2.75,1.55) .. controls (3.0,1.8) and (3.6,1.85) .. (4.1,1.7) -- (3.95,1.4) .. controls (3.6,1.5) and (3.1,1.45) .. (2.8,1.3) -- cycle;
+\fill[diam,ink] (2.85,1.3) -- (3.95,1.4) -- (3.9,1.05) -- (2.75,0.95) -- cycle;
+\foreach \x in {2.95,3.2,3.45,3.7}{\fill[vest] (\x,1.18) -- (\x+.1,1.33) -- (\x+.2,1.18) -- (\x+.1,1.02) -- cycle;}
+\fill[pad,ink] (4.1,1.75) .. controls (4.5,1.8) and (4.9,1.6) .. (5.05,1.2) -- (4.85,0.75) .. controls (4.6,1.0) and (4.3,1.2) .. (3.95,1.3) -- cycle;
+\foreach \t in {0,0.06,...,1}{\draw[chain,line width=.7pt] ($(2.9,0.75)!\t!(4.2,1.05)$) ellipse (.05 and .035);}
+% neck and head facing right, mouth agape
+\fill[skin,ink] (3.4,1.6) -- (3.5,2.1) -- (3.9,2.1) -- (3.95,1.65) -- cycle;
+\fill[hair,ink] (3.35,2.3) .. controls (3.3,2.8) and (3.6,3.1) .. (3.95,3.05) .. controls (4.2,3.0) and (4.3,2.85) .. (4.25,2.6) -- (3.6,2.0) -- cycle;
+\fill[skin,ink] (3.5,2.4) .. controls (3.5,2.8) and (3.8,2.95) .. (4.05,2.9) .. controls (4.25,2.85) and (4.4,2.65) .. (4.35,2.4) .. controls (4.3,2.1) and (4.05,1.95) .. (3.8,2.0) .. controls (3.6,2.1) and (3.5,2.25) .. (3.5,2.4) -- cycle;
+\fill[rot,ink] (3.65,2.15) .. controls (3.7,2.45) and (3.9,2.55) .. (4.05,2.45) .. controls (4.0,2.3) and (3.95,2.15) .. (3.85,2.05) -- cycle;
+\fill[hair,ink] (4.05,2.3) .. controls (4.1,2.5) and (4.3,2.5) .. (4.32,2.35) .. controls (4.3,2.15) and (4.15,2.1) .. (4.05,2.3) -- cycle;
+\foreach \x in {4.1,4.17,4.24}{\fill[ribbon] (\x,2.47) -- (\x+.03,2.4) -- (\x+.06,2.47) -- cycle;}
+\fill[hair] (4.12,2.68) circle (.04);
+\draw[skinD,line width=.8pt] (3.6,1.75) -- (4.3,1.85);
+% raised arm with wrapped wrist and fist on the spear
+\fill[skin,ink] (2.6,1.3) .. controls (2.1,1.4) and (1.7,1.7) .. (1.5,2.3) .. controls (1.4,2.7) and (1.25,3.0) .. (1.15,3.3) -- (1.55,3.35) .. controls (1.65,3.0) and (1.85,2.6) .. (1.95,2.4) .. controls (2.15,2.1) and (2.5,1.95) .. (2.85,1.75) -- cycle;
+\draw[skinD,line width=.6pt] (1.6,2.2) .. controls (1.75,2.0) and (2.0,1.8) .. (2.4,1.6);
+\fill[vest,ink] (1.1,3.25) -- (1.55,3.35) -- (1.6,3.0) -- (1.15,2.9) -- cycle;
+\foreach \y in {2.98,3.1,3.22}{\draw[skinD,line width=.6pt] (1.14,\y) -- (1.57,\y+.1);}
+\fill[skin,ink] (1.05,3.3) .. controls (1.0,3.6) and (1.15,3.8) .. (1.35,3.8) .. controls (1.55,3.75) and (1.6,3.55) .. (1.55,3.35) -- cycle;
+\end{tikzpicture}\end{document}

@@ -1,0 +1,45 @@
+\input{../preamble}
+\definecolor{bgD}{HTML}{1e2a30}\definecolor{bgT}{HTML}{2e4a4a}\definecolor{win}{HTML}{7a3a5a}\definecolor{winL}{HTML}{b0607a}
+\definecolor{skin}{HTML}{e8c0c0}\definecolor{skinR}{HTML}{d8603a}\definecolor{skinD}{HTML}{9a5050}
+\definecolor{iron}{HTML}{2a1e1e}\definecolor{club}{HTML}{8a3a1a}\definecolor{spark}{HTML}{f8902a}\definecolor{sparkY}{HTML}{ffd060}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[left color=bgT,right color=bgD] (0,0) rectangle (6.16,4.52);
+% gothic window at right, arch at left
+\fill[win,ink] (5.3,1.6) -- (5.3,3.4) .. controls (5.35,3.9) and (6.1,3.9) .. (6.16,3.6) -- (6.16,1.6) -- cycle;
+\foreach \x in {5.55,5.85}{\draw[bgD,line width=1.2pt] (\x,1.6) -- (\x,3.6);}
+\fill[club!50!bgD,ink] (1.2,1.0) -- (1.2,3.9) .. controls (1.3,4.5) and (2.1,4.5) .. (2.2,3.9) -- (2.2,1.0) -- cycle;
+% shafts of light from lower left
+\fill[white,opacity=.12] (0,0.6) -- (3.2,4.52) -- (3.6,4.52) -- (0,0.2) -- cycle;
+\fill[white,opacity=.08] (0,1.6) -- (2.2,4.52) -- (2.4,4.52) -- (0,1.3) -- cycle;
+% hanging chains
+\foreach \x/\y in {4.4/4.52,4.8/4.52,0.3/3.5}{\foreach \t in {0,0.07,...,1}{\draw[iron,line width=.7pt] ($(\x,\y)!\t!(\x+0.2,\y-2.4)$) ellipse (.03 and .06);}}
+\draw[iron,line width=.6pt] (1.6,3.4) .. controls (2.0,3.6) and (2.6,3.3) .. (3.0,3.0);
+% cloud of orange sparks and dust, lower right
+\fill[spark!60!bgD,opacity=.7] (2.6,0) .. controls (2.8,1.0) and (3.4,1.8) .. (4.6,2.4) .. controls (5.3,2.9) and (5.9,3.2) .. (6.16,3.4) -- (6.16,0) -- cycle;
+\fill[spark,opacity=.8] (3.6,0) .. controls (3.8,0.8) and (4.3,1.5) .. (5.0,2.0) .. controls (5.5,2.4) and (5.9,2.6) .. (6.16,2.7) -- (6.16,0) -- cycle;
+\foreach \x/\y in {2.9/0.6,3.3/1.2,3.9/1.7,4.4/2.3,5.0/2.7,5.6/3.0,4.6/0.9,5.2/1.4,5.8/1.9,3.8/0.3,2.6/1.6,3.0/2.0,5.4/0.4,4.2/2.9}{\fill[sparkY] (\x,\y) circle (.04);}
+% spiked club across the shoulders
+\fill[club,ink] (1.4,4.52) -- (1.35,4.2) .. controls (2.0,4.0) and (2.8,3.85) .. (3.4,3.85) -- (3.5,4.15) .. controls (2.9,4.3) and (2.2,4.45) .. (1.9,4.52) -- cycle;
+\foreach \x/\y in {1.6/4.3,2.0/4.2,2.4/4.1,2.8/4.05,3.2/4.0}{\fill[club!60!sparkY,ink] (\x,\y+.05) -- (\x+.05,\y+.42) -- (\x+.12,\y+.03) -- cycle;}
+% the giant: broad back, hunched forward
+\fill[skin,ink] (2.15,3.3) .. controls (2.3,3.8) and (3.1,3.9) .. (3.8,3.7) .. controls (4.3,3.55) and (4.45,3.1) .. (4.35,2.6) .. controls (4.3,2.1) and (4.0,1.7) .. (3.7,1.6) -- (2.9,1.6) .. controls (2.5,1.9) and (2.2,2.6) .. (2.15,3.3) -- cycle;
+\fill[skinR,opacity=.8] (3.8,3.7) .. controls (4.3,3.55) and (4.45,3.1) .. (4.35,2.6) .. controls (4.3,2.1) and (4.0,1.7) .. (3.7,1.6) -- (3.9,2.4) .. controls (4.0,3.0) and (3.95,3.4) .. (3.8,3.7) -- cycle;
+\draw[skinD,line width=.6pt] (3.0,2.5) .. controls (3.2,2.3) and (3.5,2.3) .. (3.7,2.5); \draw[skinD,line width=.6pt] (3.0,2.1) .. controls (3.2,1.95) and (3.5,1.95) .. (3.7,2.1); \draw[skinD,line width=.6pt] (3.35,2.9) -- (3.35,1.7);
+% straps and chains across the chest
+\draw[iron,line width=2pt] (2.4,3.4) -- (3.9,2.0); \draw[iron,line width=2pt] (2.3,2.4) .. controls (2.8,2.6) and (3.4,2.6) .. (4.2,2.3);
+% near arm hanging, fist low
+\fill[skin,ink] (4.1,3.45) .. controls (4.5,3.2) and (4.6,2.6) .. (4.55,2.0) -- (4.65,1.6) -- (4.25,1.5) -- (4.15,1.9) .. controls (4.1,2.4) and (3.95,2.9) .. (3.8,3.2) -- cycle;
+\fill[skinR,ink] (4.6,1.65) .. controls (4.75,1.4) and (4.6,1.15) .. (4.35,1.15) .. controls (4.15,1.2) and (4.1,1.4) .. (4.2,1.6) -- cycle;
+\fill[iron,ink] (4.18,1.9) rectangle (4.62,1.72);
+% far arm reaching down at left
+\fill[skin,ink] (2.25,3.2) .. controls (2.0,2.8) and (1.9,2.3) .. (2.0,1.9) -- (2.3,1.9) .. controls (2.3,2.3) and (2.4,2.7) .. (2.55,3.0) -- cycle;
+% spiked collar and helmeted head, bowed
+\fill[iron,ink] (2.9,3.05) circle (.42);
+\foreach \a in {0,30,...,330}{\fill[iron,ink] ($(2.9,3.05)+(\a:.38)$) -- ($(2.9,3.05)+(\a+8:.62)$) -- ($(2.9,3.05)+(\a+16:.38)$) -- cycle;}
+\fill[skinR,ink] (2.9,3.0) circle (.24);
+\fill[iron,ink] (2.74,3.12) rectangle (3.06,3.2);
+\fill[iron] (2.82,2.92) rectangle (2.98,2.98);
+% lower body dissolving into the dust
+\fill[spark!70!bgD,opacity=.7] (2.9,1.6) .. controls (3.1,1.2) and (3.6,1.0) .. (4.0,1.2) -- (3.7,1.6) -- cycle;
+\end{tikzpicture}\end{document}

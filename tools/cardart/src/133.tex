@@ -1,0 +1,47 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{4a5a30}\definecolor{bgD}{HTML}{2a2e1e}\definecolor{glowA}{HTML}{b4ff6a}
+\definecolor{glowB}{HTML}{5cb83e}\definecolor{hide}{HTML}{4c4230}\definecolor{hideD}{HTML}{2e271c}
+\definecolor{hideL}{HTML}{8a7458}\definecolor{metal}{HTML}{4f534a}\definecolor{teeth}{HTML}{e8dcc0}
+\definecolor{mouth}{HTML}{3a1610}\definecolor{hair}{HTML}{1e2418}\definecolor{rock}{HTML}{5a5238}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[top color=glowB!80!bg,bottom color=bg!70!rock,middle color=bg] (0,0) rectangle (6.16,4.52);
+\fill[rock,opacity=.6] (5.6,0) -- (5.7,2.5) -- (6.0,3.2) -- (6.16,3.0) -- (6.16,0) -- cycle;
+% green energy halo behind the beast
+\fill[glowB,opacity=.7] (0,2.2) .. controls (0.2,3.6) and (1.3,4.6) .. (2.6,4.52) -- (0,4.52) -- cycle;
+\fill[glowB,opacity=.7] (3.0,4.52) .. controls (4.2,4.3) and (5.5,3.6) .. (5.9,2.4) .. controls (6.1,3.5) and (5.6,4.3) .. (5.2,4.52) -- cycle;
+\fill[glowA,opacity=.45] (0.2,3.2) .. controls (0.8,4.0) and (1.6,4.4) .. (2.4,4.4) .. controls (1.5,4.2) and (0.8,3.7) .. (0.2,3.2);
+% hulking back and shoulders
+\fill[hide,ink] (1.6,3.0) .. controls (1.9,3.9) and (2.6,4.3) .. (3.3,4.25) .. controls (4.2,4.1) and (5.0,3.7) .. (5.5,3.0) .. controls (5.7,2.5) and (5.6,1.8) .. (5.3,1.4) -- (4.4,1.0) .. controls (3.8,0.8) and (2.8,0.9) .. (2.3,1.4) .. controls (2.0,1.9) and (1.7,2.4) .. (1.6,3.0) -- cycle;
+% lower body and legs, dim
+\fill[hideD,ink] (2.2,1.5) .. controls (2.0,1.0) and (1.9,0.5) .. (2.0,0) -- (4.8,0) .. controls (4.7,0.6) and (4.5,1.0) .. (4.4,1.2) .. controls (3.8,1.0) and (2.8,1.0) .. (2.2,1.5) -- cycle;
+\fill[hide!70!black,ink] (2.6,1.3) rectangle (4.3,1.55);
+% shoulder armour with ring boss
+\fill[metal,ink] (2.6,3.3) .. controls (3.2,3.8) and (4.3,3.7) .. (4.8,3.2) .. controls (4.7,2.7) and (4.2,2.4) .. (3.6,2.45) .. controls (3.0,2.6) and (2.6,2.9) .. (2.6,3.3) -- cycle;
+\fill[metal!80!black,ink] (2.7,2.9) .. controls (3.2,2.5) and (3.9,2.3) .. (4.5,2.5) .. controls (4.0,2.2) and (3.3,2.2) .. (2.7,2.6) -- cycle;
+\draw[ink,line width=1.6pt] (3.75,3.05) circle (.25); \draw[ink,metal!50!teeth] (3.75,3.05) circle (.16);
+% huge right arm swinging down
+\fill[hideD,ink] (4.6,3.5) .. controls (5.3,3.2) and (5.7,2.5) .. (5.6,1.8) .. controls (5.5,1.2) and (5.3,0.6) .. (5.4,0) -- (4.5,0) .. controls (4.6,0.7) and (4.7,1.4) .. (4.55,2.0) .. controls (4.4,2.5) and (4.2,3.0) .. (4.6,3.5) -- cycle;
+\fill[hide,opacity=.8] (5.0,3.0) .. controls (5.35,2.5) and (5.4,1.9) .. (5.25,1.3) .. controls (5.1,1.9) and (4.95,2.4) .. (5.0,3.0);
+% left arm reaching down to a clawed hand
+\fill[hide,ink] (2.0,3.2) .. controls (1.5,3.0) and (1.1,2.6) .. (0.9,2.2) -- (0.65,1.7) -- (1.05,1.55) .. controls (1.3,1.9) and (1.7,2.3) .. (2.2,2.5) -- cycle;
+\fill[hideD,ink] (0.65,1.75) -- (0.35,1.3) -- (0.55,1.45) -- (0.55,1.05) -- (0.75,1.4) -- (0.85,1.0) -- (0.95,1.4) -- (1.1,1.1) -- (1.1,1.55) -- cycle;
+% shaggy head hair
+\fill[hair,ink] (1.3,3.7) .. controls (1.5,4.3) and (2.3,4.52) .. (3.0,4.45) .. controls (2.6,4.25) and (2.3,4.0) .. (2.2,3.7) -- cycle;
+% the face, snarling, upper left
+\fill[hideL,ink] (1.15,3.55) -- (1.3,3.95) -- (1.65,4.08) -- (2.0,4.0) -- (2.2,3.7) -- (2.25,3.3) -- (2.05,2.95) -- (1.75,2.8) -- (1.4,2.85) -- (1.2,3.05) -- (1.1,3.3) -- cycle;
+\fill[hideD,ink] (1.35,3.72) -- (1.85,3.66) -- (1.85,3.78) -- (1.3,3.85) -- cycle;
+\fill[mouth] (1.45,3.6) circle (.03); \fill[mouth] (1.75,3.57) circle (.03);
+\fill[hideD,ink] (1.42,3.45) -- (1.5,3.6) -- (1.6,3.45) -- cycle;
+\fill[mouth,ink] (1.25,3.1) .. controls (1.4,3.35) and (1.75,3.35) .. (1.9,3.12) .. controls (1.8,2.92) and (1.4,2.9) .. (1.25,3.1) -- cycle;
+\foreach \x in {1.33,1.45,1.57,1.69}{\fill[teeth] (\x,3.25) -- (\x+.05,3.12) -- (\x+.1,3.25) -- cycle; \fill[teeth] (\x,2.98) -- (\x+.05,3.1) -- (\x+.1,2.98) -- cycle;}
+\fill[hideL,ink] (2.15,3.6) -- (2.45,3.9) -- (2.25,3.45) -- cycle;
+% green energy wrapping the body
+\fill[glowB,opacity=.55] (0.6,2.0) .. controls (1.2,3.0) and (2.6,3.0) .. (3.8,1.9) .. controls (3.2,1.4) and (2.0,1.3) .. (0.6,2.0) -- cycle;
+\fill[glowA,opacity=.5] (1.0,2.3) .. controls (2.0,2.9) and (3.0,2.6) .. (3.6,2.0) .. controls (3.0,2.25) and (2.0,2.4) .. (1.0,2.3) -- cycle;
+\fill[glowB,opacity=.45] (0,1.2) .. controls (0.3,2.4) and (0.6,3.2) .. (1.2,3.6) .. controls (0.7,2.8) and (0.5,2.0) .. (0.6,1.2) -- cycle;
+\fill[glowA,opacity=.6] (4.2,1.2) .. controls (5.0,1.5) and (5.5,2.0) .. (5.6,2.7) .. controls (5.2,2.1) and (4.8,1.6) .. (4.2,1.2) -- cycle;
+\fill[glowB,opacity=.55] (3.2,0) .. controls (3.7,0.6) and (3.9,1.4) .. (3.7,2.1) .. controls (3.5,1.4) and (3.3,0.6) .. (2.9,0) -- cycle;
+\fill[glowA,opacity=.5] (2.4,4.2) .. controls (3.3,4.4) and (4.4,4.1) .. (5.0,3.6) .. controls (4.3,3.9) and (3.3,4.1) .. (2.4,4.2);
+\draw[glowA,line width=.9pt,opacity=.85] (2.2,2.5) .. controls (2.8,2.45) and (3.3,2.2) .. (3.55,1.8) (4.1,4.0) .. controls (4.5,3.9) .. (4.8,3.6);
+\end{tikzpicture}\end{document}

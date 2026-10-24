@@ -1,0 +1,17 @@
+{
+ "_about": "Colour roles for the 3D scenes and models. After Protection of the Spheres: warm sand haze, violet ink, banded light.",
+ "ink": "#2b2140",
+ "haze": "#e9d6b8",
+ "skin": "#f2c9a6",
+ "gold": "#f2c14e",
+ "white": "#f4efe4",
+ "eye": "#1d1626",
+ "wood": "#8a5a35",
+ "stone": "#b8ad94",
+ "slate": "#6e625c",
+ "W": "#f3ecd2",
+ "U": "#3b7fd0",
+ "B": "#4a3f52",
+ "R": "#d8452c",
+ "G": "#2f9a52"
+}

@@ -1,0 +1,58 @@
+\input{../preamble}
+% Selesnya Guildgate: white domed temples under a blue sky, a golden sun-crowned face over a tall arched door, robed pilgrims on the stairs
+\definecolor{skyT}{HTML}{4a6ea8}\definecolor{skyB}{HTML}{c4d4e4}\definecolor{stone}{HTML}{d8d4c4}\definecolor{stoneD}{HTML}{8e8a7a}
+\definecolor{shd}{HTML}{6a6e6a}\definecolor{dome}{HTML}{6aa49a}\definecolor{door}{HTML}{3e463a}\definecolor{gold}{HTML}{d8aa3a}\definecolor{goldL}{HTML}{f4d878}
+\definecolor{tree}{HTML}{5a9a2e}\definecolor{treeL}{HTML}{9ac84a}\definecolor{treeD}{HTML}{2e5a1e}\definecolor{trunk}{HTML}{5a4632}
+\definecolor{pil}{HTML}{4a8a3a}\definecolor{robeW}{HTML}{f4f2ea}\definecolor{flower}{HTML}{e8b43a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[top color=skyT,bottom color=skyB] (0,0) rectangle (6.16,4.52);
+% distant pale tower upper left
+\fill[stone!70!skyB,ink,line width=.4pt] (0.05,3.4) rectangle (0.45,4.4); \fill[stone!70!skyB,ink,line width=.4pt] (0.0,4.4) -- (0.25,4.52) -- (0.5,4.4) -- cycle;
+\fill[stone!70!skyB,ink,line width=.4pt] (1.3,3.8) rectangle (1.75,4.52);
+% left rotunda with green dome and columns
+\fill[stone,ink] (0,1.3) -- (0,3.4) .. controls (0.3,3.75) and (2.0,3.75) .. (2.55,3.3) -- (2.55,1.3) -- cycle;
+\fill[dome,ink] (0.55,3.62) .. controls (0.9,4.3) and (2.0,4.3) .. (2.3,3.42) .. controls (1.8,3.62) and (1.0,3.7) .. (0.55,3.62);
+\foreach \x in {0.2,0.7,1.2,1.7,2.15}{\fill[stoneD,ink,line width=.4pt] (\x,1.9) rectangle (\x+.18,3.25);
+ \fill[shd,ink,line width=.4pt] (\x+.2,2.1) -- (\x+.2,2.9) .. controls (\x+.26,3.05) and (\x+.38,3.05) .. (\x+.44,2.9) -- (\x+.44,2.1) -- cycle;}
+\fill[stoneD,ink] (0,1.3) rectangle (2.55,1.9);
+\foreach \x in {0.3,0.9,1.5,2.1}{\fill[treeL] (\x,3.35) circle (.12);}
+% right temple: tall columns
+\fill[stone,ink] (3.9,1.2) -- (3.95,3.9) .. controls (4.1,4.15) and (4.4,4.15) .. (4.5,3.9) -- (4.7,4.52) -- (6.16,4.52) -- (6.16,1.2) -- cycle;
+\foreach \x/\w in {4.0/.4,4.65/.35,5.15/.3,5.6/.25}{\fill[stoneD!70!stone,ink,line width=.4pt] (\x,1.6) rectangle (\x+\w,4.0);}
+\fill[stone,ink] (4.0,3.95) -- (4.25,4.25) -- (4.5,3.95) -- cycle;
+\fill[treeL,ink,line width=.4pt] (5.9,4.52) .. controls (5.6,3.8) and (5.8,2.6) .. (6.16,2.2) -- (6.16,4.52) -- cycle;
+% central gate block
+\fill[stone,ink] (2.5,1.0) -- (2.5,3.4) -- (2.85,3.6) -- (3.85,3.6) -- (4.1,3.4) -- (4.1,1.0) -- cycle;
+\fill[stoneD,ink] (2.5,3.4) rectangle (2.75,1.0); \fill[stoneD,ink] (3.85,3.4) rectangle (4.1,1.0);
+\fill[stone,ink] (3.0,1.0) -- (3.0,2.6) .. controls (3.05,3.05) and (3.25,3.25) .. (3.4,3.3) .. controls (3.55,3.25) and (3.75,3.05) .. (3.8,2.6) -- (3.8,1.0) -- cycle;
+\fill[door,ink] (3.15,1.0) -- (3.15,2.55) .. controls (3.2,2.9) and (3.3,3.05) .. (3.4,3.1) .. controls (3.5,3.05) and (3.6,2.9) .. (3.65,2.55) -- (3.65,1.0) -- cycle;
+% golden sun crown and stone face above the door
+\foreach \a in {20,40,...,160}{\fill[gold,ink,line width=.4pt] ($(3.35,3.8)+(\a-6:.45)$) -- ($(3.35,3.8)+(\a:.85)$) -- ($(3.35,3.8)+(\a+6:.45)$) -- cycle;}
+\draw[gold,line width=1pt] (2.3,4.0) .. controls (2.8,4.6) and (3.9,4.6) .. (4.4,4.1);
+\fill[goldL,ink] (3.35,3.8) circle (.48);
+\fill[stone,ink] (3.12,4.0) .. controls (3.1,3.6) and (3.2,3.35) .. (3.35,3.3) .. controls (3.5,3.35) and (3.6,3.6) .. (3.58,4.0) .. controls (3.5,4.2) and (3.2,4.2) .. (3.12,4.0);
+\fill[stoneD] (3.22,3.82) ellipse (.06 and .03); \fill[stoneD] (3.48,3.82) ellipse (.06 and .03);
+\draw[stoneD,line width=.6pt] (3.35,3.78) -- (3.33,3.6) (3.27,3.47) -- (3.43,3.47);
+% terraces
+\fill[stoneD!60!stone,ink] (0,0.9) -- (6.16,0.9) -- (6.16,1.3) -- (0,1.3) -- cycle;
+\fill[stone,ink] (2.4,0.9) rectangle (4.3,1.05);
+% trees flanking the gate
+\fill[trunk,ink,line width=.4pt] (2.65,1.0) -- (2.7,2.4) -- (2.78,2.4) -- (2.75,1.0) -- cycle;
+\fill[trunk,ink,line width=.4pt] (4.5,1.0) -- (4.58,2.6) -- (4.66,2.6) -- (4.62,1.0) -- cycle;
+\foreach \x/\y/\r/\c in {2.5/2.4/.35/tree,2.85/2.7/.4/treeL,2.4/2.9/.3/tree,3.1/2.3/.25/tree,4.3/2.9/.35/tree,4.65/2.65/.45/treeL,4.95/2.25/.35/tree,4.4/2.3/.3/treeL,1.3/1.7/.45/tree,1.05/1.25/.35/treeL,1.6/1.25/.3/tree}{\fill[\c,ink] (\x,\y) circle (\r);}
+\fill[trunk,ink,line width=.4pt] (1.27,0.5) rectangle (1.35,1.3);
+% stairs rising to the door
+\fill[stone,ink] (1.0,0) -- (1.9,0.9) -- (4.3,0.9) -- (4.3,0) -- cycle;
+\foreach \y in {0.12,0.24,...,0.9}{\draw[stoneD,line width=.4pt] (1.0+\y,\y) -- (4.3,\y);}
+\fill[stone,ink] (2.95,0.9) rectangle (3.85,1.0);
+% gardens in the foreground
+\fill[treeD,ink] (0,0) -- (0,1.0) .. controls (0.6,1.1) and (1.0,0.7) .. (1.3,0.3) -- (1.2,0) -- cycle;
+\fill[treeD,ink] (4.3,0) -- (4.3,0.95) .. controls (5.0,1.1) and (5.8,1.0) .. (6.16,1.2) -- (6.16,0) -- cycle;
+\foreach \x/\y in {0.2/0.6,0.5/0.3,0.8/0.7,4.6/0.6,5.0/0.3,5.4/0.75,5.8/0.4,4.4/0.2,5.95/0.9}{\fill[flower] (\x,\y) circle (.05);}
+\fill[tree,ink] (4.1,0.2) circle (.3); \fill[tree,ink] (3.9,0.75) circle (.22);
+% robed pilgrims
+\fill[pil,ink] (1.82,0.42) -- (1.88,0.95) -- (2.02,0.95) -- (2.12,0.42) -- cycle; \fill[skyB,ink,line width=.4pt] (1.97,1.02) circle (.07);
+\draw[ink,gold,line width=.8pt] (2.15,0.42) -- (2.2,1.1);
+\fill[robeW,ink] (2.58,0.02) -- (2.64,0.55) -- (2.8,0.55) -- (2.86,0.02) -- cycle; \fill[robeW,ink,line width=.4pt] (2.72,0.62) circle (.08);
+\end{tikzpicture}\end{document}

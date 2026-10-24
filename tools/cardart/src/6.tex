@@ -1,0 +1,57 @@
+\input{../preamble}
+\definecolor{bg}{HTML}{7a6a78}\definecolor{halo}{HTML}{fff6dc}\definecolor{haloE}{HTML}{d8c4b4}
+\definecolor{print}{HTML}{b4a098}\definecolor{staff}{HTML}{9a5a2a}\definecolor{staffD}{HTML}{5a3418}
+\definecolor{hair}{HTML}{e8a040}\definecolor{hairD}{HTML}{b06a20}\definecolor{steel}{HTML}{a8aab4}
+\definecolor{steelD}{HTML}{5e606c}\definecolor{steelL}{HTML}{dcdce2}\definecolor{cloak}{HTML}{8a8a98}
+\definecolor{cloakD}{HTML}{565868}\definecolor{cloakL}{HTML}{b8b8c4}\definecolor{sleeve}{HTML}{c07a48}
+\definecolor{gem}{HTML}{2a6ac8}\definecolor{skin}{HTML}{e8b898}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\fill[bg] (0,0) rectangle (6.16,4.52);
+\shade[inner color=halo,outer color=haloE] (2.9,3.0) circle (2.35);
+% handprints ringing the halo
+\foreach \a in {20,60,120,160,200,330}{
+ \begin{scope}[shift={($(2.9,3.0)+(\a:1.9)$)},rotate=\a-90]
+ \fill[print] (0,0) ellipse (0.12 and 0.1);
+ \foreach \f in {-0.08,-0.03,0.02,0.07}{\fill[print] (\f,0.08) rectangle (\f+0.035,0.25);}
+ \end{scope}}
+% the tall staff
+\fill[staff,ink] (0.82,0) -- (1.52,3.95) -- (1.68,3.93) -- (0.98,0) -- cycle;
+\fill[staffD,ink] (1.2,1.55) -- (1.55,1.5) -- (1.6,1.75) -- (1.25,1.8) -- cycle;
+\fill[staffD,ink] (1.42,3.4) -- (1.7,3.36) -- (1.74,3.55) -- (1.46,3.6) -- cycle;
+\fill[staff,ink] (1.62,4.12) circle (0.14);
+\fill[staffD,ink] (1.55,3.9) rectangle (1.72,4.0);
+% grey cloak falling over her far shoulder
+\fill[cloak,ink] (3.4,3.4) .. controls (4.2,3.4) and (4.9,2.6) .. (5.4,1.8) .. controls (5.7,1.2) and (5.9,0.5) .. (6.0,0) -- (3.6,0) -- (3.5,2.0) -- cycle;
+\fill[cloakD] (4.4,2.4) .. controls (4.8,1.6) and (5.2,0.8) .. (5.3,0) -- (5.7,0) .. controls (5.5,0.9) and (5.1,1.8) .. (4.4,2.4);
+\fill[cloakL] (3.5,3.3) .. controls (4.1,3.2) and (4.5,2.9) .. (4.8,2.5) .. controls (4.3,2.7) and (3.9,2.9) .. (3.5,3.0) -- cycle;
+% hair down her back
+\fill[hair,ink] (2.75,3.8) .. controls (2.4,3.4) and (2.3,2.9) .. (2.2,2.5) -- (2.55,2.6) -- (2.8,3.3) -- cycle;
+\fill[hair,ink] (3.35,3.8) .. controls (3.6,3.4) and (3.7,3.0) .. (3.8,2.6) -- (3.45,2.7) -- (3.25,3.3) -- cycle;
+% armoured body and skirt
+\fill[cloakD,ink] (2.5,1.0) -- (2.3,0) -- (4.0,0) -- (3.8,1.0) -- cycle;
+\fill[steel,ink] (2.45,2.9) .. controls (2.4,2.2) and (2.45,1.5) .. (2.5,0.95) -- (3.8,0.95) .. controls (3.85,1.6) and (3.8,2.3) .. (3.7,2.95) .. controls (3.3,3.15) and (2.8,3.15) .. (2.45,2.9);
+\fill[steelL] (2.6,2.7) .. controls (2.7,2.3) and (3.0,2.1) .. (3.2,2.3) .. controls (3.0,2.6) and (2.8,2.75) .. (2.6,2.7);
+\draw[steelD,line width=1.4pt] (2.55,2.95) -- (3.7,1.3);
+\fill[steelD,ink] (2.48,0.95) rectangle (3.82,1.15);
+\fill[gem,ink] (2.95,0.75) ellipse (0.1 and 0.14);
+\fill[gem,ink] (2.75,2.62) ellipse (0.11 and 0.13);
+% arm reaching out to grip the staff
+\fill[sleeve,ink] (2.5,2.85) .. controls (2.0,2.5) and (1.6,1.9) .. (1.3,1.35) -- (1.55,1.2) .. controls (1.85,1.7) and (2.2,2.2) .. (2.55,2.45) -- cycle;
+\fill[steel,ink] (2.6,3.0) .. controls (2.2,3.05) and (2.05,2.7) .. (2.15,2.45) -- (2.55,2.5) -- cycle;
+\fill[skin,ink] (1.3,1.35) .. controls (1.1,1.35) and (1.0,1.15) .. (1.05,1.0) -- (1.35,0.95) -- (1.55,1.2) -- cycle;
+% other arm down, gauntlet, scroll cases
+\fill[steel,ink] (3.6,2.9) .. controls (4.0,2.5) and (4.2,1.9) .. (4.25,1.3) -- (3.9,1.25) .. controls (3.85,1.8) and (3.7,2.3) .. (3.45,2.6) -- cycle;
+\fill[steelL,ink] (3.75,2.95) ellipse (0.32 and 0.22);
+\fill[gem,ink] (3.85,2.95) ellipse (0.12 and 0.1);
+\fill[steelD,ink] (3.88,1.3) -- (4.3,1.35) -- (4.35,0.85) -- (3.95,0.8) -- cycle;
+\foreach \x in {3.3,3.55}{\fill[steel,ink] (\x,0.5) rectangle (\x+0.22,1.6); \fill[steelD,ink] (\x,1.6) rectangle (\x+0.22,1.7);}
+\fill[steel,ink] (4.0,0.55) -- (4.9,0.6) -- (4.9,0.85) -- (4.0,0.8) -- cycle;
+\fill[steelD,ink] (4.85,0.55) rectangle (5.0,0.9);
+% head: visored helm with two knobs, golden hair
+\fill[skin,ink] (2.85,3.25) rectangle (3.2,3.5);
+\fill[steel,ink] (2.75,3.6) .. controls (2.7,4.0) and (2.85,4.2) .. (3.03,4.2) .. controls (3.22,4.2) and (3.35,4.0) .. (3.3,3.6) .. controls (3.2,3.4) and (2.85,3.4) .. (2.75,3.6);
+\foreach \y in {3.78,3.86,3.94}{\draw[steelD,line width=.5pt] (2.85,\y) -- (3.2,\y);}
+\fill[skin,ink] (2.88,3.55) .. controls (2.9,3.4) and (3.15,3.4) .. (3.17,3.55) -- (3.15,3.72) -- (2.9,3.72) -- cycle;
+\fill[hairD,ink] (2.75,4.12) circle (0.08); \fill[hairD,ink] (3.3,4.12) circle (0.08);
+\end{tikzpicture}\end{document}

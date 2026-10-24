@@ -1,0 +1,38 @@
+{"stories": [
+{"number": "183", "name": "Niv-Mizzet, Dracogenius", "kind": "creature",
+ "intro": "You reach the top of Nivix, where the great accumulator crackles under an open sky. Niv-Mizzet uncoils from his perch, wings spread over the whole laboratory. He has no patience for a mind that does not inspire him, and he means to test yours with fire.",
+ "win": "The Dracogenius folds his wings and concedes that you have surprised him. He yields, and his card is yours.",
+ "lose": "A bolt from the dragon's eye throws you down the spiral stairs of Nivix.",
+ "flee": "You run for the stairs as his laughter shakes the tower."},
+
+{"number": "215", "name": "Frostburn Weird", "kind": "creature",
+ "intro": "A chemister's perfect weird has slipped its tank. Half frost and half flame, it hisses steam as it walks. It flares hotter as it rushes you, burning itself thinner to hit harder.",
+ "win": "The weird cools to a steady glow and drifts after you. It is yours now.",
+ "lose": "Frost and fire hit you at once, and you collapse in the steam.",
+ "flee": "You slam the lab door, and the weird fogs the glass behind you."},
+
+{"number": "163", "name": "Goblin Electromancer", "kind": "creature",
+ "intro": "A goblin in a copper harness stands in a ring of humming coils. When asked how much power he needs, he says more. He points a crackling finger at you to find out.",
+ "win": "The electromancer powers down and offers to make your spells come cheaper. He is yours now.",
+ "lose": "Lightning arcs from the coils and leaves you twitching on the floor.",
+ "flee": "You run before the coils finish charging."},
+
+{"number": "172", "name": "Izzet Charm", "kind": "magic",
+ "title": "A charm with three settings",
+ "text": "An Izzet guildmage is selling charms from a cart of tangled wire. Each charm has a dial with three settings. She swears none of them explode, then pauses to reconsider.",
+ "choices": [
+   {"text": "Buy a charm at her price", "needs": {"gold": 10},
+    "outcome": {"text": "She wraps the charm in copper foil and wishes you luck.", "effects": [{"take": true}]}},
+   {"text": "Turn the dial and see what it does",
+    "outcome": {"text": "You twist the dial while she looks away.", "fate": {"faces": [1, 1, 1, 1],
+      "huge_success": {"text": "The charm hums and shows you two secrets, and the guildmage lets you keep it.", "effects": [{"take": true}, {"style": ["Izzet", 1]}]},
+      "success": {"text": "A spark jumps harmlessly, and the guildmage, delighted, gives you the charm.", "effects": [{"take": true}]},
+      "failure": {"text": "The charm zaps your hand, and she snatches it back.", "effects": [{"health": -2}]},
+      "huge_failure": {"text": "The cart goes up in a shower of sparks, and you pay for the damage.", "effects": [{"health": -2}, {"gold": -8}]}}}},
+   {"text": "Thank her and move on",
+    "outcome": {"text": "You leave her rewiring the cart.", "effects": [{"leave": true}]}}
+ ]},
+
+{"number": "242", "name": "Izzet Guildgate", "kind": "land",
+ "text": "A gate of copper and blue glass hums at the edge of an Izzet district, sparking at whoever passes. You can claim it for a tile you have walked."}
+]}

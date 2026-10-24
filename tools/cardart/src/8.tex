@@ -1,0 +1,56 @@
+\input{../preamble}
+\definecolor{skyT}{HTML}{8aa4d8}\definecolor{skyB}{HTML}{d6e0f2}\definecolor{cloud}{HTML}{eef0f6}
+\definecolor{smoke}{HTML}{8a8a90}\definecolor{wing}{HTML}{2c2c32}\definecolor{wingL}{HTML}{4e5058}
+\definecolor{coat}{HTML}{e6e6ea}\definecolor{coatS}{HTML}{a8aab4}\definecolor{dapple}{HTML}{6a6c78}
+\definecolor{mane}{HTML}{18181c}\definecolor{roof}{HTML}{c8401e}\definecolor{dome}{HTML}{e05a1e}
+\definecolor{wall}{HTML}{f0ece4}\definecolor{wallS}{HTML}{b8b4b8}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[top color=skyT,bottom color=skyB] (0,0) rectangle (6.16,4.52);
+\fill[cloud] (3.4,0.9) .. controls (4.0,1.4) and (5.0,1.2) .. (5.6,1.6) .. controls (6.0,1.4) and (6.16,1.2) .. (6.16,1.0) -- (3.4,0.7) -- cycle;
+\fill[skyT!70!cloud] (1.6,1.0) .. controls (1.9,1.6) and (2.2,1.3) .. (2.4,1.0) -- cycle;
+% smoke column on the left
+\fill[smoke,ink] (0.1,0.8) .. controls (0,1.4) and (0.1,1.9) .. (0.4,2.2) .. controls (0.8,2.3) and (1.1,2.0) .. (1.0,1.6) .. controls (0.9,1.2) and (0.8,1.0) .. (0.9,0.8) -- cycle;
+% city towers below: red roofs left, red dome right
+\fill[wall,ink] (0,0) rectangle (0.9,0.55); \fill[roof,ink] (-0.1,0.55) -- (0.45,0.95) -- (1.0,0.55) -- cycle;
+\fill[wall,ink] (0.55,0) rectangle (1.2,0.4); \fill[roof,ink] (0.5,0.4) -- (0.9,0.6) -- (1.25,0.4) -- cycle;
+\fill[wall,ink] (1.75,0) rectangle (2.25,0.75); \fill[wall,ink] (1.8,0.75) -- (2.0,1.25) -- (2.2,0.75) -- cycle;
+\fill[roof,ink] (2.45,0) -- (2.6,0.9) -- (2.75,0) -- cycle;
+\fill[roof,ink] (0.9,0.55) -- (1.0,1.2) -- (1.1,0.55) -- cycle;
+\fill[roof,ink] (4.25,0) -- (4.35,0.4) -- (4.45,0) -- cycle;
+\fill[wall,ink] (4.65,0) rectangle (6.16,0.85);
+\foreach \x in {4.8,5.1,5.4,5.7}{\fill[wallS,ink,line width=.4pt] (\x,0) -- (\x,0.4) arc (180:0:0.08) -- (\x+0.16,0) -- cycle;}
+\fill[wall,ink] (4.95,0.85) rectangle (5.75,1.0);
+\fill[dome,ink] (5.0,1.0) arc (180:0:0.38) -- cycle;
+\fill[wall,ink] (5.85,0.85) rectangle (6.16,2.0); \fill[roof,ink] (5.85,2.0) -- (6.05,2.7) -- (6.2,2.0) -- cycle;
+% right wing rising to the top-right corner
+\fill[wing,ink] (2.9,3.0) .. controls (3.4,3.4) and (4.0,4.2) .. (3.7,4.52) -- (6.16,4.52) -- (6.16,3.5) .. controls (5.6,3.0) and (5.0,2.6) .. (4.4,2.4) .. controls (3.9,2.4) and (3.3,2.6) .. (2.9,3.0);
+\foreach \i in {0,1,2,3,4}{\draw[wingL,line width=.8pt] (3.6+\i*0.45,2.6+\i*0.1) .. controls (3.9+\i*0.45,3.2+\i*0.1) .. (4.0+\i*0.45,4.52);}
+% left wing spread out to the left edge
+\fill[wing,ink] (2.6,2.9) .. controls (2.0,3.3) and (1.2,3.6) .. (0.4,3.7) .. controls (0.2,3.75) and (0,3.7) .. (0,3.6) -- (0,2.6) -- (0.3,2.5) -- (0.15,2.2) -- (0.6,2.2) -- (0.5,1.9) -- (1.0,2.0) -- (1.0,1.7) -- (1.5,1.9) .. controls (1.9,2.0) and (2.3,2.3) .. (2.6,2.9);
+\foreach \i in {0,1,2,3}{\draw[wingL,line width=.8pt] (2.3-\i*0.1,2.7-\i*0.05) .. controls (1.4-\i*0.2,2.9-\i*0.25) .. (0.2+\i*0.25,3.4-\i*0.35);}
+% black tail streaming right
+\fill[mane,ink] (4.9,2.0) .. controls (5.4,2.4) and (5.8,2.3) .. (6.16,2.5) -- (6.16,1.7) .. controls (5.7,1.8) and (5.3,1.6) .. (4.95,1.6) -- cycle;
+% hind legs hanging
+\fill[coatS,ink] (3.5,1.8) .. controls (3.4,1.3) and (3.5,0.9) .. (3.45,0.6) -- (3.75,0.55) .. controls (3.8,0.9) and (3.9,1.3) .. (4.05,1.6) -- cycle;
+\fill[mane,ink] (3.4,0.62) -- (3.3,0.3) -- (3.75,0.25) -- (3.78,0.58) -- cycle;
+\fill[coatS,ink] (4.2,1.6) .. controls (4.4,1.2) and (4.3,1.0) .. (4.05,0.9) -- (3.95,1.1) .. controls (4.05,1.2) and (4.0,1.4) .. (3.9,1.55) -- cycle;
+\fill[mane,ink] (4.05,0.9) -- (3.85,0.75) -- (3.75,1.0) -- (3.95,1.1) -- cycle;
+% body
+\fill[coat,ink] (2.55,2.7) .. controls (2.5,2.2) and (2.9,1.7) .. (3.5,1.6) .. controls (4.0,1.4) and (4.6,1.3) .. (5.0,1.6) .. controls (5.2,1.9) and (5.0,2.3) .. (4.6,2.45) .. controls (4.0,2.6) and (3.3,2.8) .. (2.9,3.05) -- cycle;
+\fill[dapple] (4.3,2.0) ellipse (0.35 and 0.18); \fill[dapple] (3.7,1.75) ellipse (0.2 and 0.1); \fill[dapple] (4.75,1.7) ellipse (0.15 and 0.1);
+\fill[coatS] (2.9,2.0) .. controls (3.2,1.7) and (3.6,1.65) .. (3.9,1.6) .. controls (3.5,1.8) and (3.1,1.9) .. (2.9,2.0);
+% front legs tucked up
+\fill[dapple,ink] (2.7,2.2) .. controls (2.3,2.1) and (1.9,2.2) .. (1.75,2.5) -- (1.6,2.3) -- (1.75,2.1) .. controls (2.0,1.95) and (2.4,1.95) .. (2.8,2.0) -- cycle;
+\fill[dapple,ink] (2.95,1.95) .. controls (2.6,1.7) and (2.3,1.75) .. (2.1,1.95) -- (1.95,1.75) -- (2.1,1.6) .. controls (2.4,1.5) and (2.8,1.55) .. (3.05,1.8) -- cycle;
+\fill[mane,ink] (1.75,2.5) -- (1.55,2.55) -- (1.5,2.3) -- (1.6,2.3) -- cycle;
+\fill[mane,ink] (2.1,1.95) -- (1.9,2.0) -- (1.85,1.75) -- (1.95,1.75) -- cycle;
+% neck, head and wild black mane
+\fill[coat,ink] (2.55,2.75) .. controls (2.5,3.2) and (2.4,3.5) .. (2.3,3.7) -- (2.85,4.0) .. controls (2.95,3.6) and (3.0,3.3) .. (3.0,3.0) -- cycle;
+\fill[mane,ink] (2.75,4.25) .. controls (3.1,4.3) and (3.4,4.2) .. (3.6,4.4) .. controls (3.4,4.0) and (3.5,3.8) .. (3.3,3.5) .. controls (3.2,3.2) and (3.1,3.0) .. (2.95,2.95) .. controls (3.0,3.5) and (2.9,3.9) .. (2.75,4.25);
+\fill[coat,ink] (2.85,4.1) .. controls (2.75,4.35) and (2.5,4.35) .. (2.4,4.15) .. controls (2.3,3.95) and (2.2,3.75) .. (2.18,3.6) .. controls (2.2,3.45) and (2.4,3.42) .. (2.48,3.55) .. controls (2.6,3.65) and (2.8,3.75) .. (2.95,3.8) -- cycle;
+\fill[coatS] (2.18,3.6) .. controls (2.2,3.45) and (2.4,3.42) .. (2.48,3.55) -- (2.3,3.62) -- cycle;
+\fill[coat,ink] (2.55,4.28) -- (2.5,4.5) -- (2.65,4.32) -- cycle;
+\fill[coat,ink] (2.7,4.3) -- (2.78,4.5) -- (2.82,4.22) -- cycle;
+\fill[mane] (2.5,4.05) circle (.035); \fill[mane] (2.25,3.58) circle (.02);
+\end{tikzpicture}\end{document}

@@ -1,0 +1,55 @@
+\input{../preamble}
+\definecolor{skyP}{HTML}{6a5a78}\definecolor{skyT}{HTML}{4a4058}\definecolor{dome}{HTML}{4a3840}
+\definecolor{city}{HTML}{2c2024}\definecolor{fire}{HTML}{f0905c}\definecolor{fireP}{HTML}{e080c0}
+\definecolor{fireY}{HTML}{ffd07c}\definecolor{drake}{HTML}{5a5a9c}\definecolor{drakeL}{HTML}{9a8ac8}
+\definecolor{drakeD}{HTML}{2a2a50}\definecolor{wing}{HTML}{2c2c4c}\definecolor{memb}{HTML}{3a3460}
+\definecolor{eye}{HTML}{c8d0f8}\definecolor{window}{HTML}{b46ad0}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[top color=skyT,bottom color=skyP] (0,0) rectangle (6.16,4.52);
+% fire glow lower right
+\shade[inner color=fireY,outer color=skyP] (4.3,0.6) ellipse (2.0 and 1.6);
+\shade[inner color=fireP,outer color=skyP,opacity=.7] (4.6,1.8) ellipse (1.0 and 1.2);
+% falling fireballs
+\foreach \x/\y in {0.45/4.15,1.2/3.55,2.9/2.6,5.1/3.7,5.0/2.8}{\fill[fire,opacity=.5] (\x,\y) -- ++(-.4,.12) -- ++(.38,-.2) -- cycle; \shade[inner color=fireY,outer color=fire] (\x,\y) circle (.07);}
+% dome and buildings left
+\fill[dome,ink] (0.7,1.2) -- (0.7,1.6) .. controls (0.8,2.4) and (1.8,2.6) .. (2.1,1.8) -- (2.1,1.2) -- cycle;
+\fill[city,ink] (0,0) -- (0,3.4) -- (0.15,3.4) -- (0.3,2.6) -- (0.5,2.8) -- (0.6,1.0) -- (0.9,1.4) -- (1.2,1.1) -- (1.6,1.3) -- (2.0,0.9) -- (2.6,1.1) -- (2.8,0) -- cycle;
+\fill[city,ink] (0.3,0) -- (0.4,3.2) -- (0.5,3.3) -- (0.6,0) -- cycle;
+\fill[city,ink] (1.25,1.1) -- (1.4,1.9) -- (1.55,1.1) -- cycle;
+\fill[fire,opacity=.55] (0,0) .. controls (0.8,0.6) and (1.8,0.6) .. (2.8,0.2) -- (2.8,0) -- cycle;
+\shade[inner color=fireY,outer color=fireP,opacity=.75] (3.8,0.5) ellipse (1.3 and 0.6);
+% towers right with windows and debris
+\fill[city,ink] (5.0,0) -- (5.0,3.6) -- (5.25,4.52) -- (6.16,4.52) -- (6.16,0) -- cycle;
+\foreach \x/\y in {5.6/3.9,5.85/3.6,5.5/3.2,5.9/2.9}{\fill[window] (\x,\y) rectangle (\x+.12,\y+.25);}
+\foreach \x/\y/\a in {4.6/3.4/20,4.8/2.6/-30,4.5/2.2/45,5.0/1.9/10,4.7/3.0/60,5.2/2.4/-20}{\fill[skyP!50!white,rotate around={\a:(\x,\y)}] (\x,\y) rectangle (\x+.08,\y+.04);}
+\fill[city,ink] (2.6,0) -- (2.8,0.6) -- (3.2,0.4) -- (3.6,0.7) -- (3.8,0.3) -- (4.2,0.55) -- (4.4,0) -- cycle;
+\shade[inner color=fireY,outer color=fire,opacity=.8] (3.9,0.15) ellipse (0.6 and 0.2);
+% the great wing sweeping down and right, long fingers pointing down
+\fill[wing,ink] (3.0,3.2) .. controls (3.7,3.3) and (4.4,2.9) .. (4.8,2.2) .. controls (5.0,1.7) and (5.0,1.0) .. (4.9,0.4) -- (4.55,1.1) -- (4.4,0.2) -- (4.1,1.0) -- (3.75,0.35) -- (3.6,1.2) -- (3.2,0.8) -- (3.2,1.5) -- (2.9,1.6) -- cycle;
+\fill[memb,opacity=.9] (3.2,2.9) .. controls (3.8,2.9) and (4.4,2.5) .. (4.65,1.8) -- (4.55,1.15) -- (4.15,1.05) -- (3.8,0.6) -- (3.62,1.3) -- (3.25,1.0) -- cycle;
+\foreach \tx/\ty in {4.9/0.4,4.4/0.2,3.75/0.35,3.2/0.8}{\draw[drakeD,line width=.9pt] (3.1,3.0) .. controls (3.6,2.4) .. (\tx,\ty);}
+\fill[fireP,opacity=.4] (3.7,2.2) -- (4.3,1.5) -- (4.4,0.8) -- (4.0,1.2) -- cycle;
+% the other wing raised behind, upper right
+\fill[wing,ink] (3.3,3.25) .. controls (3.8,3.6) and (4.3,3.55) .. (4.6,3.3) -- (4.2,3.15) -- (4.35,2.95) -- (3.8,3.0) -- cycle;
+% hanging hind leg and tail
+\fill[drakeD,ink] (2.65,2.0) .. controls (2.6,1.6) and (2.7,1.2) .. (2.9,0.9) -- (3.05,0.95) -- (3.0,0.75) -- (3.15,0.85) .. controls (3.0,1.2) and (2.95,1.6) .. (3.0,2.0) -- cycle;
+% body: broad chest narrowing to the hips
+\fill[drake,ink] (2.35,3.25) .. controls (2.05,2.9) and (2.1,2.4) .. (2.35,2.05) .. controls (2.5,1.75) and (2.7,1.5) .. (2.95,1.45) .. controls (3.15,1.7) and (3.2,2.2) .. (3.3,2.6) .. controls (3.4,2.9) and (3.35,3.2) .. (3.15,3.35) .. controls (2.9,3.45) and (2.55,3.4) .. (2.35,3.25) -- cycle;
+\foreach \y in {2.3,2.5,2.7,2.9}{\draw[drakeL,line width=.6pt] (2.35,\y+.1) .. controls (2.5,\y) .. (2.7,\y+.05);}
+% forelegs clawing
+\fill[drakeD,ink] (2.4,2.6) .. controls (2.1,2.45) and (1.95,2.2) .. (1.95,1.95) -- (1.85,1.8) -- (2.02,1.85) -- (2.0,1.7) -- (2.12,1.85) .. controls (2.15,2.1) and (2.3,2.3) .. (2.5,2.35) -- cycle;
+\fill[drakeD,ink] (2.6,2.3) .. controls (2.45,2.1) and (2.4,1.85) .. (2.45,1.65) -- (2.38,1.5) -- (2.52,1.58) -- (2.56,1.45) -- (2.62,1.62) .. controls (2.6,1.85) and (2.68,2.05) .. (2.8,2.15) -- cycle;
+% shoulder plates and glowing orb
+\fill[drakeL,ink] (2.6,3.35) .. controls (2.8,3.55) and (3.2,3.5) .. (3.35,3.3) -- (3.25,3.15) .. controls (3.05,3.3) and (2.8,3.3) .. (2.65,3.2) -- cycle;
+\shade[inner color=white,outer color=eye] (3.0,2.72) circle (.11);
+\draw[drakeD,line width=.6pt] (3.0,2.72) circle (.14);
+% long serpentine neck rising to the head at the top
+\fill[drake,ink] (2.3,3.2) .. controls (2.1,3.5) and (2.2,3.8) .. (2.05,4.1) .. controls (1.95,4.25) and (1.85,4.3) .. (1.8,4.35) -- (2.1,4.42) .. controls (2.3,4.2) and (2.4,3.9) .. (2.45,3.7) .. controls (2.5,3.5) and (2.65,3.4) .. (2.75,3.35) -- cycle;
+\foreach \y/\x in {3.45/2.28,3.65/2.3,3.85/2.27,4.05/2.17,4.22/2.02}{\draw[drakeL,line width=.7pt] (\x-.12,\y-.02) -- (\x+.12,\y+.03);}
+\draw[drakeL,line width=1.2pt] (2.1,4.35) .. controls (2.35,4.1) and (2.4,3.8) .. (2.5,3.6);
+% head pointing up, horns back
+\fill[drakeL,ink] (1.75,4.3) .. controls (1.65,4.4) and (1.62,4.48) .. (1.6,4.52) -- (2.1,4.52) .. controls (2.18,4.45) and (2.18,4.4) .. (2.12,4.38) -- cycle;
+\fill[drakeL,ink] (2.05,4.42) -- (2.45,4.52) -- (2.15,4.35) -- cycle;
+\fill[drakeD,ink] (2.0,4.35) -- (2.3,4.4) -- (2.05,4.3) -- cycle;
+\end{tikzpicture}\end{document}

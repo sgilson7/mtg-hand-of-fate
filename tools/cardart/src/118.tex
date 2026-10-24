@@ -1,0 +1,56 @@
+\input{../preamble}
+\definecolor{glow}{HTML}{e0ac68}\definecolor{hall}{HTML}{8a5e33}\definecolor{halldk}{HTML}{4a3624}
+\definecolor{arch}{HTML}{b3824a}\definecolor{floor}{HTML}{4c4538}\definecolor{shadow}{HTML}{221f1d}
+\definecolor{crowd}{HTML}{3a3a32}\definecolor{crowdL}{HTML}{6b6250}\definecolor{skin}{HTML}{e2a77c}
+\definecolor{hair}{HTML}{c2481f}\definecolor{garb}{HTML}{4f4128}\definecolor{gold}{HTML}{b08a45}
+\definecolor{ghost}{HTML}{a8794a}\definecolor{mist}{HTML}{8a9a8a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\fill[halldk] (0,0) rectangle (6.16,4.52);
+\shade[inner color=glow,outer color=halldk] (1.9,2.4) ellipse (2.4 and 2.6);
+\shade[left color=halldk!0!crowd,right color=mist] (4.6,1.5) rectangle (6.16,4.52);
+% arches of the hall
+\foreach \x in {0.9,2.3}{\fill[arch,ink] (\x-.12,1.4) -- (\x-.12,3.6) .. controls (\x+.1,4.3) and (\x+.6,4.4) .. (\x+.8,4.6) -- (\x+.95,4.6) .. controls (\x+.55,4.2) and (\x+.25,4.0) .. (\x+.12,3.6) -- (\x+.12,1.4) -- cycle;}
+\fill[hall,ink] (2.95,1.4) rectangle (3.25,4.52);
+% ghostly centaur statue upper left
+\fill[ghost,ink,opacity=.5] (1.25,2.0) -- (1.3,3.0) -- (1.2,3.7) -- (1.4,3.95) -- (1.75,3.95) -- (1.95,3.6) -- (2.15,3.3) -- (1.9,3.25) -- (1.75,3.45) -- (1.7,3.0) -- (1.85,2.0) -- (1.6,2.0) -- (1.55,2.6) -- (1.45,2.0) -- cycle;
+\fill[ghost,ink,opacity=.5] (1.55,4.15) circle (.17);
+\draw[ink,ghost!70!black,line width=1pt] (0.95,2.65) -- (2.25,3.55);
+% middle figure in background
+\fill[crowdL,ink] (2.45,1.6) -- (2.5,2.7) -- (2.65,2.95) -- (2.8,2.7) -- (2.85,1.6) -- cycle;
+\fill[crowdL,ink] (2.65,3.1) circle (.13);
+% floor
+\fill[floor] (0,0) rectangle (6.16,1.4);
+\shade[inner color=floor!60!glow,outer color=floor] (2.3,1.1) ellipse (2.0 and 0.5);
+% crowd on the right
+\foreach \x/\y in {4.65/3.8,5.0/4.0,5.35/3.6,5.7/3.85,6.05/4.05,5.55/2.9,5.95/3.0,5.15/3.1}{
+ \fill[crowd,ink] (\x-.25,1.3) -- (\x-.25,\y-.35) .. controls (\x-.2,\y-.1) and (\x+.2,\y-.1) .. (\x+.25,\y-.35) -- (\x+.25,1.3) -- cycle;
+ \fill[skin!55!crowd,ink] (\x,\y) circle (.15);}
+% herald: legs crossing
+\fill[garb!70!black,ink] (3.9,2.1) -- (3.95,1.2) -- (4.1,0.7) -- (3.95,0.45) -- (4.25,0.45) -- (4.25,0.8) -- (4.15,1.4) -- (4.15,2.1) -- cycle;
+\fill[garb!70!black,ink] (4.1,2.1) -- (4.3,1.3) -- (4.25,0.75) -- (4.35,0.45) -- (4.5,0.5) -- (4.45,1.3) -- (4.35,2.1) -- cycle;
+% tattered skirt
+\fill[garb,ink] (3.8,2.7) -- (3.45,2.2) -- (2.95,1.45) -- (3.45,1.85) -- (3.35,1.3) -- (3.75,1.85) -- (3.85,1.55) -- (4.0,2.0) -- (4.25,1.7) -- (4.3,2.05) -- (4.5,1.95) -- (4.45,2.35) -- (4.4,2.7) -- cycle;
+\foreach \y in {2.15,2.4}{\draw[ink,gold] (3.65,\y) -- (4.42,\y+.05);}
+\fill[gold,ink] (3.78,2.62) rectangle (4.42,2.76);
+% bare waist and bodice
+\fill[skin,ink] (3.8,2.76) -- (3.82,3.05) -- (4.36,3.05) -- (4.4,2.76) -- cycle;
+\fill[garb,ink] (3.78,3.0) -- (3.75,3.4) -- (4.38,3.4) -- (4.36,3.0) -- cycle;
+\fill[skin,ink] (3.9,3.4) -- (3.95,3.52) -- (4.1,3.52) -- (4.18,3.4) -- cycle;
+% arms outstretched: left raised, right level with staff
+\fill[skin,ink] (3.78,3.38) -- (3.3,3.55) -- (2.95,3.8) -- (2.8,3.95) -- (2.88,4.02) -- (3.05,3.92) -- (3.35,3.7) -- (3.82,3.5) -- cycle;
+\fill[garb,ink] (3.2,3.6) -- (2.95,3.78) -- (2.68,4.12) -- (2.65,3.88) -- (3.0,3.62) -- cycle;
+\fill[skin,ink] (4.35,3.38) -- (4.8,3.3) -- (5.15,3.35) -- (5.15,3.47) -- (4.8,3.45) -- (4.38,3.5) -- cycle;
+\fill[garb,ink] (4.75,3.28) rectangle (5.0,3.48);
+\fill[shadow,ink] (5.3,4.05) -- (5.37,4.05) -- (4.92,2.6) -- (4.85,2.6) -- cycle;
+\fill[gold,ink] (5.34,4.05) circle (.07);
+% flaming hair and face
+\fill[hair,ink] (3.92,3.75) .. controls (3.6,3.5) and (3.4,3.0) .. (3.25,2.75) .. controls (3.55,3.0) .. (3.92,3.4) -- cycle;
+\fill[hair,ink] (3.88,3.55) .. controls (3.82,3.85) and (3.95,4.0) .. (4.05,4.0) .. controls (4.2,4.0) and (4.25,3.8) .. (4.18,3.55) -- cycle;
+\fill[skin,ink] (4.03,3.66) ellipse (.1 and .13);
+\fill[shadow] (4.03,3.58) circle (.025);
+% dark foreground figure, left
+\fill[shadow,ink] (0,0) -- (0,3.9) .. controls (0.25,4.3) and (0.6,4.0) .. (0.6,3.75) .. controls (0.85,3.5) and (0.95,2.8) .. (0.9,2.2) -- (1.05,1.4) -- (1.0,0) -- cycle;
+\fill[shadow,ink] (0.85,0.55) -- (0.92,1.15) -- (1.25,1.15) -- (1.2,0.55) -- cycle;
+\draw[ink,line width=1pt,crowdL] (0.92,1.15) .. controls (0.95,1.4) and (1.15,1.4) .. (1.2,1.15);
+\end{tikzpicture}\end{document}

@@ -1,0 +1,37 @@
+{"stories": [
+{"number": "226", "name": "Chromatic Lantern", "kind": "story",
+ "title": "A lantern of six colours",
+ "text": "In a pawnshop window, a brass lantern burns with a light that shifts through the colours of mana. The pawnbroker says it was found in an Izzet district, lighting something it should not. An archivist at New Prahv has offered a reward for it.",
+ "choices": [
+   {"text": "Buy the lantern", "needs": {"gold": 12},
+    "outcome": {"text": "The pawnbroker wraps the lantern, and its light points toward an Izzet district.", "effects": [{"take": true}, {"quest_start": "lantern"}]}},
+   {"text": "Ask to hold it a moment",
+    "outcome": {"text": "You lift the lantern, and its light flares in your hands.", "fate": {"faces": [1, 1, 1, 1],
+      "huge_success": {"text": "The light settles into a steady beam, and the pawnbroker, unnerved, gives it to you for free.", "effects": [{"take": true}, {"quest_start": "lantern"}, {"gold": 5}]},
+      "success": {"text": "The lantern chooses you, and the pawnbroker lets you go with it.", "effects": [{"take": true}, {"quest_start": "lantern"}]},
+      "failure": {"text": "The light burns your fingers, and the pawnbroker locks it away.", "effects": [{"health": -2}]},
+      "huge_failure": {"text": "The flare blinds you, and you knock over a shelf you must pay for.", "effects": [{"health": -2}, {"gold": -6}]}}}},
+   {"text": "Leave it in the window",
+    "outcome": {"text": "The lantern flickers as you walk away.", "effects": [{"leave": true}]}}
+ ]},
+
+{"number": "227", "name": "Civic Saber", "kind": "story",
+ "title": "A blade that answers to the guilds",
+ "text": "A guildless smith is selling a saber with a hilt of many-coloured enamel. It is sharper, she says, in the hands of someone who stands with the guilds. Those without a signet carry it instead.",
+ "choices": [
+   {"text": "Show her your guild standing", "needs": {"style": ["Izzet", 1]},
+    "outcome": {"text": "The enamel glows at your touch, and she sells it to you at a guild price.", "effects": [{"take": true}]}},
+   {"text": "Pay her full price", "needs": {"gold": 10},
+    "outcome": {"text": "She buckles the saber to your belt.", "effects": [{"take": true}]}},
+   {"text": "Haggle until she gives up",
+    "outcome": {"text": "She sighs and lets you try your luck at the price.", "fate": {"faces": [0, 2, 2, 0],
+      "success": {"text": "She throws up her hands and sells it for a song.", "effects": [{"take": true}, {"gold": -3}]},
+      "failure": {"text": "She tires of you and sells the saber to someone else.", "effects": [{"supplies": -1}]}}}}
+ ]},
+
+{"number": "234", "name": "Street Sweeper", "kind": "creature",
+ "intro": "A brass street sweeper rolls down the lane, scrubbing away refuse with spinning brushes. It does not slow for anything too clumsy to move. Its brushes turn toward you.",
+ "win": "The sweeper's gears click into a new pattern, and it trundles after you. It is yours now.",
+ "lose": "The brushes scrub you into the gutter with the rest of the refuse.",
+ "flee": "You leap clear, and it sweeps on down the lane."}
+]}

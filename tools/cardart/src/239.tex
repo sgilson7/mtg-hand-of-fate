@@ -1,0 +1,52 @@
+\input{../preamble}
+% Golgari Guildgate: a mossy sewer arch between two waterfalls, a lone orange-robed figure at the dark tunnel mouth
+\definecolor{stone}{HTML}{6e6a3a}\definecolor{stoneL}{HTML}{a8a060}\definecolor{stoneD}{HTML}{3e3e22}
+\definecolor{moss}{HTML}{34482a}\definecolor{mossL}{HTML}{5e7e34}\definecolor{tunnel}{HTML}{101a10}\definecolor{tunnelM}{HTML}{24361c}
+\definecolor{water}{HTML}{d8e4f0}\definecolor{waterB}{HTML}{8aa0b8}\definecolor{pipe}{HTML}{1c1a16}
+\definecolor{robe}{HTML}{f08a1c}\definecolor{robeL}{HTML}{ffc04a}\definecolor{floor}{HTML}{8c8a5a}\definecolor{emb}{HTML}{e8dcc0}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\fill[stone] (0,0) rectangle (6.16,4.52);
+\shade[inner color=stoneL,outer color=stone] (3.4,3.4) ellipse (2.8 and 1.4);
+% outer arch ring
+\fill[stoneL!80!stone,ink] (1.3,0.4) -- (1.3,2.6) .. controls (1.4,4.3) and (2.6,4.55) .. (3.4,4.55) .. controls (4.2,4.55) and (5.4,4.3) .. (5.5,2.6) -- (5.5,0.4) -- cycle;
+\fill[stone,ink] (2.0,0.4) -- (2.0,2.5) .. controls (2.1,3.6) and (2.8,3.95) .. (3.4,3.95) .. controls (4.0,3.95) and (4.8,3.6) .. (4.9,2.5) -- (4.9,0.4) -- cycle;
+% dark tunnel
+\fill[tunnel,ink] (2.3,0.6) -- (2.3,2.3) .. controls (2.4,3.0) and (2.9,3.25) .. (3.45,3.25) .. controls (4.0,3.25) and (4.6,3.0) .. (4.7,2.3) -- (4.7,0.6) -- cycle;
+\fill[tunnelM] (2.3,0.6) -- (2.3,2.2) .. controls (2.5,1.6) and (2.6,1.0) .. (2.9,0.6) -- cycle;
+% steps fading into the tunnel
+\foreach \y/\i in {0.65/0,0.85/1,1.05/2,1.25/3}{\fill[floor!\the\numexpr 90-\i*20\relax!tunnel,ink,line width=.4pt] (3.0+\i*.1,\y) rectangle (4.6-\i*.1,\y+.12);}
+% hanging vines in the tunnel mouth and over the arch
+\foreach \x/\l in {3.3/.9,3.5/1.3,3.65/.7,3.85/1.0,2.6/.6,4.3/.8}{\draw[mossL,line width=.9pt] (\x,3.2) .. controls (\x+.05,3.2-\l*.5) .. (\x-.03,3.2-\l);}
+\fill[moss,ink] (1.3,2.6) .. controls (1.6,2.9) and (2.0,2.8) .. (2.1,2.4) -- (2.1,0.4) -- (1.3,0.4) -- cycle;
+\fill[moss,ink] (4.8,2.4) .. controls (5.0,2.9) and (5.4,2.8) .. (5.6,2.4) -- (5.6,0.4) -- (4.8,0.4) -- cycle;
+\fill[mossL,ink] (2.4,3.0) .. controls (2.7,3.4) and (3.1,3.3) .. (3.2,3.2) .. controls (2.9,3.1) and (2.6,3.0) .. (2.4,2.6) -- cycle;
+\fill[mossL,ink] (4.4,3.15) .. controls (4.7,3.0) and (4.9,2.7) .. (4.9,2.4) -- (4.65,2.5) .. controls (4.6,2.8) and (4.5,3.0) .. (4.4,3.15);
+% guild emblem above the arch, pale relief
+\fill[emb,ink,line width=.5pt] (3.15,4.2) .. controls (3.2,3.9) and (3.25,3.7) .. (3.4,3.55) .. controls (3.55,3.7) and (3.6,3.9) .. (3.65,4.2) .. controls (3.5,4.05) and (3.3,4.05) .. (3.15,4.2);
+\fill[emb,ink,line width=.5pt] (3.1,4.25) .. controls (2.9,4.1) and (2.95,3.7) .. (3.1,3.55) -- (3.15,3.6) .. controls (3.05,3.8) and (3.05,4.0) .. (3.2,4.2) -- cycle;
+\fill[emb,ink,line width=.5pt] (3.7,4.25) .. controls (3.9,4.1) and (3.85,3.7) .. (3.7,3.55) -- (3.65,3.6) .. controls (3.75,3.8) and (3.75,4.0) .. (3.6,4.2) -- cycle;
+\fill[stoneD] (3.3,3.95) circle (.04); \fill[stoneD] (3.5,3.95) circle (.04);
+% left wall with big drain pipe and waterfall
+\fill[stoneD,ink] (0,0.4) -- (0,4.52) -- (1.65,4.52) .. controls (1.4,3.6) and (1.3,3.0) .. (1.3,2.6) -- (1.3,0.4) -- cycle;
+\fill[pipe,ink] (0.98,4.3) circle (.62);
+\shade[left color=waterB,right color=water,draw=ink] (0.62,3.95) .. controls (0.6,2.8) and (0.75,1.6) .. (0.65,0.95) -- (1.35,0.95) .. controls (1.35,1.6) and (1.4,2.8) .. (1.42,3.9) -- cycle;
+\foreach \x in {0.8,1.0,1.2}{\draw[white,line width=.6pt] (\x,3.8) -- (\x+.02,1.1);}
+% right pipe and waterfall
+\fill[stoneD,ink] (5.5,0.4) -- (5.5,2.6) .. controls (5.6,3.4) and (5.4,4.2) .. (5.2,4.52) -- (6.16,4.52) -- (6.16,0.4) -- cycle;
+\fill[pipe,ink] (5.7,3.92) circle (.32);
+\shade[left color=water,right color=waterB,draw=ink] (5.5,3.72) .. controls (5.5,2.6) and (5.55,1.3) .. (5.45,0.35) -- (5.92,0.35) .. controls (5.88,1.3) and (5.9,2.6) .. (5.9,3.72) -- cycle;
+\draw[white,line width=.6pt] (5.68,3.6) -- (5.68,0.5);
+% mossy boulder lower left
+\fill[moss,ink] (0,0.25) -- (0,1.65) .. controls (0.6,1.7) and (1.1,1.3) .. (1.45,0.75) .. controls (1.5,0.45) and (1.2,0.25) .. (0.9,0.2) -- cycle;
+\fill[mossL] (0.2,1.3) .. controls (0.6,1.4) and (0.9,1.1) .. (1.1,0.9) .. controls (0.7,1.0) and (0.4,1.1) .. (0.2,1.3);
+% wet reflective floor
+\fill[floor,ink] (0,0) -- (0,0.4) -- (6.16,0.4) -- (6.16,0) -- cycle;
+\fill[floor] (0,0.36) rectangle (6.16,0.6);
+\foreach \x/\l in {0.4/.9,1.8/1.1,3.6/.5,4.8/.7}{\draw[stoneL,line width=.7pt] (\x,0.25) -- (\x+\l,0.25);}
+\fill[robe,opacity=.4] (3.75,0.0) -- (3.75,0.45) -- (4.25,0.45) -- (4.25,0.0) -- cycle;
+% orange-robed figure seen from behind
+\fill[robe,ink] (3.78,0.45) .. controls (3.75,1.0) and (3.82,1.4) .. (3.88,1.6) -- (4.08,1.6) .. controls (4.15,1.3) and (4.22,0.9) .. (4.22,0.45) -- cycle;
+\fill[robeL] (3.86,0.5) .. controls (3.87,0.9) and (3.9,1.3) .. (3.93,1.55) -- (3.98,1.55) .. controls (3.97,1.2) and (3.95,0.8) .. (3.98,0.5) -- cycle;
+\fill[robe,ink] (3.88,1.55) -- (3.96,1.86) -- (4.08,1.55) -- cycle;
+\end{tikzpicture}\end{document}

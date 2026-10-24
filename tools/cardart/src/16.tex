@@ -1,0 +1,44 @@
+\input{../preamble}
+\definecolor{night}{HTML}{1a2650}\definecolor{nightL}{HTML}{3a4a7a}\definecolor{star}{HTML}{e8ecff}
+\definecolor{horizon}{HTML}{e8c070}\definecolor{city}{HTML}{5a5848}\definecolor{cityL}{HTML}{9a947c}
+\definecolor{cityD}{HTML}{4a4636}\definecolor{rock}{HTML}{3a3228}\definecolor{rockL}{HTML}{5e5444}
+\definecolor{rockD}{HTML}{1e1a14}\definecolor{flame}{HTML}{f07a2a}\definecolor{flameL}{HTML}{ffc060}
+\definecolor{chain}{HTML}{6a6458}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[top color=night,bottom color=nightL] (0,2.0) rectangle (6.16,4.52);
+\foreach \x/\y in {2.2/4.3,2.8/4.0,3.3/4.4,3.7/3.9,4.2/4.2,4.6/3.7,5.0/4.4,5.4/3.9,5.8/4.2,6.0/3.5,3.1/3.4,4.0/3.4,5.2/3.3,3.5/3.0,2.9/2.9,4.8/2.95,5.6/3.0,2.5/3.7}{\fill[star] (\x,\y) circle (.025);}
+% golden glow on the far horizon, right
+\fill[horizon,opacity=.35] (5.1,2.4) ellipse (1.2 and 0.6);
+\fill[horizon,opacity=.6] (5.1,2.4) ellipse (0.6 and 0.3);
+% the endless city
+\fill[city] (0,0) rectangle (6.16,2.45);
+\fill[cityD] (3.6,2.3) -- (3.7,2.75) -- (3.8,2.3) -- (4.1,2.3) -- (4.15,2.6) -- (4.2,2.3) -- (4.6,2.3) -- (4.65,2.9) -- (4.75,2.3) -- (5.6,2.3) -- (5.65,2.65) -- (5.7,2.3) -- (6.16,2.3) -- (6.16,2.2) -- (3.6,2.2) -- cycle;
+\pgfmathsetseed{7}
+\foreach \r/\y in {0/2.2,1/1.85,2/1.45,3/1.0,4/0.5,5/0.05}{
+ \foreach \i in {0,...,12}{
+  \pgfmathsetmacro{\x}{1.5+\i*0.38+mod(\r,2)*0.19+0.08*rand}
+  \pgfmathsetmacro{\w}{0.1+\r*0.025+0.03*rand}
+  \pgfmathsetmacro{\h}{0.18+\r*0.05+0.08*rnd}
+  \pgfmathsetmacro{\yy}{\y+0.08*rand}
+  \fill[cityL!80!city,ink,line width=.3pt] (\x-\w,\yy-\h) rectangle (\x+\w,\yy);
+  \fill[cityD!70!city,ink,line width=.3pt] (\x-\w-0.03,\yy) -- (\x,\yy+0.08+\r*0.03+0.06*rnd) -- (\x+\w+0.03,\yy) -- cycle;}}
+\foreach \x/\y in {3.0/2.55,3.4/2.65,2.6/2.5}{\fill[cityD,ink,line width=.4pt] (\x,\y) ellipse (0.05 and 0.07);}
+% chains hanging from the floating ruin
+\foreach \x/\e in {1.15/0.9,1.55/0.0,1.95/0.4}{\draw[chain,line width=1.2pt,dash pattern=on 2pt off 1pt] (\x,1.5) .. controls (\x+0.15,1.0) .. (\x+\e*0.3,0);}
+\draw[chain,line width=1.2pt,dash pattern=on 2pt off 1pt] (1.2,1.5) .. controls (1.6,1.1) .. (2.2,1.3);
+% ghostly flames rising along the chains
+\foreach \x/\y/\s in {0.8/0.3/1,1.3/0.6/0.8,1.8/0.2/1,2.3/0.5/0.7,0.15/1.4/0.8,1.0/1.0/0.6}{
+ \fill[flame,ink,line width=.4pt] (\x-0.08*\s,\y) .. controls (\x-0.12*\s,\y+0.25*\s) and (\x-0.02*\s,\y+0.45*\s) .. (\x+0.05*\s,\y+0.6*\s) .. controls (\x+0.12*\s,\y+0.4*\s) and (\x+0.14*\s,\y+0.2*\s) .. (\x+0.08*\s,\y) -- cycle;
+ \fill[flameL] (\x,\y+0.25*\s) circle (0.035*\s);}
+% floating carved ruin, left
+\fill[rock,ink] (0,1.9) -- (0,3.55) -- (2.85,3.6) -- (2.8,2.8) -- (2.6,2.6) -- (2.5,2.1) -- (2.2,1.8) -- (1.9,1.4) -- (1.5,1.55) -- (1.1,1.3) -- (0.7,1.6) -- (0.3,1.5) -- cycle;
+\fill[rockL,ink] (0,3.35) -- (2.85,3.4) -- (2.88,3.65) -- (0,3.6) -- cycle;
+\foreach \x in {0.25,0.75,1.25,1.75,2.25}{\fill[rockL,ink,line width=.4pt] (\x,2.2) rectangle (\x+0.3,3.25); \fill[rockD] (\x+0.08,2.35) rectangle (\x+0.22,3.05);}
+\fill[rockD] (1.2,1.5) -- (1.5,1.9) -- (1.9,1.6) -- (2.1,2.0) -- (1.6,2.1) -- cycle;
+% the fiery phantom on top, streaming left
+\fill[flame,ink] (2.75,3.6) .. controls (2.9,3.9) and (2.8,4.3) .. (2.5,4.45) .. controls (2.0,4.5) and (1.4,4.3) .. (0.9,4.2) .. controls (0.5,4.15) and (0.2,4.25) .. (0,4.3) -- (0,3.9) .. controls (0.5,3.75) and (1.0,3.7) .. (1.4,3.6) -- cycle;
+\fill[flameL] (2.6,3.75) .. controls (2.65,4.0) and (2.55,4.25) .. (2.35,4.3) .. controls (2.0,4.3) and (1.6,4.1) .. (1.3,3.95) .. controls (1.7,3.9) and (2.2,3.8) .. (2.6,3.75);
+\fill[flame,ink] (2.35,4.3) .. controls (2.3,4.45) and (2.45,4.52) .. (2.6,4.5) .. controls (2.75,4.4) and (2.7,4.25) .. (2.6,4.2) -- cycle;
+\fill[flame,ink] (1.9,3.6) -- (1.85,3.35) -- (2.05,3.45) -- (2.2,3.3) -- (2.25,3.6) -- cycle;
+\end{tikzpicture}\end{document}

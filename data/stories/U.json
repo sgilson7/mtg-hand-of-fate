@@ -1,0 +1,162 @@
+{"stories": [
+ {"number": "255", "name": "Island", "kind": "land",
+  "text": "A canal widens into a still pool between the towers, its water clear and cold. You can claim it for a tile you have walked."},
+
+ {"number": "38", "name": "Downsize", "kind": "magic",
+  "title": "A shrinking hex",
+  "text": "A bruiser twice your size is shaking down a fishmonger by the canal. A thin Azorius clerk watches from a bridge, a spell ready on her lips. She can take the strength out of his arms. She asks if you will help her hold him.",
+  "choices": [
+   {"text": "Stand beside her and face him",
+    "outcome": {"text": "Her spell and your nerve have to hold together.",
+     "fate": {"faces": [1, 2, 1, 0],
+      "huge_success": {"text": "His punches land like pillows. The fishmonger pays you both, and the clerk shares her spell.", "effects": [{"gold": 6}, {"take": true}]},
+      "success": {"text": "His blows go weak and he flees. The clerk shows you how she did it.", "effects": [{"take": true}]},
+      "failure": {"text": "The spell misses, and his fist does not. The clerk calls the watch and you limp away.", "effects": [{"health": -2}]}}}},
+   {"text": "Ask her to teach you the spell", "needs": {"charisma": 2},
+    "outcome": {"text": "She writes the words on a slip of paper while the bruiser shrinks back into the crowd.", "effects": [{"take": true}]}},
+   {"text": "Stay out of it",
+    "outcome": {"text": "You leave the canal behind.", "effects": [{"leave": true}]}}
+  ]},
+
+ {"number": "30", "name": "Blustersquall", "kind": "magic",
+  "title": "Weather from Nivix",
+  "text": "A gale tears down the street out of nowhere. Market stalls tip and people freeze in place, arms over their faces. On a rooftop, an Izzet weathermage fiddles with a brass coil. The storm is hers, and it is getting away from her.",
+  "choices": [
+   {"text": "Climb up and help her steady the coil",
+    "outcome": {"text": "The coil bucks and sparks as you grab it.",
+     "fate": {"faces": [1, 1, 1, 1],
+      "huge_success": {"text": "The wind drops at once. She is so grateful she gives you the spell and her spare rations.", "effects": [{"supplies": 2}, {"take": true}]},
+      "success": {"text": "The squall dies to a breeze. She lets you keep her notes on the spell.", "effects": [{"take": true}]},
+      "failure": {"text": "A gust throws you off the roof. You land in an awning and limp away.", "effects": [{"health": -2}]},
+      "huge_failure": {"text": "The coil bursts and the gale scatters your pack across the district.", "effects": [{"supplies": -2}, {"health": -1}]}}}},
+   {"text": "Show your Izzet favour and ask for the spell", "needs": {"style": ["Izzet", 1]},
+    "outcome": {"text": "She recognises a fellow enthusiast and hands you the formula, still crackling.", "effects": [{"take": true}]}},
+   {"text": "Shelter in a doorway",
+    "outcome": {"text": "You wait out the storm and move on.", "effects": [{"leave": true}]}}
+  ]},
+
+ {"number": "39", "name": "Faerie Impostor", "kind": "creature",
+  "intro": "A cloaked faerie flits out of a Tin Street shop with someone else's purse. It sees you watching. It swoops at you, trying to swap your coin for a pebble.",
+  "win": "The faerie gives up the purse and settles on your shoulder. It will steal for you now, if you let it.",
+  "lose": "It leaves you dazed and lighter, laughing as it goes.",
+  "flee": "You clutch your pockets and hurry off."},
+
+ {"number": "41", "name": "Inaction Injunction", "kind": "magic",
+  "title": "An injunction to stand still",
+  "text": "An Azorius lawmage reads an injunction aloud in a crowded square. Each person she names stops moving and cannot lift a hand. A Rakdos thug is frozen mid-swing. Then she reaches the next line, and it is your name.",
+  "choices": [
+   {"text": "Ask to read the injunction yourself", "needs": {"charisma": 3},
+    "outcome": {"text": "You find a misspelling in your name. She strikes it out, sighs, and gives you a blank copy to fill in.", "effects": [{"take": true}]}},
+   {"text": "Fight the spell as it closes",
+    "outcome": {"text": "The words try to pin your limbs.",
+     "fate": {"faces": [0, 2, 1, 1],
+      "success": {"text": "You shake it off. Impressed, she lets you keep the scroll.", "effects": [{"take": true}]},
+      "failure": {"text": "You stand frozen until the spell lapses, and your pack is lighter.", "effects": [{"supplies": -1}]},
+      "huge_failure": {"text": "You freeze in the sun for hours and a pickpocket helps himself.", "effects": [{"gold": -8}]}}}},
+   {"text": "Slip away before she finishes",
+    "outcome": {"text": "You are out of earshot before your name is read.", "effects": [{"leave": true}]}}
+  ]},
+
+ {"number": "35", "name": "Cyclonic Rift", "kind": "magic",
+  "title": "A tear in the air",
+  "text": "An Izzet experiment has gone wrong in a courtyard. A spinning rift hangs in the air, pulling loose crates, carts and pets toward it. Things that fall in come out somewhere else in the city. A goblin chemister is shouting for someone to close it.",
+  "choices": [
+   {"text": "Throw yourself at the rift and seal it",
+    "outcome": {"text": "The pull is fierce.",
+     "fate": {"faces": [1, 1, 1, 1],
+      "huge_success": {"text": "The rift folds shut in your hands. The goblin pays you and gives you the formula.", "effects": [{"gold": 8}, {"take": true}]},
+      "success": {"text": "You close it with a crack. The goblin hands you the formula before anyone else asks.", "effects": [{"take": true}]},
+      "failure": {"text": "The rift spits you out across the courtyard and closes on its own.", "effects": [{"health": -2}]},
+      "huge_failure": {"text": "It swallows your pack and drops it who knows where.", "effects": [{"supplies": -3}]}}}},
+   {"text": "Help the goblin with his notes", "needs": {"style": ["Izzet", 2]},
+    "outcome": {"text": "Together you find the error, and the rift snaps shut. He gives you a copy of the spell.", "effects": [{"style": ["Izzet", 1]}, {"take": true}]}},
+   {"text": "Get clear of the courtyard",
+    "outcome": {"text": "You leave before it pulls you in.", "effects": [{"leave": true}]}}
+  ]},
+
+ {"number": "53", "name": "Stealer of Secrets", "kind": "creature",
+  "intro": "A woman with ink-stained fingers falls into step beside you. She knows your name, and she wants to know the rest. Her knife comes out when you refuse.",
+  "win": "She laughs and puts away the knife. She will share what she hears, if you keep her secret.",
+  "lose": "She leaves you bleeding and knowing more about you than you would like.",
+  "flee": "You lose her in the crowd, or she lets you think so."},
+
+ {"number": "31", "name": "Cancel", "kind": "magic",
+  "title": "Forbidden",
+  "text": "A magistrate from Opal Lake stands in the street, cancelling spells as people cast them. A healer's charm fizzles, then a lamplighter's flame. \"It is forbidden,\" he says. He has not said why.",
+  "choices": [
+   {"text": "Cast a spell at him and see",
+    "outcome": {"text": "He raises a hand to stop it.",
+     "fate": {"faces": [0, 2, 2, 0],
+      "success": {"text": "He is too slow. He grunts and teaches you the counter, so you can stop the next one yourself.", "effects": [{"take": true}]},
+      "failure": {"text": "Your spell turns back on you. He writes you a fine.", "effects": [{"gold": -6}, {"health": -1}]}}}},
+   {"text": "Show your Azorius standing", "needs": {"style": ["Azorius", 1]},
+    "outcome": {"text": "He nods. A loyal citizen should know how to forbid things too. He shares the counter.", "effects": [{"take": true}]}},
+   {"text": "Do as he says",
+    "outcome": {"text": "You keep your hands still and walk on.", "effects": [{"leave": true}]}}
+  ]},
+
+ {"number": "40", "name": "Hover Barrier", "kind": "creature",
+  "intro": "A shimmering wall of glass drifts across the alley, humming. It hangs at head height and will not let you pass. It has been put here to keep the rumours out.",
+  "win": "The barrier cracks and then mends, now keyed to you. It will guard your back.",
+  "lose": "It bounces you into the gutter.",
+  "flee": "You find another way around."},
+
+ {"number": "48", "name": "Runewing", "kind": "creature",
+  "intro": "A bird with runes on its feathers lands on a library sill. It shrieks when you come near its nest of stolen scrolls. It dives at your eyes.",
+  "win": "The runewing settles. It sheds a quill that writes in a hand not your own.",
+  "lose": "Its beak finds your scalp, and you retreat from the sill.",
+  "flee": "You back off and leave it with its scrolls."},
+
+ {"number": "42", "name": "Inspiration", "kind": "magic",
+  "title": "A journal of ideas",
+  "text": "A frazzled Izzet scholar sits on a step, flipping through a journal backwards. His latest experiment worked, he says, a day before he tried it. He offers to share an idea, if you can help him sort the pages.",
+  "choices": [
+   {"text": "Help him put the journal in order",
+    "outcome": {"text": "You sort the pages by date. He shares his best idea, a spell that brings clarity.", "effects": [{"take": true}]}},
+   {"text": "Ask him to show you the experiment", "needs": {"charisma": 2},
+    "outcome": {"text": "He shows you. Your mind fills with ideas, and he lets you keep the spell.", "effects": [{"take": true}]}},
+   {"text": "Leave him to his paradox",
+    "outcome": {"text": "You decide this is a problem for yesterday.", "effects": [{"leave": true}]}}
+  ]},
+
+ {"number": "51", "name": "Soulsworn Spirit", "kind": "creature",
+  "intro": "A pale spirit bound by a Senate oath drifts through a wall toward you. You cannot block it, and you cannot outrun it. Its touch slows your limbs to stillness.",
+  "win": "The spirit's oath shifts to you. It will follow your orders now.",
+  "lose": "Its cold touch holds you until it loses interest.",
+  "flee": "You break the hold and run through a door it does not pass."},
+
+ {"number": "56", "name": "Voidwielder", "kind": "creature",
+  "intro": "A guildless mage with a wild stare blocks the bridge. \"I make my own laws,\" he says. He flicks a hand, and your companion is gone, sent back to where you met them.",
+  "win": "The Voidwielder concedes the bridge. Outlaws respect strength, and he offers to ride with you.",
+  "lose": "He sends you tumbling back down the street.",
+  "flee": "You retreat before he can send you away himself."},
+
+ {"number": "43", "name": "Isperia's Skywatch", "kind": "creature",
+  "intro": "A knight on a winged mount circles low over the Senate roofs. She spots you and dives. Her lance glows, and a pale light grips your arms.",
+  "win": "She lands and salutes. She will patrol the skies for you now.",
+  "lose": "The light pins you while she writes up a fine.",
+  "flee": "You duck under the eaves where her mount cannot follow."},
+
+ {"number": "50", "name": "Skyline Predator", "kind": "creature",
+  "intro": "A shadow falls over you with no warning. A great winged beast drops from the skyline, faster than an arrow. It means to flatten you.",
+  "win": "The predator lands and folds its wings, beaten. It hunts for you now.",
+  "lose": "It knocks you flat and takes back to the sky.",
+  "flee": "You dive under a bridge before it comes round again."},
+
+ {"number": "46", "name": "Paralyzing Grasp", "kind": "story",
+  "title": "Held in place",
+  "text": "A goblin stands frozen beside a forge, hands stuck to a lever. A pale hex holds him there. A chamberlain of Niv-Mizzet says the Firemind's mission is worth a few goblins. The goblin begs you with his eyes.",
+  "choices": [
+   {"text": "Break the hex",
+    "outcome": {"text": "The hex fights back as you pry at it.",
+     "fate": {"faces": [1, 1, 1, 1],
+      "huge_success": {"text": "The hex snaps free in your hands. The goblin thanks you with his wages.", "effects": [{"gold": 8}, {"take": true}]},
+      "success": {"text": "The goblin stumbles free. You keep the hex, wound around your fingers.", "effects": [{"take": true}]},
+      "failure": {"text": "The hex stings you and holds fast. The goblin stays.", "effects": [{"health": -2}]},
+      "huge_failure": {"text": "The hex jumps to your arms for an hour, and your supplies spoil.", "effects": [{"supplies": -2}, {"health": -1}]}}}},
+   {"text": "Bribe the chamberlain to release him", "needs": {"gold": 12},
+    "outcome": {"text": "The chamberlain pockets your gold and hands you the hex in a glass jar.", "effects": [{"take": true}]}},
+   {"text": "Walk on",
+    "outcome": {"text": "The goblin's eyes follow you out.", "effects": [{"leave": true}]}}
+  ]}
+]}

@@ -1,0 +1,46 @@
+\input{../preamble}
+\definecolor{wall}{HTML}{8a7aa8}\definecolor{wallD}{HTML}{5a4a78}\definecolor{door}{HTML}{f8d880}\definecolor{doorL}{HTML}{fff2c0}
+\definecolor{ghost}{HTML}{e0b870}\definecolor{cloak}{HTML}{6a5a8a}\definecolor{cloakD}{HTML}{3e3058}\definecolor{skin}{HTML}{8a8a5a}
+\definecolor{scarf}{HTML}{6a7a4a}\definecolor{glow}{HTML}{e02a3a}\definecolor{floor}{HTML}{8a6a6a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+% purple stone wall at left
+\fill[wall] (0,0) rectangle (6.16,4.52);
+\foreach \y in {1.2,1.9,2.6,3.3,4.0}{\draw[wallD,line width=.6pt] (0,\y) -- (2.0,\y+.25);}
+% bright doorway with spectral passers-by
+\shade[inner color=doorL,outer color=door] (4.2,3.0) ellipse (1.6 and 2.2);
+\fill[door] (3.3,1.2) rectangle (5.6,4.52);
+\shade[inner color=doorL,outer color=door] (4.4,3.2) ellipse (1.0 and 1.4);
+\foreach \x/\h in {3.8/3.3,4.4/3.5,5.0/3.2,3.5/2.9}{\fill[ghost,opacity=.7] (\x-.18,1.5) -- (\x-.22,\h-.5) .. controls (\x-.15,\h-.2) and (\x+.15,\h-.2) .. (\x+.22,\h-.5) -- (\x+.18,1.5) -- cycle; \fill[ghost,opacity=.7] (\x,\h-.1) circle (.17);}
+% stone pillar at right
+\fill[wallD,ink] (5.6,0.9) rectangle (6.16,4.52);
+\fill[wall,ink] (5.5,3.7) rectangle (6.16,3.95);
+\fill[wall,ink] (5.5,1.2) rectangle (6.16,0.9);
+% red glow spilling from his hand
+\shade[inner color=glow,outer color=wall,opacity=.9] (1.1,1.5) ellipse (.9 and 1.1);
+% floor and rubble
+\fill[floor,ink] (0,0) -- (0,0.6) -- (3.0,1.3) -- (6.16,1.3) -- (6.16,0) -- cycle;
+\fill[cloakD!60!floor,ink] (5.0,0.9) -- (5.3,1.3) -- (5.9,1.25) -- (6.16,1.4) -- (6.16,0.7) -- (5.4,0.6) -- cycle;
+\draw[ink,line width=.5pt] (3.2,1.3) -- (4.9,0.9);
+% cloak, long and hunched
+\fill[cloak,ink] (2.15,3.5) .. controls (1.8,3.0) and (1.6,2.0) .. (1.7,1.0) .. controls (1.75,0.6) and (1.9,0.2) .. (2.0,0) -- (3.4,0) .. controls (3.3,0.6) and (3.25,1.3) .. (3.3,2.0) .. controls (3.35,2.6) and (3.2,3.2) .. (3.0,3.5) -- cycle;
+\fill[cloakD,ink] (2.6,3.2) .. controls (2.5,2.4) and (2.55,1.2) .. (2.6,0) -- (2.85,0) .. controls (2.85,1.2) and (2.9,2.3) .. (2.95,3.0) -- cycle;
+\fill[glow!60!cloak,opacity=.6] (1.72,1.0) .. controls (1.65,1.8) and (1.8,2.6) .. (2.0,3.1) -- (2.15,3.0) .. controls (1.95,2.4) and (1.9,1.6) .. (1.95,0.9) -- cycle;
+% hunched back bulging behind the shoulders
+\fill[cloak,ink] (2.25,3.55) .. controls (1.8,3.55) and (1.6,3.1) .. (1.75,2.6) .. controls (1.9,2.9) and (2.1,3.2) .. (2.45,3.3) -- cycle;
+\shade[inner color=glow!80!white,outer color=glow,opacity=.7] (1.6,1.75) ellipse (.25 and .4);
+% hand glowing red at his side
+\fill[glow,ink] (1.75,2.1) .. controls (1.5,1.9) and (1.45,1.6) .. (1.55,1.4) -- (1.8,1.45) .. controls (1.75,1.7) and (1.85,1.85) .. (1.95,1.95) -- cycle;
+% arm folded near the doorway side
+\fill[cloak,ink] (3.0,3.0) .. controls (3.35,2.6) and (3.45,2.0) .. (3.35,1.6) -- (3.1,1.6) .. controls (3.15,2.0) and (3.05,2.4) .. (2.85,2.75) -- cycle;
+\fill[skin,ink] (3.1,1.65) .. controls (3.1,1.4) and (3.3,1.3) .. (3.4,1.45) -- (3.35,1.65) -- cycle;
+% green scarf over the shoulders
+\fill[scarf,ink] (2.1,3.55) .. controls (2.3,3.25) and (2.7,3.1) .. (3.0,3.3) .. controls (3.0,3.6) and (2.8,3.75) .. (2.55,3.7) -- cycle;
+\fill[scarf,ink] (2.35,3.3) -- (2.45,2.2) -- (2.6,2.25) -- (2.6,3.25) -- cycle;
+% head: big ears, long hooked nose to the right
+\fill[skin,ink] (2.55,3.5) .. controls (2.5,3.9) and (2.6,4.15) .. (2.85,4.2) .. controls (3.05,4.2) and (3.15,4.05) .. (3.2,3.85) -- (3.65,3.55) -- (3.6,3.45) -- (3.2,3.55) .. controls (3.1,3.35) and (2.8,3.3) .. (2.55,3.5) -- cycle;
+\fill[skin,ink] (2.6,3.9) -- (2.25,4.35) -- (2.75,4.1) -- cycle;
+\fill[skin,ink] (2.95,4.15) -- (3.2,4.5) -- (3.1,4.05) -- cycle;
+\fill[ink] (3.05,3.85) circle (.035);
+\draw[ink,line width=.5pt] (3.0,3.95) -- (3.15,3.92);
+\end{tikzpicture}\end{document}

@@ -39,6 +39,8 @@ mkdir -p dist/pkg dist/data
 wasm-bindgen --target web --no-typescript --out-dir dist/pkg \
   target/wasm32-unknown-unknown/release/tool_shim.wasm
 cp -R web/. dist/
+# card art lives outside web/ (binary pictures, not page code): tools/cardart/render.py
+cp -R art dist/art
 cp -R data/. dist/data/
 cp GLOSSARY.md dist/data/glossary.md
 

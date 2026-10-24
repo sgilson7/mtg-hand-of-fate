@@ -1,0 +1,44 @@
+\input{../preamble}
+\definecolor{stormD}{HTML}{3c4c54}\definecolor{storm}{HTML}{6c8088}\definecolor{mist}{HTML}{c8d8d8}
+\definecolor{spray}{HTML}{eef4f2}\definecolor{halo}{HTML}{a8e0d4}\definecolor{robe}{HTML}{243034}
+\definecolor{robeL}{HTML}{3c4c50}\definecolor{skin}{HTML}{8a9894}\definecolor{void}{HTML}{0c1830}
+\definecolor{voidB}{HTML}{3c78c8}\definecolor{rock}{HTML}{2c3434}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[top color=stormD,bottom color=storm] (0,0) rectangle (6.16,4.52);
+% swirling mist and spray
+\fill[mist,opacity=.7] (0,3.4) .. controls (0.6,3.0) and (0.9,2.2) .. (1.3,1.5) .. controls (1.6,1.0) and (2.0,0.8) .. (2.2,0) -- (0,0) -- cycle;
+\fill[spray,opacity=.7] (0,2.2) .. controls (0.5,2.0) and (0.8,1.2) .. (1.2,0.6) .. controls (1.4,0.3) and (1.6,0.1) .. (1.7,0) -- (0,0) -- cycle;
+\fill[mist,opacity=.7] (6.16,3.0) .. controls (5.4,2.8) and (4.6,2.0) .. (4.2,1.2) .. controls (4.0,0.6) and (3.9,0.2) .. (3.9,0) -- (6.16,0) -- cycle;
+\fill[spray,opacity=.75] (6.16,2.0) .. controls (5.4,1.9) and (4.9,1.2) .. (4.6,0.5) -- (4.5,0) -- (6.16,0) -- cycle;
+\fill[mist,opacity=.45] (0.2,3.9) .. controls (0.4,4.2) and (0.8,4.1) .. (0.6,3.6) -- (0.6,3.6) .. controls (1.0,4.0) and (1.6,4.0) .. (2.0,3.6) .. controls (2.2,3.0) and (1.9,2.4) .. (1.6,2.2) .. controls (1.9,2.8) and (1.8,3.4) .. (1.2,3.5) -- cycle;
+\fill[stormD,opacity=.6] (4.6,4.52) .. controls (5.2,3.8) and (5.8,3.6) .. (6.16,3.6) -- (6.16,4.52) -- cycle;
+% glowing halo arc around the raised hands
+\shade[inner color=halo,outer color=storm,opacity=.9] (3.9,4.0) ellipse (0.9 and 0.55);
+\draw[halo,line width=2pt,opacity=.8] (2.4,3.4) .. controls (2.5,4.2) and (3.6,4.6) .. (4.6,4.1);
+\draw[spray,line width=.8pt] (2.6,3.6) .. controls (2.8,4.2) and (3.6,4.45) .. (4.4,4.15);
+% rock under the feet
+\fill[rock,ink] (2.2,0) -- (2.6,0.15) -- (3.4,0.25) -- (4.1,0.1) -- (4.2,0) -- cycle;
+% legs wide apart
+\fill[robe,ink] (2.5,1.6) .. controls (2.1,1.0) and (1.8,0.4) .. (1.6,0) -- (2.2,0) .. controls (2.5,0.5) and (2.8,0.9) .. (3.0,1.3) -- cycle;
+\fill[robe,ink] (3.1,1.4) .. controls (3.5,1.0) and (3.8,0.5) .. (3.9,0.1) -- (3.5,0.1) .. controls (3.3,0.5) and (3.0,0.9) .. (2.8,1.2) -- cycle;
+% coat body with flaring skirt
+\fill[robe,ink] (2.3,2.2) .. controls (2.0,1.7) and (1.7,1.2) .. (1.35,0.75) .. controls (1.9,1.0) and (2.5,1.15) .. (3.0,1.1) .. controls (3.4,1.05) and (3.7,1.2) .. (3.8,1.4) -- (3.35,2.1) .. controls (3.4,2.6) and (3.45,3.0) .. (3.25,3.3) -- (2.55,3.3) .. controls (2.4,2.9) and (2.35,2.5) .. (2.3,2.2) -- cycle;
+\fill[robeL,opacity=.7] (2.1,2.2) .. controls (2.0,1.8) and (1.8,1.3) .. (1.6,0.95) .. controls (1.9,1.1) and (2.2,1.15) .. (2.4,1.15) .. controls (2.4,1.6) and (2.3,2.0) .. (2.1,2.2) -- cycle;
+\fill[robe,ink] (3.55,1.6) -- (3.9,1.3) -- (3.7,1.7) -- cycle;
+\fill[robeL,ink] (2.3,2.25) -- (3.38,2.2) -- (3.37,2.1) -- (2.27,2.15) -- cycle;
+% left arm raised high, hand gripping above the head
+\fill[robe,ink] (2.5,3.25) .. controls (2.35,3.6) and (2.4,4.0) .. (2.6,4.2) .. controls (2.8,4.35) and (3.1,4.4) .. (3.25,4.4) -- (3.3,4.25) .. controls (3.1,4.2) and (2.85,4.05) .. (2.8,3.8) .. controls (2.75,3.6) and (2.8,3.4) .. (2.9,3.3) -- cycle;
+\fill[skin,ink] (3.2,4.45) .. controls (3.35,4.52) and (3.55,4.5) .. (3.6,4.45) -- (3.5,4.35) -- (3.65,4.3) -- (3.45,4.25) .. controls (3.35,4.22) and (3.25,4.25) .. (3.2,4.3) -- cycle;
+% head tilted back
+\fill[skin,ink] (2.85,3.35) .. controls (2.8,3.55) and (2.85,3.75) .. (3.0,3.82) .. controls (3.15,3.85) and (3.25,3.75) .. (3.22,3.55) .. controls (3.2,3.4) and (3.05,3.3) .. (2.85,3.35) -- cycle;
+\fill[robe,ink] (2.85,3.75) .. controls (2.9,3.95) and (3.1,4.0) .. (3.22,3.88) -- (3.15,3.78) .. controls (3.05,3.85) and (2.95,3.82) .. (2.85,3.75) -- cycle;
+\draw[robe,line width=.6pt] (3.18,3.5) .. controls (3.3,3.45) and (3.4,3.35) .. (3.45,3.25);
+% right arm raised, palm up toward the orb
+\fill[robe,ink] (3.3,3.15) .. controls (3.5,3.0) and (3.65,2.95) .. (3.75,3.05) .. controls (3.85,3.15) and (3.9,3.25) .. (3.95,3.35) -- (3.8,3.4) .. controls (3.7,3.3) and (3.6,3.2) .. (3.4,3.3) -- cycle;
+\fill[skin,ink] (3.8,3.38) .. controls (3.85,3.55) and (3.95,3.65) .. (4.05,3.7) -- (4.08,3.55) -- (4.15,3.62) -- (4.12,3.45) .. controls (4.05,3.3) and (3.98,3.28) .. (3.92,3.3) -- cycle;
+% the void orb
+\shade[inner color=voidB,outer color=void] (3.78,3.88) circle (.14);
+\draw[halo,line width=.6pt] (3.78,3.88) circle (.18);
+\foreach \a in {30,150,270}{\draw[spray,line width=.5pt] (3.78,3.88) ++(\a:.22) arc (\a:\a+70:.22);}
+\end{tikzpicture}\end{document}

@@ -1,0 +1,143 @@
+{"stories": [
+{"number": "270", "name": "Forest", "kind": "land",
+ "text": "Trees have broken through a collapsed plaza and closed over it like a roof. You can claim it for a tile you have walked."},
+
+{"number": "118", "name": "Centaur's Herald", "kind": "creature",
+ "intro": "A centaur herald clears the road ahead of a Selesnya procession. This far from Vitu-Ghazi, the crowd will not part for him. He decides you are the crowd.",
+ "win": "The herald sounds his horn for you and promises a larger friend when you need one. He is yours now.",
+ "lose": "His hooves send you sprawling into the gutter.",
+ "flee": "You let the procession pass and slip off the other way."},
+
+{"number": "125", "name": "Giant Growth", "kind": "magic",
+ "title": "A spontaneous giant",
+ "text": "A Gruul shaman has sprinkled growth seed on a sleeping street cat. The cat is now the size of a cart and getting larger. An Azorius clerk is reading out the edict against tossing citizens.",
+ "choices": [
+   {"text": "Grab the pouch of growth seed",
+    "outcome": {"text": "You dart under the swelling cat toward the shaman.", "fate": {"faces": [1, 1, 1, 1],
+      "huge_success": {"text": "You snatch the pouch and a second one the shaman dropped.", "effects": [{"take": true}, {"supplies": 1}]},
+      "success": {"text": "The pouch is yours, and the cat shrinks back to size.", "effects": [{"take": true}]},
+      "failure": {"text": "The cat bats you across the square, and the shaman runs with the seed.", "effects": [{"health": -2}]},
+      "huge_failure": {"text": "The shaman throws seed at a vine, and it pins you to a wall.", "effects": [{"health": -4}]}}}},
+   {"text": "Help the clerk serve the edict", "needs": {"style": ["Azorius", 1]},
+    "outcome": {"text": "The shaman pays the fine in seed, and the clerk lets you keep it.", "effects": [{"take": true}]}},
+   {"text": "Leave before anyone is tossed",
+    "outcome": {"text": "You hear a clerk land in a fountain behind you.", "effects": [{"leave": true}]}}
+ ]},
+
+{"number": "122", "name": "Drudge Beetle", "kind": "creature",
+ "intro": "A Golgari beetle the size of a dog hauls refuse from a cracked sewer grate. It is part of the Street Swarm, and you are standing on its route. It clacks its mandibles and charges.",
+ "win": "The beetle drops its load and falls in behind you. It is yours now.",
+ "lose": "It knocks you flat and carries on with its work.",
+ "flee": "You step off its route, and it forgets you."},
+
+{"number": "117", "name": "Brushstrider", "kind": "creature",
+ "intro": "A long-legged brushstrider has wandered off its designated land. It has broken windows and eaten the blini-cakes from a baker's cart. It keeps one eye on you even as it charges.",
+ "win": "It crunches the last blini-cake and trots after you. It is yours now.",
+ "lose": "It kicks you into the baker's flour sacks.",
+ "flee": "You leave the baker to deal with it."},
+
+{"number": "133", "name": "Savage Surge", "kind": "magic",
+ "title": "Where the battle is",
+ "text": "A Gruul warrior sits slumped against a wall, spent after a brawl. A Gruul shaman stands over him, hands glowing with a surge of wild strength. She needs someone to show the warrior where the next fight is.",
+ "choices": [
+   {"text": "Point him at your enemies", "needs": {"charisma": 2},
+    "outcome": {"text": "The warrior surges to his feet, and the shaman teaches you the spell.", "effects": [{"take": true}]}},
+   {"text": "Ask the shaman to cast it on you",
+    "outcome": {"text": "Wild strength floods your limbs, and then the spell is yours.", "effects": [{"take": true}, {"health": 2}]}},
+   {"text": "Step around them",
+    "outcome": {"text": "You leave them to find their own fight.", "effects": [{"leave": true}]}}
+ ]},
+
+{"number": "113", "name": "Aerial Predation", "kind": "magic",
+ "title": "The Samok Stand",
+ "text": "Between the towering trees of the Samok Stand, a vine lashes up and pulls a gargoyle out of the air. Something in the canopy is hunting anything with wings. A drake circles low over your head.",
+ "choices": [
+   {"text": "Lure the drake toward the vines",
+    "outcome": {"text": "You wave the drake down and run for the trees.", "fate": {"faces": [1, 2, 1, 0],
+      "huge_success": {"text": "The vines take the drake, and their sap heals your scrapes. The spell grows into your hand.", "effects": [{"take": true}, {"health": 3}]},
+      "success": {"text": "The vines snap shut on the drake, and you learn the spell that guides them.", "effects": [{"take": true}]},
+      "failure": {"text": "The drake rakes you before the vines catch it, and the spell fades.", "effects": [{"health": -3}]}}}},
+   {"text": "Ask the Stand's guardian to teach you", "needs": {"style": ["Selesnya", 2]},
+    "outcome": {"text": "The guardian shows you how the trees choose their prey.", "effects": [{"take": true}, {"health": 2}]}},
+   {"text": "Hurry out from under the drake",
+    "outcome": {"text": "You leave the trees to their hunting.", "effects": [{"leave": true}]}}
+ ]},
+
+{"number": "129", "name": "Korozda Monitor", "kind": "creature",
+ "intro": "A scaled monitor lizard slides out of the Korozda swamps, trailing moss. It hunts by barrelling through whatever stands in front of it. Right now, that is you.",
+ "win": "The monitor flicks its tongue at you and follows. It is yours now.",
+ "lose": "It ploughs through you and back into the mud.",
+ "flee": "You scramble up a drainpipe until it loses interest."},
+
+{"number": "137", "name": "Towering Indrik", "kind": "creature",
+ "intro": "A towering indrik chases a flock of pigeons down the avenue, rearing to snap them from the air. It pulverizes a fruit stall under its hooves. You are next under them.",
+ "win": "The indrik lowers its great head and lets you lead it. It is yours now.",
+ "lose": "Its hooves come down on you as it reaches for the pigeons.",
+ "flee": "You dodge into a doorway as it thunders past."},
+
+{"number": "119", "name": "Chorus of Might", "kind": "magic",
+ "title": "The strength of all of us",
+ "text": "A Selesnya chorus is singing in a sunlit courtyard. Each voice that joins makes the song stronger, until the flagstones hum. The cantor beckons you to sing.",
+ "choices": [
+   {"text": "Join the chorus", "needs": {"style": ["Selesnya", 1]},
+    "outcome": {"text": "Your voice joins theirs, and the cantor gives you the song to carry.", "effects": [{"take": true}, {"style": ["Selesnya", 1]}]}},
+   {"text": "Sing along without knowing the words",
+    "outcome": {"text": "You open your mouth and hope.", "fate": {"faces": [1, 1, 2, 0],
+      "huge_success": {"text": "The chorus swells around your voice, and the cantor hands you the song.", "effects": [{"take": true}, {"health": 2}]},
+      "success": {"text": "You find the tune, and the song settles into you.", "effects": [{"take": true}]},
+      "failure": {"text": "The song falters, and the cantor politely asks you to go.", "effects": [{"supplies": -1}]}}}},
+   {"text": "Listen from the gate, then go",
+    "outcome": {"text": "You leave the courtyard humming.", "effects": [{"leave": true}]}}
+ ]},
+
+{"number": "120", "name": "Deadbridge Goliath", "kind": "creature",
+ "intro": "Under the Deadbridge, a beetle has been growing for centuries. It has not stopped. It unfolds from the shadow of the arch, wider than the bridge, and turns toward you.",
+ "win": "The goliath folds its legs and waits for your word. It is yours now.",
+ "lose": "It swats you into the black water under the bridge.",
+ "flee": "You run, and it settles back under the arch to keep growing."},
+
+{"number": "132", "name": "Rubbleback Rhino", "kind": "creature",
+ "intro": "A street urchin is riding a rhino through the market on a bet. Spells slide off its rubble-crusted back. It throws the urchin and comes for you.",
+ "win": "The rhino shrugs off the last of the rubble and follows you. It is yours now.",
+ "lose": "It flings you after the urchin.",
+ "flee": "You leave the rhino to the next fool with a bet."},
+
+{"number": "116", "name": "Axebane Stag", "kind": "creature",
+ "intro": "A great stag steps out of the Axebane wilds, antlers wide as a gate. It waits for the city to fall so it can be king. Until then, it guards its ground from you.",
+ "win": "The stag bows its antlers and lets you walk beside it. It is yours now.",
+ "lose": "The antlers catch you and toss you into the hedge.",
+ "flee": "You back away, and the stag watches you go."},
+
+{"number": "114", "name": "Archweaver", "kind": "creature",
+ "intro": "A spider the size of a carriage hangs between two half-built Izzet towers. Its silk holds the scaffolds together. It drops on its thread and rushes at you.",
+ "win": "The archweaver spins a line to your shoulder and follows. It is yours now.",
+ "lose": "It wraps you in silk and hangs you from a girder.",
+ "flee": "You cut through a web and run for the street."},
+
+{"number": "128", "name": "Horncaller's Chant", "kind": "magic",
+ "title": "Gathering armies",
+ "text": "On a hill outside the district, a Selesnya horncaller is chanting. A rhino forms out of the grass, then a second rhino just like it. An Orzhov envoy watches from a carriage, taking notes.",
+ "choices": [
+   {"text": "Ask the horncaller to teach you the chant", "needs": {"charisma": 3},
+    "outcome": {"text": "She teaches you the chant, and a rhino calf trots beside you as you go.", "effects": [{"take": true}]}},
+   {"text": "Sell your account to the Orzhov envoy",
+    "outcome": {"text": "The envoy pays well, but the horncaller sees, and her rhinos chase you off the hill.", "effects": [{"leave": true}, {"gold": 10}, {"health": -2}]}},
+   {"text": "Stand in the herd's path",
+    "outcome": {"text": "The newest rhino lowers its horn at you.", "effects": [{"fight": true}]}}
+ ]},
+
+{"number": "121", "name": "Death's Presence", "kind": "story",
+ "title": "No flesh wasted",
+ "text": "In a Golgari rot farm, a shaman tends a bed of fungus over a fallen beast. Its strength seeps into the mushrooms around it. She offers you a share of what grows there.",
+ "choices": [
+   {"text": "Accept the shaman's gift", "needs": {"style": ["Golgari", 1]},
+    "outcome": {"text": "She presses a spore-cap into your hand. Its strength is yours to pass on.", "effects": [{"take": true}]}},
+   {"text": "Dig up the richest patch yourself",
+    "outcome": {"text": "You kneel in the rot and start digging.", "fate": {"faces": [0, 2, 1, 1],
+      "success": {"text": "The fungus comes up whole, humming with borrowed strength.", "effects": [{"take": true}]},
+      "failure": {"text": "Spores fill your lungs, and the shaman chases you out.", "effects": [{"health": -2}]},
+      "huge_failure": {"text": "The rot bed collapses into the undercity, and you climb out bruised and poorer.", "effects": [{"health": -3}, {"supplies": -2}]}}}},
+   {"text": "Leave the dead to the Golgari",
+    "outcome": {"text": "You hold your breath until you reach the street.", "effects": [{"leave": true}]}}
+ ]}
+]}

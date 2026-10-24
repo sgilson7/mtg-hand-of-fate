@@ -8,16 +8,18 @@
        form-action 'none' blocks form posts. A meta policy cannot stop data
        leaving by navigation, so the browser check still watches requests. -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; connect-src 'self'; style-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'">
-  <title>Builder tool</title>
+  <title>Tenth District</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body data-ready="false">
-  <main>
-    <h1 id="title"></h1>
+<body data-ready="false" data-screen="">
+  <main id="stage">
+    <canvas id="gl"></canvas>
+    <div id="labels"></div>
     <div id="panels"></div>
-    <p id="message" role="status"></p>
+    <p id="keys"></p>
+    <p id="message" role="alert"></p>
   </main>
-  <noscript><p>This page needs JavaScript and WebAssembly.</p></noscript>
+  <noscript><p>This game needs JavaScript, WebAssembly and WebGL 2.</p></noscript>
   <script type="module" src="app.js"></script>
 </body>
 </html>

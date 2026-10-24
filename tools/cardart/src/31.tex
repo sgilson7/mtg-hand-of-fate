@@ -1,0 +1,50 @@
+\input{../preamble}
+\definecolor{skyG}{HTML}{b89c70}\definecolor{skyL}{HTML}{e8dcb4}\definecolor{skyD}{HTML}{4a4848}
+\definecolor{light}{HTML}{fff4c0}\definecolor{steel}{HTML}{6e6a5a}\definecolor{steelL}{HTML}{c8c0a0}
+\definecolor{steelD}{HTML}{36342e}\definecolor{gem}{HTML}{3848b0}\definecolor{gemL}{HTML}{9ca8f0}
+\definecolor{cape}{HTML}{283c78}\definecolor{capeL}{HTML}{4a62a8}\definecolor{skin}{HTML}{a8604c}
+\definecolor{shadow}{HTML}{2c2420}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[left color=skyL,right color=skyG] (0,0) rectangle (6.16,4.52);
+\shade[top color=skyD,bottom color=skyG,opacity=.85] (3.6,1.5) rectangle (6.16,4.52);
+\shade[left color=skyL,right color=skyD,opacity=0] (0,0) rectangle (1,1);
+% dissolving spell: light streaks to the upper left
+\foreach \x/\y/\a/\l in {0.4/3.1/25/0.9,0.8/3.6/30/1.0,1.2/4.0/35/0.9,0.6/2.4/20/1.0,1.4/3.0/30/0.9,1.8/3.6/40/0.8,1.1/2.0/15/0.8,2.0/4.3/45/0.7,0.2/3.8/30/0.6,1.7/2.5/25/0.6,2.4/4.5/45/0.6,0.3/1.9/15/0.7}{
+ \fill[light,opacity=.75,rotate around={\a:(\x,\y)}] (\x,\y) -- (\x+\l,\y+.07) -- (\x+\l+.05,\y-.04) -- (\x+.1,\y-.1) -- cycle;}
+\shade[inner color=light,outer color=skyL,opacity=.6] (1.6,3.2) ellipse (1.2 and 1.0);
+\foreach \x/\y/\a/\l in {1.5/4.3/40/0.9,2.2/4.1/50/0.8,2.7/4.2/55/0.7,1.0/4.4/35/0.7,1.9/3.85/35/0.6}{
+ \fill[light,opacity=.85,rotate around={\a:(\x,\y)}] (\x,\y) -- (\x+\l,\y+.08) -- (\x+\l+.05,\y-.05) -- (\x+.1,\y-.1) -- cycle;}
+% cape sweeping across the bottom and right
+\fill[cape,ink] (0.3,0) .. controls (1.2,0.6) and (2.2,1.4) .. (3.0,1.6) -- (3.9,3.0) .. controls (4.6,3.2) and (5.4,3.3) .. (6.16,3.5) -- (6.16,0) -- cycle;
+\fill[capeL,opacity=.5] (1.0,0) .. controls (1.8,0.6) and (2.4,1.0) .. (3.0,1.2) -- (3.0,0) -- cycle;
+\fill[capeL,opacity=.4] (5.2,3.2) .. controls (5.6,2.4) and (5.8,1.4) .. (5.9,0) -- (6.16,0) -- (6.16,3.4) -- cycle;
+% shoulder pauldron
+\fill[steelD,ink] (4.0,2.9) .. controls (4.6,3.1) and (5.2,2.9) .. (5.5,2.5) .. controls (5.4,2.0) and (5.0,1.7) .. (4.5,1.7) -- (3.9,2.1) -- cycle;
+\fill[steel,ink] (4.1,2.75) .. controls (4.6,2.85) and (5.0,2.7) .. (5.2,2.45) -- (4.9,2.3) .. controls (4.6,2.45) and (4.3,2.5) .. (4.05,2.45) -- cycle;
+\foreach \x in {4.3,4.6,4.9}{\fill[steelL] (\x,2.6) circle (.03);}
+% torso armour lower
+\fill[steelD,ink] (2.7,0) -- (2.9,1.4) .. controls (3.4,1.6) and (4.2,1.6) .. (4.8,1.3) -- (5.0,0) -- cycle;
+\fill[steel,ink] (2.9,0.6) .. controls (3.5,0.8) and (4.2,0.8) .. (4.9,0.5) -- (4.9,0.3) .. controls (4.2,0.55) and (3.5,0.55) .. (2.9,0.4) -- cycle;
+% helmet and face
+\fill[steelD,ink] (3.3,3.5) .. controls (3.2,4.1) and (3.6,4.52) .. (4.1,4.52) .. controls (4.6,4.52) and (4.8,4.0) .. (4.75,3.5) .. controls (4.7,3.1) and (4.4,2.9) .. (4.0,2.9) .. controls (3.6,2.95) and (3.4,3.15) .. (3.3,3.5) -- cycle;
+\fill[steel,ink] (3.4,3.9) .. controls (3.5,4.3) and (3.8,4.5) .. (4.1,4.5) .. controls (4.4,4.5) and (4.6,4.3) .. (4.65,3.9) .. controls (4.3,3.95) and (3.8,3.95) .. (3.4,3.9) -- cycle;
+\fill[steelL,opacity=.7] (3.5,4.1) .. controls (3.6,4.35) and (3.8,4.45) .. (3.95,4.45) -- (3.9,4.0) -- cycle;
+\fill[skin,ink] (3.6,3.85) .. controls (3.55,3.4) and (3.75,3.1) .. (4.0,3.05) .. controls (4.25,3.1) and (4.4,3.4) .. (4.4,3.85) -- cycle;
+\fill[shadow,opacity=.55] (3.6,3.85) -- (4.4,3.85) -- (4.38,3.6) -- (3.62,3.6) -- cycle;
+\fill[shadow] (3.78,3.7) circle (.035); \fill[shadow] (4.15,3.7) circle (.035);
+\fill[steelD,ink] (3.45,3.85) -- (3.55,3.1) -- (3.65,3.2) -- (3.62,3.85) -- cycle;
+\fill[steelD,ink] (4.55,3.85) -- (4.4,3.1) -- (4.3,3.2) -- (4.38,3.85) -- cycle;
+\fill[steelD,ink] (3.95,3.85) rectangle (4.05,3.35);
+% raised forearm with gauntlet, fist up and to the left, elbow down at the right
+\fill[steel,ink] (1.8,3.05) .. controls (1.75,3.4) and (1.9,3.7) .. (2.2,3.8) .. controls (2.5,3.85) and (2.75,3.7) .. (2.9,3.5) .. controls (3.3,3.2) and (3.8,2.8) .. (4.2,2.4) .. controls (4.5,2.1) and (4.6,1.8) .. (4.5,1.5) .. controls (4.3,1.25) and (3.9,1.25) .. (3.6,1.5) .. controls (3.2,1.85) and (2.7,2.25) .. (2.2,2.6) .. controls (1.95,2.75) and (1.82,2.9) .. (1.8,3.05) -- cycle;
+\fill[steelL,opacity=.55] (2.2,3.7) .. controls (2.6,3.6) and (3.4,3.0) .. (4.1,2.35) .. controls (4.3,2.15) and (4.4,1.9) .. (4.4,1.7) -- (4.25,1.75) .. controls (4.1,2.1) and (3.4,2.7) .. (2.8,3.15) .. controls (2.6,3.3) and (2.35,3.45) .. (2.05,3.5) -- cycle;
+\draw[steelD,line width=.9pt] (2.25,3.8) .. controls (2.05,3.4) and (2.0,3.0) .. (2.2,2.6);
+\draw[steelD,line width=.7pt] (3.0,3.4) .. controls (2.8,3.0) and (2.8,2.5) .. (2.95,2.1);
+\foreach \t in {0.1,0.3,0.5,0.7,0.9}{\fill[steelL] ($(2.25,3.8)!\t!(2.2,2.6)$) ++(.06,0) circle (.025);}
+% gems
+\fill[gem,ink] (2.6,3.0) circle (.27);
+\fill[gemL] (2.52,3.08) circle (.08);
+\fill[steelD,ink] (2.95,2.4) circle (.13); \fill[gem] (2.95,2.4) circle (.09);
+\foreach \a in {0,60,...,300}{\fill[steelL] (2.6,3.0) ++(\a:.34) circle (.025);}
+\end{tikzpicture}\end{document}

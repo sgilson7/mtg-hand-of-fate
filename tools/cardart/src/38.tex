@@ -1,0 +1,59 @@
+\input{../preamble}
+\definecolor{bgD}{HTML}{25285a}\definecolor{bgM}{HTML}{3c4290}\definecolor{bgL}{HTML}{5064ae}
+\definecolor{glow}{HTML}{9fd8ee}\definecolor{glowW}{HTML}{e6f8ff}\definecolor{beast}{HTML}{8fb4dc}
+\definecolor{beastD}{HTML}{5a78b8}\definecolor{mach}{HTML}{38407e}\definecolor{machD}{HTML}{262a5c}
+\definecolor{brass}{HTML}{8c9a5c}\definecolor{orb}{HTML}{7ee0ff}\definecolor{plat}{HTML}{2c3a72}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\fill[bgM] (0,0) rectangle (6.16,4.52);
+% dark creatures/statues top left and top right
+\fill[bgD,ink] (0,4.52) -- (0,2.6) .. controls (0.6,3.0) and (1.0,3.4) .. (1.1,3.9) .. controls (1.4,4.1) and (1.8,4.2) .. (2.0,4.52) -- cycle;
+\fill[bgL,ink] (1.0,3.9) .. controls (1.1,4.4) and (1.6,4.4) .. (1.6,4.0) .. controls (1.5,3.7) and (1.2,3.6) .. (1.0,3.9) -- cycle;
+\fill[machD,ink] (4.6,4.52) -- (4.4,3.6) .. controls (4.8,3.2) and (5.4,3.1) .. (6.16,3.3) -- (6.16,4.52) -- cycle;
+\foreach \y in {1.6,1.9,...,3.7}{\draw[machD,line width=1.2pt] (0.05+\y*0.2-.3,\y) ellipse (.05 and .12);}
+% swirl of light
+\shade[inner color=glow,outer color=bgM] (2.7,2.6) ellipse (1.5 and 1.4);
+\shade[inner color=glow,outer color=bgM] (1.6,1.0) ellipse (1.0 and .5);
+\fill[glow,opacity=.55] (3.0,4.52) .. controls (2.0,3.4) and (1.0,2.0) .. (0.6,0.9) -- (1.9,0.9) .. controls (2.2,2.0) and (3.2,3.2) .. (4.0,4.52) -- cycle;
+\fill[glowW,opacity=.6] (3.3,4.52) .. controls (2.6,3.5) and (1.8,2.2) .. (1.3,1.0) -- (1.7,1.0) .. controls (2.2,2.2) and (3.0,3.4) .. (3.7,4.52) -- cycle;
+\draw[glowW,line width=1.2pt] (3.5,4.52) .. controls (3.9,4.0) and (3.7,3.6) .. (3.8,3.3);
+\draw[glowW,line width=.8pt] (2.6,4.52) .. controls (2.9,4.2) .. (2.8,3.8);
+% lightning right
+\draw[glow,line width=.8pt] (6.16,3.6) -- (5.9,3.0) -- (6.0,2.6) -- (5.8,2.1);
+\draw[glow,line width=.6pt] (5.4,4.52) -- (5.25,3.9) -- (5.35,3.5);
+% machinery lower right
+\fill[mach,ink] (3.0,0) -- (3.2,1.4) .. controls (3.8,2.2) and (4.6,2.4) .. (5.2,2.3) -- (6.16,2.5) -- (6.16,0) -- cycle;
+\fill[machD,ink] (5.6,1.6) circle (.9);
+\fill[mach,ink] (5.6,1.6) circle (.62);
+\shade[inner color=glowW,outer color=orb] (5.65,1.6) circle (.2);
+\foreach \a in {0,45,...,315}{\draw[machD,line width=.8pt] (5.6,1.6) ++(\a:.25) -- ++(\a:.35);}
+\draw[brass,line width=1.2pt] (3.7,1.4) .. controls (4.0,1.9) and (4.4,1.8) .. (4.5,1.3);
+\draw[brass,line width=1.2pt] (3.9,0.7) .. controls (4.2,1.2) and (4.6,1.0) .. (4.9,1.5);
+\fill[brass,ink] (4.3,1.45) circle (.1); \fill[brass,ink] (4.65,1.15) circle (.08);
+\foreach \x/\y in {3.5/0.5,4.2/0.4,4.9/0.6}{\draw[machD,line width=.8pt] (\x,\y) -- ++(.4,.6);}
+% curved platform lower left
+\fill[plat,ink] (0,0) -- (0,1.25) .. controls (1.2,1.15) and (2.4,0.75) .. (3.1,0.2) -- (3.2,0) -- cycle;
+\draw[glow,line width=1.2pt] (0,1.25) .. controls (1.2,1.15) and (2.4,0.75) .. (3.1,0.2);
+\foreach \x/\y in {0.25/0.45,0.9/0.35,1.6/0.2}{\fill[orb!70!bgL,ink] (\x,\y) rectangle (\x+.2,\y+.35);}
+% beast: tail
+\fill[beast,ink] (2.15,1.95) .. controls (2.0,1.7) and (2.0,1.5) .. (2.15,1.35) .. controls (2.15,1.6) and (2.3,1.75) .. (2.35,1.95) -- cycle;
+% body
+\fill[beast,ink] (2.6,3.05) .. controls (2.1,2.9) and (2.0,2.4) .. (2.1,2.1) .. controls (2.4,1.9) and (2.9,1.9) .. (3.2,2.1) .. controls (3.5,2.4) and (3.6,2.8) .. (3.5,3.05) .. controls (3.2,3.2) and (2.9,3.2) .. (2.6,3.05) -- cycle;
+\fill[glowW,opacity=.5] (2.4,2.7) .. controls (2.6,2.9) and (3.0,2.9) .. (3.2,2.7) .. controls (3.0,2.5) and (2.6,2.5) .. (2.4,2.7);
+% forelegs hanging left
+\fill[beast,ink] (2.25,2.45) .. controls (1.9,2.4) and (1.65,2.2) .. (1.6,1.9) .. controls (1.6,1.75) and (1.75,1.65) .. (1.85,1.75) .. controls (1.9,2.0) and (2.1,2.1) .. (2.3,2.15) -- cycle;
+\fill[beast,ink] (2.45,2.15) .. controls (2.2,2.0) and (2.05,1.85) .. (2.0,1.65) .. controls (2.05,1.55) and (2.2,1.55) .. (2.25,1.65) .. controls (2.3,1.8) and (2.5,1.9) .. (2.6,1.95) -- cycle;
+\fill[beastD,ink] (1.6,1.78) -- (1.68,1.62) -- (1.8,1.62) -- (1.85,1.75) -- cycle;
+% hind leg
+\fill[beast,ink] (3.05,2.15) .. controls (3.1,1.95) and (3.0,1.8) .. (3.05,1.65) -- (3.25,1.65) .. controls (3.25,1.85) and (3.3,2.0) .. (3.35,2.25) -- cycle;
+% head facing viewer
+\fill[beast,ink] (3.05,3.0) .. controls (2.95,3.3) and (2.95,3.6) .. (3.1,3.75) .. controls (3.25,3.85) and (3.45,3.85) .. (3.55,3.7) .. controls (3.65,3.5) and (3.55,3.2) .. (3.4,2.95) .. controls (3.3,2.85) and (3.15,2.85) .. (3.05,3.0) -- cycle;
+\fill[beastD,ink] (3.18,3.05) .. controls (3.2,2.9) and (3.35,2.9) .. (3.38,3.05) -- cycle;
+\fill[bgD] (3.15,3.5) circle (.03); \fill[bgD] (3.42,3.5) circle (.03);
+% ears and horns
+\fill[beast,ink] (3.05,3.65) -- (2.8,3.75) -- (3.05,3.8) -- cycle;
+\fill[beast,ink] (3.55,3.65) -- (3.8,3.8) -- (3.55,3.82) -- cycle;
+\fill[glowW,ink] (3.15,3.8) -- (3.05,4.05) -- (3.25,3.85) -- cycle;
+\fill[glowW,ink] (3.45,3.82) -- (3.6,4.05) -- (3.52,3.8) -- cycle;
+\fill[glowW,ink] (3.3,3.85) -- (3.3,4.05) -- (3.37,3.85) -- cycle;
+\end{tikzpicture}\end{document}

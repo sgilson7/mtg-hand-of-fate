@@ -1,0 +1,45 @@
+\input{../preamble}
+\definecolor{mist}{HTML}{e8e4dc}\definecolor{mistD}{HTML}{c0bcb4}\definecolor{bldg}{HTML}{4a5048}\definecolor{bldgL}{HTML}{8a8e84}
+\definecolor{brick}{HTML}{2e4a38}\definecolor{roof}{HTML}{2a2c2a}\definecolor{hide}{HTML}{c8963e}\definecolor{hideD}{HTML}{8a5a22}
+\definecolor{horn}{HTML}{3a2a22}\definecolor{mane}{HTML}{a04a2a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\fill[mist] (0,0) rectangle (6.16,4.52);
+% dark facade slanting across the upper left
+\fill[bldg,ink] (0,1.3) -- (0,4.52) -- (3.1,4.52) -- (2.0,3.6) -- (1.0,2.4) -- cycle;
+\fill[bldgL,ink] (1.3,4.52) -- (2.0,4.52) -- (1.4,3.9) -- (0.8,3.5) -- (0.5,3.7) -- cycle;
+\foreach \x/\y in {0.2/2.3,0.5/2.7,0.25/3.2,0.6/3.4,2.0/4.2,2.4/4.4}{\fill[mistD,ink,line width=.4pt] (\x,\y) -- ++(.22,.18) -- ++(.0,.2) -- ++(-.22,-.18) -- cycle;}
+% green brick wall at right edge, pale tower beyond
+\fill[mistD] (4.8,1.5) -- (4.9,4.0) -- (5.3,4.0) -- (5.3,1.5) -- cycle;
+\fill[brick,ink] (5.55,0) -- (5.6,2.7) -- (6.16,3.0) -- (6.16,0) -- cycle;
+\foreach \y in {0.3,0.6,...,2.7}{\draw[brick!60!mist,line width=.4pt] (5.58,\y) -- (6.16,\y+.08);}
+% rooftop ridge below
+\fill[roof,ink] (0,0) -- (0,1.2) -- (2.8,0.6) -- (3.3,0) -- cycle;
+\foreach \t in {0.15,0.35,0.55,0.75}{\draw[bldgL,line width=.4pt] ($(0,0)!\t!(0,1.2)$) -- ($(3.3,0)!\t!(2.8,0.6)$);}
+% people and debris flung into the air
+\foreach \x/\y/\r in {5.0/3.5/20,5.3/2.6/-30,3.8/0.35/60,1.4/3.4/0}{\fill[bldg,ink,rotate around={\r:(\x,\y)}] (\x-.05,\y-.15) rectangle (\x+.05,\y+.1); \fill[bldg,ink] (\x,\y+.17) circle (.05); \draw[bldg,line width=.8pt,rotate around={\r:(\x,\y)}] (\x-.05,\y+.05) -- (\x-.2,\y+.12) (\x+.05,\y+.05) -- (\x+.2,\y-.02) (\x,\y-.15) -- (\x-.1,\y-.3) (\x,\y-.15) -- (\x+.12,\y-.3);}
+\foreach \x/\y in {2.2/4.1,1.6/3.7,4.7/4.3,4.3/3.9,1.8/2.3,5.6/3.3}{\fill[bldg,ink,line width=.3pt] (\x,\y) -- ++(.12,.05) -- ++(.02,-.1) -- ++(-.12,-.05) -- cycle;}
+% the beast: hind quarters and tail
+\fill[hide,ink] (3.4,2.9) .. controls (4.0,2.8) and (4.6,2.4) .. (4.8,1.6) .. controls (4.9,1.0) and (4.75,0.5) .. (4.5,0.2) -- (4.1,0.2) .. controls (4.2,0.6) and (4.2,1.0) .. (4.0,1.3) .. controls (3.7,1.0) and (3.4,0.9) .. (3.2,1.0) -- (2.6,1.8) -- cycle;
+\draw[ink,line width=2.4pt] (4.75,1.1) .. controls (5.2,0.9) and (5.4,1.3) .. (5.2,1.5);
+\draw[hide,line width=1.4pt] (4.75,1.1) .. controls (5.2,0.9) and (5.4,1.3) .. (5.2,1.5);
+\fill[hideD,ink] (4.0,1.3) .. controls (3.9,0.9) and (3.6,0.5) .. (3.4,0.25) -- (3.0,0.25) -- (3.2,0.4) .. controls (3.4,0.7) and (3.5,1.0) .. (3.5,1.15) -- cycle;
+% shoulders and front legs, claws gripping the roof edge
+\fill[hide,ink] (2.1,3.2) .. controls (2.6,3.4) and (3.2,3.2) .. (3.5,2.8) .. controls (3.4,2.2) and (3.0,1.7) .. (2.6,1.5) -- (2.2,1.1) -- (1.9,1.0) -- (1.75,1.15) -- (2.1,1.4) .. controls (2.3,1.8) and (2.3,2.3) .. (2.1,2.6) -- cycle;
+\fill[hide,ink] (2.0,2.9) .. controls (1.5,2.6) and (1.1,2.3) .. (0.9,1.9) -- (0.6,1.75) -- (0.7,1.6) -- (1.0,1.65) -- (1.2,1.8) .. controls (1.5,2.1) and (1.9,2.3) .. (2.2,2.4) -- cycle;
+\foreach \x/\y in {0.6/1.75,0.7/1.6,0.85/1.55}{\draw[ink,line width=.8pt] (\x,\y) -- ++(-.12,-.1);}
+\foreach \x/\y in {1.75/1.15,1.9/1.0,2.05/0.95}{\draw[ink,line width=.8pt] (\x,\y) -- ++(-.1,-.12);}
+% red mane along the back
+\fill[mane,ink] (2.4,3.55) .. controls (3.0,3.8) and (3.6,3.6) .. (4.0,3.2) .. controls (4.1,3.1) and (3.9,2.9) .. (3.5,2.85) .. controls (3.1,3.0) and (2.7,3.1) .. (2.4,3.55) -- cycle;
+\begin{scope}[shift={(-0.87,-1.5)},scale=1.35]
+% head, low and forward, tusk and snout
+\fill[hide,ink] (2.0,3.35) .. controls (1.9,3.0) and (1.95,2.6) .. (2.2,2.35) -- (2.4,2.2) .. controls (2.6,2.3) and (2.7,2.6) .. (2.75,2.95) .. controls (2.7,3.3) and (2.4,3.5) .. (2.0,3.35) -- cycle;
+\fill[hideD,ink] (2.2,2.35) -- (2.3,2.05) -- (2.45,2.2) -- cycle;
+\fill[mist,ink] (2.05,2.6) -- (1.95,2.35) -- (2.12,2.55) -- cycle;
+\fill[ink] (2.2,2.95) circle (.03); \fill[ink] (2.5,2.95) circle (.03);
+% horns: one curled left, a great ridged sweep to the right
+\fill[horn,ink] (2.1,3.25) .. controls (1.8,3.5) and (1.75,3.85) .. (1.95,3.95) .. controls (2.0,3.75) and (2.1,3.55) .. (2.3,3.4) -- cycle;
+\fill[horn,ink] (2.55,3.35) .. controls (3.0,3.85) and (3.8,3.75) .. (4.0,3.3) .. controls (4.05,3.0) and (3.85,2.8) .. (3.65,2.9) .. controls (3.75,3.15) and (3.5,3.4) .. (3.1,3.35) .. controls (2.9,3.3) and (2.75,3.2) .. (2.6,3.1) -- cycle;
+\foreach \t in {.2,.35,.5,.65,.8}{\draw[hideD,line width=.4pt] ($(2.6,3.25)!\t!(3.95,3.2)$) ++(0,-.1) -- ++(0.02,.32);}
+\end{scope}
+\end{tikzpicture}\end{document}

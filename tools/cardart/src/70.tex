@@ -1,0 +1,53 @@
+\input{../preamble}
+\definecolor{lightA}{HTML}{fbf6e4}\definecolor{lightB}{HTML}{cfc8a8}\definecolor{rib}{HTML}{e8e0c4}\definecolor{ribD}{HTML}{a8a080}
+\definecolor{robe}{HTML}{ece6dc}\definecolor{robeD}{HTML}{a8a090}\definecolor{gold}{HTML}{b08a30}\definecolor{goldD}{HTML}{5a4418}
+\definecolor{stole}{HTML}{2a2a22}\definecolor{skin}{HTML}{c8a88c}\definecolor{skinD}{HTML}{7a5a48}\definecolor{hole}{HTML}{4a1410}
+\definecolor{holeR}{HTML}{8a3020}\definecolor{pale}{HTML}{d8d0c0}\definecolor{paleD}{HTML}{8a8270}\definecolor{chain}{HTML}{6a5a40}
+\definecolor{blue}{HTML}{4a5a8a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\fill[lightB] (0,0) rectangle (6.16,4.52);
+\shade[inner color=lightA,outer color=lightB] (3.0,4.2) circle (3.2);
+% dome ribs radiating from the oculus
+\fill[lightA] (3.0,4.52) ellipse (1.0 and 0.5);\foreach \a in {185,200,...,355}{\fill[ribD] ($(3.0,4.52)+(\a:1.0 and .5)$) -- ($(3.0,4.52)+(\a+5:1.0 and .5)$) -- ($(3.0,4.52)+(\a+3:1.25 and .68)$) -- cycle;}
+\foreach \a in {190,205,...,350}{\draw[ribD,line width=1.2pt] ($(3.0,4.52)+(\a:1.05 and .55)$) -- ($(3.0,4.52)+(\a:2.6 and 1.6)$);}
+\draw[ribD,line width=1.5pt] (3.0,4.52) ellipse (1.7 and 0.95);
+\draw[ribD,line width=1.5pt] (3.0,4.52) ellipse (2.6 and 1.6);
+% gothic window panels
+\foreach \x in {2.0,2.7,3.4,4.1,4.8}{\fill[rib,ink] (\x,1.8) -- (\x,2.6) -- (\x+.25,2.95) -- (\x+.5,2.6) -- (\x+.5,1.8) -- cycle;}
+\foreach \x in {1.8,2.5,3.2,3.9,4.6,5.3}{\fill[ribD,ink] (\x+.1,0) rectangle (\x+.25,2.9);}
+% hanging gold bead chains on the left
+\foreach \t in {0,0.06,...,1}{\fill[gold,ink] ($(0,1.9)!\t!(1.5,0.6)$) circle (.06);}
+\foreach \t in {0,0.07,...,1}{\fill[gold,ink] ($(0,1.2)!\t!(0.9,0.3)$) circle (.055);}
+% priest robe
+\fill[robe,ink] (0.5,0) -- (0.55,1.5) .. controls (0.5,2.4) and (0.6,3.2) .. (0.95,3.6) -- (1.55,3.55) .. controls (1.9,3.1) and (2.1,2.2) .. (2.4,1.0) -- (2.7,0) -- cycle;
+\fill[robeD] (1.7,0) .. controls (1.9,1.0) and (2.0,2.0) .. (1.9,3.0) -- (2.05,2.6) .. controls (2.2,1.8) and (2.35,1.0) .. (2.6,0) -- cycle;
+\fill[blue] (1.9,0) -- (2.0,0.3) -- (2.6,0.3) -- (2.65,0) -- cycle;
+% embroidered stole (gold over black)
+\fill[stole,ink] (0.6,1.2) -- (0.6,3.2) .. controls (0.8,3.5) and (1.3,3.6) .. (1.6,3.45) -- (2.05,3.0) -- (1.5,2.9) -- (1.0,1.4) -- cycle;
+\fill[gold,ink] (0.62,2.0) -- (0.62,3.15) .. controls (0.8,3.4) and (1.25,3.5) .. (1.55,3.38) -- (1.85,3.05) -- (1.4,2.95) .. controls (1.1,2.7) and (0.85,2.3) .. (0.75,1.9) -- cycle;
+\foreach \y in {2.3,2.6,2.9}{\draw[goldD,line width=.7pt] (0.7,\y) .. controls (0.85,\y+.1) and (1.0,\y+.05) .. (1.1,\y+.2);}
+% gold high collar and head
+\fill[gold,ink] (1.0,3.6) .. controls (1.05,3.95) and (1.8,4.0) .. (1.95,3.65) -- (1.85,3.35) .. controls (1.6,3.5) and (1.2,3.45) .. (1.0,3.35) -- cycle;
+\fill[skin,ink] (1.15,3.9) .. controls (1.1,4.3) and (1.3,4.5) .. (1.5,4.5) .. controls (1.75,4.5) and (1.85,4.25) .. (1.8,3.9) .. controls (1.7,3.7) and (1.3,3.7) .. (1.15,3.9) -- cycle;
+\fill[skinD] (1.15,4.15) .. controls (1.12,4.3) and (1.18,4.4) .. (1.25,4.42) -- (1.25,4.1) -- cycle;
+\draw[skinD,line width=.8pt] (1.5,4.15) -- (1.7,4.12); \draw[skinD,line width=.8pt] (1.55,3.95) -- (1.72,3.95);
+% outstretched arm and splayed hand
+\fill[robe,ink] (1.6,3.3) .. controls (2.0,3.1) and (2.3,2.7) .. (2.4,2.4) -- (2.2,2.2) .. controls (2.0,2.6) and (1.7,2.9) .. (1.45,3.0) -- cycle;
+\fill[skin,ink] (2.25,2.35) .. controls (2.4,2.5) and (2.6,2.4) .. (2.7,2.25) .. controls (2.8,2.0) and (2.65,1.8) .. (2.45,1.85) .. controls (2.3,1.95) and (2.2,2.15) .. (2.25,2.35) -- cycle;
+\foreach \a/\l in {-10/.38,-35/.36,-60/.33,-85/.28}{\draw[ink,line width=3.2pt] (2.55,2.05) -- ++(\a:\l); \draw[skin,line width=2.0pt] (2.55,2.05) -- ++(\a:\l);}
+% second raised fist with the chain
+\fill[robe,ink] (2.5,2.6) .. controls (2.6,2.9) and (2.75,3.1) .. (2.9,3.15) -- (3.05,2.95) .. controls (2.9,2.8) and (2.75,2.6) .. (2.7,2.4) -- cycle;
+\fill[skin,ink] (2.85,3.05) .. controls (2.8,3.3) and (2.95,3.45) .. (3.1,3.4) .. controls (3.2,3.3) and (3.2,3.1) .. (3.1,3.0) -- cycle;
+\foreach \t in {0,0.15,...,1}{\draw[chain,line width=.8pt] ($(3.1,3.0)!\t!(3.6,2.1)$) ellipse (.05 and .035);}
+% bowed victim with the open skull
+\fill[pale,ink] (4.6,0) -- (4.7,1.6) .. controls (5.0,2.0) and (5.6,2.0) .. (6.16,1.9) -- (6.16,0) -- cycle;
+\fill[pale,ink] (3.4,2.0) .. controls (3.3,2.5) and (3.6,2.85) .. (4.0,2.85) .. controls (4.5,2.85) and (4.8,2.5) .. (4.8,1.9) .. controls (4.8,1.3) and (4.5,0.8) .. (4.15,0.75) .. controls (3.8,0.8) and (3.55,1.3) .. (3.4,2.0) -- cycle;
+\fill[hole,ink] (3.55,2.35) .. controls (3.55,2.7) and (3.9,2.75) .. (4.1,2.6) .. controls (4.25,2.4) and (4.15,2.1) .. (3.95,2.0) .. controls (3.75,1.98) and (3.58,2.1) .. (3.55,2.35) -- cycle;
+\fill[holeR] (3.75,2.4) .. controls (3.8,2.55) and (3.95,2.55) .. (4.0,2.4) .. controls (3.95,2.25) and (3.8,2.25) .. (3.75,2.4) -- cycle;
+\fill[paleD,ink] (5.1,2.0) .. controls (5.15,2.3) and (5.3,2.35) .. (5.35,2.1) -- cycle;
+\draw[paleD,line width=.9pt] (4.15,1.35) -- (4.35,1.32); \draw[paleD,line width=.8pt] (4.5,1.6) .. controls (4.6,1.4) and (4.55,1.2) .. (4.45,1.1);
+% clasped hands at his face
+\fill[pale,ink] (3.75,0.0) .. controls (3.8,0.4) and (3.95,0.75) .. (4.2,0.8) .. controls (4.4,0.65) and (4.4,0.3) .. (4.3,0.0) -- cycle;
+\draw[paleD,line width=.7pt] (4.05,0.1) -- (4.12,0.6);
+\end{tikzpicture}\end{document}

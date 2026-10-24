@@ -1,0 +1,44 @@
+{"stories": [
+ {"number": "224", "name": "Vassal Soul", "kind": "creature",
+  "intro": "A ghostly clerk in Azorius robes glides out of an archive. Death did not end its service. It finds you in breach of an old statute and swoops to enforce it.",
+  "win": "The spirit bows and swears its service to you. The law allows it.",
+  "lose": "It rakes you with cold hands and returns to its archive.",
+  "flee": "You run past the archive door, and it does not pursue."},
+
+ {"number": "179", "name": "Lyev Skyknight", "kind": "creature",
+  "intro": "A skyknight on a winged mount lands across your path. Her lance glows, and your pack freezes on your back. \"Stand for inspection.\"",
+  "win": "She lowers her lance and salutes. She will ride with you now.",
+  "lose": "She pins you with light and writes you a fine.",
+  "flee": "You break the hold and hide in an alley until she flies on."},
+
+ {"number": "155", "name": "Detention Sphere", "kind": "story",
+  "title": "A sphere holds a prisoner",
+  "text": "A glowing sphere hangs in the middle of a square, humming. Inside it, a man floats, frozen in place. An Azorius clerk is searching the cobbles for a lost writ of detention. Without it, she cannot hold him for long.",
+  "choices": [
+   {"text": "Help her search",
+    "outcome": {"text": "You and the clerk sweep the square.",
+     "fate": {"faces": [1, 2, 1, 0],
+      "huge_success": {"text": "You find the writ under a cart. She trusts you to carry it to New Prahv and gives you the sphere's key.", "effects": [{"style": ["Azorius", 1]}, {"quest_start": "writ"}, {"take": true}]},
+      "success": {"text": "You find the writ. She asks you to carry it to New Prahv and gives you the key.", "effects": [{"quest_start": "writ"}, {"take": true}]},
+      "failure": {"text": "You search until dark and find no sign of it. The clerk sends you off.", "effects": [{"supplies": -1}]}}}},
+   {"text": "Offer to take the case", "needs": {"style": ["Azorius", 2]},
+    "outcome": {"text": "She hands you the writ with relief. \"New Prahv will want to hear this.\"", "effects": [{"quest_start": "writ"}, {"take": true}]}},
+   {"text": "Leave the man to the law",
+    "outcome": {"text": "You move on, and the sphere hums on.", "effects": [{"leave": true}]}}
+  ]},
+
+ {"number": "225", "name": "Azorius Keyrune", "kind": "story",
+  "title": "A keyrune of the Senate",
+  "text": "A small carved key lies on a Senate step, shaped like a bird. As you pick it up, it stretches its wings and tries to fly. A clerk runs toward you, shouting that it is Senate property.",
+  "choices": [
+   {"text": "Hand it back", "needs": {"charisma": 2},
+    "outcome": {"text": "The clerk thanks you and says to keep it. You have shown more care for the law than its owner.", "effects": [{"style": ["Azorius", 1]}, {"take": true}]}},
+   {"text": "Run with it",
+    "outcome": {"text": "The clerk calls the guard.", "effects": [{"fight": true}]}},
+   {"text": "Leave it on the step",
+    "outcome": {"text": "The keyrune settles back into stone.", "effects": [{"leave": true}]}}
+  ]},
+
+ {"number": "237", "name": "Azorius Guildgate", "kind": "land",
+  "text": "A great white gate marks the road to the Senate, its arches carved with law. You can claim it for a tile you have walked."}
+]}

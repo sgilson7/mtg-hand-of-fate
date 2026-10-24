@@ -1,0 +1,7 @@
+% Shared preamble for card art. Each card's picture is src/<collector number>.tex:
+%   \input{../preamble} ... \begin{document}\begin{tikzpicture} ... \end{tikzpicture}\end{document}
+% The canvas is 6.16 cm by 4.52 cm, the shape of the card's art box (616 x 452 px when rendered).
+\documentclass[tikz,border=0pt]{standalone}
+\usetikzlibrary{shapes,decorations.pathmorphing,shadings,calc}
+\definecolor{ink}{HTML}{1c1424}
+\tikzset{ink/.style={draw=ink,line width=0.7pt,line join=round,line cap=round}}

@@ -1,0 +1,74 @@
+\input{../preamble}
+\definecolor{sky}{HTML}{8ab4e8}\definecolor{wall}{HTML}{ece8e0}\definecolor{wallS}{HTML}{b8b4b4}
+\definecolor{brass}{HTML}{c8a050}\definecolor{brassD}{HTML}{7a5a28}\definecolor{robin}{HTML}{e0602a}
+\definecolor{robinB}{HTML}{6a4a32}\definecolor{dress}{HTML}{b02a22}\definecolor{dressD}{HTML}{6e1612}
+\definecolor{fur}{HTML}{ece0c4}\definecolor{spot}{HTML}{8a2a1a}\definecolor{skin}{HTML}{f0d8c8}
+\definecolor{hair}{HTML}{2a2a2a}\definecolor{plumeB}{HTML}{2a50b0}\definecolor{plumeG}{HTML}{5a8a3a}
+\definecolor{plumeY}{HTML}{c0b040}\definecolor{wing}{HTML}{f4f0e6}\definecolor{green}{HTML}{6a8a4a}
+\definecolor{iron}{HTML}{3a3a3e}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\fill[sky] (0,0) rectangle (6.16,4.52);
+% white town houses
+\fill[wall,ink] (0.9,0) -- (0.9,3.3) -- (1.5,3.7) -- (2.3,3.3) -- (2.3,0) -- cycle;
+\fill[wallS,ink] (1.55,3.5) rectangle (2.05,4.1);
+\fill[wall,ink] (2.3,0) rectangle (3.6,3.0);
+\fill[wall,ink] (4.9,0) -- (4.9,2.9) -- (5.6,3.3) -- (6.16,3.0) -- (6.16,0) -- cycle;
+\foreach \x/\y in {2.5/2.3,3.1/2.3,2.5/1.4,5.2/2.2,5.7/2.2}{\fill[wallS,ink,line width=.4pt] (\x,\y) rectangle (\x+0.3,\y+0.45);}
+% tall domed cage on the left with a robin inside
+\fill[brass,ink] (-0.1,1.1) rectangle (1.7,1.3);
+\foreach \x in {0.05,0.3,0.55,0.8,1.05,1.3,1.55}{\draw[brassD,line width=.7pt] (\x,1.3) -- (\x,3.9);}
+\draw[brassD,line width=.9pt] (-0.1,3.9) .. controls (0.2,4.6) and (1.4,4.6) .. (1.7,3.9);
+\foreach \x in {0.3,0.8,1.3}{\draw[brassD,line width=.7pt] (\x,3.9) -- (0.8,4.45);}
+\draw[brassD,line width=1pt] (0,2.6) -- (1.6,2.6);
+\fill[robinB,ink] (0.45,3.6) .. controls (0.5,3.95) and (0.85,4.05) .. (1.1,3.85) .. controls (1.25,3.6) and (1.2,3.2) .. (1.0,2.9) .. controls (0.8,2.7) and (0.55,2.8) .. (0.45,3.0) -- (0.1,2.6) -- (0.35,3.1) -- cycle;
+\fill[robin,ink] (0.65,3.65) .. controls (0.6,3.3) and (0.75,2.95) .. (1.0,2.9) .. controls (1.2,3.1) and (1.25,3.5) .. (1.1,3.75) -- cycle;
+\fill[hair] (0.95,3.75) circle (.03);
+\fill[brassD,ink] (0.98,3.68) -- (1.12,3.62) -- (1.0,3.6) -- cycle;
+% hanging lantern and lower cages
+\fill[brass,ink] (1.15,1.1) -- (1.1,0.8) -- (1.45,0.8) -- (1.4,1.1) -- cycle;
+\fill[brass,ink] (0.4,0.75) -- (2.2,0.75) -- (2.1,0.6) -- (0.5,0.6) -- cycle;
+\foreach \x in {0.7,1.0,1.3,1.6,1.9}{\draw[brassD,line width=.6pt] (\x,0.6) -- (\x,0);}
+\fill[robin,ink] (1.4,0.2) ellipse (0.16 and 0.12);
+% balcony cage upper right with birds
+\fill[iron,ink] (5.0,3.0) rectangle (6.16,3.15);
+\foreach \x in {5.1,5.35,5.6,5.85,6.1}{\draw[iron,line width=.7pt] (\x,3.15) -- (\x,4.52);}
+\fill[brassD!80!iron] (5.0,2.9) -- (6.16,2.9) -- (6.16,2.75) -- (5.15,2.75) -- cycle;
+\foreach \x in {5.5,5.85}{\fill[robinB,ink] (\x,3.5) .. controls (\x-0.15,3.7) and (\x-0.05,4.0) .. (\x+0.1,4.0) .. controls (\x+0.25,3.9) and (\x+0.2,3.6) .. (\x+0.1,3.45) -- cycle; \fill[robin] (\x+0.02,3.6) .. controls (\x,3.8) and (\x+0.1,3.9) .. (\x+0.15,3.85) -- (\x+0.12,3.55) -- cycle;}
+% bystanders
+\fill[green,ink] (5.25,0) -- (5.3,1.5) .. controls (5.4,1.7) and (6.0,1.7) .. (6.16,1.5) -- (6.16,0) -- cycle;
+\fill[skin!80!brass,ink] (5.75,1.85) circle (0.22);
+\fill[plumeY!70!brass] (5.5,1.85) .. controls (5.5,2.2) and (6.0,2.2) .. (6.0,1.85) .. controls (6.05,1.5) and (5.9,1.4) .. (5.9,1.6) -- (5.6,1.6) .. controls (5.6,1.4) and (5.45,1.5) .. (5.5,1.85);
+\fill[wallS!60!iron,ink] (2.55,0) -- (2.6,0.75) .. controls (2.7,0.9) and (3.0,0.9) .. (3.1,0.75) -- (3.2,0) -- cycle;
+\fill[wall,ink] (2.85,0.95) circle (0.15);
+% fur mantle, leopard-spotted, over the red gown
+\fill[dress,ink] (3.3,0) -- (3.35,2.3) .. controls (3.6,2.6) and (4.4,2.6) .. (4.65,2.3) -- (4.7,0) -- cycle;
+\fill[dressD] (3.85,0) -- (3.95,1.8) -- (4.05,0) -- cycle;
+\fill[fur,ink] (2.5,0) .. controls (2.6,0.9) and (2.7,1.8) .. (3.0,2.4) .. controls (3.3,2.6) and (3.6,2.5) .. (3.65,2.3) .. controls (3.4,1.8) and (3.3,1.0) .. (3.4,0) -- cycle;
+\fill[fur,ink] (4.4,2.3) .. controls (4.6,2.6) and (5.0,2.6) .. (5.1,2.3) .. controls (5.3,1.6) and (5.3,0.8) .. (5.45,0) -- (4.55,0) .. controls (4.5,0.8) and (4.6,1.6) .. (4.4,2.3);
+\foreach \x/\y in {2.8/0.4,2.9/1.0,3.05/1.6,3.1/0.7,3.2/2.1,2.95/1.9,4.85/0.5,4.95/1.1,4.8/1.7,5.05/1.9,4.7/2.2,5.1/0.8}{\fill[spot] (\x,\y) ellipse (0.09 and 0.12);}
+% raised arm in red sleeve, robin on the fingers
+\fill[dress,ink] (3.1,2.3) .. controls (2.75,2.2) and (2.55,2.4) .. (2.55,2.75) .. controls (2.6,3.0) and (2.65,3.1) .. (2.7,3.2) -- (2.95,3.1) .. controls (2.85,2.85) and (2.85,2.6) .. (3.05,2.55) -- cycle;
+\fill[skin,ink] (2.68,3.15) .. controls (2.6,3.4) and (2.7,3.6) .. (2.85,3.65) -- (2.95,3.6) -- (2.98,3.1) -- cycle;
+\fill[robinB,ink] (2.75,3.65) .. controls (2.7,3.9) and (2.85,4.1) .. (3.05,4.05) .. controls (3.2,3.95) and (3.15,3.7) .. (3.0,3.6) -- (3.15,3.4) -- cycle;
+\fill[robin] (2.95,3.62) .. controls (3.1,3.7) and (3.12,3.9) .. (3.05,4.0) .. controls (3.15,3.9) and (3.15,3.7) .. (3.0,3.6) -- cycle;
+% robin on her right shoulder
+\fill[robinB,ink] (4.55,2.35) .. controls (4.5,2.6) and (4.65,2.75) .. (4.8,2.7) .. controls (4.95,2.55) and (4.9,2.3) .. (4.75,2.2) -- (4.9,1.9) -- cycle;
+\fill[robin] (4.6,2.35) .. controls (4.6,2.55) and (4.7,2.62) .. (4.78,2.6) -- (4.72,2.3) -- cycle;
+% neck, face, choker
+\fill[skin,ink] (3.75,2.3) rectangle (4.2,2.75);
+\fill[brass,ink] (3.73,2.42) rectangle (4.22,2.52); \fill[brass,ink] (3.97,2.35) circle (.07);
+\fill[plumeG,ink] (3.5,2.6) -- (3.2,2.9) -- (3.35,3.1) -- (3.1,3.4) -- (3.35,3.55) -- (3.2,3.85) -- (3.6,4.0) -- (4.5,4.05) -- (4.75,3.6) -- (4.6,3.4) -- (4.8,3.1) -- (4.55,2.95) -- (4.65,2.6) -- (4.35,2.7) -- cycle;
+\fill[plumeY] (3.25,3.4) -- (3.45,3.3) -- (3.3,3.6) -- cycle; \fill[plumeY] (4.65,3.2) -- (4.5,3.3) -- (4.6,3.5) -- cycle;
+\fill[hair,ink] (3.5,3.1) .. controls (3.4,3.6) and (3.6,4.0) .. (3.95,4.0) .. controls (4.3,4.0) and (4.5,3.6) .. (4.4,3.05) .. controls (4.4,2.8) and (4.3,2.7) .. (4.2,2.75) -- (3.7,2.75) .. controls (3.55,2.8) and (3.5,2.9) .. (3.5,3.1);
+\fill[skin,ink] (3.65,3.25) .. controls (3.6,3.6) and (3.75,3.8) .. (3.95,3.8) .. controls (4.15,3.8) and (4.3,3.6) .. (4.25,3.25) .. controls (4.15,2.9) and (3.75,2.9) .. (3.65,3.25);
+\fill[hair] (3.6,3.6) .. controls (3.75,3.85) and (4.2,3.85) .. (4.3,3.6) .. controls (4.1,3.7) and (3.8,3.7) .. (3.6,3.6);
+\fill[sky!60!black] (3.82,3.4) circle (.035); \fill[sky!60!black] (4.08,3.4) circle (.035);
+\fill[dress] (3.88,3.08) rectangle (4.02,3.12);
+% feather headdress: blue crown, white wing to the right
+\fill[plumeB,ink] (3.6,3.95) .. controls (3.5,4.2) and (3.55,4.4) .. (3.6,4.6) -- (4.5,4.6) .. controls (4.5,4.3) and (4.45,4.1) .. (4.35,3.95) -- cycle;
+\foreach \x in {3.7,3.85,4.0,4.15,4.3}{\draw[plumeB!60!black,line width=.5pt] (\x,4.0) -- (\x+0.02,4.52);}
+\fill[wing,ink] (4.4,3.7) .. controls (4.6,4.0) and (4.8,4.3) .. (5.0,4.45) .. controls (5.0,4.1) and (4.85,3.8) .. (4.6,3.55) -- cycle;
+\foreach \t in {0.3,0.55,0.8}{\draw[wallS,line width=.5pt] (4.4+\t*0.5,3.65+\t*0.6) -- (4.45+\t*0.3,3.6+\t*0.25);}
+\fill[plumeY,ink] (3.3,3.2) -- (3.15,3.5) -- (3.4,3.45) -- cycle;
+\end{tikzpicture}\end{document}

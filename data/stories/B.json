@@ -1,0 +1,137 @@
+{"stories": [
+ {"number": "260", "name": "Swamp", "kind": "land",
+  "text": "A flooded court has sunk into black water and mushroom stalks. You can claim it for a tile you have walked."},
+
+ {"number": "60", "name": "Daggerdrome Imp", "kind": "creature",
+  "intro": "An imp with knives for fingers drops from a market awning as the sun sets. It cuts at you and laughs as it drinks the blood.",
+  "win": "The imp grovels and licks its blades clean. It will fly for you now.",
+  "lose": "It leaves you bleeding by an empty stall.",
+  "flee": "You run for the lamplight, and it does not follow."},
+
+ {"number": "68", "name": "Grim Roustabout", "kind": "creature",
+  "intro": "A Rakdos roustabout with a grin sewn wide herds you toward a tent. \"Death row seats, this way.\" When you refuse, he grabs a hook.",
+  "win": "You knock him down, and he gets back up, laughing. He decides he likes you.",
+  "lose": "He drags you to a seat and you watch the show, bruised.",
+  "flee": "You slip out before the curtain rises."},
+
+ {"number": "81", "name": "Thrill-Kill Assassin", "kind": "creature",
+  "intro": "A girl in a Massacre Girl mask steps from an alley with a stained blade. Her knife carries poison that kills at a scratch. She is one of many imitators, and she wants your bounty.",
+  "win": "The mask comes off and she drops the blade. She will kill for you instead of at you.",
+  "lose": "A shallow cut burns like fire, and she leaves you for dead.",
+  "flee": "You run, and the laughter follows you for blocks."},
+
+ {"number": "82", "name": "Ultimate Price", "kind": "magic",
+  "title": "Paying a debt",
+  "text": "An Orzhov assassin called the Cozen waits in a counting-house doorway. He has a contract for a debtor who owes the Syndicate. He offers you a cut if you help him collect. His victim is hiding in the room behind you.",
+  "choices": [
+   {"text": "Pay off the debt yourself", "needs": {"gold": 15},
+    "outcome": {"text": "The Cozen counts the coins and hands you the unused curse. \"Keep it. Debts come due.\"", "effects": [{"take": true}]}},
+   {"text": "Turn on the assassin",
+    "outcome": {"text": "He draws a curved knife.", "effects": [{"fight": true}]}},
+   {"text": "Walk away",
+    "outcome": {"text": "You leave the debtor to his fate.", "effects": [{"leave": true}]}}
+  ]},
+
+ {"number": "62", "name": "Dead Reveler", "kind": "creature",
+  "intro": "A dead man in a party mask staggers out of a Rakdos club. He wants to dance, and he will not take no for an answer. His grip is cold and strong.",
+  "win": "The reveler collapses into a chair, giggling. He will follow you to the next party.",
+  "lose": "He spins you into a wall and goes back to his drink.",
+  "flee": "You leave the club before he finds a partner."},
+
+ {"number": "75", "name": "Sewer Shambler", "kind": "creature",
+  "intro": "A heap of sewer muck rises from a grate. It slides along the gutters faster than you can walk. Its mouth opens wide.",
+  "win": "The shambler sinks back into the grate. What is left of it follows you, dripping.",
+  "lose": "It smothers you in filth and leaves you choking.",
+  "flee": "You climb a wall where it cannot follow."},
+
+ {"number": "78", "name": "Stab Wound", "kind": "story",
+  "title": "A wound that will not close",
+  "text": "A man lies in an alley, a cursed wound bleeding under his hand. Each breath costs him more. A Golgari healer crouches over him with a jar of moss. She says the curse must go somewhere.",
+  "choices": [
+   {"text": "Take the curse onto yourself",
+    "outcome": {"text": "It burns, but the man stands. You carry the wound away as a weapon.", "effects": [{"health": -3}, {"take": true}]}},
+   {"text": "Let the healer try", "needs": {"style": ["Golgari", 1]},
+    "outcome": {"text": "She draws the curse into her moss and gives you the jar.", "effects": [{"take": true}]}},
+   {"text": "Leave them be",
+    "outcome": {"text": "You leave the healer to her work.", "effects": [{"leave": true}]}}
+  ]},
+
+ {"number": "70", "name": "Mind Rot", "kind": "magic",
+  "title": "A whisper in the head",
+  "text": "A Dimir mage whispers from a doorway as you pass. Memories begin to slip away, one by one. You forget why you came here. He smiles.",
+  "choices": [
+   {"text": "Hold on to your memories",
+    "outcome": {"text": "The whisper pushes at you.",
+     "fate": {"faces": [1, 1, 1, 1],
+      "huge_success": {"text": "You shove the curse back into him. He drops his purse and the spell as he runs.", "effects": [{"gold": 6}, {"take": true}]},
+      "success": {"text": "You hold on. The curse slips from him to you, waiting to be used.", "effects": [{"take": true}]},
+      "failure": {"text": "You forget where you packed some of your supplies.", "effects": [{"supplies": -2}]},
+      "huge_failure": {"text": "You forget where your purse went, and your head aches.", "effects": [{"gold": -8}, {"health": -1}]}}}},
+   {"text": "Pay him to stop", "needs": {"gold": 8},
+    "outcome": {"text": "He shrugs, takes the coin, and leaves you with the whisper.", "effects": [{"take": true}]}},
+   {"text": "Cover your ears and run",
+    "outcome": {"text": "You get away with most of your memories.", "effects": [{"leave": true}]}}
+  ]},
+
+ {"number": "74", "name": "Perilous Shadow", "kind": "creature",
+  "intro": "Your shadow stretches the wrong way under a streetlamp. It peels off the wall and grows with each step it takes. Even the Dimir fear this one.",
+  "win": "The shadow shrinks back under your feet. It moves when you tell it to now.",
+  "lose": "It swells over you, and you wake cold in the gutter.",
+  "flee": "You run for the light, and it fades."},
+
+ {"number": "61", "name": "Dark Revenant", "kind": "creature",
+  "intro": "A winged spirit rises from the steps of an Azorius court. It was set free on a technicality. It swoops at you with clawed hands.",
+  "win": "The revenant falls, then rises again. It decides to haunt your trail.",
+  "lose": "Its claws rake you, and it flies off cackling.",
+  "flee": "You hide in a temple, and it does not follow."},
+
+ {"number": "77", "name": "Slum Reaper", "kind": "creature",
+  "intro": "A spindly reaper with an Orzhov collar stalks a guildless alley. It has come to collect a soul no one will miss. It thinks yours will do.",
+  "win": "The reaper's collar breaks. It serves you instead, bowing low.",
+  "lose": "It takes something from you that hurts to lose.",
+  "flee": "You leave it to its rounds."},
+
+ {"number": "58", "name": "Catacomb Slug", "kind": "creature",
+  "intro": "A slug as big as a cart oozes from a catacomb door. Slime covers the steps behind it. It turns toward you, slow and certain.",
+  "win": "The slug curls up, beaten. It follows you, leaving a trail.",
+  "lose": "It rolls over you, and you crawl out covered in slime.",
+  "flee": "You run, and it does not run after you."},
+
+ {"number": "84", "name": "Zanikev Locust", "kind": "creature",
+  "intro": "A buzzing locust the size of a dog rises from a rot farm. It swoops at your face, mandibles clicking.",
+  "win": "The locust drops to the ground and buzzes softly. It is yours now.",
+  "lose": "It bites and flies off with a scrap of your flesh.",
+  "flee": "You run through the mushroom rows and lose it."},
+
+ {"number": "76", "name": "Shrieking Affliction", "kind": "story",
+  "title": "A festival shriek",
+  "text": "A Rakdos festival is in full swing, but people are clutching their ears. A gargoyle perched on a stage screams at a pitch that shatters glass. Those who hear it too long start to bleed. A performer laughs and says the curse is spreading.",
+  "choices": [
+   {"text": "Climb up and silence the gargoyle",
+    "outcome": {"text": "The shriek rattles your bones as you climb.",
+     "fate": {"faces": [1, 2, 1, 0],
+      "huge_success": {"text": "You muzzle it with your cloak. The scream breaks into a curse you can carry, and you learn where the performer came from.", "effects": [{"health": 2}, {"quest_start": "festival"}, {"take": true}]},
+      "success": {"text": "You stop the scream and catch the curse in a jar. The crowd tells you where the performer went.", "effects": [{"quest_start": "festival"}, {"take": true}]},
+      "failure": {"text": "The shriek drives you off the stage, ears ringing.", "effects": [{"health": -3}]}}}},
+   {"text": "Ask the crowd who started it", "needs": {"charisma": 2},
+    "outcome": {"text": "A drunk reveler points you to a Rakdos district and hands you a cursed bell.", "effects": [{"quest_start": "festival"}, {"take": true}]}},
+   {"text": "Get away from the noise",
+    "outcome": {"text": "You leave the festival behind.", "effects": [{"leave": true}]}}
+  ]},
+
+ {"number": "57", "name": "Assassin's Strike", "kind": "magic",
+  "title": "A killing curse",
+  "text": "In the Shanav Quarter, a Selesnya missionary preaches from a step. A hooded figure in the crowd raises a hand and a killing curse gathers there. The missionary has not seen it.",
+  "choices": [
+   {"text": "Throw yourself at the assassin",
+    "outcome": {"text": "The hooded figure turns on you.", "effects": [{"fight": true}]}},
+   {"text": "Shout a warning",
+    "outcome": {"text": "The curse is already flying.",
+     "fate": {"faces": [0, 2, 1, 1],
+      "success": {"text": "The missionary dives clear. The assassin flees, and the spent curse falls into your hands.", "effects": [{"style": ["Selesnya", 1]}, {"take": true}]},
+      "failure": {"text": "The curse strikes the step, and the assassin vanishes.", "effects": [{"supplies": -1}]},
+      "huge_failure": {"text": "The assassin turns the curse on you before he goes.", "effects": [{"health": -4}]}}}},
+   {"text": "Look away",
+    "outcome": {"text": "You hurry off before it lands.", "effects": [{"leave": true}]}}
+  ]}
+]}

@@ -1,0 +1,51 @@
+\input{../preamble}
+\definecolor{dark}{HTML}{1a1210}\definecolor{amber}{HTML}{c89848}\definecolor{amberL}{HTML}{f0d088}
+\definecolor{spire}{HTML}{a07838}\definecolor{cape}{HTML}{b0201c}\definecolor{capeD}{HTML}{6a1010}
+\definecolor{capeL}{HTML}{d84a3a}\definecolor{ghost}{HTML}{c8ccd8}\definecolor{ghostD}{HTML}{8a90a8}
+\definecolor{glow}{HTML}{ffffff}\definecolor{skin}{HTML}{d8a888}\definecolor{hair}{HTML}{241814}
+\definecolor{blade}{HTML}{fff4d8}\definecolor{hilt}{HTML}{4a3020}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[left color=dark,right color=amberL,middle color=amber] (0,0) rectangle (6.16,4.52);
+\fill[dark] (0,0) -- (0,4.52) -- (2.0,4.52) .. controls (1.6,3.0) and (1.2,1.5) .. (1.3,0) -- cycle;
+% gothic spires in the golden haze
+\foreach \x/\w/\t/\b in {3.3/0.25/4.52/2.0,4.4/0.35/4.52/1.6,5.0/0.18/3.9/2.2,5.5/0.3/4.52/1.8,5.95/0.2/3.6/2.0}{
+ \fill[spire!80!amber] (\x-\w,\b) rectangle (\x+\w,\t-0.4); \fill[spire!80!amber] (\x-\w,\t-0.4) -- (\x,\t) -- (\x+\w,\t-0.4) -- cycle;}
+\fill[spire!60!amberL] (3.6,0) -- (3.6,1.2) -- (6.16,1.4) -- (6.16,0) -- cycle;
+% red cape: left flap and the great sweep to the right
+\fill[cape,ink] (2.0,2.9) .. controls (1.4,3.1) and (0.6,3.0) .. (0,2.6) -- (0,0.6) .. controls (0.4,1.0) and (0.9,1.6) .. (1.4,1.9) .. controls (1.7,2.1) and (1.9,2.4) .. (2.0,2.9);
+\fill[capeD] (0,2.2) .. controls (0.6,2.5) and (1.2,2.5) .. (1.7,2.4) .. controls (1.2,2.2) and (0.5,1.8) .. (0,1.4) -- cycle;
+\fill[cape,ink] (2.8,2.7) .. controls (3.4,2.4) and (4.4,2.1) .. (5.2,1.5) -- (5.6,1.6) -- (5.5,1.2) -- (6.16,0.9) -- (6.16,0.2) -- (5.6,0.4) -- (5.3,0.1) -- (4.6,0.3) .. controls (4.0,0.5) and (3.4,0.6) .. (3.0,0.8) -- cycle;
+\fill[capeD] (3.2,1.0) .. controls (3.9,0.8) and (4.6,0.6) .. (5.3,0.4) -- (5.6,0.6) .. controls (4.8,1.0) and (4.0,1.4) .. (3.3,1.8) -- cycle;
+\fill[capeL] (3.0,2.5) .. controls (3.6,2.2) and (4.3,1.9) .. (4.9,1.5) .. controls (4.3,1.8) and (3.6,2.0) .. (3.0,2.2) -- cycle;
+% legs in glassy plate
+\fill[ghostD,ink] (1.95,0.95) -- (1.85,0) -- (3.3,0) -- (3.0,0.95) -- cycle;
+\draw[glow,line width=.8pt] (2.15,0.9) -- (2.1,0) (2.75,0.9) -- (2.9,0);
+\fill[capeD,ink] (2.3,0.95) -- (2.4,0.2) -- (2.6,0.95) -- cycle;
+% torso armour with glowing edges
+\fill[ghost,ink] (1.85,2.75) .. controls (1.8,2.1) and (1.9,1.4) .. (1.95,0.9) -- (3.05,0.9) .. controls (3.05,1.5) and (3.1,2.2) .. (3.0,2.75) .. controls (2.6,2.9) and (2.2,2.9) .. (1.85,2.75);
+\foreach \y in {1.15,1.4,1.65}{\draw[glow,line width=.8pt] (1.95,\y) -- (3.02,\y);}
+\draw[glow,line width=1pt] (2.0,2.6) .. controls (2.3,2.2) and (2.7,2.2) .. (2.95,2.6);
+\fill[ghostD] (2.4,2.45) -- (2.5,1.75) -- (2.6,2.45) -- cycle;
+\fill[cape,ink] (2.45,1.85) -- (2.55,1.85) -- (2.5,1.7) -- cycle;
+% open left hand reaching down-left
+\fill[ghost,ink] (1.95,2.6) .. controls (1.5,2.4) and (1.2,2.0) .. (1.0,1.65) -- (1.25,1.5) .. controls (1.45,1.85) and (1.7,2.1) .. (2.0,2.25) -- cycle;
+\fill[skin,ink] (1.0,1.65) .. controls (0.8,1.6) and (0.7,1.45) .. (0.75,1.3) -- (0.9,1.35) -- (0.95,1.2) -- (1.1,1.3) -- (1.25,1.5) -- cycle;
+\draw[glow,line width=.8pt] (1.3,2.15) -- (1.55,1.95);
+% raised sword arm and blade
+\fill[ghost,ink] (2.85,2.7) .. controls (3.3,2.9) and (3.7,3.0) .. (3.95,3.0) -- (4.0,2.75) .. controls (3.7,2.75) and (3.3,2.6) .. (2.95,2.4) -- cycle;
+\draw[glow,line width=.8pt] (3.2,2.75) -- (3.25,2.55) (3.6,2.85) -- (3.62,2.7);
+\fill[blade,ink] (4.05,3.05) -- (4.3,4.52) -- (4.6,4.52) -- (4.2,3.0) -- cycle;
+\fill[glow,opacity=.35] (4.35,3.9) circle (0.4); \fill[glow,opacity=.35] (4.35,3.9) circle (0.22);
+\fill[hilt,ink] (3.9,2.95) -- (4.35,3.1) -- (4.38,3.0) -- (3.95,2.85) -- cycle;
+\fill[skin,ink] (3.95,2.75) .. controls (4.15,2.7) and (4.3,2.85) .. (4.25,3.05) -- (3.95,3.05) -- cycle;
+% pauldrons
+\fill[ghost,ink] (1.75,2.85) .. controls (1.75,3.05) and (2.1,3.1) .. (2.25,2.9) .. controls (2.15,2.65) and (1.85,2.6) .. (1.75,2.85);
+\fill[ghost,ink] (2.7,2.9) .. controls (2.85,3.1) and (3.2,3.05) .. (3.2,2.8) .. controls (3.05,2.6) and (2.75,2.65) .. (2.7,2.9);
+% head: dark hair swept back to the left
+\fill[hair,ink] (2.15,3.45) .. controls (1.8,3.6) and (1.5,3.5) .. (1.2,3.65) .. controls (1.5,3.2) and (1.8,3.0) .. (2.1,2.95) -- cycle;
+\fill[skin,ink] (2.3,2.75) rectangle (2.6,3.0);
+\fill[skin,ink] (2.15,3.05) .. controls (2.1,3.45) and (2.25,3.65) .. (2.45,3.65) .. controls (2.65,3.65) and (2.75,3.4) .. (2.7,3.05) .. controls (2.6,2.85) and (2.25,2.85) .. (2.15,3.05);
+\fill[hair,ink] (2.12,3.3) .. controls (2.1,3.7) and (2.35,3.8) .. (2.5,3.78) .. controls (2.7,3.75) and (2.8,3.55) .. (2.72,3.4) .. controls (2.55,3.5) and (2.3,3.5) .. (2.12,3.3);
+\fill[hair] (2.38,3.25) circle (.025); \fill[hair] (2.58,3.27) circle (.025);
+\end{tikzpicture}\end{document}

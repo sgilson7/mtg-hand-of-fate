@@ -1,0 +1,59 @@
+\input{../preamble}
+\definecolor{skyL}{HTML}{c8ad94}\definecolor{skyD}{HTML}{5a5a60}\definecolor{dome}{HTML}{4f7a5a}
+\definecolor{domeL}{HTML}{7fa47c}\definecolor{cream}{HTML}{d8c4a0}\definecolor{creamL}{HTML}{efe0bf}
+\definecolor{creamD}{HTML}{8f7a64}\definecolor{shadow}{HTML}{4a403c}\definecolor{dark}{HTML}{2b2624}
+\definecolor{orb}{HTML}{3a70b8}\definecolor{orbL}{HTML}{a8c8ee}\definecolor{robe}{HTML}{e8e8ee}
+\definecolor{robeB}{HTML}{3a5a8a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\fill[shadow] (0,0) rectangle (6.16,2.6);
+\shade[left color=skyL,right color=skyD] (0,2.5) rectangle (6.16,4.52);
+\fill[creamD] (0,2.3) rectangle (6.16,2.6);
+\fill[creamD,ink] (0,3.4) rectangle (0.9,4.52);
+\fill[creamL] (0,3.4) rectangle (0.5,4.52);
+% green dome
+\fill[dome,ink] (1.6,3.55) .. controls (2.0,4.35) and (4.0,4.35) .. (4.5,3.55) -- cycle;
+\fill[domeL] (1.9,3.6) .. controls (2.3,4.15) and (2.9,4.25) .. (3.0,4.25) .. controls (2.6,4.0) and (2.4,3.8) .. (2.5,3.6) -- cycle;
+\foreach \x in {2.2,2.75,3.3,3.85}{\draw[ink,line width=.4pt] (\x,3.58) .. controls (\x,3.9) .. (3.05,4.2);}
+\fill[cream,ink] (0.95,3.4) circle (.2); \fill[cream,ink] (5.1,3.4) circle (.2);
+% upper facade
+\fill[cream,ink] (0.3,2.5) rectangle (5.8,3.42);
+\fill[creamL,ink] (0.95,3.42) -- (5.2,3.42) -- (5.3,3.62) -- (0.85,3.62) -- cycle;
+\fill[creamD] (4.4,2.5) rectangle (5.8,3.42);
+% three large arches
+\foreach \x/\c in {0.55/dark,4.35/dark}{\fill[\c,ink] (\x,2.25) -- (\x,2.75) .. controls (\x,3.35) and (\x+1.15,3.35) .. (\x+1.15,2.75) -- (\x+1.15,2.25) -- cycle;}
+\foreach \x in {0.85,1.15,1.4,4.65,4.95,5.2}{\fill[creamD,ink] (\x,2.25) rectangle (\x+.07,2.85);}
+\fill[creamL,ink] (2.3,2.3) -- (2.3,2.8) .. controls (2.3,3.4) and (3.8,3.4) .. (3.8,2.8) -- (3.8,2.3) -- cycle;
+\fill[cream,ink] (2.5,2.35) -- (3.05,3.2) -- (3.6,2.35) -- cycle;
+\shade[inner color=orbL,outer color=orb,ink] (3.05,2.65) circle (.13);
+% round windows
+\foreach \x in {2.08,3.98}{\fill[creamL,ink] (\x,3.1) circle (.2); \fill[dark,ink] (\x,3.1) circle (.11);}
+% lower facade with small arches and blue orbs
+\fill[cream,ink] (0,1.2) rectangle (6.16,2.3);
+\fill[creamD] (3.6,1.2) rectangle (6.16,2.3);
+\fill[shadow] (4.3,1.2) rectangle (6.16,2.3);
+\foreach \x in {0.05,0.95,1.85,4.35,5.25}{\fill[dark,ink] (\x,1.3) -- (\x,1.7) .. controls (\x,2.05) and (\x+.7,2.05) .. (\x+.7,1.7) -- (\x+.7,1.3) -- cycle;}
+\foreach \x in {0.55,1.5,4.45,5.45}{\shade[inner color=orbL,outer color=orb,ink] (\x,1.75) circle (.11);}
+\fill[creamL,ink] (0,2.28) rectangle (4.3,2.38);
+\fill[creamD,ink] (4.3,2.28) rectangle (6.16,2.38);
+% central doorway with the white-robed arbiter
+\fill[creamL,ink] (2.55,1.0) rectangle (3.55,2.3);
+\fill[dark,ink] (2.7,1.1) -- (2.7,1.7) .. controls (2.7,2.15) and (3.4,2.15) .. (3.4,1.7) -- (3.4,1.1) -- cycle;
+\fill[robe,ink] (2.88,1.1) -- (2.95,1.6) .. controls (2.98,1.72) and (3.08,1.72) .. (3.1,1.6) -- (3.18,1.1) -- cycle;
+\fill[robe,ink] (3.02,1.78) circle (.07);
+\draw[ink,line width=.6pt] (3.22,1.2) -- (3.24,1.85);
+% stairs and pillars down to the plaza
+\fill[shadow,ink] (2.45,0) -- (2.6,1.1) -- (3.5,1.1) -- (3.75,0) -- cycle;
+\foreach \y in {0.15,0.35,0.55,0.75,0.95}{\draw[ink,line width=.4pt] ({2.62-0.15*(1.1-\y)},\y) -- ({3.48+0.25*(1.1-\y)},\y);}
+\fill[creamL,ink] (2.3,0) rectangle (2.5,1.4);
+\fill[creamD,ink] (3.55,0) rectangle (3.75,1.4);
+\fill[robeB,ink] (2.75,0.55) -- (2.85,0.95) .. controls (2.9,1.0) and (2.95,1.0) .. (2.98,0.95) -- (3.05,0.55) -- cycle;
+% shadowed lower terraces
+\fill[shadow,ink] (0,0) -- (0,1.2) -- (1.4,1.2) -- (1.4,0.85) -- (2.3,0.85) -- (2.3,0) -- cycle;
+\fill[creamD] (0,1.0) rectangle (0.25,1.2);
+\fill[cream,ink] (0.35,0) rectangle (0.6,1.15);
+\fill[cream,ink] (1.2,0) rectangle (1.45,1.25);
+\fill[dark,ink] (3.75,0) -- (3.75,0.9) -- (4.6,0.9) -- (4.6,1.2) -- (6.16,1.2) -- (6.16,0) -- cycle;
+\fill[creamD,ink] (5.3,0) rectangle (5.6,1.25);
+\fill[robeB,ink] (3.8,0.0) -- (3.95,0.45) -- (4.25,0.55) -- (4.35,0.25) -- (4.2,0) -- cycle;
+\end{tikzpicture}\end{document}

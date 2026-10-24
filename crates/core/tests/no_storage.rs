@@ -1,10 +1,10 @@
-//! Reference default (D17): the page keeps nothing between visits. This reads
-//! every file under web/ (vendor/ aside) and fails if one names a browser
-//! storage API. From Feedback Drafts and Status Trends.
-//!
-//! When the brief allows storage, delete this file and record the change in
-//! BUILDER-SPEC.md. Then let the core write and read what is stored, and test
-//! that an unreadable save is treated as a new one.
+//! D17, changed for this game (BUILDER-SPEC.md change table, SECOND-ORDER
+//! R3.6): the page keeps one thing between visits, the core's save of trial
+//! bests, achievements and settings, and only `web/store.js` may touch
+//! browser storage, and only `localStorage`. Every other file under web/
+//! (vendor/ aside) still fails if it names a storage API. After Galactic
+//! Survivors. The core reads the save and treats an unreadable one as new
+//! (crates/core/src/save.rs).
 
 use std::fs;
 use std::path::{Path, PathBuf};
@@ -60,13 +60,17 @@ fn the_page_names_no_browser_storage() {
         let Ok(text) = fs::read_to_string(&path) else {
             continue;
         };
+        let store = path.ends_with("web/store.js");
         for name in storage_names_in(&text) {
+            if store && name == "localStorage" {
+                continue;
+            }
             found.push(format!("{}: {name}", path.display()));
         }
     }
     assert!(
         found.is_empty(),
-        "browser storage in the page (D17; the brief must allow it):\n{}",
+        "browser storage outside web/store.js, or other than localStorage there (D17 as changed):\n{}",
         found.join("\n")
     );
 }
@@ -79,4 +83,11 @@ fn the_scanner_sees_storage() {
     );
     assert_eq!(storage_names_in("indexedDB.open('x')"), vec!["indexedDB"]);
     assert!(storage_names_in("el(\"note\").value").is_empty());
+}
+
+#[test]
+fn the_store_is_the_one_file_that_names_storage() {
+    let web = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../web");
+    let store = fs::read_to_string(web.join("store.js")).expect("web/store.js");
+    assert_eq!(storage_names_in(&store), vec!["localStorage"]);
 }

@@ -1,0 +1,60 @@
+\input{../preamble}
+\definecolor{vault}{HTML}{2a2124}\definecolor{rib}{HTML}{3d3134}\definecolor{ribL}{HTML}{5a4846}
+\definecolor{glowA}{HTML}{d8c888}\definecolor{glowB}{HTML}{7a6c50}\definecolor{city}{HTML}{8f8150}
+\definecolor{fireA}{HTML}{ffb040}\definecolor{fireB}{HTML}{6a3a2a}\definecolor{mist}{HTML}{6e6464}
+\definecolor{pillar}{HTML}{3a2b28}\definecolor{pillarL}{HTML}{6a4334}\definecolor{greenL}{HTML}{6cff9a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\fill[vault] (0,0) rectangle (6.16,4.52);
+% inner vault haze
+\shade[inner color=mist!70!black,outer color=vault] (0.2,0.2) .. controls (0.6,3.2) and (2.2,4.0) .. (3.4,4.0) .. controls (4.8,3.9) and (5.9,2.6) .. (6.0,0.2) -- cycle;
+% left cavern with lit city
+\shade[inner color=glowA,outer color=glowB] (1.1,0.9) -- (1.1,2.6) .. controls (1.2,3.2) and (1.7,3.4) .. (2.2,3.4) .. controls (2.8,3.4) and (3.3,3.0) .. (3.35,2.5) -- (3.35,0.9) -- cycle;
+\fill[city,ink] (1.55,1.0) rectangle (1.95,2.6); \fill[city,ink] (1.6,2.6) -- (1.75,3.1) -- (1.9,2.6) -- cycle;
+\fill[city!85!black,ink] (1.15,1.0) rectangle (1.5,2.0); \fill[city!85!black,ink] (2.0,1.0) rectangle (2.45,2.3);
+\fill[city!70!black,ink] (2.5,1.0) rectangle (3.3,1.8);
+\foreach \x in {1.65,1.8}{\foreach \y in {1.3,1.6,1.9,2.2}{\fill[glowA] (\x,\y) rectangle ++(.06,.12);}}
+\draw[city!60!black,line width=1.2pt] (2.0,3.3) .. controls (2.4,3.0) and (2.9,2.9) .. (3.3,2.9);
+% right tunnel with orange glow
+\fill[rib,ink] (5.0,1.75) ellipse (1.05 and 0.98);
+\foreach \r in {0.95,0.85,0.75}{\draw[ribL,line width=.8pt] (5.05,1.75) ellipse ({\r} and {\r*0.93});}
+\shade[inner color=fireA,outer color=fireB] (5.15,1.72) ellipse (0.62 and 0.62);
+\fill[fireA!80!white] (5.45,1.72) ellipse (0.18 and 0.4);
+% floor mist and water
+\shade[top color=mist!80!black,bottom color=vault] (0,0) rectangle (6.16,1.0);
+\shade[top color=vault!40!mist,bottom color=mist!80!black] (0,1.0) rectangle (6.16,1.2);
+\fill[greenL] (2.3,1.27) circle (.05);
+\shade[inner color=greenL!60!mist,outer color=mist,opacity=.6] (2.3,1.2) ellipse (.3 and .08);
+% ceiling ribs (dark frame)
+\fill[vault,ink] (0,4.52) -- (0,2.9) .. controls (0.9,3.6) and (1.9,4.2) .. (3.1,4.25) .. controls (4.4,4.3) and (5.6,3.7) .. (6.16,3.0) -- (6.16,4.52) -- cycle;
+\draw[ribL,line width=1.4pt] (0,2.9) .. controls (0.9,3.6) and (1.9,4.2) .. (3.1,4.25) .. controls (4.4,4.3) and (5.6,3.7) .. (6.16,3.0);
+\fill[vault,ink] (0,0) -- (0,2.3) .. controls (0.2,1.8) and (0.3,1.0) .. (0.4,0) -- cycle;
+\fill[vault,ink] (6.16,0) -- (6.16,2.2) .. controls (5.95,1.6) and (5.9,0.8) .. (5.85,0) -- cycle;
+\draw[rib,line width=2pt] (1.2,3.35) .. controls (1.9,3.95) and (2.6,3.9) .. (3.2,3.4);
+\draw[rib,line width=2pt] (3.4,3.55) .. controls (4.2,3.4) and (4.8,3.1) .. (5.2,2.75);
+% left twisted pillar
+\fill[pillar,ink] (0.7,0.45) .. controls (0.75,1.2) and (0.95,1.6) .. (0.8,2.1) .. controls (0.65,2.6) and (1.0,2.9) .. (0.85,3.3) .. controls (1.0,3.4) and (1.3,3.4) .. (1.35,3.25) .. controls (1.2,2.8) and (1.45,2.5) .. (1.3,2.0) .. controls (1.2,1.5) and (1.4,1.0) .. (1.35,0.45) -- cycle;
+\draw[pillarL,line width=1pt] (1.3,3.2) .. controls (1.15,2.8) and (1.4,2.5) .. (1.25,2.0);
+\fill[pillar,ink] (0.4,0) -- (0.5,0.5) -- (1.55,0.5) -- (1.7,0) -- cycle;
+% hanging dragon-like corbel, centre left
+\fill[pillar,ink] (2.3,4.0) .. controls (2.5,3.4) and (2.4,2.8) .. (2.6,2.3) .. controls (2.75,2.05) and (2.95,2.2) .. (2.95,2.45) .. controls (2.9,2.9) and (3.0,3.4) .. (3.2,4.0) -- cycle;
+\draw[pillarL,line width=1pt] (2.55,3.5) .. controls (2.5,3.0) and (2.6,2.6) .. (2.7,2.35);
+% capitals flaring into the vault ribs
+\fill[pillar,ink] (0.85,3.3) .. controls (0.6,3.6) and (0.3,3.7) .. (0.1,3.6) -- (0.5,4.0) .. controls (0.9,3.9) and (1.1,3.6) .. (1.1,3.4) .. controls (1.2,3.7) and (1.5,3.9) .. (1.8,3.95) -- (1.6,3.6) .. controls (1.45,3.5) and (1.35,3.4) .. (1.35,3.25) -- cycle;
+\fill[pillar,ink] (4.75,2.85) .. controls (4.6,3.1) and (4.4,3.2) .. (4.1,3.25) -- (4.4,3.5) .. controls (4.8,3.4) and (5.0,3.1) .. (5.05,2.95) .. controls (5.2,3.2) and (5.5,3.3) .. (5.8,3.3) -- (5.7,3.05) .. controls (5.5,3.0) and (5.45,2.95) .. (5.4,2.9) -- cycle;
+\fill[pillar,ink] (2.3,4.0) .. controls (2.0,3.9) and (1.7,3.7) .. (1.6,3.5) -- (1.9,4.1) -- (2.4,4.3) -- cycle;
+% statue figure on pedestal
+\fill[pillar,ink] (2.55,1.0) rectangle (2.9,1.2);
+\fill[pillar,ink] (2.62,1.2) .. controls (2.6,1.5) and (2.65,1.7) .. (2.72,1.78) .. controls (2.8,1.7) and (2.85,1.45) .. (2.82,1.2) -- cycle;
+\fill[pillar,ink] (2.72,1.86) circle (.07);
+\draw[pillar,line width=1pt] (2.75,1.75) -- (2.6,2.3);
+% central pillar: hanging upper part and stump
+\fill[pillar,ink] (2.85,4.52) -- (2.95,3.9) .. controls (3.05,3.3) and (3.25,2.6) .. (3.5,2.0) .. controls (3.6,1.85) and (3.7,1.9) .. (3.72,2.1) .. controls (3.65,2.8) and (3.65,3.6) .. (3.8,4.52) -- cycle;
+\draw[pillarL,line width=1.1pt] (3.0,3.8) .. controls (3.15,3.0) and (3.3,2.5) .. (3.52,2.05);
+\fill[pillar,ink] (3.25,0.6) .. controls (3.3,1.1) and (3.25,1.4) .. (3.3,1.55) -- (3.6,1.55) .. controls (3.6,1.2) and (3.6,0.9) .. (3.65,0.6) -- cycle;
+\fill[pillar,ink] (2.8,0) -- (2.85,0.4) .. controls (3.0,0.65) and (3.9,0.65) .. (4.05,0.4) -- (4.1,0) -- cycle;
+% right pillar
+\fill[pillar,ink] (4.75,2.85) .. controls (5.0,2.6) and (5.05,2.3) .. (4.95,1.9) .. controls (4.9,1.5) and (5.0,1.2) .. (5.05,0.95) -- (5.35,0.95) .. controls (5.3,1.4) and (5.25,1.8) .. (5.3,2.2) .. controls (5.35,2.5) and (5.25,2.75) .. (5.4,2.9) -- cycle;
+\draw[fireA!70!black,line width=1pt] (5.32,2.8) .. controls (5.22,2.4) and (5.3,1.9) .. (5.28,1.0);
+\fill[pillar,ink] (4.6,0) -- (4.7,0.7) -- (5.6,0.7) -- (5.7,0) -- cycle;
+\end{tikzpicture}\end{document}

@@ -1,0 +1,44 @@
+{"stories": [
+{"number": "214", "name": "Dryad Militant", "kind": "creature",
+ "intro": "A dryad in bark armour guards a grove against Izzet progress. Spells cast near her crumble to dust. She sees a stranger and raises her spear.",
+ "win": "She lowers the spear and agrees to guard you instead. She is yours now.",
+ "lose": "The spear's butt catches you in the ribs.",
+ "flee": "You back out of the grove, and she lets you go."},
+
+{"number": "148", "name": "Centaur Healer", "kind": "creature",
+ "intro": "A centaur instructor from the Kasarna grounds is drilling students in the square. She mistakes you for one of them. The lesson starts now.",
+ "win": "She laughs, binds your cuts, and offers to travel with you. She is yours now.",
+ "lose": "You fail the lesson, and she patches you up before sending you off.",
+ "flee": "You slip away before the next drill."},
+
+{"number": "194", "name": "Selesnya Charm", "kind": "magic",
+ "title": "A gift from the Conclave",
+ "text": "A Selesnya knight-errant sits by a fountain, weaving charms from grass and silver wire. Each charm, she says, answers a different need. She offers to make one for you.",
+ "choices": [
+   {"text": "Tell her what you need", "needs": {"charisma": 2},
+    "outcome": {"text": "She listens, then ties the charm to your wrist.", "effects": [{"take": true}]}},
+   {"text": "Offer to help the Conclave in return", "needs": {"style": ["Selesnya", 1]},
+    "outcome": {"text": "She smiles and gives you the charm and a blessing.", "effects": [{"take": true}, {"health": 2}]}},
+   {"text": "Spar with her for it",
+    "outcome": {"text": "She sets down the wire and draws her sword.", "fate": {"faces": [1, 1, 1, 1],
+      "huge_success": {"text": "You win the bout, and she gives you the charm and her purse.", "effects": [{"take": true}, {"gold": 6}]},
+      "success": {"text": "She concedes the bout and hands you the charm.", "effects": [{"take": true}]},
+      "failure": {"text": "She disarms you and goes back to her weaving.", "effects": [{"health": -2}]},
+      "huge_failure": {"text": "She knocks you into the fountain, and your supplies go with you.", "effects": [{"health": -2}, {"supplies": -2}]}}}}
+ ]},
+
+{"number": "217", "name": "Growing Ranks", "kind": "story",
+ "title": "The Conclave asks",
+ "text": "A Selesnya envoy finds you at a crossroads, holding a seed in cupped hands. Trostani wants an army that can withstand the Izzet. The seed will grow it, if someone plants it in Conclave ground and defends the sapling.",
+ "choices": [
+   {"text": "Take the seed to Vitu-Ghazi",
+    "outcome": {"text": "The envoy gives you the seed and sends word to Vitu-Ghazi to expect you.", "effects": [{"take": true}, {"quest_start": "conclave"}]}},
+   {"text": "Ask what the Conclave will pay", "needs": {"charisma": 2},
+    "outcome": {"text": "The envoy adds a pouch of coin to the seed and points you to Vitu-Ghazi.", "effects": [{"take": true}, {"quest_start": "conclave"}, {"gold": 5}]}},
+   {"text": "Refuse the envoy",
+    "outcome": {"text": "The envoy bows and waits at the crossroads in case you return.", "effects": [{"leave": true}]}}
+ ]},
+
+{"number": "246", "name": "Selesnya Guildgate", "kind": "land",
+ "text": "A gate of living branches stands open at the edge of a Selesnya district, flowers turning to greet you. You can claim it for a tile you have walked."}
+]}

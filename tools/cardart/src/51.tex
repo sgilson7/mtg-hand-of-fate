@@ -1,0 +1,45 @@
+\input{../preamble}
+\definecolor{haze}{HTML}{8c90b0}\definecolor{hazeL}{HTML}{e8e0b8}\definecolor{wall}{HTML}{6c6c94}
+\definecolor{wallD}{HTML}{3a3c5c}\definecolor{floor}{HTML}{c8bc9c}\definecolor{floorD}{HTML}{8a8478}
+\definecolor{robe}{HTML}{b8c8c0}\definecolor{robeD}{HTML}{7a908c}\definecolor{gold}{HTML}{e0a83c}
+\definecolor{arm}{HTML}{6c9cb0}\definecolor{armD}{HTML}{3c6478}\definecolor{lamp}{HTML}{f0d070}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[left color=haze,right color=hazeL] (0,0) rectangle (6.16,4.52);
+\shade[inner color=hazeL,outer color=haze,opacity=.8] (5.6,3.6) ellipse (1.6 and 1.4);
+% background buildings
+\fill[wall,opacity=.6] (2.0,1.6) -- (2.0,4.52) -- (3.6,4.52) -- (3.8,1.6) -- cycle;
+\fill[haze!80!white,opacity=.5] (2.2,4.52) -- (2.3,2.4) -- (2.6,2.2) -- (2.7,4.52) -- cycle;
+\fill[wall,opacity=.45] (3.9,1.4) -- (4.0,3.6) -- (4.6,3.8) -- (4.7,1.4) -- cycle;
+\fill[floorD,opacity=.6] (2.6,1.3) -- (6.16,1.6) -- (6.16,1.2) -- (2.6,1.0) -- cycle;
+% floor
+\shade[top color=floor,bottom color=floorD] (0,0) rectangle (6.16,1.1);
+\fill[floorD,opacity=.5] (2.0,0.55) -- (6.16,0.7) -- (6.16,0.6) -- (2.0,0.45) -- cycle;
+% doorway arch top left
+\fill[wallD,ink] (0,1.6) -- (0,4.52) -- (1.6,4.52) -- (1.4,1.4) -- cycle;
+\fill[wall,ink] (0.2,1.8) -- (0.2,3.6) .. controls (0.3,4.1) and (0.8,4.3) .. (1.2,4.1) -- (1.15,1.7) -- cycle;
+\fill[wallD] (0.4,3.7) .. controls (0.5,4.0) and (0.8,4.1) .. (1.0,3.95) -- (1.0,3.7) -- cycle;
+\shade[inner color=lamp,outer color=wallD] (0.28,4.12) circle (.14);
+\fill[wallD,ink] (1.4,1.4) -- (1.6,4.52) -- (1.9,4.52) -- (1.75,1.4) -- cycle;
+% the spirit: robe falling to the floor
+\fill[gold,ink] (0.6,0) .. controls (0.4,0.8) and (0.4,1.6) .. (0.5,2.4) .. controls (0.55,2.8) and (0.6,3.1) .. (0.8,3.3) -- (1.3,2.6) .. controls (1.4,2.0) and (1.4,1.2) .. (1.3,0) -- cycle;
+\fill[robe,ink] (0.8,0) .. controls (0.65,0.8) and (0.7,1.6) .. (0.75,2.3) .. controls (0.8,2.7) and (0.85,3.0) .. (1.0,3.1) -- (1.5,2.5) .. controls (1.6,1.6) and (1.7,0.9) .. (2.0,0) -- cycle;
+\foreach \x in {0.95,1.15,1.35}{\draw[robeD,line width=.6pt] (\x,2.6) .. controls (\x-.05,1.6) and (\x+.05,0.8) .. (\x+.15,0);}
+% wrappings at the waist
+\foreach \y in {1.85,2.0,2.15}{\draw[robeD,line width=1pt] (0.75,\y) .. controls (1.0,\y+.05) and (1.3,\y+.05) .. (1.55,\y-.05);}
+% hooded head bent forward like a hook
+\fill[gold,ink] (0.75,2.5) .. controls (0.5,2.9) and (0.5,3.3) .. (0.8,3.45) .. controls (1.1,3.6) and (1.35,3.5) .. (1.4,3.25) .. controls (1.42,3.05) and (1.35,2.85) .. (1.3,2.75) .. controls (1.25,3.0) and (1.1,3.15) .. (0.95,3.05) .. controls (0.9,2.9) and (0.95,2.7) .. (1.05,2.55) -- cycle;
+\fill[robe,ink] (0.85,2.55) .. controls (0.7,2.9) and (0.75,3.2) .. (0.95,3.3) .. controls (1.15,3.4) and (1.3,3.3) .. (1.32,3.15) .. controls (1.2,3.2) and (1.05,3.15) .. (1.0,3.0) .. controls (0.98,2.85) and (1.05,2.7) .. (1.1,2.6) -- cycle;
+\fill[robeD,ink] (1.3,2.75) .. controls (1.35,2.9) and (1.4,3.0) .. (1.35,3.15) -- (1.28,3.1) -- cycle;
+% upper arm and forearm reaching up to the upper hand
+\fill[arm,ink] (1.45,1.8) .. controls (1.8,1.6) and (2.1,1.45) .. (2.35,1.45) -- (2.38,1.55) .. controls (2.1,1.6) and (1.8,1.75) .. (1.5,1.95) -- cycle;
+\fill[arm,ink] (2.3,1.48) .. controls (2.1,2.0) and (2.05,2.6) .. (2.15,2.85) .. controls (2.5,3.2) and (2.9,3.5) .. (3.1,3.7) -- (3.15,3.6) .. controls (2.95,3.35) and (2.55,3.0) .. (2.25,2.75) .. controls (2.2,2.5) and (2.25,2.0) .. (2.42,1.52) -- cycle;
+\fill[armD,ink] (2.12,2.82) circle (.05);
+\fill[arm,ink] (3.05,3.75) .. controls (3.2,3.95) and (3.5,4.0) .. (3.7,3.95) -- (4.3,4.35) -- (4.38,4.3) -- (3.85,3.9) -- (4.25,3.9) -- (4.25,3.82) -- (3.85,3.82) -- (4.2,3.55) -- (4.15,3.48) -- (3.75,3.75) .. controls (3.5,3.7) and (3.3,3.65) .. (3.15,3.6) -- cycle;
+\draw[arm,line width=1.2pt] (3.6,3.95) .. controls (3.8,4.25) and (3.95,4.35) .. (4.05,4.45);
+% second arm reaching right to the lower hand
+\fill[arm,ink] (1.5,1.55) .. controls (1.8,1.45) and (2.2,1.35) .. (2.35,1.35) .. controls (2.9,1.7) and (3.5,2.0) .. (3.65,2.15) .. controls (4.0,2.5) and (4.4,2.85) .. (4.65,3.0) -- (4.6,3.1) .. controls (4.3,2.95) and (3.9,2.6) .. (3.55,2.25) .. controls (3.2,2.0) and (2.7,1.7) .. (2.3,1.48) .. controls (2.0,1.55) and (1.75,1.65) .. (1.55,1.7) -- cycle;
+\fill[arm,ink] (4.55,3.05) .. controls (4.7,3.15) and (4.9,3.2) .. (5.1,3.1) -- (5.5,3.45) -- (5.6,3.4) -- (5.25,3.05) -- (5.8,3.1) -- (5.82,3.02) -- (5.3,2.92) -- (5.8,2.7) -- (5.75,2.62) -- (5.25,2.8) -- (5.45,2.45) -- (5.38,2.4) -- (5.1,2.75) .. controls (4.9,2.8) and (4.75,2.9) .. (4.65,2.95) -- cycle;
+\draw[arm,line width=1.2pt] (5.0,3.15) .. controls (5.1,3.35) and (5.2,3.5) .. (5.35,3.55);
+\draw[gold,line width=.5pt,opacity=.7] (3.65,2.25) .. controls (4.0,2.6) and (4.4,2.95) .. (4.6,3.08);
+\end{tikzpicture}\end{document}

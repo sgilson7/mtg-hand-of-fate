@@ -1,0 +1,48 @@
+\input{../preamble}
+\definecolor{fireY}{HTML}{ffe08a}\definecolor{fireO}{HTML}{f09a2a}\definecolor{fireR}{HTML}{b8461a}
+\definecolor{smoke}{HTML}{2a1a12}\definecolor{hair}{HTML}{b0562a}\definecolor{skin}{HTML}{d8945a}
+\definecolor{gold}{HTML}{c8963a}\definecolor{goldD}{HTML}{6a4418}\definecolor{plate}{HTML}{3a2214}\definecolor{char}{HTML}{4a3020}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[left color=fireR,right color=fireO] (0,0) rectangle (6.16,4.52);
+\shade[inner color=fireY,outer color=fireO,opacity=.8] (4.6,3.7) ellipse (1.2 and .7);
+\fill[fireY!70!white,opacity=.7] (3.9,4.52) rectangle (4.25,3.4);
+% fireball upper right
+\foreach \dy/\c in {0/fireO,.12/fireY,.22/white}{\fill[\c] (4.3,3.55+\dy*.5) .. controls (4.7,4.0-\dy) and (5.2,4.2-\dy) .. (5.9,4.3-\dy*1.5) .. controls (5.4,3.9) and (5.0,3.5+\dy) .. (4.3,3.55+\dy*.5) -- cycle;}
+% flaming mace top left with dark smoke trail
+\fill[smoke,ink] (1.0,3.6) .. controls (1.6,3.0) and (1.9,2.4) .. (2.1,1.9) -- (2.4,2.0) .. controls (2.2,2.6) and (1.9,3.3) .. (1.3,3.9) -- cycle;
+\fill[fireO,ink] (0,4.52) -- (0,3.5) .. controls (0.6,3.3) and (1.5,3.4) .. (1.9,3.9) .. controls (2.0,4.2) and (1.9,4.4) .. (1.7,4.52) -- cycle;
+\fill[fireY] (0.5,4.3) .. controls (0.9,3.7) and (1.5,3.8) .. (1.6,4.2) .. controls (1.5,4.45) and (0.9,4.5) .. (0.5,4.3);
+\fill[gold,ink] (1.75,3.6) -- (2.25,3.15) -- (2.32,3.22) -- (1.85,3.7) -- cycle;
+% charred hand reaching from the left
+\fill[char,ink] (0,1.4) .. controls (0.4,1.2) and (0.8,1.2) .. (1.1,1.5) -- (1.25,1.95) -- (1.1,1.95) -- (1.0,1.65) -- (0.95,2.05) -- (0.8,2.05) -- (0.8,1.7) -- (0.6,1.95) -- (0.5,1.85) -- (0.6,1.6) .. controls (0.35,1.6) and (0.15,1.75) .. (0,1.9) -- cycle;
+\fill[char,ink] (0,0) -- (0,1.4) .. controls (0.5,1.2) and (0.9,1.0) .. (1.1,0) -- cycle;
+% charred figure grappled on the right
+\fill[char,ink] (4.4,0) .. controls (4.3,0.8) and (4.5,1.6) .. (5.0,1.9) .. controls (5.5,2.2) and (6.0,2.0) .. (6.16,1.8) -- (6.16,0) -- cycle;
+\fill[char,ink] (4.95,1.85) .. controls (4.8,2.2) and (5.0,2.5) .. (5.35,2.5) .. controls (5.65,2.45) and (5.7,2.1) .. (5.55,1.9) -- cycle;
+\fill[fireO,opacity=.6] (5.3,1.3) circle (.3);
+\foreach \x/\y in {4.6/1.2,5.0/2.3,5.6/2.2,5.9/1.4}{\fill[fireY,ink,line width=.4pt] (\x,\y) .. controls (\x-.1,\y+.2) and (\x,\y+.35) .. (\x+.05,\y+.5) .. controls (\x+.1,\y+.3) and (\x+.2,\y+.2) .. (\x+.12,\y) -- cycle;}
+% her left hand clawing at upper right
+\fill[skin,ink] (4.3,2.7) .. controls (4.7,2.6) and (5.1,2.7) .. (5.3,2.9) -- (5.55,3.35) -- (5.45,3.4) -- (5.25,3.05) -- (5.35,3.5) -- (5.22,3.52) -- (5.1,3.1) -- (5.05,3.45) -- (4.92,3.42) -- (4.95,3.0) .. controls (4.7,2.95) and (4.45,3.0) .. (4.3,3.05) -- cycle;
+\fill[plate,ink] (4.0,2.55) .. controls (4.2,2.6) and (4.4,2.7) .. (4.5,2.75) -- (4.45,3.1) .. controls (4.3,3.05) and (4.1,3.0) .. (3.95,2.95) -- cycle;
+% armoured torso
+\fill[plate,ink] (2.1,0) -- (2.0,1.5) .. controls (2.0,2.2) and (2.3,2.7) .. (2.75,2.95) -- (3.7,2.95) .. controls (4.1,2.6) and (4.3,1.8) .. (4.2,0) -- cycle;
+\fill[gold,ink] (2.7,0) -- (2.65,1.0) .. controls (2.8,1.8) and (3.1,2.3) .. (3.15,2.6) .. controls (3.3,2.2) and (3.5,1.6) .. (3.55,0.9) -- (3.5,0) -- cycle;
+\fill[goldD,ink] (2.55,0.85) rectangle (3.7,0.6);
+\foreach \x in {2.75,3.05,3.35}{\fill[gold,ink] (\x,0.65) rectangle (\x+.15,0.8);}
+% gilded pauldrons
+\fill[gold,ink] (2.0,2.2) .. controls (2.0,2.75) and (2.4,3.0) .. (2.85,2.95) -- (2.95,2.5) .. controls (2.6,2.3) and (2.3,2.15) .. (2.0,2.2) -- cycle;
+\fill[gold,ink] (3.55,2.95) .. controls (4.0,3.0) and (4.4,2.7) .. (4.45,2.3) .. controls (4.1,2.2) and (3.7,2.3) .. (3.45,2.5) -- cycle;
+\foreach \y in {2.45,2.6,2.75}{\draw[goldD,line width=.6pt] (3.6,\y) .. controls (3.9,\y+.05) .. (4.3,\y-.15);}
+\fill[fireY,ink] (2.6,2.65) circle (.1); \fill[fireY,ink] (3.0,2.75) circle (.09);
+% neck, collar
+\fill[skin,ink] (2.95,2.9) -- (3.0,3.25) -- (3.4,3.25) -- (3.5,2.9) -- cycle;
+\fill[gold,ink] (2.75,2.95) -- (2.8,3.15) -- (3.15,3.0) -- (3.3,3.0) -- (3.6,3.15) -- (3.7,2.95) -- (3.25,2.8) -- cycle;
+% hair and face
+\fill[hair,ink] (2.55,3.1) .. controls (2.45,3.7) and (2.6,4.35) .. (3.15,4.45) .. controls (3.7,4.45) and (3.9,3.9) .. (3.75,3.1) .. controls (3.6,3.3) and (3.4,3.35) .. (3.3,3.4) -- (2.9,3.35) -- cycle;
+\fill[skin,ink] (2.8,3.45) .. controls (2.75,3.85) and (2.85,4.15) .. (3.1,4.2) .. controls (3.4,4.2) and (3.5,3.95) .. (3.45,3.6) .. controls (3.35,3.35) and (3.1,3.25) .. (2.95,3.3) -- cycle;
+\fill[hair,ink] (2.75,4.0) .. controls (2.9,4.3) and (3.3,4.35) .. (3.55,4.15) .. controls (3.3,4.15) and (3.0,4.1) .. (2.75,4.0) -- cycle;
+\fill[ink] (2.95,3.88) ellipse (.06 and .03); \fill[ink] (3.25,3.88) ellipse (.06 and .03);
+\draw[ink,line width=.6pt] (2.88,3.95) -- (3.02,3.97); \draw[ink,line width=.6pt] (3.18,3.97) -- (3.33,3.95);
+\fill[fireR!60!black,ink] (3.0,3.48) ellipse (.1 and .07);
+\end{tikzpicture}\end{document}

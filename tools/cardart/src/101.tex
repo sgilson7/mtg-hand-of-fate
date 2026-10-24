@@ -1,0 +1,28 @@
+\input{../preamble}
+\definecolor{skyA}{HTML}{e0502a}\definecolor{skyB}{HTML}{5a2c60}\definecolor{skyC}{HTML}{2a2050}
+\definecolor{tower}{HTML}{1e1626}\definecolor{towerL}{HTML}{3a2a40}\definecolor{orb}{HTML}{ff6a2a}\definecolor{orbL}{HTML}{ffc86a}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[upper right=skyA,upper left=skyA!70!skyB,lower left=skyC,lower right=skyB] (0,0) rectangle (6.16,4.52);
+\shade[inner color=skyA!80!orbL,outer color=skyB,opacity=.5] (3.4,4.4) ellipse (2.6 and 1.0);
+% falling fire: glowing heads with trails streaming up and right
+\foreach \x/\y/\l in {1.0/2.9/.5,1.55/2.4/.45,2.6/1.9/.5,3.1/2.7/.55,3.7/3.5/.45,4.2/1.5/.6,4.9/2.3/.6,3.6/0.8/.4,5.5/1.1/.5,2.3/3.7/.35,4.6/4.0/.3,0.75/1.7/.4,3.05/0.35/.4,5.3/3.2/.5,4.0/2.4/.35,5.85/2.0/.4,2.0/1.2/.3,1.2/3.9/.3,5.9/0.3/.4,4.75/0.6/.3}{
+ \fill[orb,ink,line width=.4pt] (\x,\y) .. controls (\x+0.12,\y+\l*.6) .. (\x+0.22,\y+\l*1.4) .. controls (\x+0.14,\y+\l*.6) .. (\x+0.16,\y) .. controls (\x+0.12,\y-0.09) and (\x+0.03,\y-0.07) .. (\x,\y);
+ \fill[orbL] (\x+0.08,\y-0.01) circle (.03);}
+% big glowing mortars
+\foreach \x/\y/\r in {0.3/3.55/.62,4.25/0.55/.45,6.05/3.4/.65}{
+ \fill[orb,ink] (\x-\r,\y) .. controls (\x-\r,\y-\r*1.2) and (\x+\r,\y-\r*1.2) .. (\x+\r,\y) .. controls (\x+\r*.8,\y+\r*.9) and (\x+\r*.4,\y+\r*1.5) .. (\x+\r*.3,\y+\r*1.9) .. controls (\x,\y+\r) and (\x-\r*.9,\y+\r*.7) .. (\x-\r,\y) -- cycle;
+ \fill[orbL] (\x-\r*0.2,\y-\r*0.2) circle (\r*0.45);}
+% dark stepped spire rising from lower left, low ridge across the floor
+\fill[tower,ink] (0,0) -- (6.16,0) -- (6.16,0.2) .. controls (4.5,0.35) and (3.5,0.3) .. (2.9,0.55) -- (2.6,0.6) -- (0,0.9) -- cycle;
+\fill[tower,ink] (0,0.4) -- (0,1.3) -- (0.55,1.6) -- (0.55,1.85) -- (1.1,2.05) -- (1.4,2.3) -- (1.75,2.35) -- (1.85,2.42) -- (2.35,2.42) -- (2.45,2.25) -- (2.4,1.4) -- (2.55,1.3) -- (2.6,0.4) -- cycle;
+\fill[towerL,ink] (1.75,2.35) -- (2.35,2.42) -- (2.3,1.4) -- (1.85,1.5) -- cycle;
+\fill[towerL,ink] (0.55,1.6) -- (1.1,1.8) -- (1.1,1.4) -- (0.55,1.2) -- cycle;
+\draw[ink,line width=1pt,towerL] (1.1,2.05) -- (1.15,2.3) -- (1.35,2.35);
+% the mage on the summit, hand alight
+\fill[tower,ink] (2.0,2.42) -- (2.02,2.6) -- (1.95,2.9) .. controls (2.0,3.05) and (2.18,3.05) .. (2.22,2.9) -- (2.2,2.6) -- (2.28,2.42) -- cycle;
+\fill[tower,ink] (2.1,3.1) circle (.085);
+\draw[tower,line width=1.6pt] (2.18,2.88) -- (2.38,2.98);
+\fill[orbL,ink] (2.43,3.0) circle (.065);
+\shade[inner color=orbL,outer color=skyB,opacity=.6] (2.43,3.0) circle (.2);
+\end{tikzpicture}\end{document}

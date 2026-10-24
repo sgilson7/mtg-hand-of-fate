@@ -1,0 +1,50 @@
+\input{../preamble}
+\definecolor{bgR}{HTML}{a8361a}\definecolor{bgO}{HTML}{e8702a}\definecolor{sun}{HTML}{ffc060}
+\definecolor{beam}{HTML}{7a2a14}\definecolor{stone}{HTML}{c8602a}\definecolor{stoneD}{HTML}{7a2e16}
+\definecolor{gob}{HTML}{c8a060}\definecolor{gobD}{HTML}{8a6a3a}\definecolor{cloth}{HTML}{6a3a2a}\definecolor{rock}{HTML}{e8884a}
+\newcommand{\gh}[4]{% goblin head: x, y, size, facing (1 right, -1 left)
+ \fill[gob,ink] (#1-#3*.55,#2+#3*.25) -- (#1-#3*1.5,#2+#3*.75) -- (#1-#3*.6,#2-#3*.05) -- cycle;
+ \fill[gob,ink] (#1+#3*.55,#2+#3*.25) -- (#1+#3*1.5,#2+#3*.75) -- (#1+#3*.6,#2-#3*.05) -- cycle;
+ \fill[gob,ink] (#1,#2) ellipse (#3*.62 and #3*.72);
+ \fill[gob,ink] (#1+#4*#3*.3,#2-#3*.05) -- (#1+#4*#3*.85,#2-#3*.35) -- (#1+#4*#3*.3,#2-#3*.35) -- cycle;
+ \fill[ink] (#1+#4*#3*.1,#2+#3*.12) circle (#3*.07); \fill[ink] (#1+#4*#3*.42,#2+#3*.12) circle (#3*.07);
+ \draw[ink,line width=.5pt] (#1-#3*.1,#2-#3*.45) -- (#1+#4*#3*.4,#2-#3*.42);}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[left color=bgR,right color=bgO] (0,0) rectangle (6.16,4.52);
+% furnace-sun and beams
+\fill[sun] (2.6,4.0) circle (.85);
+\foreach \x in {3.8,4.6,5.4}{\fill[beam,ink] (\x,4.52) -- (\x+.35,4.52) -- (\x-.9,2.6) -- (\x-1.2,2.6) -- cycle;}
+\fill[beam,ink] (0,2.8) -- (0.5,4.52) -- (0.8,4.52) -- (0.3,2.8) -- cycle;
+% tipped crate top left
+\fill[stoneD,ink] (0.5,3.6) -- (0.75,4.45) -- (2.3,3.9) -- (2.05,3.1) -- cycle;
+\fill[cloth,ink] (0.75,3.6) -- (0.95,4.2) -- (2.0,3.8) -- (1.85,3.3) -- cycle;
+% stone bridge sweeping up to the right, with its arch beneath
+\fill[stone,ink] (0,1.1) -- (0,1.9) .. controls (2.0,2.4) and (4.0,2.8) .. (6.16,3.4) -- (6.16,2.6) .. controls (4.0,2.0) and (2.0,1.6) .. (0,1.1) -- cycle;
+\fill[stoneD,ink] (0,1.1) .. controls (2.0,1.6) and (4.0,2.0) .. (6.16,2.6) -- (6.16,2.3) .. controls (4.6,1.6) and (4.0,1.0) .. (3.8,0) -- (0,0) -- cycle;
+\fill[bgR!60!black,ink] (1.6,0) .. controls (2.0,0.8) and (3.0,1.3) .. (4.0,1.5) .. controls (3.6,1.0) and (3.4,0.5) .. (3.35,0) -- cycle;
+\foreach \r in {0.3,0.6,0.9}{\draw[stoneD,line width=.6pt] (0,1.1-\r) .. controls (2.0,1.6-\r) and (3.2,1.9-\r*.8) .. (4.0,2.0-\r*.5);}
+% boulder lower right
+\fill[rock,ink] (4.95,1.2) .. controls (4.9,1.9) and (5.4,2.0) .. (5.9,1.85) .. controls (6.16,1.6) and (6.16,0.6) .. (5.7,0.35) .. controls (5.2,0.4) and (4.95,0.8) .. (4.95,1.2) -- cycle;
+% goblin with club, top right of the crowd
+\fill[cloth,ink] (3.35,3.0) .. controls (3.3,3.4) and (3.45,3.75) .. (3.65,3.75) .. controls (3.9,3.7) and (3.95,3.3) .. (3.85,2.9) -- cycle;
+\gh{3.62}{3.95}{.24}{-1}
+\draw[gobD,line width=2pt] (3.4,3.6) -- (2.8,4.4); \fill[gob,ink] (2.65,4.3) -- (2.95,4.52) -- (3.05,4.4) -- (2.8,4.2) -- cycle;
+% goblin in argyle sitting on the ledge at left, leg hanging
+\fill[cloth,ink] (0.15,2.6) .. controls (0.1,2.2) and (0.3,1.9) .. (0.7,1.85) -- (1.6,1.85) -- (1.7,2.3) .. controls (1.3,2.6) and (0.8,2.8) .. (0.15,2.6) -- cycle;
+\foreach \x in {0.4,0.8,1.2}{\draw[gobD,line width=.5pt] (\x,1.9) -- (\x+.3,2.4); \draw[gobD,line width=.5pt] (\x+.3,1.9) -- (\x,2.4);}
+\fill[cloth!80!gob,ink] (1.0,1.95) -- (1.25,0.9) -- (1.5,0.35) -- (1.85,0.25) -- (1.95,0.4) -- (1.6,0.6) -- (1.5,1.0) -- (1.4,1.95) -- cycle;
+\gh{0.78}{2.95}{.3}{1}
+\fill[gob,ink] (1.6,2.15) -- (2.3,1.7) -- (2.4,1.8) -- (1.7,2.35) -- cycle;
+% second goblin behind
+\fill[gob,ink] (1.3,2.4) .. controls (1.2,2.8) and (1.4,3.1) .. (1.65,3.1) .. controls (1.95,3.0) and (2.0,2.7) .. (1.9,2.35) -- cycle;
+\gh{1.62}{3.25}{.24}{1}
+\fill[gob,ink] (1.9,2.9) -- (2.3,3.6) -- (2.4,3.55) -- (2.0,2.8) -- cycle;
+% bald goblin lunging down, long arm reaching right
+\fill[gob,ink] (2.75,2.45) .. controls (2.7,2.9) and (2.95,3.3) .. (3.3,3.35) .. controls (3.6,3.3) and (3.7,2.9) .. (3.6,2.5) -- cycle;
+\fill[gob,ink] (3.5,3.1) .. controls (3.9,2.8) and (4.2,2.4) .. (4.5,2.0) -- (4.62,1.75) -- (4.75,1.95) -- (4.85,1.7) -- (4.65,1.6) -- (4.4,1.85) .. controls (4.1,2.2) and (3.75,2.6) .. (3.45,2.85) -- cycle;
+\fill[gob,ink] (3.3,3.25) .. controls (3.6,3.0) and (3.8,2.6) .. (3.9,2.2) -- (3.95,1.8) -- (3.8,1.75) -- (3.7,2.15) .. controls (3.55,2.5) and (3.35,2.8) .. (3.15,3.0) -- cycle;
+\fill[cloth,ink] (2.75,2.45) -- (3.6,2.5) -- (3.55,2.2) -- (2.8,2.2) -- cycle;
+
+\gh{3.05}{3.55}{.3}{1}
+\end{tikzpicture}\end{document}

@@ -1,0 +1,67 @@
+\input{../preamble}
+\definecolor{skyT}{HTML}{4a2a7a}\definecolor{skyM}{HTML}{a07ad0}\definecolor{haze}{HTML}{d06a6a}
+\definecolor{lava}{HTML}{ff9a2a}\definecolor{lavaL}{HTML}{ffe07a}\definecolor{stoneD}{HTML}{3a2238}
+\definecolor{stoneM}{HTML}{6e4a72}\definecolor{stoneF}{HTML}{7a4a6a}\definecolor{rib}{HTML}{3a2440}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+% sky: purple vault, warm haze low
+\shade[top color=skyT,bottom color=skyM] (0,2.6) rectangle (6.16,4.52);
+\shade[top color=skyM,bottom color=haze] (0,1.2) rectangle (6.16,2.6);
+\shade[top color=haze,bottom color=lava] (0,0) rectangle (6.16,1.2);
+% vault ribs
+\fill[rib,ink] (1.35,4.52) .. controls (1.5,3.9) and (1.9,3.7) .. (2.3,3.75) .. controls (2.7,3.8) and (3.0,4.2) .. (3.05,4.52) -- (2.85,4.52) .. controls (2.75,4.1) and (2.5,3.95) .. (2.25,3.95) .. controls (1.9,3.95) and (1.65,4.2) .. (1.6,4.52) -- cycle;
+\fill[rib,ink] (4.2,4.52) .. controls (4.5,4.1) and (4.9,3.8) .. (5.15,3.6) -- (5.3,3.7) .. controls (5.0,3.95) and (4.65,4.3) .. (4.45,4.52) -- cycle;
+\fill[rib,ink] (0,4.1) .. controls (0.6,4.2) and (1.1,3.9) .. (1.35,3.5) -- (1.5,3.6) .. controls (1.2,4.1) and (0.6,4.4) .. (0,4.35) -- cycle;
+% distant pillars (pale, hazy)
+\foreach \x/\t/\w in {2.72/2.4/.12,3.62/2.1/.11,4.2/2.6/.13}{
+ \fill[stoneF,ink] (\x-\w,\t) -- (\x-\w*1.6,0.55) -- (\x+\w*1.6,0.55) -- (\x+\w,\t) -- cycle;
+ \fill[stoneF!80!black,ink] (\x-\w*1.4,\t) rectangle (\x+\w*1.4,\t+0.15);
+ \fill[lava,ink] (\x-\w*1.9,0.35) rectangle (\x+\w*1.9,0.55);}
+% horizontal walkway beam
+\fill[stoneM,ink] (2.1,1.95) -- (4.05,1.55) -- (4.05,1.45) -- (2.1,1.85) -- cycle;
+\fill[stoneM,ink] (2.6,1.25) -- (3.6,1.15) -- (3.6,1.08) -- (2.6,1.18) -- cycle;
+% mid pillars
+\foreach \x/\t/\w in {2.05/2.85/.17,4.6/2.65/.17}{
+ \fill[stoneM,ink] (\x-\w,\t) -- (\x-\w*1.9,0.75) -- (\x+\w*1.9,0.75) -- (\x+\w,\t) -- cycle;
+ \fill[stoneM!70!black,ink] (\x-\w*1.5,\t) rectangle (\x+\w*1.5,\t+0.22);
+ \fill[stoneM!70!black,ink] (\x-\w*1.1,\t+0.22) rectangle (\x+\w*1.1,\t+0.45);
+ \fill[lavaL,ink] (\x-0.04,\t-0.1) rectangle (\x+0.04,\t-0.35);
+ \fill[lava,ink] (\x-\w*2.2,0.6) rectangle (\x+\w*2.2,0.78);
+ \fill[stoneD,ink] (\x-\w*2.0,0) rectangle (\x+\w*2.0,0.6);
+ \fill[lava] (\x-0.03,0) rectangle (\x+0.03,0.6);}
+% hanging furnace, centre top
+\fill[stoneD,ink] (3.55,4.52) rectangle (3.75,3.55);
+\fill[stoneM,ink] (3.05,3.62) -- (4.25,3.62) -- (4.1,3.4) -- (3.2,3.4) -- cycle;
+\fill[stoneD,ink] (3.15,3.4) -- (4.15,3.4) -- (4.05,2.55) -- (3.25,2.55) -- cycle;
+\fill[stoneM,ink] (2.85,3.15) -- (3.2,3.25) -- (3.2,3.0) -- (2.95,2.95) -- cycle;
+\fill[stoneM,ink] (4.45,3.15) -- (4.1,3.25) -- (4.1,3.0) -- (4.35,2.95) -- cycle;
+\foreach \x in {3.4,3.65,3.9}{\fill[lavaL,ink] (\x-.04,3.2) rectangle (\x+.04,2.85);}
+\fill[stoneM,ink] (3.2,2.55) -- (4.1,2.55) -- (3.95,2.3) -- (3.35,2.3) -- cycle;
+\fill[lava,ink] (3.3,2.3) .. controls (3.4,2.05) and (3.55,2.15) .. (3.65,2.0) .. controls (3.75,2.15) and (3.9,2.05) .. (4.0,2.3) -- cycle;
+\fill[lavaL] (3.65,2.15) ellipse (.2 and .06);
+% left foreground pillar
+\fill[stoneD,ink] (0.15,4.52) -- (0.25,3.75) -- (1.85,3.75) -- (1.6,4.52) -- cycle;
+\fill[stoneM,ink] (0.3,3.75) rectangle (1.75,3.45);
+\fill[stoneD,ink] (0.45,3.45) -- (0.3,1.4) -- (1.9,1.4) -- (1.6,3.45) -- cycle;
+\fill[stoneM,ink] (0.6,3.45) -- (0.5,1.4) -- (0.85,1.4) -- (0.85,3.45) -- cycle;
+\fill[lavaL,ink] (1.3,3.25) rectangle (1.4,2.9);
+\fill[stoneM,ink] (0.15,1.4) -- (2.0,1.4) -- (1.9,1.15) -- (0.25,1.15) -- cycle;
+\fill[lava,ink] (0,1.15) rectangle (1.75,0.95);
+\fill[stoneD,ink] (0,0) rectangle (1.45,0.95);
+\fill[lava] (0.55,0) rectangle (0.62,0.95); \fill[lava] (1.05,0) rectangle (1.1,0.95);
+% right foreground pillar
+\fill[stoneD,ink] (6.16,4.52) -- (4.75,4.52) -- (4.85,3.85) -- (6.16,3.85) -- cycle;
+\fill[stoneM,ink] (4.8,3.85) rectangle (6.16,3.55);
+\fill[stoneD,ink] (4.95,3.55) -- (4.8,0.9) -- (6.16,0.9) -- (6.16,3.55) -- cycle;
+\fill[stoneM,ink] (5.1,3.55) -- (5.0,0.9) -- (5.35,0.9) -- (5.4,3.55) -- cycle;
+\fill[lavaL,ink] (5.75,3.35) rectangle (5.85,2.95);
+\fill[lava,ink] (4.7,0.9) rectangle (6.16,0.7);
+\fill[stoneD,ink] (5.25,0) rectangle (6.16,0.7);
+\fill[lava] (5.7,0) rectangle (5.76,0.7);
+% lava glow climbing the lower shafts
+\shade[top color=stoneD,bottom color=lava,opacity=.75] (0.32,1.4) -- (0.4,2.4) -- (1.75,2.4) -- (1.9,1.4) -- cycle;
+\shade[top color=stoneD,bottom color=lava,opacity=.75] (4.82,0.9) -- (4.88,1.9) -- (6.16,1.9) -- (6.16,0.9) -- cycle;
+\foreach \x in {2.05,4.6}{\shade[top color=stoneM,bottom color=lava,opacity=.7] (\x-.26,1.5) -- (\x-.32,0.78) -- (\x+.32,0.78) -- (\x+.26,1.5) -- cycle;}
+% embers drifting
+\foreach \x/\y in {1.0/2.1,2.4/3.2,3.1/1.6,4.0/1.0,4.9/2.2,2.9/0.8,1.6/2.6,5.4/1.6}{\fill[lavaL] (\x,\y) circle (.025);}
+\end{tikzpicture}\end{document}

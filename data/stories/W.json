@@ -1,0 +1,141 @@
+{"stories": [
+ {"number": "250", "name": "Plains", "kind": "land",
+  "text": "A stretch of open plaza lies quiet in the sun, swept clean by Azorius ordinance. You can claim it for a tile you have walked."},
+
+ {"number": "27", "name": "Trained Caracal", "kind": "creature",
+  "intro": "A lean cat with tufted ears pads beside a merchant who carries no sword. The merchant points at you. The caracal springs, and each scratch seems to mend its own wounds.",
+  "win": "The caracal backs off, then sits at your heel. Its old master has run, and it has chosen you.",
+  "lose": "Claws open your arm, and the merchant walks off with the cat purring.",
+  "flee": "You back into a crowd, and the caracal loses interest."},
+
+ {"number": "26", "name": "Swift Justice", "kind": "magic",
+  "title": "A blade blessed in haste",
+  "text": "A Boros sergeant stands over a thief she has just cut down. Her sword still glows with a warm white charm. She sees you staring and holds the blade out. \"Conviction moves the hand. Are you quick enough to use it?\"",
+  "choices": [
+   {"text": "Take the blade and strike a practice post",
+    "outcome": {"text": "The charm wants a fast hand.",
+     "fate": {"faces": [1, 2, 1, 0],
+      "huge_success": {"text": "You strike first and clean, and the glow flows up your arm and heals you. She lets you keep the charm.", "effects": [{"health": 3}, {"take": true}]},
+      "success": {"text": "Your strike lands true. The sergeant nods and teaches you the words of the charm.", "effects": [{"take": true}]},
+      "failure": {"text": "You hesitate, and the charm fades with a sting. She shrugs and walks on.", "effects": [{"health": -2}]}}}},
+   {"text": "Ask her about the thief", "needs": {"charisma": 2},
+    "outcome": {"text": "She tells you he stole from a Senate clerk. She tosses you his purse and the charm along with it.", "effects": [{"gold": 6}, {"take": true}]}},
+   {"text": "Keep walking",
+    "outcome": {"text": "You leave the sergeant to her work.", "effects": [{"leave": true}]}}
+  ]},
+
+ {"number": "5", "name": "Azorius Arrester", "kind": "creature",
+  "intro": "A white-cloaked arrester steps out from a doorway with a writ in one hand. \"You will stop there.\" Lines of pale light wrap your ankles as he advances.",
+  "win": "His bindings fade and he kneels, out of breath. He signs his service over to you, as the law allows.",
+  "lose": "The light locks your legs, and he fines you before letting you go.",
+  "flee": "You tear free of the bindings and run before he can finish his sentence."},
+
+ {"number": "8", "name": "Concordia Pegasus", "kind": "creature",
+  "intro": "A winged horse wheels over the rooftops and lands hard on the cobbles in front of you. It rears, hooves crackling. It does not like strangers on its street.",
+  "win": "The pegasus folds its wings and lowers its head. It lets you take the rein.",
+  "lose": "A kick lands like a bolt of lightning, and you wake on your back.",
+  "flee": "You duck under an awning, and the pegasus takes to the air again."},
+
+ {"number": "17", "name": "Precinct Captain", "kind": "creature",
+  "intro": "A Boros captain blocks the lane with her shield raised. Behind her, soldiers fall in one by one. \"Papers, or a fight. Choose.\"",
+  "win": "The captain lowers her shield and salutes. Her squad will watch your back now.",
+  "lose": "Her first blow lands before you have drawn, and her squad marches you out of the precinct.",
+  "flee": "You slip away before the line of soldiers can close."},
+
+ {"number": "11", "name": "Fencing Ace", "kind": "creature",
+  "intro": "A guildless duellist in a patched coat flicks his rapier at you. \"Another Senate spy?\" He strikes twice before you can raise a hand.",
+  "win": "He laughs and sheathes his blade. Anyone who can beat him is someone worth following.",
+  "lose": "Two quick cuts, and he lets you go with a bow.",
+  "flee": "You run, and he does not bother to chase a coward."},
+
+ {"number": "22", "name": "Seller of Songbirds", "kind": "creature",
+  "intro": "Lady Wren sells songbirds from a cart in Keyhole Downs. She thinks you mean to rob her. She opens a cage, and a bird flies at your face while she raises a cudgel.",
+  "win": "She sets the cudgel down and apologises. She offers you a bird and her company on the road.",
+  "lose": "The bird pecks and the cudgel lands, and you stumble back into the street.",
+  "flee": "You leave her to her cages and her birdsong."},
+
+ {"number": "25", "name": "Sunspire Griffin", "kind": "creature",
+  "intro": "A golden griffin drops from the top of a Sunhome spire. It circles you once, screaming. Then it dives.",
+  "win": "The griffin lands and preens. It will follow you if you keep it fed.",
+  "lose": "Talons rake your shoulders, and the griffin returns to its spire.",
+  "flee": "You run under the arches where it cannot reach you."},
+
+ {"number": "10", "name": "Eyes in the Skies", "kind": "magic",
+  "title": "A flock that watches",
+  "text": "A Selesnya strategist stands in a courtyard, whistling to a single small bird. As you watch, a second bird appears beside the first, its exact copy. She is building a flock of scouts. She asks if you have seen anyone suspicious.",
+  "choices": [
+   {"text": "Help her call the birds",
+    "outcome": {"text": "The birds answer whoever calls with a clear heart.",
+     "fate": {"faces": [1, 1, 1, 1],
+      "huge_success": {"text": "The birds come in a swirling cloud. She thanks you with the spell and a sack of seed and bread.", "effects": [{"supplies": 2}, {"take": true}]},
+      "success": {"text": "A bird lands on your wrist, then another. She teaches you the call.", "effects": [{"take": true}]},
+      "failure": {"text": "The birds scatter at your whistle. She sighs and sends you away.", "effects": [{"supplies": -1}]},
+      "huge_failure": {"text": "The flock mobs you, pecking. You leave with scratches and no spell.", "effects": [{"health": -2}]}}}},
+   {"text": "Tell her what you have seen", "needs": {"style": ["Selesnya", 1]},
+    "outcome": {"text": "She trusts the word of a friend of the Conclave. She sends a bird with you as thanks.", "effects": [{"style": ["Selesnya", 1]}, {"take": true}]}},
+   {"text": "Leave her to it",
+    "outcome": {"text": "You go, and a small bird watches you leave.", "effects": [{"leave": true}]}}
+  ]},
+
+ {"number": "3", "name": "Arrest", "kind": "story",
+  "title": "Under arrest",
+  "text": "Arrester Lavinia of the Tenth Precinct steps in front of you. A glowing sigil snaps around your wrists. \"You are under arrest,\" she says. \"We will prove your guilt later.\"",
+  "choices": [
+   {"text": "Break the sigil and fight",
+    "outcome": {"text": "You wrench your hands free, and her escort steps in.", "effects": [{"fight": true}]}},
+   {"text": "Offer her a fee for the paperwork", "needs": {"gold": 10},
+    "outcome": {"text": "She counts the coins and pockets the sigil. \"Keep it. You may need it for someone else.\"", "effects": [{"take": true}]}},
+   {"text": "Report a real criminal instead", "needs": {"charisma": 3},
+    "outcome": {"text": "You give her a name and a street. She thanks you for your service and hands you the sigil to use.", "effects": [{"style": ["Azorius", 1]}, {"take": true}]}}
+  ]},
+
+ {"number": "9", "name": "Ethereal Armor", "kind": "story",
+  "title": "Armour of light",
+  "text": "A poor smith in an alley sells armour as light as air. She shapes it out of light and charms instead of steel. Metal is scarce and smiths are pricey, she says. Her armour costs less.",
+  "choices": [
+   {"text": "Buy a suit", "needs": {"gold": 12},
+    "outcome": {"text": "She fits the glow to your shoulders. It hardens when you move to strike.", "effects": [{"take": true}]}},
+   {"text": "Try it on and test it",
+    "outcome": {"text": "She swings a hammer at you to show its strength.",
+     "fate": {"faces": [0, 2, 1, 1],
+      "success": {"text": "The hammer bounces off the light. She is so pleased she gives you the suit.", "effects": [{"take": true}]},
+      "failure": {"text": "The charm flickers and the hammer clips you. She apologises and asks you to come back later.", "effects": [{"health": -1}, {"leave": true}]},
+      "huge_failure": {"text": "The armour fails entirely, and the hammer lands hard. You leave with a bruise.", "effects": [{"health": -3}]}}}},
+   {"text": "Thank her and go",
+    "outcome": {"text": "She goes back to her work.", "effects": [{"leave": true}]}}
+  ]},
+
+ {"number": "6", "name": "Azorius Justiciar", "kind": "creature",
+  "intro": "A justiciar in tall white robes reads from a scroll as you pass. \"Your potential to commit a crime warrants investigation.\" Two of your companions freeze where they stand, and he turns to you.",
+  "win": "The justiciar closes his scroll and rules in your favour. He joins you to keep an eye on things.",
+  "lose": "His ruling pins you to the cobbles until you pay your way out.",
+  "flee": "You run before he can finish reading your name."},
+
+ {"number": "16", "name": "Phantom General", "kind": "creature",
+  "intro": "A pale ghost in old Boros armour rises from a war memorial. Spectral soldiers form ranks behind him. He raises his sword and orders the charge.",
+  "win": "The general lowers his blade. He has found a new campaign to follow, and his ghosts stand taller beside you.",
+  "lose": "His ghostly ranks drive you from the memorial.",
+  "flee": "You run, and the general returns to his long watch."},
+
+ {"number": "28", "name": "Trostani's Judgment", "kind": "magic",
+  "title": "The Worldsoul's judgment",
+  "text": "In a Selesnya garden, a dryad passes judgment on a thief. Light swallows him, and a sapling grows where he stood. She turns her green-lit eyes on you. \"Some cannot be saved as they are. Are you one of them?\"",
+  "choices": [
+   {"text": "Kneel and ask for her blessing", "needs": {"style": ["Selesnya", 2]},
+    "outcome": {"text": "She smiles and shares the judgment with you, to be used wisely.", "effects": [{"take": true}]}},
+   {"text": "Stand your ground and argue",
+    "outcome": {"text": "She listens, but her patience is thin.",
+     "fate": {"faces": [1, 1, 2, 0],
+      "huge_success": {"text": "Your words move her. She gives you the spell and heals your wounds.", "effects": [{"health": 3}, {"take": true}]},
+      "success": {"text": "She concedes that you are worth saving. She teaches you her judgment.", "effects": [{"take": true}]},
+      "failure": {"text": "The light brushes you, and you stagger out of the garden.", "effects": [{"health": -3}]}}}},
+   {"text": "Back away slowly",
+    "outcome": {"text": "She lets you go, for now.", "effects": [{"leave": true}]}}
+  ]},
+
+ {"number": "1", "name": "Angel of Serenity", "kind": "creature",
+  "intro": "An angel descends over the square, and the crowd goes silent. With each sweep of her wings, someone near you vanishes into still air. She turns her calm gaze on you.",
+  "win": "The angel bows her head. Those she took return blinking to the square, and she chooses to fly with you.",
+  "lose": "Her stillness takes you, and you wake much later on the far side of the district.",
+  "flee": "You run before the silence can reach you."}
+]}

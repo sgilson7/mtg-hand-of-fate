@@ -1,0 +1,56 @@
+\input{../preamble}
+\definecolor{skyA}{HTML}{eeebd0}\definecolor{skyB}{HTML}{a3ab8e}\definecolor{mist}{HTML}{c9c8a6}
+\definecolor{stoneA}{HTML}{6c7468}\definecolor{stoneB}{HTML}{4a5553}\definecolor{stoneC}{HTML}{8a8f86}
+\definecolor{far}{HTML}{b3b49a}\definecolor{farD}{HTML}{979a84}\definecolor{hood}{HTML}{9a96b8}
+\definecolor{hoodD}{HTML}{6e6a90}\definecolor{veil}{HTML}{dcdcd4}\definecolor{veilB}{HTML}{f6f5ee}
+\definecolor{robe}{HTML}{5d6470}\definecolor{water}{HTML}{dfe3d6}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+\shade[top color=skyA,bottom color=skyB] (0,0) rectangle (6.16,4.52);
+\shade[left color=skyB,right color=skyA,opacity=.6] (0,2) rectangle (2,4.52);
+% far domed palace
+\fill[farD,ink] (2.95,2.3) rectangle (4.3,3.75);
+\fill[far,ink] (3.2,3.75) .. controls (3.2,4.35) and (4.2,4.35) .. (4.2,3.75) -- cycle;
+\fill[far,ink] (3.62,4.28) rectangle (3.74,4.52);
+\fill[far,ink] (3.05,3.62) -- (3.7,3.62) -- (3.55,3.48) -- (3.2,3.48) -- cycle;
+\fill[far,ink] (3.05,3.2) -- (3.85,3.2) -- (3.6,3.02) -- (3.3,3.02) -- cycle;
+\fill[farD,ink] (3.38,3.48) rectangle (3.45,3.2);
+\fill[farD,ink] (3.55,3.02) rectangle (3.63,2.75);
+\fill[far,ink] (3.35,2.78) -- (3.85,2.78) -- (3.7,2.66) -- (3.5,2.66) -- cycle;
+% right tower with dome
+\fill[stoneA,ink] (4.15,0) rectangle (5.85,3.15);
+\fill[stoneC,ink] (4.05,3.15) rectangle (5.95,3.4);
+\fill[stoneA,ink] (4.4,3.4) .. controls (4.45,4.1) and (5.7,4.1) .. (5.75,3.4) -- cycle;
+\fill[stoneB,ink] (4.15,0) rectangle (4.45,3.15);
+\fill[stoneB,ink] (5.3,2.6) .. controls (5.3,3.0) and (5.6,3.0) .. (5.6,2.6) -- cycle;
+\foreach \y in {2.2,1.4,0.6}{\draw[ink] (4.45,\y) -- (5.85,\y);}
+% waterfall from tower window
+\fill[water,ink] (5.3,2.62) -- (5.6,2.62) .. controls (5.75,1.8) and (5.95,0.8) .. (6.16,0) -- (5.25,0) .. controls (5.35,0.9) and (5.3,1.8) .. (5.3,2.62);
+\foreach \x in {5.42,5.55}{\draw[white,line width=.6pt] (\x,2.5) .. controls (\x+.05,1.5) .. (\x+.15,0);}
+% aqueduct bridge receding to the tower
+\fill[stoneA,ink] (0,3.6) -- (4.2,2.55) -- (4.2,1.0) -- (0,1.05) -- cycle;
+\fill[stoneC,ink] (0,3.62) -- (4.2,2.57) -- (4.2,2.35) -- (0,3.2) -- cycle;
+\fill[skyB,ink] (0.15,2.95) -- (0.15,1.6) -- (0.75,1.55) -- (0.75,2.4) .. controls (0.7,2.95) and (0.2,3.1) .. (0.15,2.95);
+\fill[mist,ink] (2.95,2.3) -- (2.95,1.3) -- (3.6,1.28) -- (3.6,2.1) .. controls (3.5,2.55) and (3.0,2.6) .. (2.95,2.3);
+\fill[mist,ink] (3.75,2.05) -- (3.75,1.3) -- (4.1,1.28) -- (4.1,1.9) .. controls (4.05,2.2) and (3.8,2.25) .. (3.75,2.05);
+\foreach \x/\y in {1.3/2.95,2.6/2.6}{\draw[ink,stoneB] (\x,\y) circle (.16);}
+% lower parapet in front
+\fill[stoneB,ink] (0,1.55) -- (2.9,1.35) -- (4.2,0.6) -- (4.2,0) -- (0,0) -- cycle;
+\fill[stoneC,ink] (0,1.55) -- (2.9,1.35) -- (4.2,0.6) -- (4.2,0.45) -- (2.85,1.18) -- (0,1.38) -- cycle;
+\foreach \x in {0.5,1.3}{\fill[stoneA,ink] (\x,1.2) .. controls (\x,0.75) and (\x+.6,0.75) .. (\x+.6,1.2) -- (\x+.6,0) -- (\x,0) -- cycle;}
+\shade[left color=white,right color=mist,opacity=.3] (0,0) rectangle (2,1.4);
+% the spirit: tall leaning hood, flowing veil
+\fill[robe,ink] (1.55,2.5) .. controls (1.5,1.6) and (1.7,0.8) .. (2.0,0) -- (3.0,0) .. controls (2.6,1.0) and (2.4,1.8) .. (2.4,2.5) -- cycle;
+\fill[veil,ink] (2.25,2.7) .. controls (2.5,1.8) and (3.3,0.8) .. (4.75,0) -- (2.4,0) .. controls (2.3,0.9) and (2.0,1.8) .. (1.9,2.6) -- cycle;
+\fill[veilB] (2.3,2.4) .. controls (2.7,1.6) and (3.4,0.7) .. (4.3,0) -- (3.3,0) .. controls (2.8,0.8) and (2.4,1.6) .. (2.2,2.4) -- cycle;
+\foreach \a in {0.3,0.6}{\draw[ink,veil!70!black,line width=.4pt] (2.15,2.4) .. controls (2.4+\a,1.6) and (2.7+\a,0.8) .. (3.0+\a*1.5,0);}
+\fill[hood,ink] (1.55,2.5) .. controls (1.4,3.1) and (1.2,3.7) .. (1.28,4.2) .. controls (1.35,4.55) and (2.1,4.5) .. (2.3,4.1) .. controls (2.5,3.7) and (2.5,3.0) .. (2.42,2.5) -- cycle;
+\fill[hoodD] (1.6,2.6) .. controls (1.45,3.2) and (1.3,3.8) .. (1.36,4.15) .. controls (1.6,3.6) and (1.72,3.0) .. (1.75,2.6) -- cycle;
+\fill[veil] (2.0,2.6) .. controls (2.2,3.2) and (2.25,3.8) .. (2.05,4.35) .. controls (2.35,4.1) and (2.45,3.4) .. (2.38,2.6) -- cycle;
+\foreach \a in {0.0,0.25}{\draw[ink,line width=.4pt] (1.5+\a,3.0+\a) .. controls (1.8+\a,3.3+\a) .. (2.3,3.2+\a*1.5);}
+\fill[veil,ink] (1.5,2.75) .. controls (1.9,2.55) and (2.2,2.6) .. (2.45,2.85) -- (2.45,2.5) .. controls (2.1,2.3) and (1.8,2.35) .. (1.5,2.45) -- cycle;
+\foreach \y in {2.55,2.65}{\draw[ink,line width=.4pt] (1.55,\y) .. controls (1.95,\y-.1) .. (2.42,\y+.05);}
+% gloved hands on the parapet
+\fill[stoneB,ink] (1.55,2.3) .. controls (1.5,1.9) and (1.65,1.6) .. (1.75,1.45) -- (1.9,1.5) .. controls (1.8,1.8) and (1.75,2.1) .. (1.75,2.3) -- cycle;
+\fill[stoneB,ink] (2.35,2.2) .. controls (2.4,1.9) and (2.4,1.7) .. (2.45,1.55) -- (2.58,1.58) .. controls (2.55,1.8) and (2.52,2.0) .. (2.5,2.2) -- cycle;
+\end{tikzpicture}\end{document}

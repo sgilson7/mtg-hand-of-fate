@@ -1,0 +1,50 @@
+\input{../preamble}
+\definecolor{bgD}{HTML}{3a0c08}\definecolor{bgR}{HTML}{8a1e14}\definecolor{bgO}{HTML}{d8501e}
+\definecolor{glow}{HTML}{ffd25a}\definecolor{lzg}{HTML}{34482a}\definecolor{lzd}{HTML}{22331a}
+\definecolor{lit}{HTML}{c8401e}\definecolor{coal}{HTML}{1e0a08}\definecolor{iron}{HTML}{3a1c16}
+\begin{document}\begin{tikzpicture}
+\clip (0,0) rectangle (6.16,4.52);
+% forge interior
+\fill[bgR] (0,0) rectangle (6.16,4.52);
+\shade[left color=bgO,right color=bgR] (0,0.8) rectangle (2.2,4.52);
+\shade[top color=bgR,bottom color=bgD] (2.2,0.8) rectangle (6.16,2.6);
+\shade[top color=bgD,bottom color=bgR] (2.2,2.6) rectangle (6.16,4.52);
+% arched doorway right
+\fill[bgD,ink] (4.7,1.6) -- (4.7,3.8) .. controls (4.7,4.4) and (5.6,4.4) .. (5.6,3.8) -- (5.6,1.6) -- cycle;
+\fill[bgR!60!bgD,ink] (4.85,1.6) -- (4.85,3.75) .. controls (4.85,4.2) and (5.45,4.2) .. (5.45,3.75) -- (5.45,1.6) -- cycle;
+\fill[bgD,ink] (6.16,1.4) -- (5.75,4.52) -- (6.16,4.52) -- cycle;
+\fill[bgO,ink] (5.8,2.2) -- (6.16,3.1) -- (6.16,1.9) -- cycle;
+% bright furnace mouth left
+\shade[inner color=glow,outer color=bgO] (0.45,2.5) ellipse (.45 and 1.0);
+% anvil
+\fill[iron,ink] (0.85,1.95) -- (1.9,1.95) -- (1.75,1.75) -- (1.4,1.7) -- (1.45,1.3) -- (1.05,1.3) -- (1.1,1.7) -- (0.9,1.8) -- cycle;
+\fill[bgO] (0.9,1.93) -- (1.8,1.93) -- (1.75,1.88) -- (0.95,1.88) -- cycle;
+% body: neck down to haunch at right
+\fill[lzg,ink] (2.6,3.25) .. controls (3.6,3.9) and (4.2,2.8) .. (4.9,2.1) .. controls (5.3,1.7) and (5.6,1.4) .. (5.8,1.15) -- (5.4,1.0) .. controls (4.8,1.2) and (4.0,1.15) .. (3.4,1.3) .. controls (2.9,1.45) and (2.5,1.9) .. (2.35,2.5) -- cycle;
+% belly glow
+\fill[lit,ink] (2.45,2.4) .. controls (2.6,1.8) and (3.1,1.45) .. (3.7,1.35) .. controls (3.4,1.7) and (3.0,2.0) .. (2.85,2.5) -- cycle;
+% spines along back
+\foreach \x/\y in {3.3/3.85,3.55/3.7,3.8/3.45,4.1/3.1,4.4/2.75,4.75/2.35}{\fill[lzd,ink] (\x-.1,\y-.03) -- (\x+.08,\y+.22) -- (\x+.12,\y-.08) -- cycle;}
+% hind leg right
+\fill[lzg,ink] (5.0,1.9) .. controls (5.5,1.8) and (5.75,1.5) .. (5.7,1.25) -- (6.0,1.05) -- (6.1,1.2) -- (6.16,0.9) -- (5.3,0.95) .. controls (4.9,1.2) and (4.8,1.6) .. (5.0,1.9) -- cycle;
+% front leg
+\fill[lzg,ink] (2.8,1.95) .. controls (2.6,1.6) and (2.55,1.3) .. (2.7,1.05) -- (2.5,0.85) -- (3.2,0.85) -- (3.1,1.05) .. controls (3.15,1.35) and (3.3,1.6) .. (3.4,1.75) -- cycle;
+% throat bellows: serrated orange pouch under the jaw
+\fill[lit,ink] (1.9,2.95) .. controls (1.4,3.15) and (1.0,2.85) .. (1.05,2.5) .. controls (1.1,2.15) and (1.6,2.0) .. (2.65,2.05) -- (2.75,2.6) .. controls (2.4,2.7) and (2.1,2.8) .. (1.9,2.95) -- cycle;
+\shade[inner color=bgO!80!glow,outer color=lit] (1.7,2.5) ellipse (.45 and .3);
+\foreach \t in {0.05,0.15,...,0.95}{\fill[lzd,ink,line width=.3pt] ($(1.1,2.35)!\t!(2.6,2.05)$) -- ++(0.05,-0.12) -- ++(0.08,0.1) -- cycle;}
+% head facing left, jaws gaping
+\fill[lzg,ink] (1.62,4.05) .. controls (1.75,4.2) and (2.4,4.15) .. (2.9,4.08) .. controls (3.2,4.0) and (3.45,3.8) .. (3.5,3.55) .. controls (3.3,3.2) and (3.0,3.0) .. (2.75,2.6) -- (1.9,2.95) .. controls (2.3,3.05) and (2.8,3.15) .. (3.05,3.35) .. controls (2.6,3.5) and (2.1,3.65) .. (1.72,3.82) -- cycle;
+\fill[glow,ink] (1.8,3.8) .. controls (2.2,3.62) and (2.7,3.5) .. (3.05,3.38) .. controls (2.75,3.15) and (2.3,3.02) .. (1.95,2.98) .. controls (2.15,3.25) and (2.05,3.55) .. (1.8,3.8) -- cycle;
+\fill[bgO] (2.35,3.25) .. controls (2.6,3.3) and (2.85,3.35) .. (2.95,3.36) .. controls (2.7,3.2) and (2.45,3.12) .. (2.2,3.1) -- cycle;
+\foreach \t in {0.08,0.2,...,0.9}{\fill[white,ink,line width=.3pt] ($(1.8,3.8)!\t!(3.05,3.38)$) -- ++(0.02,-0.13) -- ++(0.07,0.1) -- cycle;}
+\foreach \t in {0.1,0.22,...,0.9}{\fill[white,ink,line width=.3pt] ($(1.95,2.98)!\t!(2.95,3.3)$) -- ++(0.0,0.12) -- ++(0.07,-0.08) -- cycle;}
+\fill[glow,ink] (2.9,3.92) circle (.065);
+\fill[lzd,ink] (1.7,4.06) circle (.035);
+% thin tail curl at the top right
+\draw[ink,line width=2.6pt] (3.9,3.55) .. controls (4.4,3.95) and (4.8,4.0) .. (4.85,3.6) .. controls (4.85,3.35) and (4.7,3.2) .. (4.6,3.15);
+\draw[lzd,line width=1.6pt] (3.9,3.55) .. controls (4.4,3.95) and (4.8,4.0) .. (4.85,3.6) .. controls (4.85,3.35) and (4.7,3.2) .. (4.6,3.15);
+% coals across the floor
+\fill[coal] (0,0) -- (0,1.0) .. controls (1.5,1.15) and (3,0.8) .. (6.16,0.9) -- (6.16,0) -- cycle;
+\foreach \x/\y in {0.3/0.7,0.9/0.5,1.5/0.8,2.1/0.4,2.8/0.65,3.4/0.3,3.9/0.75,4.5/0.45,5.1/0.7,5.7/0.35,1.2/0.2,4.2/0.15}{\fill[iron,ink] (\x,\y) -- ++(.22,.12) -- ++(.18,-.14) -- ++(-.1,-.12) -- cycle; \fill[bgO] (\x+.12,\y+.03) circle (.03);}
+\end{tikzpicture}\end{document}
