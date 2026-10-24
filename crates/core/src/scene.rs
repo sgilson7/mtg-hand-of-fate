@@ -395,6 +395,19 @@ pub fn camera_for(s: &Session) -> Camera {
 // ---------- the battle ----------
 
 /// Where each permanent stands in the arena, for drawing and labels.
+/// Where `n` things stand along a row `width` wide, `most` apart at most:
+/// the x of the `i`th, the row centred.
+fn row_x(i: usize, n: usize, width: Fx, most: Fx) -> Fx {
+    if n <= 1 {
+        return 0;
+    }
+    let gap = (width / (n as i32 - 1)).min(most);
+    (i as i32 * 2 - (n as i32 - 1)) * gap / 2
+}
+
+/// The most creatures in one row of a side before a second row starts.
+const ROW_MOST: usize = 5;
+
 pub fn battle_spots<'a>(s: &Session, snap: &'a Snap) -> Vec<(V3, &'a PermSnap)> {
     let _ = s;
     let mut out = Vec::new();
@@ -404,44 +417,144 @@ pub fn battle_spots<'a>(s: &Session, snap: &'a Snap) -> Vec<(V3, &'a PermSnap)> 
             .iter()
             .filter(|p| p.side == side && p.attached < 0)
             .collect();
-        let creatures: Vec<&&PermSnap> = mine.iter().filter(|p| p.creature).collect();
+        let attackers: Vec<&&PermSnap> = mine.iter().filter(|p| p.creature && p.attacking).collect();
+        let home: Vec<&&PermSnap> = mine.iter().filter(|p| p.creature && !p.attacking).collect();
         let others: Vec<&&PermSnap> = mine.iter().filter(|p| !p.creature && !p.land).collect();
         let lands: Vec<&&PermSnap> = mine.iter().filter(|p| p.land).collect();
         let dir = if side == 0 { 1 } else { -1 };
-        // lands: two columns in the side's left corner, as a player keeps them
+        // lands: columns in the side's left corner, as a player keeps them;
+        // a third column when there are more than ten
+        let cols = if lands.len() > 10 { 3 } else { 2 };
         for (i, p) in lands.iter().enumerate() {
-            let col = (i % 2) as i32;
-            let row = (i / 2) as i32;
-            let x = -dir * (ONE * 53 / 10 - col * ONE * 7 / 10);
-            let z = dir * (ONE * 4 / 10 + row * ONE * 7 / 10);
+            let col = (i % cols) as i32;
+            let row = (i / cols) as i32;
+            let x = -dir * (ONE * 53 / 10 - col * ONE * 6 / 10);
+            let z = dir * (ONE * 4 / 10 + row * ONE * 6 / 10);
             out.push((v3(x, 0, z), **p));
         }
-        let n = creatures.len() as i32;
-        for (i, p) in creatures.iter().enumerate() {
-            let x = (i as i32 * 2 - (n - 1)) * ONE * 11 / 10;
-            let z = if p.attacking {
-                dir * ONE * 3 / 5
-            } else {
-                dir * ONE * 19 / 10
-            };
-            out.push((v3(x, 0, z), **p));
-        }
-        let m = others.len() as i32;
+        // enchantments and artifacts: the same in the right corner
+        let cols = if others.len() > 8 { 3 } else { 2 };
         for (i, p) in others.iter().enumerate() {
-            let x = (i as i32 * 2 - (m - 1)) * ONE * 7 / 10;
-            out.push((v3(x, 0, dir * ONE * 36 / 10), **p));
+            let col = (i % cols) as i32;
+            let row = (i / cols) as i32;
+            let x = dir * (ONE * 52 / 10 - col * ONE * 9 / 10);
+            let z = dir * (ONE * 6 / 10 + row * ONE * 9 / 10);
+            out.push((v3(x, 0, z), **p));
+        }
+        // attackers in one row toward the middle, closer together when many
+        for (i, p) in attackers.iter().enumerate() {
+            let x = row_x(i, attackers.len(), ONE * 8, ONE * 22 / 10);
+            out.push((v3(x, 0, dir * ONE * 3 / 5), **p));
+        }
+        // the rest in rows of five, the second row behind the first
+        let rows = home.len().div_ceil(ROW_MOST).max(1);
+        for (i, p) in home.iter().enumerate() {
+            let row = i / ROW_MOST;
+            let in_row = if row + 1 == rows {
+                home.len() - row * ROW_MOST
+            } else {
+                ROW_MOST
+            };
+            let x = row_x(i % ROW_MOST, in_row, ONE * 8, ONE * 22 / 10);
+            let z = dir * (ONE * 17 / 10 + row as i32 * ONE * 13 / 10);
+            out.push((v3(x, 0, z), **p));
         }
     }
-    // a blocker stands in front of what it blocks
+    // a blocker stands in front of what it blocks; several side by side
     let spots: Vec<(V3, &PermSnap)> = out.clone();
     for (pt, p) in out.iter_mut() {
         if p.blocking >= 0 {
             if let Some((apt, _)) = spots.iter().find(|(_, a)| a.id as i32 == p.blocking) {
-                *pt = v3(apt.x, 0, if p.side == 0 { ONE * 3 / 10 } else { -ONE * 3 / 10 });
+                let mates: Vec<u32> = spots
+                    .iter()
+                    .filter(|(_, q)| q.blocking == p.blocking)
+                    .map(|(_, q)| q.id)
+                    .collect();
+                let k = mates.iter().position(|&id| id == p.id).unwrap_or(0);
+                let x = apt.x + row_x(k, mates.len(), ONE * 2, ONE);
+                *pt = v3(x, 0, if p.side == 0 { ONE * 3 / 10 } else { -ONE * 3 / 10 });
             }
         }
     }
     out
+}
+
+/// The model a permanent is drawn with: its card's ("c" and its collector
+/// number), or its token's.
+fn model_of(s: &Session, p: &PermSnap) -> String {
+    if p.card >= 0 {
+        format!("c{}", s.cards[p.card as usize].number)
+    } else {
+        p.token.clone()
+    }
+}
+
+/// How tall a creature stands on the table: by its size, the guardian tallest.
+fn creature_height(p: &PermSnap) -> Fx {
+    if p.name == "Niv-Mizzet, Dracogenius" {
+        ONE * 45 / 10
+    } else {
+        battle_height(p.power, p.toughness)
+    }
+}
+
+/// Auras and equipment, drawn on what they are attached to: an Aura's sigil
+/// floating over its host with a ring of its colour at the host's feet;
+/// equipment at the host's side.
+fn attachments(s: &Session, b: &mut Batch, snap: &Snap, spots: &[(V3, &PermSnap)], phase: i32) {
+    for a in snap.perms.iter().filter(|p| p.attached >= 0) {
+        let Some((at, host)) = spots.iter().find(|(_, h)| h.id as i32 == a.attached) else {
+            continue;
+        };
+        let name = model_of(s, a);
+        if !s.look.has(&name) {
+            continue;
+        }
+        let card = (a.card >= 0).then(|| &s.cards[a.card as usize]);
+        let equipment = card.map(|c| c.rules.equip.is_some()).unwrap_or(false);
+        let tall = if host.creature {
+            creature_height(host)
+        } else {
+            ONE * 7 / 10
+        };
+        let h = s.look.height(&name).max(ONE / 10);
+        if equipment {
+            let k = fx::div(ONE * 8 / 10, h);
+            s.look.draw(
+                b,
+                &name,
+                at.add(v3(ONE * 6 / 10, 0, ONE / 5)),
+                &Pose {
+                    scale: k,
+                    ..Pose::default()
+                },
+            );
+            continue;
+        }
+        let bob = fx::mul(fx::sin(phase + a.id as i32 * 900), ONE / 12);
+        let k = fx::div(ONE * 45 / 100, h);
+        let spin = (s.now / 1000 % 6000) as i32 * fx::TURN / 6000;
+        s.look.draw(
+            b,
+            &name,
+            at.add(v3(0, tall + ONE / 4 + bob, 0)),
+            &Pose {
+                yaw: spin,
+                scale: k,
+                ..Pose::default()
+            },
+        );
+        let rgb = colour_glow(card.map(|c| c.colours).unwrap_or(0));
+        for i in 0..12 {
+            let ang = fx::TURN * i / 12 + spin;
+            let p = at.add(v3(
+                fx::mul(fx::cos(ang), ONE * 7 / 10),
+                ONE / 10,
+                fx::mul(fx::sin(ang), ONE * 7 / 10),
+            ));
+            glow(b, p, ONE / 8, rgb, ONE * 3 / 4);
+        }
+    }
 }
 
 fn battle_height(power: i32, toughness: i32) -> Fx {
@@ -482,16 +595,7 @@ fn draw_battle(s: &Session, b: &mut Batch, f: &crate::session::Fight) {
         _ => None,
     };
     for (pt, p) in spots.iter().map(|(a, b)| (*a, *b)) {
-        let name = if p.card >= 0 {
-            let c = &s.cards[p.card as usize];
-            if c.is(crate::content::ty::CREATURE) {
-                format!("c{}", c.number)
-            } else {
-                String::new()
-            }
-        } else {
-            p.token.clone()
-        };
+        let name = model_of(s, p);
         let striking = swinger == Some(p.id);
         // the blow lands at the hit, 65 % through the swing
         let landed = u >= ONE * 13 / 20;
@@ -526,21 +630,36 @@ fn draw_battle(s: &Session, b: &mut Batch, f: &crate::session::Fight) {
             }
             continue;
         }
-        if name.is_empty() || !p.creature {
-            // an enchantment or artifact: a glowing gem in its colours
-            b.solid(
-                Mesh::Gem,
-                pt.add(v3(0, ONE / 2, 0)),
-                &upright(ONE / 2, ONE * 3 / 4, ONE / 2),
-                hex("#b9a6e8"),
-            );
+        if !p.creature {
+            // an enchantment as its sigil, an artifact as the object, turning slowly
+            let spin = (s.now / 1000 % 9000) as i32 * fx::TURN / 9000;
+            if s.look.has(&name) {
+                let h = s.look.height(&name).max(ONE / 10);
+                let k = fx::div(ONE * 9 / 10, h);
+                s.look.draw(
+                    b,
+                    &name,
+                    pt,
+                    &Pose {
+                        yaw: spin,
+                        scale: k,
+                        phase: phase + p.id as i32 * 1700,
+                        tired: p.tapped,
+                        dim: p.detained,
+                        ..Pose::default()
+                    },
+                );
+            } else {
+                b.solid(
+                    Mesh::Gem,
+                    pt.add(v3(0, ONE / 2, 0)),
+                    &upright(ONE / 2, ONE * 3 / 4, ONE / 2),
+                    hex("#b9a6e8"),
+                );
+            }
             continue;
         }
-        let height = if p.name == "Niv-Mizzet, Dracogenius" {
-            ONE * 45 / 10
-        } else {
-            battle_height(p.power, p.toughness)
-        };
+        let height = creature_height(p);
         let mh = s.look.height(&name).max(ONE / 10);
         let k = fx::div(height, mh);
         let (swing, recover) = if striking {
@@ -584,23 +703,85 @@ fn draw_battle(s: &Session, b: &mut Batch, f: &crate::session::Fight) {
             );
         }
     }
+    attachments(s, b, &ev.snap, &spots, phase);
     effects(s, b, ev, &spots, swinger, u);
     // the player stands behind their side
-    model_h(
+    let k = fx::div(ONE * 16 / 10, s.look.height("hero").max(ONE / 10));
+    draw_hero(
         s,
         b,
-        "hero",
-        v3(-ONE * 5, 0, ONE * 3),
-        fx::TURN / 2 + fx::TURN / 10,
-        ONE * 16 / 10,
+        v3(-ONE * 66 / 10, 0, ONE * 36 / 10),
+        &Pose {
+            yaw: fx::TURN / 2 + fx::TURN / 10,
+            scale: k,
+            phase,
+            ..Pose::default()
+        },
     );
+}
+
+/// Where each worn piece sits on the mage, in the mage's own space: its
+/// scale, its offset, and which half of a pair (gloves and boots are drawn
+/// one hand and one foot at a time).
+fn armour_fits(slot: &str) -> Vec<crate::look::Fit> {
+    use crate::look::Fit;
+    let cm = |v: i32| v * ONE / 100;
+    let fit = |scale: Fx, x: i32, y: i32, z: i32, side: i32| Fit {
+        scale,
+        offset: v3(cm(x), cm(y), cm(z)),
+        side,
+        hide: [None; 6],
+    };
+    match slot {
+        "head" => vec![fit(ONE * 2, 0, 74, 0, 0)],
+        "chest" => vec![fit(ONE * 3 / 2, 0, -5, 5, 0)],
+        "hands" => vec![fit(ONE * 7 / 5, -32, 23, 14, -1), fit(ONE * 7 / 5, 32, 23, 14, 1)],
+        "feet" => vec![fit(ONE * 13 / 10, -4, 0, -1, -1), fit(ONE * 13 / 10, 4, 0, -1, 1)],
+        _ => Vec::new(),
+    }
+}
+
+/// The mage, wearing what the player wears: each worn piece drawn on its
+/// place, and the mage's own cap, robe, hands or feet left out beneath it.
+fn draw_hero(s: &Session, b: &mut Batch, at: V3, pose: &Pose) {
+    use crate::look::Fit;
+    let worn = s.player.as_ref().map(|p| p.worn.clone()).unwrap_or_default();
+    let cm = |v: i32| v * ONE / 100;
+    let robe = s.look.colour("U");
+    let trim = s.look.colour("gold");
+    let skin = s.look.colour("skin");
+    let boots = hex("#5a3a2a");
+    // what each slot covers: a colour of the mage's and the heights it spans
+    let mut hide = [None; 6];
+    let mut n = 0;
+    for (slot, band) in [
+        ("head", (robe, cm(100), cm(200))),
+        ("head", (trim, cm(130), cm(200))),
+        ("chest", (robe, 0, cm(100))),
+        ("chest", (trim, cm(10), cm(40))),
+        ("hands", (skin, cm(30), cm(70))),
+        ("feet", (boots, 0, cm(30))),
+    ] {
+        if worn.contains_key(slot) {
+            hide[n] = Some(band);
+            n += 1;
+        }
+    }
+    let body = Fit { hide, ..Fit::WHOLE };
+    s.look.draw_fitted(b, "hero", at, pose, &body);
+    for (slot, id) in &worn {
+        let model = format!("armour_{id}");
+        for f in armour_fits(slot) {
+            s.look.draw_fitted(b, &model, at, pose, &f);
+        }
+    }
 }
 
 /// Where a side's spells come from and its life is struck: the player
 /// behind their side, the foe at the far end.
 fn side_point(side: u8) -> V3 {
     if side == 0 {
-        v3(-ONE * 5, ONE * 12 / 10, ONE * 3)
+        v3(-ONE * 66 / 10, ONE * 12 / 10, ONE * 36 / 10)
     } else {
         v3(0, ONE * 12 / 10, -ONE * 42 / 10)
     }
@@ -833,7 +1014,17 @@ fn draw_city(s: &Session, b: &mut Batch) {
     for (name, at, yaw, h) in place {
         model_h(s, b, name, at, yaw, h);
     }
-    model_h(s, b, "hero", v3(0, 0, 3 * ONE), fx::TURN / 2, ONE * 16 / 10);
+    let k = fx::div(ONE * 16 / 10, s.look.height("hero").max(ONE / 10));
+    draw_hero(
+        s,
+        b,
+        v3(0, 0, 3 * ONE),
+        &Pose {
+            yaw: fx::TURN / 2,
+            scale: k,
+            ..Pose::default()
+        },
+    );
 }
 
 fn draw_armourer(s: &Session, b: &mut Batch) {
@@ -998,9 +1189,9 @@ pub fn build(s: &mut Session) {
             let at = hero_spot(s);
             let phase = (s.now / 1000 % 3000) as i32 * fx::TURN / 3000;
             if s.look.has("hero") {
-                s.look.draw(
+                draw_hero(
+                    s,
                     &mut b,
-                    "hero",
                     at,
                     &Pose {
                         yaw: fx::TURN / 2,

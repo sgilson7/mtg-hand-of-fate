@@ -97,6 +97,41 @@ pub struct Pose {
     pub dim: bool,
 }
 
+/// Which parts of a model to draw, and how to fit them: scaled by `scale`
+/// and moved by `offset` in the model's own space, before it is posed.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct Fit {
+    pub scale: Fx,
+    pub offset: V3,
+    /// Keep only parts left of the centre line (-1), right of it (1), or all (0).
+    pub side: i32,
+    /// Leave out parts of this colour role's colour above this height, when set:
+    /// the mage's own cap under a helm, its body under a cuirass.
+    pub hide: [Option<(Rgb, Fx, Fx)>; 6],
+}
+
+impl Fit {
+    pub const WHOLE: Fit = Fit {
+        scale: ONE,
+        offset: V3::ZERO,
+        side: 0,
+        hide: [None; 6],
+    };
+
+    fn keeps(&self, p: &Part) -> bool {
+        let side_ok = match self.side {
+            0 => true,
+            s => p.at.x * s > 0,
+        };
+        let shown = !self
+            .hide
+            .iter()
+            .flatten()
+            .any(|(rgb, lo, hi)| p.rgb == *rgb && p.at.y >= *lo && p.at.y < *hi);
+        side_ok && shown
+    }
+}
+
 const MAGENTA: Rgb = [ONE, 0, ONE];
 const WING_FLAP: i32 = fx::TURN / 16;
 const HEAD_NOD: i32 = fx::TURN / 80;
@@ -236,6 +271,12 @@ impl Look {
 
     /// Draws a model standing at `base` in a pose.
     pub fn draw(&self, b: &mut Batch, model: &str, base: V3, pose: &Pose) {
+        self.draw_fitted(b, model, base, pose, &Fit::WHOLE);
+    }
+
+    /// Draws some of a model's parts, scaled and moved within the model's own
+    /// space before it is posed: a piece of armour fitted onto the mage.
+    pub fn draw_fitted(&self, b: &mut Batch, model: &str, base: V3, pose: &Pose, fit: &Fit) {
         let Some(parts) = self.models.get(model) else {
             return;
         };
@@ -254,9 +295,9 @@ impl Look {
         let reach = pose.lunge + fx::mul(attack_reach(pose.swing, pose.recover), ONE * 7 / 10);
         let shove = forward.scale(reach);
         let s = if pose.tired { s / 3 } else { s };
-        for part in parts {
+        for part in parts.iter().filter(|p| fit.keeps(p)) {
             let (mut pitch, mut roll, yaw) = part.tilt;
-            let mut at = part.at;
+            let mut at = part.at.scale(fit.scale).add(fit.offset);
             match part.node {
                 Node::WingL => roll += fx::mul(s, WING_FLAP) - if pose.tired { WING_FLAP } else { 0 },
                 Node::WingR => roll -= fx::mul(s, WING_FLAP) - if pose.tired { WING_FLAP } else { 0 },
@@ -268,7 +309,12 @@ impl Look {
             // the lean turns the whole model about its feet, toward where it faces
             let at = rotate(at, 0, lean, 0);
             let at = rotate(at, turn, 0, 0).scale(k).add(base).add(shove);
-            let f = Frame3::new(turn + yaw, pitch + lean, roll, part.size.scale(k));
+            let f = Frame3::new(
+                turn + yaw,
+                pitch + lean,
+                roll,
+                part.size.scale(fx::mul(k, fit.scale)),
+            );
             let rgb = if pose.flash {
                 [ONE, ONE, ONE]
             } else if pose.tired {
