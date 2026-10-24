@@ -359,12 +359,20 @@ pub fn camera_for(s: &Session) -> Camera {
                 focal: ONE * 26 / 10,
             }
         }
-        Screen::Battle(_) => pitched(
-            v3(0, ONE / 2, ONE * 2),
-            fx::TURN * 50 / 360,
-            15 * ONE,
-            ONE * 26 / 10,
-        ),
+        Screen::Battle(_) => {
+            // the table turns about its middle; home is behind the player's side
+            let home = pitched(
+                v3(0, ONE / 2, ONE * 2),
+                fx::TURN * 50 / 360,
+                15 * ONE,
+                ONE * 26 / 10,
+            );
+            Camera {
+                eye: home.eye.yaw(s.view_yaw),
+                at: home.at.yaw(s.view_yaw),
+                focal: home.focal,
+            }
+        }
         Screen::City {
             room: Room::Armourer, ..
         } => Camera {
@@ -459,7 +467,21 @@ fn draw_battle(s: &Session, b: &mut Batch, f: &crate::session::Fight) {
     );
     let ev = f.event();
     let phase = (s.now / 1000 % 4000) as i32 * fx::TURN / 4000;
-    for (pt, p) in battle_spots(s, &ev.snap) {
+    // how far through the event on screen we are, Q16
+    let span = (crate::session::EVENT_US / f.speed.max(1)).max(1);
+    let u = (((s.now - f.shown_at).max(0) * ONE as i64 / span) as Fx).clamp(0, ONE);
+    let spots = battle_spots(s, &ev.snap);
+    let in_combat = |id: u32| {
+        ev.snap
+            .perms
+            .iter()
+            .any(|q| q.id == id && (q.attacking || q.blocking >= 0))
+    };
+    let swinger = match ev.ev {
+        Ev::Hit | Ev::Face => ev.focus.first().copied().filter(|&id| in_combat(id)),
+        _ => None,
+    };
+    for (pt, p) in spots.iter().map(|(a, b)| (*a, *b)) {
         let name = if p.card >= 0 {
             let c = &s.cards[p.card as usize];
             if c.is(crate::content::ty::CREATURE) {
@@ -470,10 +492,26 @@ fn draw_battle(s: &Session, b: &mut Batch, f: &crate::session::Fight) {
         } else {
             p.token.clone()
         };
-        let striking = matches!(ev.ev, Ev::Hit | Ev::Face | Ev::Ability) && ev.focus.first() == Some(&p.id);
+        let striking = swinger == Some(p.id);
+        // the blow lands at the hit, 65 % through the swing
+        let landed = u >= ONE * 13 / 20;
         let struck =
-            matches!(ev.ev, Ev::Hit | Ev::Dies) && ev.focus.last() == Some(&p.id) && !ev.focus.is_empty();
-        let yaw = if p.side == 0 { fx::TURN / 2 } else { 0 };
+            matches!(ev.ev, Ev::Hit) && ev.focus.len() == 2 && ev.focus.last() == Some(&p.id) && landed;
+        let mut yaw = if p.side == 0 { fx::TURN / 2 } else { 0 };
+        if striking {
+            // a creature striking turns to what it strikes
+            let target = match ev.ev {
+                Ev::Hit => ev
+                    .focus
+                    .last()
+                    .and_then(|t| spots.iter().find(|(_, q)| q.id == *t))
+                    .map(|(a, _)| *a),
+                _ => Some(side_point(if p.side == 0 { 1 } else { 0 })),
+            };
+            if let Some(t) = target {
+                yaw = crate::geom::yaw_of(t.x - pt.x, t.z - pt.z);
+            }
+        }
         if p.land {
             // a land: a crystal of its colour, sunk when tapped
             let unit = if p.card >= 0 {
@@ -505,13 +543,24 @@ fn draw_battle(s: &Session, b: &mut Batch, f: &crate::session::Fight) {
         };
         let mh = s.look.height(&name).max(ONE / 10);
         let k = fx::div(height, mh);
+        let (swing, recover) = if striking {
+            if landed {
+                (0, fx::div(u - ONE * 13 / 20, ONE * 7 / 20).max(1))
+            } else {
+                (fx::div(u, ONE * 13 / 20).max(1), 0)
+            }
+        } else {
+            (0, 0)
+        };
         let pose = Pose {
             yaw,
             scale: k,
             phase: phase + p.id as i32 * 1700,
-            lunge: if striking { ONE * 7 / 10 } else { 0 },
-            flash: struck && ev.ev == Ev::Hit,
-            tapped: p.tapped,
+            lunge: 0,
+            flash: struck,
+            tired: p.tapped && !striking,
+            swing,
+            recover,
             dim: p.detained,
         };
         if s.look.has(&name) {
@@ -535,6 +584,7 @@ fn draw_battle(s: &Session, b: &mut Batch, f: &crate::session::Fight) {
             );
         }
     }
+    effects(s, b, ev, &spots, swinger, u);
     // the player stands behind their side
     model_h(
         s,
@@ -544,6 +594,190 @@ fn draw_battle(s: &Session, b: &mut Batch, f: &crate::session::Fight) {
         fx::TURN / 2 + fx::TURN / 10,
         ONE * 16 / 10,
     );
+}
+
+/// Where a side's spells come from and its life is struck: the player
+/// behind their side, the foe at the far end.
+fn side_point(side: u8) -> V3 {
+    if side == 0 {
+        v3(-ONE * 5, ONE * 12 / 10, ONE * 3)
+    } else {
+        v3(0, ONE * 12 / 10, -ONE * 42 / 10)
+    }
+}
+
+/// A Magic colour's glow.
+fn colour_glow(mask: u8) -> Rgb {
+    use crate::mana::*;
+    match mask {
+        W => hex("#fff1b8"),
+        U => hex("#6fb0ff"),
+        B => hex("#a07ce0"),
+        R => hex("#ff7a3c"),
+        G => hex("#7fd36a"),
+        0 => hex("#e8e0ff"),
+        _ => hex("#ffd24a"),
+    }
+}
+
+fn glow(b: &mut Batch, at: V3, r: Fx, rgb: Rgb, alpha: Fx) {
+    if r <= 0 || alpha <= 0 {
+        return;
+    }
+    b.push(Mesh::Halo, Pass::Glow, at, &upright(r, r, r), rgb, alpha);
+}
+
+/// Protection of the Spheres' "ring" (`marks.rs` there): a ring opening on
+/// the ground and fading, drawn as a circle of glows.
+fn ring(b: &mut Batch, at: V3, size: Fx, u: Fx, rgb: Rgb) {
+    let open = ONE - fx::mul(ONE - u, ONE - u);
+    let r = fx::mul(size, ONE / 5 + fx::mul(open, ONE * 4 / 5));
+    let fade = ONE - u;
+    for i in 0..14 {
+        let a = fx::TURN * i / 14;
+        let p = at.add(v3(fx::mul(fx::cos(a), r), ONE / 10, fx::mul(fx::sin(a), r)));
+        glow(b, p, ONE / 6, rgb, fade);
+    }
+}
+
+/// Protection of the Spheres' "rise": glows climbing in a slow spiral, for
+/// a spell cast, a boost or life gained.
+fn rise(b: &mut Batch, at: V3, size: Fx, u: Fx, rgb: Rgb) {
+    let fade = ONE - u;
+    for i in 0..5 {
+        let a = fx::TURN * i / 5 + fx::mul(u, fx::TURN / 3);
+        let r = size / 2;
+        let p = at.add(v3(
+            fx::mul(fx::cos(a), r),
+            fx::mul(u, size * 2) + ONE / 3,
+            fx::mul(fx::sin(a), r),
+        ));
+        glow(b, p, ONE / 5, rgb, fade);
+    }
+}
+
+/// Protection of the Spheres' "bolt": a bright head with a fading trail,
+/// on a shallow arc, from `from` to `to` over `u` (0..ONE).
+fn bolt(b: &mut Batch, from: V3, to: V3, u: Fx, rgb: Rgb) {
+    let head = |t: Fx| {
+        let lift = fx::mul(fx::mul(t, ONE - t), ONE * 2);
+        from.lerp(to, t).add(v3(0, lift, 0))
+    };
+    glow(b, head(u), ONE * 2 / 5, [ONE, ONE, ONE], ONE);
+    glow(b, head(u), ONE * 3 / 5, rgb, ONE);
+    for i in 1..=5 {
+        let t = u - i * ONE / 40;
+        if t <= 0 {
+            break;
+        }
+        glow(
+            b,
+            head(t),
+            ONE * 2 / 5 - i * ONE / 16,
+            rgb,
+            ONE / 2 - i * ONE / 12,
+        );
+    }
+}
+
+/// Protection of the Spheres' "sky": a beam from above onto its target, and
+/// a ring at its feet (detain).
+fn sky(b: &mut Batch, at: V3, u: Fx, rgb: Rgb) {
+    let fade = ONE - u;
+    for i in 0..10 {
+        glow(b, at.add(v3(0, ONE * i * 7 / 10, 0)), ONE / 4, rgb, fade / 2);
+    }
+    ring(b, at, ONE, u, rgb);
+}
+
+/// The look of the event on screen: spells and abilities as Protection of
+/// the Spheres draws its abilities.
+fn effects(
+    s: &Session,
+    b: &mut Batch,
+    ev: &crate::duel::Event,
+    spots: &[(V3, &PermSnap)],
+    swinger: Option<u32>,
+    u: Fx,
+) {
+    let at_perm = |id: u32| {
+        spots
+            .iter()
+            .find(|(_, q)| q.id == id)
+            .map(|(a, _)| a.add(v3(0, ONE, 0)))
+    };
+    let arg = |k: &str| {
+        ev.args
+            .iter()
+            .find(|(n, _)| *n == k)
+            .map(|(_, v)| v.clone())
+            .unwrap_or_default()
+    };
+    let card_colour = |name: &str| {
+        s.cards
+            .iter()
+            .find(|c| c.name == name)
+            .map(|c| c.colours)
+            .unwrap_or(0)
+    };
+    let hit_at = ONE * 13 / 20;
+    match ev.ev {
+        Ev::Hit | Ev::Face if swinger.is_none() => {
+            let to = match ev.ev {
+                Ev::Hit => ev.focus.last().and_then(|&t| at_perm(t)),
+                _ => Some(side_point(ev.side)),
+            };
+            let source_perm = match ev.ev {
+                Ev::Hit if ev.focus.len() == 2 => ev.focus.first().and_then(|&t| at_perm(t)),
+                Ev::Face => ev.focus.first().and_then(|&t| at_perm(t)),
+                _ => None,
+            };
+            // a spell comes from its caster: the other side from the one it hits
+            let caster = if ev.ev == Ev::Face {
+                1 - ev.side.min(1)
+            } else {
+                ev.side
+            };
+            let from = source_perm.unwrap_or(side_point(caster));
+            let rgb = colour_glow(card_colour(&arg("source")));
+            let Some(to) = to else { return };
+            if u < hit_at {
+                bolt(b, from, to, fx::div(u, hit_at), rgb);
+            } else {
+                let v = fx::div(u - hit_at, ONE - hit_at);
+                glow(b, to, ONE / 2 + fx::mul(v, ONE), rgb, ONE - v);
+                ring(b, to.sub(v3(0, ONE, 0)), ONE * 3 / 2, v, rgb);
+            }
+        }
+        Ev::Cast => {
+            let rgb = colour_glow(card_colour(&arg("card")));
+            rise(b, side_point(ev.side).sub(v3(0, ONE, 0)), ONE, u, rgb);
+        }
+        Ev::Ability => {
+            if let Some(at) = ev.focus.last().and_then(|&t| at_perm(t)) {
+                rise(b, at.sub(v3(0, ONE, 0)), ONE, u, hex("#ffe08a"));
+            }
+        }
+        Ev::Detain => {
+            if let Some(at) = ev.focus.first().and_then(|&t| at_perm(t)) {
+                sky(b, at.sub(v3(0, ONE, 0)), u, hex("#7fb6ff"));
+            }
+        }
+        Ev::Life => rise(b, side_point(ev.side).sub(v3(0, ONE, 0)), ONE, u, hex("#9ff0a0")),
+        Ev::Token | Ev::Enter => {
+            if let Some(at) = ev.focus.first().and_then(|&t| at_perm(t)) {
+                ring(b, at.sub(v3(0, ONE, 0)), ONE * 3 / 2, u, hex("#fff6d8"));
+            }
+        }
+        Ev::Counter => glow(
+            b,
+            side_point(ev.side),
+            ONE + fx::mul(u, ONE),
+            hex("#c9a0ff"),
+            ONE - u,
+        ),
+        _ => {}
+    }
 }
 
 // ---------- the city ----------

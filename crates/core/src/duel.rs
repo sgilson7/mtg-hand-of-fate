@@ -14,7 +14,8 @@
 //! - an opening hand is `OPENING_HAND` spells, with no mulligan.
 //!
 //! And one keeps small decks playable: drawing from an empty library
-//! shuffles the graveyard back in and costs `EMPTY_DRAW_LOSS` life.
+//! shuffles the graveyard back in and costs half the side's life
+//! (`empty_draw_loss`).
 //!
 //! The engine waits on decisions. Every decision either side makes is a
 //! `Pending` ask; the computer answers its own (`duel_ai.rs`) and the
@@ -33,13 +34,15 @@ use crate::mana::{self, Bank, Cost};
 use crate::rng::Rng;
 use crate::rules::{kw, Ability, Aura, Eff, Filter, OnCast, Release, Rules, Static, Tgt, Token, Who};
 
-pub const OPENING_HAND: usize = 5;
-pub const MAX_HAND: usize = 7;
+pub const OPENING_HAND: usize = 6;
+pub const MAX_HAND: usize = 6;
 /// Turns, both sides counted, before the foe withdraws.
 pub const TURN_CAP: u32 = 50;
-/// Life lost when a side must draw from an empty library: its graveyard is
-/// shuffled back in, and this is the price (SECOND-ORDER R2.6).
-pub const EMPTY_DRAW_LOSS: i32 = 1;
+/// What drawing from an empty library costs: the graveyard is shuffled back
+/// in, and the side loses half its life, rounded up (the person's rule, T2).
+pub fn empty_draw_loss(life: i32) -> i32 {
+    (life.max(0) + 1) / 2
+}
 /// Power and toughness of an animated keyrune.
 pub const KEYRUNE_SIZE: i32 = 2;
 /// Steps the engine takes before it gives up on a game that does not move.
@@ -1548,12 +1551,13 @@ impl Duel {
                 let mut g = std::mem::take(&mut self.s[side].grave);
                 self.shuffle(&mut g);
                 self.s[side].library = g;
-                self.s[side].life -= EMPTY_DRAW_LOSS;
+                let loss = empty_draw_loss(self.s[side].life);
+                self.s[side].life -= loss;
                 self.log(
                     Ev::Life,
                     side as u8,
                     "log.empty_library",
-                    vec![("side", self.side_name(side)), ("n", EMPTY_DRAW_LOSS.to_string())],
+                    vec![("side", self.side_name(side)), ("n", loss.to_string())],
                     vec![],
                 );
             }
@@ -2576,7 +2580,7 @@ impl Duel {
             Eff::Damage(n) => {
                 for t in item.targets.clone() {
                     match t {
-                        Target::Perm(id) => self.damage_perm(src, &item.name, id, *n),
+                        Target::Perm(id) => self.damage_perm(ctrl, src, &item.name, id, *n),
                         Target::Player(pl) => self.damage_player(src, &item.name, ctrl, pl, *n),
                         _ => {}
                     }
@@ -3020,7 +3024,8 @@ impl Duel {
 
     // ---------- damage and leaving ----------
 
-    fn damage_perm(&mut self, src: Option<u32>, src_name: &str, id: u32, n: i32) {
+    /// `by` is the side whose spell or creature deals it.
+    fn damage_perm(&mut self, by: usize, src: Option<u32>, src_name: &str, id: u32, n: i32) {
         if n <= 0 || self.perm(id).is_none() {
             return;
         }
@@ -3042,7 +3047,7 @@ impl Duel {
         focus.push(id);
         self.log(
             Ev::Hit,
-            0,
+            by as u8,
             "log.damage",
             vec![
                 ("source", src_name.to_string()),
@@ -3543,7 +3548,10 @@ impl Duel {
         for (s, t, n) in hits {
             let sname = self.name_of(s);
             match t {
-                Some(t) => self.damage_perm(Some(s), &sname, t, n),
+                Some(t) => {
+                    let by = self.perm(s).map(|p| p.ctrl).unwrap_or(self.active);
+                    self.damage_perm(by, Some(s), &sname, t, n)
+                }
                 None => {
                     let ctrl = self.perm(s).map(|p| p.ctrl).unwrap_or(self.active);
                     self.damage_player(Some(s), &sname, ctrl, defender, n);
@@ -3925,6 +3933,8 @@ mod tests {
             tctrl: Vec::new(),
         });
         d.bounce(a);
+        // a card to draw, so a draw would show
+        d.s[P].library.push(find(&c, "Cobblebrute"));
         let hand = d.s[P].hand.len();
         d.resolve_top();
         assert_eq!(d.s[P].hand.len(), hand);
@@ -4198,14 +4208,19 @@ mod tests {
     }
 
     #[test]
-    fn an_empty_library_reshuffles_the_graveyard_for_a_life() {
+    fn an_empty_library_reshuffles_the_graveyard_for_half_your_life() {
         let c = cards();
         let mut d = table(&c);
         d.s[P].library.clear();
         d.s[P].grave = vec![find(&c, "Cobblebrute"), find(&c, "Cobblebrute")];
-        let life = d.s[P].life;
+        // 20 life: lose 10; then at 9, lose 5 (half, rounded up)
         d.draw(P, 1);
-        assert_eq!(d.s[P].life, life - EMPTY_DRAW_LOSS);
+        assert_eq!(d.s[P].life, 10);
         assert_eq!(d.s[P].library.len(), 1);
+        d.s[P].life = 9;
+        d.s[P].library.clear();
+        d.s[P].grave = vec![find(&c, "Cobblebrute")];
+        d.draw(P, 1);
+        assert_eq!(d.s[P].life, 4);
     }
 }

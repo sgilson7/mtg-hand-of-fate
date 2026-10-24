@@ -557,6 +557,8 @@ fn battle_panels(s: &Session, f: &crate::session::Fight) -> Vec<Value> {
             [s.s("battle.cards"), s.f("duel.cards_n", &[("hand", snap.hand[1].to_string()), ("library", snap.library[1].to_string()), ("pile", snap.pile[1].to_string())])],
         ],
         "pips": [{"label": s.s("battle.your_mana"), "units": mana_of(P)}, {"label": s.s("battle.foe_mana"), "units": mana_of(1)}],
+        "actions": [action(s.s("duel.turn_left"), "view.turn", "left", true), action(s.s("duel.turn_right"), "view.turn", "right", true),
+            action(s.s("duel.turn_home"), "view.turn", "home", s.view_yaw != 0)],
     })];
     let from = f.shown.saturating_sub(6);
     let log: Vec<Value> = d.events[from..=f.shown.min(d.events.len().saturating_sub(1))]

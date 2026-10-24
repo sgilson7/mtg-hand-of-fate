@@ -135,6 +135,8 @@ pub struct Fight {
     pub duel: Duel,
     /// The event on screen: playback runs behind the game.
     pub shown: usize,
+    /// When the event on screen came up: its animation runs from here.
+    pub shown_at: i64,
     pub next_at: i64,
     pub speed: i64,
 }
@@ -187,6 +189,8 @@ pub struct Session {
     pub rng: Rng,
     pub seed: u64,
     pub now: i64,
+    /// How far the fight's table is turned from its home view (turns).
+    pub view_yaw: i32,
     /// The step under way: from, to, when it began.
     pub walk: Option<(Pos, Pos, i64)>,
     /// The view's size in CSS pixels, and in device pixels.
@@ -250,6 +254,7 @@ impl Session {
             .ok()
             .filter(|s| s.version == SAVE_VERSION);
         Ok(Session {
+            view_yaw: 0,
             cards,
             stories,
             quests,
@@ -758,6 +763,7 @@ impl Session {
             &self.s("battle.your_side"),
         );
         let seed = self.rng.next_u64();
+        self.view_yaw = 0;
         let mut duel = Duel::new(
             std::rc::Rc::new(self.cards.clone()),
             &Setup {
@@ -774,6 +780,7 @@ impl Session {
             guardian,
             duel,
             shown: 0,
+            shown_at: self.now,
             next_at: self.now,
             speed: 1,
         }));
@@ -1290,6 +1297,22 @@ impl Session {
                 p.abilities.insert(id.to_string(), have + 1);
                 self.write_save();
             }
+            "view.turn" => {
+                let step = crate::fx::TURN / 16;
+                self.view_yaw = match value {
+                    "left" => self.view_yaw - step,
+                    "right" => self.view_yaw + step,
+                    _ => 0,
+                } & (crate::fx::TURN - 1);
+            }
+            "view.drag" => {
+                // a drag across the whole view turns the table half round
+                let dx = value
+                    .parse::<i32>()
+                    .map_err(|_| format!("\"{value}\" is not a number."))?;
+                let w = self.size.0.max(1);
+                self.view_yaw = (self.view_yaw + dx * (crate::fx::TURN / 2) / w) & (crate::fx::TURN - 1);
+            }
             "resize" => {
                 // "css width,css height,device pixel ratio": the ratio may be a decimal ("1.5")
                 let parts: Vec<&str> = value.split(',').map(|x| x.trim()).collect();
@@ -1458,6 +1481,7 @@ impl Session {
         // the player's own move shows at once; what follows plays back
         if f.duel.events.len() > before {
             f.shown = before.saturating_sub(1).max(f.shown);
+            f.shown_at = now;
             f.next_at = now;
         }
         r
@@ -1486,6 +1510,7 @@ impl Session {
         if let Screen::Battle(f) = &mut self.screen {
             if !f.caught_up() && now_us >= f.next_at {
                 f.shown += 1;
+                f.shown_at = now_us;
                 let ev = f.duel.events[f.shown].ev;
                 // the computer's moves at reading pace; the player's own at a glance
                 let slow = matches!(ev, Ev::Turn | Ev::Attack | Ev::Cast | Ev::End)

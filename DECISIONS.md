@@ -23,3 +23,9 @@ The agent decided: this grants MTG-Q5 and, by asking for a public page, settles 
 > ok after this subagent is finished, no more subagents, its taking wayy too many tokens
 
 The agent decided: this is triage row T1, and it replaces the brief's auto-battle with a game of Magic the player plays, including the brief's "unspent mana banks" and "hand of 5" (R3.1, R3.4). The guard against screw and flood is the land pile (R3.2). The literature review went first, on the journal's Magic engines tab. The rest of the game is unchanged. Subagents are not used again in this project unless the person asks. The publish grant of the earlier entry was not used for MVP 2: deploying it is the person's call, as nothing in this request asked for it.
+
+## 2026-10-24, MVP 2 feedback
+
+> land pile is good, reshuffle grabeyard back int olibrary for half your health, hand size of 6, the 3d summoning terrain should still work and when you attack the enemies should not turn on their sides, they should instead have a tired animation and be greyed out. the summoning view should be rotatable so you can see the front side of your own minions. when your minions attack, they should have an attack animation, like from POTS / take ability animations from pots if you dont want to remake them
+
+The agent decided: triage rows T2 to T7. "Half your health" is half the life you have when the library runs out, rounded up so it always costs something. "Hand size of 6" is both the opening hand and the cleanup limit. "The 3d summoning terrain should still work" was read as keeping the fight's 3D table as it is, and nothing about it changed; if it meant something else, that is a new row. The animations are ported from Protection of the Spheres (MIT, the person's own code).

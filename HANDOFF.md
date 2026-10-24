@@ -57,10 +57,10 @@ The rules in `CLAUDE.md` under "Rules agreed for this project" (MTG-1 to MTG-11)
 - R2.12: read the agent-written strings and the 108 stories.
 - R2.13: decide whether the weaker TikZ pictures get a second pass (MTG-Q12).
 - R2.17: set `git config user.name` (and email) so `scripts/publish.sh` can commit the page.
-- R3.2: the land pile as the guard against screw and flood (made up to 5; no mulligan).
-- R3.3: an empty library reshuffles the graveyard for 1 life, not Magic's loss.
-- R3.4: an opening hand of 5 spells, the cleanup limit 7.
 - R3.5: the four choices the game makes itself.
+- R4.1: half your life, rounded up, for an empty library.
+- R4.2: six as both the opening hand and the cleanup limit.
+- R4.3: what "the 3d summoning terrain should still work" meant.
 - R3.10: armour and ability rules carried over to Magic.
 - R3.12: read the fight's new strings.
 - Whether to publish MVP 2: the grant stands, but this request did not ask for a deploy.
@@ -79,6 +79,8 @@ The rules in `CLAUDE.md` under "Rules agreed for this project" (MTG-1 to MTG-11)
 2026-10-24, deploy: `./scripts/check.sh` passed again (`BUILDER CHECK PASSED`); `dist/` built from b39eda7 (build 86992f96dcd0) pushed to gh-pages; `BUILDER_ORIGIN=https://sgilson7.github.io/mtg-hand-of-fate python3 tests/browser/check.py` ended `BROWSER CHECK PASSED in chromium, firefox, webkit`.
 
 2026-10-24, MVP 2: `./scripts/check.sh` ended `BROWSER CHECK PASSED in chromium, firefox, webkit` and `BUILDER CHECK PASSED`; `./scripts/count-tests.sh`: 133 passed, 0 failed; `scripts/break_tests.py`: 34 of 34 caught.
+
+2026-10-24, T2 to T7: `./scripts/check.sh` ended `BUILDER CHECK PASSED` (browser check in chromium, firefox, webkit); `./scripts/count-tests.sh`: 135 passed, 0 failed; `scripts/break_tests.py`: 36 of 36 caught.
 
 ## The next action
 

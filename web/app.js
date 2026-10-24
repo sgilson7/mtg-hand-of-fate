@@ -41,7 +41,18 @@ async function main() {
     e.preventDefault();
     act(a[0], a[1]);
   });
+  // a drag turns the view (the fight's table); a drag is not a click
+  let dragging = false;
+  let moved = false;
+  canvas.addEventListener("pointerdown", () => { dragging = true; moved = false; });
+  window.addEventListener("pointerup", () => { dragging = false; });
+  canvas.addEventListener("pointermove", (e) => {
+    if (!dragging || !e.movementX) return;
+    moved = true;
+    game.act("view.drag", `${e.movementX}`);
+  });
   canvas.addEventListener("click", (e) => {
+    if (moved) { moved = false; return; }
     const r = JSON.parse(game.pick(e.offsetX, e.offsetY));
     el("message").textContent = r.error || "";
   });

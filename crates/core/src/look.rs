@@ -85,8 +85,14 @@ pub struct Pose {
     pub lunge: Fx,
     /// Struck: drawn white.
     pub flash: bool,
-    /// Tapped: turned a quarter, as a tapped card turns sideways.
-    pub tapped: bool,
+    /// Tapped: tired. It slumps forward, breathes slow and deep, droops its
+    /// wings and head, and is drawn greyed out (the person's rule).
+    pub tired: bool,
+    /// An attack, after Protection of the Spheres' swing (`models.rs`
+    /// there): Q16 0..ONE from wind-up to the hit, then `recover` 0..ONE
+    /// through the follow-through. Both 0 at rest.
+    pub swing: Fx,
+    pub recover: Fx,
     /// Faded toward the haze: detained.
     pub dim: bool,
 }
@@ -96,6 +102,52 @@ const WING_FLAP: i32 = fx::TURN / 16;
 const HEAD_NOD: i32 = fx::TURN / 80;
 const TAIL_SWAY: i32 = fx::TURN / 30;
 const BOB: Fx = ONE / 60;
+/// Tired: how far it slumps forward, and how much grey it takes.
+const TIRED_SLUMP: i32 = fx::TURN / 30;
+const TIRED_GREY: Fx = ONE * 13 / 20;
+const TIRED_SINK: Fx = ONE / 25;
+
+/// Eases in and out: slow at both ends, quick in the middle. From
+/// Protection of the Spheres (`models.rs`, MIT, Sam Gilson).
+fn smooth(t: i32) -> i32 {
+    let t = t.clamp(0, ONE);
+    fx::mul(fx::mul(t, t), ONE * 3 - 2 * t)
+}
+
+/// The body's lean through an attack, in turns, after Protection of the
+/// Spheres' `lean`: back a little on the wind-up, held, forward hard into
+/// the strike, upright again by the end of the follow-through.
+pub fn attack_lean(swing: Fx, recover: Fx) -> i32 {
+    let back = -fx::TURN / 72;
+    let strike = fx::TURN / 22;
+    if recover > 0 {
+        return fx::mul(ONE - smooth(recover), strike);
+    }
+    if swing <= 0 {
+        0
+    } else if swing < ONE * 13 / 20 {
+        fx::mul(smooth(fx::div(swing, ONE * 13 / 20)), back)
+    } else {
+        let u = fx::div(swing - ONE * 13 / 20, ONE * 7 / 20);
+        back + fx::mul(fx::mul(u, u), strike - back)
+    }
+}
+
+/// How far forward the attack carries the model, in Q16 of a lunge: a step
+/// back on the wind-up, a dash in at the strike, back home after.
+pub fn attack_reach(swing: Fx, recover: Fx) -> Fx {
+    if recover > 0 {
+        return ONE - smooth(recover);
+    }
+    if swing <= 0 {
+        0
+    } else if swing < ONE * 13 / 20 {
+        -fx::mul(smooth(fx::div(swing, ONE * 13 / 20)), ONE / 5)
+    } else {
+        let u = fx::div(swing - ONE * 13 / 20, ONE * 7 / 20);
+        -ONE / 5 + fx::mul(fx::mul(u, u), ONE + ONE / 5)
+    }
+}
 
 impl Look {
     pub fn parse(palette_json: &str, models_json: &str) -> Result<Look, String> {
@@ -188,27 +240,40 @@ impl Look {
             return;
         };
         let k = if pose.scale == 0 { ONE } else { pose.scale };
-        let s = fx::sin(pose.phase);
-        let bob = fx::mul(s.abs(), BOB);
-        // tapped: the whole model turns a quarter about its feet, as a card turns sideways
-        let turn = pose.yaw + if pose.tapped { fx::TURN / 4 } else { 0 };
+        // tired: breathing at a third the pace and twice as deep, slumped and sunk
+        let phase = if pose.tired { pose.phase / 3 } else { pose.phase };
+        let s = fx::sin(phase);
+        let bob = if pose.tired {
+            fx::mul(s.abs(), BOB * 2) - TIRED_SINK
+        } else {
+            fx::mul(s.abs(), BOB)
+        };
+        let lean = attack_lean(pose.swing, pose.recover) + if pose.tired { TIRED_SLUMP } else { 0 };
+        let turn = pose.yaw;
         let forward = rotate(v3(0, 0, ONE), pose.yaw, 0, 0);
-        let shove = forward.scale(pose.lunge);
+        let reach = pose.lunge + fx::mul(attack_reach(pose.swing, pose.recover), ONE * 7 / 10);
+        let shove = forward.scale(reach);
+        let s = if pose.tired { s / 3 } else { s };
         for part in parts {
             let (mut pitch, mut roll, yaw) = part.tilt;
             let mut at = part.at;
             match part.node {
-                Node::WingL => roll += fx::mul(s, WING_FLAP),
-                Node::WingR => roll -= fx::mul(s, WING_FLAP),
-                Node::Head => pitch += fx::mul(s, HEAD_NOD),
+                Node::WingL => roll += fx::mul(s, WING_FLAP) - if pose.tired { WING_FLAP } else { 0 },
+                Node::WingR => roll -= fx::mul(s, WING_FLAP) - if pose.tired { WING_FLAP } else { 0 },
+                Node::Head => pitch += fx::mul(s, HEAD_NOD) + if pose.tired { TIRED_SLUMP } else { 0 },
                 Node::Tail => roll += fx::mul(s, TAIL_SWAY),
                 Node::Body => {}
             }
             at.y += bob;
+            // the lean turns the whole model about its feet, toward where it faces
+            let at = rotate(at, 0, lean, 0);
             let at = rotate(at, turn, 0, 0).scale(k).add(base).add(shove);
-            let f = Frame3::new(turn + yaw, pitch, roll, part.size.scale(k));
+            let f = Frame3::new(turn + yaw, pitch + lean, roll, part.size.scale(k));
             let rgb = if pose.flash {
                 [ONE, ONE, ONE]
+            } else if pose.tired {
+                let grey = (part.rgb[0] + part.rgb[1] + part.rgb[2]) / 3;
+                crate::render::mix(part.rgb, [grey, grey, grey * 21 / 20], TIRED_GREY)
             } else if pose.dim {
                 crate::render::mix(part.rgb, [ONE * 7 / 10, ONE * 7 / 10, ONE * 8 / 10], ONE / 2)
             } else {
@@ -235,6 +300,55 @@ pub fn for_tests() -> Look {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    fn one_cube() -> Look {
+        let pal = r##"{"red": "#ff0000"}"##;
+        let models =
+            r##"{"models": {"x": [{"m": "cube", "p": [0, 50, 0], "s": [100, 100, 100], "c": "red"}]}}"##;
+        Look::parse(pal, models).unwrap()
+    }
+
+    #[test]
+    fn a_tired_model_keeps_its_facing_and_is_greyed() {
+        let l = one_cube();
+        let draw = |tired: bool| {
+            let mut b = Batch::new();
+            l.draw(
+                &mut b,
+                "x",
+                V3::ZERO,
+                &Pose {
+                    tired,
+                    ..Pose::default()
+                },
+            );
+            b
+        };
+        let (rest, tired) = (draw(false), draw(true));
+        let solid = |b: &Batch| {
+            b.lists_for_test()[Pass::Solid as usize * crate::render::MESHES + Mesh::Cube as usize].clone()
+        };
+        let (a, t) = (solid(&rest), solid(&tired));
+        // the x axis of the cube's frame: turned a quarter it would point along z
+        assert!(
+            t[0] > t[2].abs() && t[5] > t[4].abs(),
+            "turned or tipped over: {:?}",
+            &t[..12]
+        );
+        assert_eq!(a[12], ONE, "red at rest");
+        // greyed: red falls and green rises toward the grey
+        assert!(t[12] < ONE && t[13] > 0);
+    }
+
+    #[test]
+    fn an_attack_leans_back_then_strikes_forward_and_comes_home() {
+        assert!(attack_lean(ONE / 3, 0) < 0, "the wind-up leans back");
+        assert!(attack_lean(ONE, 0) > fx::TURN / 30, "the hit leans forward");
+        assert_eq!(attack_lean(0, ONE), 0, "upright after the follow-through");
+        // full reach at the hit (to fixed-point rounding), home after
+        assert!((attack_reach(ONE, 0) - ONE).abs() < 16 && attack_reach(0, ONE) == 0);
+        assert!(attack_reach(ONE / 2, 0) < 0, "a step back to wind up");
+    }
 
     #[test]
     fn a_part_in_hex_or_a_palette_role_parses_and_an_unknown_role_is_refused() {

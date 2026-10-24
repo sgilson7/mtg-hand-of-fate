@@ -288,6 +288,9 @@
  "duel.impostor_sacrifice": "Sacrifice the Impostor",
  "duel.pay": "Pay {n}?",
  "duel.pay_text": "Izzet Charm counters {card} unless you pay {n}.",
+ "duel.turn_left": "Turn left",
+ "duel.turn_right": "Turn right",
+ "duel.turn_home": "Behind you",
  "duel.pay_yes": "Pay",
  "duel.pay_no": "Don't pay",
 
@@ -430,7 +433,7 @@
  "keys.fate": "Space to shuffle · 1 to 5 to pick",
  "keys.result": "Enter to continue",
  "keys.land": "Click a gold tile",
- "keys.battle": "Space to pass or confirm · click a card to cast it · click a creature to choose it · F for speed · Enter at the end",
+ "keys.battle": "Space to pass or confirm · click a card to cast it · click a creature to choose it · drag, or Q and E, to turn the table · F for speed · Enter at the end",
  "keys.city": "Press 1 to 5 for a room · Esc to leave",
  "keys.armourer": "Esc to go back",
  "keys.deck": "Esc to go back",
