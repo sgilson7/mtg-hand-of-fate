@@ -4,7 +4,7 @@ Stage 9, written by the agent. `C5 Consolidate in your own words`. A fresh sessi
 
 ## What this is
 
-Tenth District (a working title): a Hand of Fate–style deck-building adventure on Ravnica's grid with 108 Return to Ravnica cards, for the browser. This MVP is the first region, from a new game in the Tenth District to the fight with Niv-Mizzet in Nivix; since T10 the pool is all of Return to Ravnica (254 cards, the first 108 first). Since MVP 2 (TRIAGE T1) every fight is a game of Magic the player plays against a computer opponent, with a land pile instead of lands in the deck. MVP 2 is public at https://sgilson7.github.io/mtg-hand-of-fate/ (built from e3c6958), source at https://github.com/sgilson7/mtg-hand-of-fate.
+Tenth District (a working title): a Hand of Fate–style deck-building adventure on Ravnica's grid with 108 Return to Ravnica cards, for the browser. This MVP is the first region, from a new game in the Tenth District to the fight with Niv-Mizzet in Nivix; since T10 the pool is all of Return to Ravnica (254 cards, the first 108 first). Since MVP 2 (TRIAGE T1) every fight is a game of Magic the player plays against a computer opponent, with a land pile instead of lands in the deck. It is public at https://sgilson7.github.io/mtg-hand-of-fate/ (built from c7549cd, T9 to T13), source at https://github.com/sgilson7/mtg-hand-of-fate.
 
 ## Rules that hold it up
 
@@ -91,6 +91,8 @@ The rules in `CLAUDE.md` under "Rules agreed for this project" (MTG-1 to MTG-11)
 2026-10-24, T8: `./scripts/check.sh` ended `BUILDER CHECK PASSED` (browser check in chromium, firefox, webkit); 136 tests passed; 37 of 37 breaks caught.
 
 2026-10-24, T9 to T13: `./scripts/check.sh` ended `BROWSER CHECK PASSED in chromium, firefox, webkit` and `BUILDER CHECK PASSED`; `./scripts/count-tests.sh`: 140 passed, 0 failed; `scripts/break_tests.py`: 43 of 43 caught; `tools/cardart/render.py --check`: card art ok (254 pictures). A live play-through of the new artifacts and enchantments (Playwright, build from the working tree) showed no page errors.
+
+2026-10-24, T9 to T13 deploy: `./scripts/check.sh` passed on the clean tree at c7549cd (`BUILDER CHECK PASSED`); `dist/` pushed to gh-pages by hand, as `scripts/publish.sh` does, since it still stops on the missing `git config user.name` (R2.17); the live `build.txt` reads `43c0336dd629 c7549cd`; `BUILDER_ORIGIN=https://sgilson7.github.io/mtg-hand-of-fate .venv/bin/python tests/browser/check.py` ended `BROWSER CHECK PASSED in chromium, firefox, webkit`.
 
 ## The next action
 
