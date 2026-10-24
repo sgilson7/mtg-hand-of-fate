@@ -44,6 +44,18 @@ pub fn parse(json: &str) -> Result<Vec<Quest>, String> {
     let f: QuestFile =
         serde_json::from_str(json).map_err(|e| format!("The quests could not be read: {e}"))?;
     for q in &f.quests {
+        let starts = q.starts == "new_game"
+            || q.starts.strip_prefix("card:").is_some()
+            || q.starts
+                .strip_prefix("hall:")
+                .map(|c| City::from_id(c).is_some())
+                .unwrap_or(false);
+        if !starts {
+            return Err(format!(
+                "The quest \"{}\" starts in a way this game does not know.",
+                q.id
+            ));
+        }
         for s in &q.steps {
             let ok = match s.at.as_str() {
                 "city" => City::from_id(&s.city).is_some(),
@@ -88,13 +100,17 @@ mod tests {
     use super::*;
 
     #[test]
-    fn sixteen_quests_of_three_steps_three_for_each_guild_and_izzet_with_the_main_one() {
+    fn twenty_quests_of_three_steps_three_from_cards_for_each_guild_and_two_at_each_new_hall() {
         let q = parse(include_str!("../../../data/quests.json")).unwrap();
-        assert_eq!(q.len(), 16);
+        assert_eq!(q.len(), 20);
+        for c in ["rix", "svogthos"] {
+            let at = q.iter().filter(|q| q.starts == format!("hall:{c}")).count();
+            assert_eq!(at, 2, "{c}: two quests in its hall (T27)");
+        }
         for g in ["Azorius", "Izzet", "Rakdos", "Golgari", "Selesnya"] {
             let side = q
                 .iter()
-                .filter(|q| q.guild == g && q.starts != "new_game")
+                .filter(|q| q.guild == g && q.starts.starts_with("card:"))
                 .count();
             assert_eq!(side, 3, "{g}: its first quest and two more (T21)");
         }
@@ -117,5 +133,7 @@ mod tests {
     fn a_step_in_a_place_that_does_not_exist_is_refused() {
         let bad = include_str!("../../../data/quests.json").replacen("\"prahv\"", "\"atlantis\"", 1);
         assert!(parse(&bad).unwrap_err().contains("dracogenius"));
+        let hall = include_str!("../../../data/quests.json").replacen("\"hall:rix\"", "\"hall:atlantis\"", 1);
+        assert!(parse(&hall).unwrap_err().contains("encore"));
     }
 }

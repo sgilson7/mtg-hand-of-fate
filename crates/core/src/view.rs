@@ -567,6 +567,21 @@ fn target_row(s: &Session, f: &crate::session::Fight, t: &Target) -> (String, St
     }
 }
 
+/// Every line of the fight's log shown so far, the newest marked "now".
+fn log_lines(s: &Session, f: &crate::session::Fight) -> Vec<Value> {
+    let d = &f.duel;
+    let upto = f.shown.min(d.events.len().saturating_sub(1));
+    d.events
+        .iter()
+        .take(upto + 1)
+        .enumerate()
+        .map(|(i, e)| {
+            json!({"text": s.f(e.key, &e.args.iter().map(|(k, v)| (*k, v.clone())).collect::<Vec<_>>()), "now": i == f.shown, "side": e.side,
+                "i": i, "cards": named_cards(s, &e.args)})
+        })
+        .collect()
+}
+
 fn battle_panels(s: &Session, f: &crate::session::Fight) -> Vec<Value> {
     let ev = f.event();
     let snap = &ev.snap;
@@ -619,16 +634,18 @@ fn battle_panels(s: &Session, f: &crate::session::Fight) -> Vec<Value> {
         "actions": [action(s.s("duel.turn_left"), "view.turn", "left", true), action(s.s("duel.turn_right"), "view.turn", "right", true),
             action(s.s("duel.turn_home"), "view.turn", "home", s.view_yaw != 0)],
     })];
-    let from = f.shown.saturating_sub(6);
-    let log: Vec<Value> = d.events[from..=f.shown.min(d.events.len().saturating_sub(1))]
-        .iter()
-        .enumerate()
-        .map(|(i, e)| {
-            json!({"text": s.f(e.key, &e.args.iter().map(|(k, v)| (*k, v.clone())).collect::<Vec<_>>()), "now": from + i == f.shown, "side": e.side,
-                "cards": named_cards(s, &e.args)})
-        })
-        .collect();
-    panels.push(json!({"id": "log", "place": "tr", "heading": s.s("battle.log"), "log": log}));
+    let log = log_lines(s, f);
+    if s.log_open {
+        // the whole log over the table, every line so far (T28)
+        return vec![
+            json!({"id": "logfull", "place": "full", "heading": s.s("battle.log"), "log": log,
+            "actions": [action(s.s("battle.log_close"), "view.log", "close", true)]}),
+        ];
+    }
+    panels.push(
+        json!({"id": "log", "place": "tr", "heading": s.s("battle.log"), "log": log,
+        "actions": [action(s.s("battle.log_open"), "view.log", "open", true)]}),
+    );
     if !snap.stack.is_empty() {
         // the stack as its cards, the top first, each badged with whose it is;
         // an item with no card (a token's ability) as a line
@@ -1197,8 +1214,24 @@ fn city_panels(s: &mut Session, city: crate::world::City, room: Room) -> Vec<Val
                 ]));
             }
             let q = quests_panel(s);
+            // the quests this hall posts, until taken up (T27)
+            let here = format!("hall:{}", city.id());
+            let mut acts: Vec<Value> = s
+                .quests
+                .iter()
+                .filter(|q| q.starts == here && !s.player().quests.contains_key(&q.id))
+                .map(|q| {
+                    action(
+                        s.f("hall.take", &[("quest", s.s(&format!("quest.{}", q.id)))]),
+                        "hall.take",
+                        &q.id,
+                        true,
+                    )
+                })
+                .collect();
+            acts.push(back);
             vec![
-                json!({"id": "hall", "place": "side", "heading": s.s("room.hall"), "text": s.s(&format!("hall.{}", city.id())), "rows": rows, "actions": [back]}),
+                json!({"id": "hall", "place": "side", "heading": s.s("room.hall"), "text": s.s(&format!("hall.{}", city.id())), "rows": rows, "actions": acts}),
                 json!({"id": "quests", "place": "main", "heading": q["heading"], "rows": q["rows"]}),
             ]
         }
@@ -1340,6 +1373,24 @@ pub fn ui(s: &mut Session) -> Value {
             panels.push(json!({"id": "guilds", "place": "center", "kind": "paper", "heading": s.s("newgame.heading"), "text": s.s("newgame.text"), "choices": choices}));
             "newgame"
         }
+        Screen::Starter { guild, pick } => {
+            let g = guild.name();
+            let ids = encounter::starter_ids(*guild);
+            let choices: Vec<Value> = ids
+                .iter()
+                .enumerate()
+                .map(|(i, id)| json!({"key": (i + 1).to_string(), "text": s.s(&format!("starter.{g}.{id}")), "sub": s.s(&format!("starter.{g}.{id}.sub")),
+                    "enabled": true, "chosen": i == *pick, "act": "starter.look", "value": i.to_string(), "guild": g}))
+                .collect();
+            let mut deck = encounter::starter_named(&s.cards, *guild, ids[*pick]);
+            deck.sort_by_key(|&c| (s.cards[c].value, s.cards[c].name.clone()));
+            panels.push(json!({"id": "starters", "place": "side", "kind": "paper", "heading": s.f("starter.heading", &[("guild", s.s(&format!("guild.{g}")))]),
+                "text": s.s("starter.text"), "choices": choices}));
+            panels.push(json!({"id": "starterdeck", "place": "main", "heading": s.s(&format!("starter.{g}.{}", ids[*pick])),
+                "cards": deck.iter().map(|&c| face(s, c, "sm")).collect::<Vec<_>>(),
+                "actions": [action(s.s("starter.start"), "starter.start", "", true), action(s.s("starter.back"), "game.new", "", true)]}));
+            "starter"
+        }
         Screen::Board => {
             panels.push(hud(s));
             panels.push(quests_panel(s));
@@ -1447,8 +1498,12 @@ pub fn ui(s: &mut Session) -> Value {
         }
         Screen::Battle(f) => {
             panels.extend(battle_panels(s, f));
-            labels = battle_labels(s, f);
-            "battle"
+            if s.log_open {
+                "battlelog"
+            } else {
+                labels = battle_labels(s, f);
+                "battle"
+            }
         }
         Screen::City { city, room } => {
             if *room == Room::Menu {
@@ -1687,6 +1742,8 @@ mod tests {
         s.act("game.new", "").unwrap();
         check(&mut s);
         s.act("game.guild", "Golgari").unwrap();
+        check(&mut s);
+        s.act("starter.start", "").unwrap();
         check(&mut s);
         s.act("result.next", "").unwrap();
         for room in ["armourer", "cards", "hall", "inn", "trainer", "menu"] {

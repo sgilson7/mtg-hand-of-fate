@@ -70,7 +70,7 @@ These cards must have a choice whose outcome (or success branch) includes `quest
 | 229 Golgari Keyrune | `undercity` | A key to the undercity; open its door in a Golgari district, survive what lives there, and report to Vitu-Ghazi. |
 | 217 Growing Ranks | `conclave` | The Conclave asks for help at Vitu-Ghazi; plant its seed in a Selesnya district and defend the sapling. |
 
-The places: **the Tenth District** (the city at the centre, where you start), **New Prahv** (the Azorius city to the north), **Vitu-Ghazi** (the Selesnya city to the west), **Nivix** (Niv-Mizzet's aerie and laboratory, the guardian's lair in the north-east), and districts of each guild scattered between them.
+The places: **the Tenth District** (the city at the centre, where you start), **New Prahv** (the Azorius city to the north), **Vitu-Ghazi** (the Selesnya city to the west), **Rix Maadi** (the Rakdos city to the south), **Svogthos** (the Golgari city to the south-west), **Nivix** (Niv-Mizzet's aerie and laboratory, the guardian's lair in the north-east), and districts of each guild scattered between them.
 
 ## Words
 

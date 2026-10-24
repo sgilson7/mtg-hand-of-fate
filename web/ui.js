@@ -134,6 +134,23 @@ export function makeUi(root, labelRoot, act) {
     return c;
   }
 
+  // A log scrolls on its own: it follows the newest line when one arrives,
+  // and otherwise keeps where the reader scrolled it to.
+  const logAt = new Map();
+  function keepLog(id, l) {
+    const now = l.querySelector(".now");
+    const was = logAt.get(id);
+    const newest = l.lastElementChild ? l.children.length : 0;
+    requestAnimationFrame(() => {
+      if (!was || was.count !== newest) {
+        if (now) now.scrollIntoView({ block: "nearest" });
+        else l.scrollTop = l.scrollHeight;
+      } else l.scrollTop = was.top;
+      l.addEventListener("scroll", () => logAt.set(id, { count: newest, top: l.scrollTop }));
+      logAt.set(id, { count: newest, top: l.scrollTop });
+    });
+  }
+
   function panel(p) {
     const box = make("section", `panel place-${p.place || "center"} kind-${p.kind || "glass"}`);
     box.id = `panel-${p.id}`;
@@ -195,7 +212,7 @@ export function makeUi(root, labelRoot, act) {
     if (p.choices) {
       const ch = make("div", "choices");
       p.choices.forEach((c) => {
-        const b = make("button", "choice");
+        const b = make("button", c.chosen ? "choice chosen" : "choice");
         b.disabled = !c.enabled;
         b.append(make("b", "", c.key), make("span", "", c.text));
         if (c.sub) b.append(make("small", "", c.sub));
@@ -248,6 +265,7 @@ export function makeUi(root, labelRoot, act) {
         l.append(li);
       });
       box.append(l);
+      keepLog(p.id, l);
     }
     if (p.bars) {
       const b = make("div", "bars");

@@ -37,6 +37,9 @@ pub struct Piece {
     pub effect: String,
     pub price: i32,
     pub style_needed: i32,
+    /// The one city whose armourer sells it; empty for its guild's armourers (T27).
+    #[serde(default)]
+    pub city: String,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]

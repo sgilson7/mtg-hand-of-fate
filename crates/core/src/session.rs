@@ -35,6 +35,11 @@ pub type Strings = BTreeMap<String, String>;
 pub enum Screen {
     Title,
     NewGame,
+    /// The guild's starting decks, one of them shown (T25).
+    Starter {
+        guild: Guild,
+        pick: usize,
+    },
     Board,
     /// A card turned up on a tile.
     Draw {
@@ -194,6 +199,8 @@ pub struct Session {
     pub now: i64,
     /// How far the fight's table is turned from its home view (turns).
     pub view_yaw: i32,
+    /// The fight's whole log is open over the table (T28).
+    pub log_open: bool,
     /// How the deck screen orders the collection: one of `DECK_SORTS`.
     pub deck_sort: &'static str,
     /// The permanent under the pointer in a fight, shown full size.
@@ -262,6 +269,7 @@ impl Session {
             .filter(|s| s.version == SAVE_VERSION);
         Ok(Session {
             view_yaw: 0,
+            log_open: false,
             deck_sort: DECK_SORTS[0],
             hovered: None,
             cards,
@@ -329,12 +337,12 @@ impl Session {
         self.ui_version += 1;
     }
 
-    pub fn new_game(&mut self, guild: Guild) {
+    pub fn new_game(&mut self, guild: Guild, starter: &str) {
         let seed = self.rng.next_u64();
         self.seed = seed;
         let mut world = World::new(seed, &self.cards);
         let mut p = Player::new(&self.armoury);
-        p.deck = encounter::starter_deck(&self.cards, guild);
+        p.deck = encounter::starter_named(&self.cards, guild, starter);
         p.collection = p.deck.clone();
         if let Some(t) = world.tiles.get_mut(&(0, 0)) {
             t.lands = encounter::starter_lands(&self.cards, guild);
@@ -357,11 +365,12 @@ impl Session {
 
     fn continue_game(&mut self) -> Result<(), String> {
         let s = self.saved.clone().ok_or_else(|| self.s("error.no_save"))?;
-        let world = World {
+        let mut world = World {
             seed: s.seed,
             chunks: s.chunks.into_iter().collect(),
             tiles: s.tiles.into_iter().collect(),
         };
+        world.settle_cities();
         self.seed = s.seed;
         self.guild = s.guild;
         self.world = Some(world);
@@ -763,6 +772,7 @@ impl Session {
         );
         let seed = self.rng.next_u64();
         self.view_yaw = 0;
+        self.log_open = false;
         let mut duel = Duel::new(
             std::rc::Rc::new(self.cards.clone()),
             &Setup {
@@ -896,7 +906,41 @@ impl Session {
             "game.guild" => {
                 let g = Guild::from_name(value)
                     .ok_or_else(|| self.f("error.no_guild", &[("guild", value.to_string())]))?;
-                self.new_game(g);
+                self.screen = Screen::Starter { guild: g, pick: 0 };
+            }
+            "hall.take" => {
+                let Screen::City { city, .. } = self.screen else {
+                    return Err(self.s("error.not_in_hall"));
+                };
+                let posted = self
+                    .quests
+                    .iter()
+                    .any(|q| q.id == value && q.starts == format!("hall:{}", city.id()));
+                if !posted {
+                    return Err(self.s("error.not_in_hall"));
+                }
+                let p = self.player.as_mut().expect("player");
+                if !p.quests.contains_key(value) {
+                    p.quests.insert(value.to_string(), 0);
+                    let name = self.s(&format!("quest.{value}"));
+                    let first = self.s(&format!("quest.{value}.0"));
+                    self.message = self.f("quest.started", &[("quest", name), ("next", first)]);
+                    self.write_save();
+                }
+            }
+            "starter.look" => {
+                let n = num(value)?;
+                if let Screen::Starter { guild, .. } = self.screen {
+                    if n >= encounter::starter_ids(guild).len() {
+                        return Err(format!("There is no deck {n}."));
+                    }
+                    self.screen = Screen::Starter { guild, pick: n };
+                }
+            }
+            "starter.start" => {
+                if let Screen::Starter { guild, pick } = self.screen {
+                    self.new_game(guild, encounter::starter_ids(guild)[pick]);
+                }
             }
             "game.continue" => self.continue_game()?,
             "screen.show" => match value {
@@ -1302,6 +1346,7 @@ impl Session {
                 p.abilities.insert(id.to_string(), have + 1);
                 self.write_save();
             }
+            "view.log" => self.log_open = value == "open",
             "view.turn" => {
                 let step = crate::fx::TURN / 16;
                 self.view_yaw = match value {
@@ -1650,7 +1695,104 @@ mod tests {
         let mut s = for_tests();
         s.act("game.new", "").unwrap();
         s.act("game.guild", "Izzet").unwrap();
+        s.act("starter.start", "").unwrap();
         s
+    }
+
+    #[test]
+    fn a_new_game_starts_with_the_starting_deck_looked_at_last() {
+        let mut s = for_tests();
+        s.act("game.new", "").unwrap();
+        s.act("game.guild", "Golgari").unwrap();
+        assert!(s.world.is_none(), "choosing a guild shows its decks first");
+        s.act("starter.look", "1").unwrap();
+        s.act("starter.look", "5").unwrap();
+        assert!(s.act("starter.look", "6").is_err());
+        s.act("starter.start", "").unwrap();
+        let vraska = s
+            .cards
+            .iter()
+            .position(|c| c.name == "Vraska the Unseen")
+            .unwrap();
+        assert_eq!(s.player().deck.len(), encounter::STARTER_DECK);
+        assert!(s.player().deck.contains(&vraska));
+        assert_eq!(s.player().collection, s.player().deck);
+    }
+
+    #[test]
+    fn the_whole_log_opens_over_the_table_with_every_line_so_far() {
+        let mut s = started();
+        let caracal = s.cards.iter().position(|c| c.name == "Trained Caracal").unwrap();
+        s.world.as_mut().unwrap().tiles.get_mut(&(1, 0)).unwrap().cleared = false;
+        s.screen = Screen::Draw {
+            at: (1, 0),
+            card: caracal,
+        };
+        s.act("draw.fight", "").unwrap();
+        // pass until the fight has said enough
+        for _ in 0..12 {
+            let _ = s.act("duel.ok", "");
+            s.act("battle.skip", "").unwrap();
+        }
+        let shown = match &s.screen {
+            Screen::Battle(f) => f.shown,
+            _ => panic!("no fight"),
+        };
+        assert!(shown > 8, "enough lines for the small log to drop some");
+        let small = crate::view::ui(&mut s);
+        let log = small["panels"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .find(|p| p["id"] == "log")
+            .unwrap();
+        assert_eq!(log["log"].as_array().unwrap().len(), shown + 1);
+        s.act("view.log", "open").unwrap();
+        let v = crate::view::ui(&mut s);
+        assert_eq!(v["screen"], "battlelog");
+        let panels = v["panels"].as_array().unwrap();
+        assert_eq!(panels.len(), 1);
+        assert_eq!(panels[0]["log"].as_array().unwrap().len(), shown + 1);
+        s.act("view.log", "close").unwrap();
+        assert_eq!(crate::view::ui(&mut s)["screen"], "battle");
+    }
+
+    #[test]
+    fn rix_maadi_posts_its_own_quests_and_sells_its_own_gear() {
+        let mut s = started();
+        s.screen = Screen::City {
+            city: City::Rix,
+            room: Room::Hall,
+        };
+        assert!(
+            s.act("hall.take", "writ").is_err(),
+            "a quest begun elsewhere is not posted here"
+        );
+        s.act("hall.take", "encore").unwrap();
+        assert_eq!(s.player().quests.get("encore"), Some(&0));
+        let rix = encounter::shop_armour(&s.armoury, City::Rix);
+        let tenth = encounter::shop_armour(&s.armoury, City::Tenth);
+        assert!(rix.contains(&"rix_head".to_string()) && rix.contains(&"rakdos_head".to_string()));
+        assert!(!tenth.contains(&"rix_head".to_string()) && tenth.contains(&"rakdos_head".to_string()));
+        assert!(!encounter::shop_armour(&s.armoury, City::Svogthos).contains(&"rix_head".to_string()));
+        s.screen = Screen::City {
+            city: City::Tenth,
+            room: Room::Hall,
+        };
+        assert!(
+            s.act("hall.take", "harvest").is_err(),
+            "Svogthos's quest is taken up at Svogthos"
+        );
+    }
+
+    #[test]
+    fn the_inn_sells_six_supplies_for_two_gold() {
+        let mut s = started();
+        let p = s.player.as_mut().unwrap();
+        p.gold = 10;
+        p.supplies = 2;
+        s.act("inn.supplies", "").unwrap();
+        assert_eq!((s.player().supplies, s.player().gold), (8, 8));
     }
 
     #[test]

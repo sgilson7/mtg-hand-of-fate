@@ -74,6 +74,11 @@ The rules in `CLAUDE.md` under "Rules agreed for this project" (MTG-1 to MTG-11)
 - R6.4: the ten new quests, their cards and rewards.
 - R6.6: a health bar's full length is the most life the side has had.
 - R6.8: read the new strings.
+- R7.2: the second look of each terrain, and one tile in three wearing it.
+- R7.3: the thirty starting decks, the real decks they follow, and Selesnya's fifth following a green and white deck that is not Selesnya's.
+- R7.5: supplies at six for 2 gold.
+- R7.6: Rix Maadi and Svogthos: where they stand, their gear, their quests.
+- R7.10: read the new strings.
 
 ## Mistakes so far
 
@@ -102,6 +107,8 @@ The rules in `CLAUDE.md` under "Rules agreed for this project" (MTG-1 to MTG-11)
 2026-10-24, T14 to T22: `./scripts/check.sh` ended `BROWSER CHECK PASSED in chromium, firefox, webkit` and `BUILDER CHECK PASSED`; `./scripts/count-tests.sh`: 146 passed, 0 failed; `scripts/break_tests.py`: 54 of 54 caught. A live play-through (Playwright) showed the stack, log and land hovers, health bars and deck sorting with no page errors.
 
 2026-10-24, T14 to T22 deploy: `dist/` built from 4a08d8f pushed to gh-pages by hand (R2.17); the live `build.txt` reads `6d1f4375d1dd 4a08d8f`; the browser check against the live address ended `BROWSER CHECK PASSED in chromium, firefox, webkit`.
+
+2026-10-24, T23 to T28: `./scripts/check.sh` ended `BROWSER CHECK PASSED in chromium, firefox, webkit` and `BUILDER CHECK PASSED`; `./scripts/count-tests.sh`: 154 passed, 0 failed; `scripts/break_tests.py`: 68 of 68 caught. The browser check now chooses Ral's deck before the opening, and waits for the deck panel to redraw before reading it. A live look (Playwright, build from the working tree) showed the deck window, the deck choice, the second terrain looks, Rix Maadi's hall and armourer, and the whole log, with no page errors.
 
 ## The next action
 

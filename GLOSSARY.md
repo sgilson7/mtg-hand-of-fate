@@ -58,6 +58,10 @@ The part of the map one guardian rules: three by three chunks of five by five ti
 
 How a guild sees you, raised by its quests and its armour. Some armour is sold only to those with standing.
 
+### Starting deck
+
+The deck a game begins with, chosen from the six its guild offers: the guild's own first deck, or one after a deck Wizards of the Coast sold for that guild.
+
 ### Style
 
 Your standing with every guild together, from your quests and your armour.

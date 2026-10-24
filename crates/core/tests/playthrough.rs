@@ -109,6 +109,7 @@ fn a_bot_can_play_the_first_region_to_the_guardian() {
     let mut s = Session::new(&bundle(), "", 2026).unwrap();
     s.act("game.new", "").unwrap();
     s.act("game.guild", "Izzet").unwrap();
+    s.act("starter.start", "").unwrap();
     let prahv = (0, -5);
     let lair = (5, -5);
     let mut reached_guardian = false;
@@ -209,6 +210,7 @@ fn a_bot_can_play_the_first_region_to_the_guardian() {
                     }
                 }
             }
+            Screen::Starter { .. } => s.act("starter.start", "").unwrap(),
             Screen::Title | Screen::NewGame | Screen::Deck { .. } | Screen::Models { .. } => {
                 s.act("screen.show", "board").unwrap()
             }

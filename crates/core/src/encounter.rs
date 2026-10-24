@@ -34,8 +34,9 @@ pub const STARTER_DECK: usize = 12;
 pub const SHOP_CARDS: usize = 6;
 pub const SELL_DIVISOR: i32 = 3;
 pub const INN_REST: i32 = 6;
-pub const INN_SUPPLIES: i32 = 4;
-pub const INN_SUPPLIES_PRICE: i32 = 5;
+/// Six supplies for 2 gold (T26: they were four for 5).
+pub const INN_SUPPLIES: i32 = 6;
+pub const INN_SUPPLIES_PRICE: i32 = 2;
 
 pub fn card_price(c: &Card) -> i32 {
     match c.rarity {
@@ -329,6 +330,488 @@ pub const STARTERS: [(Guild, [&str; STARTER_DECK]); 5] = [
     ),
 ];
 
+/// Five more decks for each guild (T25), each rebuilt from this region's
+/// cards after a deck Wizards of the Coast sold for that guild: the deck's
+/// plan and, where the region has it, its face card. Twelve cards, at most
+/// one rare or mythic, and tested to hold up like the guild's first deck
+/// (SECOND-ORDER R7.3). Names and the products they follow are strings
+/// `starter.<guild>.<id>`.
+pub const MORE_STARTERS: [(Guild, &str, [&str; STARTER_DECK]); 25] = [
+    (
+        Guild::Azorius,
+        "advance",
+        [
+            "Azorius Arrester",
+            "Azorius Arrester",
+            "Concordia Pegasus",
+            "Sunspire Griffin",
+            "Tower Drake",
+            "Lyev Skyknight",
+            "Hussar Patrol",
+            "Skymark Roc",
+            "Archon of the Triumvirate",
+            "Inaction Injunction",
+            "Arrest",
+            "Azorius Charm",
+        ],
+    ),
+    (
+        Guild::Azorius,
+        "ascendant",
+        [
+            "Judge's Familiar",
+            "Vassal Soul",
+            "Vassal Soul",
+            "Tower Drake",
+            "Concordia Pegasus",
+            "Sunspire Griffin",
+            "Runewing",
+            "Skymark Roc",
+            "Isperia's Skywatch",
+            "Eyes in the Skies",
+            "Avenging Arrow",
+            "Arrest",
+        ],
+    ),
+    (
+        Guild::Azorius,
+        "authority",
+        [
+            "Azorius Arrester",
+            "Azorius Arrester",
+            "Lyev Skyknight",
+            "New Prahv Guildmage",
+            "Hussar Patrol",
+            "Doorkeeper",
+            "Armory Guard",
+            "Stealer of Secrets",
+            "Azor's Elocutors",
+            "Inaction Injunction",
+            "Paralyzing Grasp",
+            "Dramatic Rescue",
+        ],
+    ),
+    (
+        Guild::Azorius,
+        "kit",
+        [
+            "Judge's Familiar",
+            "Faerie Impostor",
+            "Tower Drake",
+            "Lyev Skyknight",
+            "Concordia Pegasus",
+            "Vassal Soul",
+            "Skymark Roc",
+            "Sunspire Griffin",
+            "Hover Barrier",
+            "Syncopate",
+            "Azorius Charm",
+            "Detention Sphere",
+        ],
+    ),
+    (
+        Guild::Azorius,
+        "dovin",
+        [
+            "Azorius Arrester",
+            "Keening Apparition",
+            "Fencing Ace",
+            "Seller of Songbirds",
+            "Azorius Justiciar",
+            "Lyev Skyknight",
+            "Skymark Roc",
+            "Sphinx of the Chimes",
+            "Inaction Injunction",
+            "Swift Justice",
+            "Downsize",
+            "Arrest",
+        ],
+    ),
+    (
+        Guild::Izzet,
+        "ingenuity",
+        [
+            "Goblin Electromancer",
+            "Guttersnipe",
+            "Frostburn Weird",
+            "Blistercoil Weird",
+            "Splatter Thug",
+            "Stealer of Secrets",
+            "Hypersonic Dragon",
+            "Annihilating Fire",
+            "Electrickery",
+            "Izzet Charm",
+            "Inspiration",
+            "Teleportal",
+        ],
+    ),
+    (
+        Guild::Izzet,
+        "gizmometry",
+        [
+            "Blistercoil Weird",
+            "Frostburn Weird",
+            "Izzet Staticaster",
+            "Nivix Guildmage",
+            "Lobber Crew",
+            "Crosstown Courier",
+            "Volatile Rig",
+            "Izzet Keyrune",
+            "Civic Saber",
+            "Chemister's Trick",
+            "Electrickery",
+            "Dynacharge",
+        ],
+    ),
+    (
+        Guild::Izzet,
+        "duel",
+        [
+            "Goblin Electromancer",
+            "Frostburn Weird",
+            "Frostburn Weird",
+            "Nivmagus Elemental",
+            "Viashino Racketeer",
+            "Runewing",
+            "Bellows Lizard",
+            "Annihilating Fire",
+            "Izzet Charm",
+            "Essence Backlash",
+            "Thoughtflare",
+            "Dispel",
+        ],
+    ),
+    (
+        Guild::Izzet,
+        "kit",
+        [
+            "Crosstown Courier",
+            "Goblin Electromancer",
+            "Izzet Staticaster",
+            "Bellows Lizard",
+            "Viashino Racketeer",
+            "Mercurial Chemister",
+            "Frostburn Weird",
+            "Stealer of Secrets",
+            "Chemister's Trick",
+            "Electrickery",
+            "Teleportal",
+            "Inspiration",
+        ],
+    ),
+    (
+        Guild::Izzet,
+        "ral",
+        [
+            "Blistercoil Weird",
+            "Crosstown Courier",
+            "Viashino Racketeer",
+            "Splatter Thug",
+            "Stealer of Secrets",
+            "Cobblebrute",
+            "Runewing",
+            "Batterhorn",
+            "Izzet Staticaster",
+            "Annihilating Fire",
+            "Mizzium Skin",
+            "Izzet Charm",
+        ],
+    ),
+    (
+        Guild::Rakdos,
+        "raid",
+        [
+            "Rakdos Cackler",
+            "Rakdos Cackler",
+            "Rakdos Shred-Freak",
+            "Gore-House Chainwalker",
+            "Dead Reveler",
+            "Grim Roustabout",
+            "Hellhole Flailer",
+            "Spawn of Rix Maadi",
+            "Carnival Hellsteed",
+            "Auger Spree",
+            "Skull Rend",
+            "Annihilating Fire",
+        ],
+    ),
+    (
+        Guild::Rakdos,
+        "wrack",
+        [
+            "Rakdos Cackler",
+            "Rakdos Cackler",
+            "Rakdos Shred-Freak",
+            "Thrill-Kill Assassin",
+            "Gore-House Chainwalker",
+            "Splatter Thug",
+            "Hellhole Flailer",
+            "Rix Maadi Guildmage",
+            "Dreadbore",
+            "Rakdos Charm",
+            "Auger Spree",
+            "Electrickery",
+        ],
+    ),
+    (
+        Guild::Rakdos,
+        "bloodsport",
+        [
+            "Drainpipe Vermin",
+            "Bellows Lizard",
+            "Rakdos Shred-Freak",
+            "Gore-House Chainwalker",
+            "Daggerdrome Imp",
+            "Sewer Shambler",
+            "Bloodfray Giant",
+            "Slum Reaper",
+            "Rakdos Ragemutt",
+            "Mind Rot",
+            "Deviant Glee",
+            "Launch Party",
+        ],
+    ),
+    (
+        Guild::Rakdos,
+        "revelry",
+        [
+            "Rakdos Cackler",
+            "Gore-House Chainwalker",
+            "Grim Roustabout",
+            "Splatter Thug",
+            "Dead Reveler",
+            "Thrill-Kill Assassin",
+            "Rakdos Ragemutt",
+            "Rakdos Ringleader",
+            "Chaos Imps",
+            "Rakdos Charm",
+            "Annihilating Fire",
+            "Racecourse Fury",
+        ],
+    ),
+    (
+        Guild::Rakdos,
+        "kit",
+        [
+            "Bellows Lizard",
+            "Rakdos Cackler",
+            "Daggerdrome Imp",
+            "Tavern Swindler",
+            "Viashino Racketeer",
+            "Hellhole Flailer",
+            "Spawn of Rix Maadi",
+            "Electrickery",
+            "Auger Spree",
+            "Stab Wound",
+            "Ultimate Price",
+            "Rakdos Keyrune",
+        ],
+    ),
+    (
+        Guild::Golgari,
+        "growth",
+        [
+            "Drudge Beetle",
+            "Korozda Monitor",
+            "Korozda Monitor",
+            "Golgari Longlegs",
+            "Sluiceway Scorpion",
+            "Trestle Troll",
+            "Dead Reveler",
+            "Gobbling Ooze",
+            "Corpsejack Menace",
+            "Slime Molding",
+            "Aerial Predation",
+            "Giant Growth",
+        ],
+    ),
+    (
+        Guild::Golgari,
+        "creep",
+        [
+            "Slitherhead",
+            "Drudge Beetle",
+            "Dreg Mangler",
+            "Dreg Mangler",
+            "Korozda Guildmage",
+            "Sluiceway Scorpion",
+            "Stonefare Crocodile",
+            "Ogre Jailbreaker",
+            "Lotleth Troll",
+            "Golgari Charm",
+            "Ultimate Price",
+            "Grisly Salvage",
+        ],
+    ),
+    (
+        Guild::Golgari,
+        "deathcreep",
+        [
+            "Drainpipe Vermin",
+            "Slitherhead",
+            "Golgari Decoy",
+            "Dead Reveler",
+            "Catacomb Slug",
+            "Trestle Troll",
+            "Golgari Longlegs",
+            "Dreg Mangler",
+            "Korozda Monitor",
+            "Grisly Salvage",
+            "Ultimate Price",
+            "Treasured Find",
+        ],
+    ),
+    (
+        Guild::Golgari,
+        "kit",
+        [
+            "Drudge Beetle",
+            "Drudge Beetle",
+            "Sluiceway Scorpion",
+            "Gatecreeper Vine",
+            "Korozda Guildmage",
+            "Dreg Mangler",
+            "Rubbleback Rhino",
+            "Golgari Longlegs",
+            "Treasured Find",
+            "Grisly Salvage",
+            "Golgari Charm",
+            "Abrupt Decay",
+        ],
+    ),
+    (
+        Guild::Golgari,
+        "vraska",
+        [
+            "Grim Roustabout",
+            "Thrill-Kill Assassin",
+            "Tavern Swindler",
+            "Dead Reveler",
+            "Korozda Monitor",
+            "Dreg Mangler",
+            "Slum Reaper",
+            "Golgari Longlegs",
+            "Vraska the Unseen",
+            "Ultimate Price",
+            "Assassin's Strike",
+            "Stab Wound",
+        ],
+    ),
+    (
+        Guild::Selesnya,
+        "surge",
+        [
+            "Seller of Songbirds",
+            "Trained Caracal",
+            "Dryad Militant",
+            "Centaur Healer",
+            "Selesnya Sentry",
+            "Towering Indrik",
+            "Rubbleback Rhino",
+            "Giant Growth",
+            "Common Bond",
+            "Rootborn Defenses",
+            "Selesnya Charm",
+            "Heroes' Reunion",
+        ],
+    ),
+    (
+        Guild::Selesnya,
+        "united",
+        [
+            "Centaur's Herald",
+            "Seller of Songbirds",
+            "Vitu-Ghazi Guildmage",
+            "Armory Guard",
+            "Centaur Healer",
+            "Gatecreeper Vine",
+            "Call of the Conclave",
+            "Call of the Conclave",
+            "Coursers' Accord",
+            "Druid's Deliverance",
+            "Rootborn Defenses",
+            "Eyes in the Skies",
+        ],
+    ),
+    (
+        Guild::Selesnya,
+        "kit",
+        [
+            "Trostani, Selesnya's Voice",
+            "Seller of Songbirds",
+            "Centaur Healer",
+            "Dryad Militant",
+            "Oak Street Innkeeper",
+            "Vitu-Ghazi Guildmage",
+            "Concordia Pegasus",
+            "Call of the Conclave",
+            "Common Bond",
+            "Selesnya Charm",
+            "Eyes in the Skies",
+            "Knightly Valor",
+        ],
+    ),
+    (
+        Guild::Selesnya,
+        "tokens",
+        [
+            "Trained Caracal",
+            "Seller of Songbirds",
+            "Keening Apparition",
+            "Precinct Captain",
+            "Centaur's Herald",
+            "Brushstrider",
+            "Call of the Conclave",
+            "Call of the Conclave",
+            "Eyes in the Skies",
+            "Coursers' Accord",
+            "Common Bond",
+            "Giant Growth",
+        ],
+    ),
+    (
+        Guild::Selesnya,
+        "zendikar",
+        [
+            "Drudge Beetle",
+            "Brushstrider",
+            "Dryad Militant",
+            "Selesnya Sentry",
+            "Loxodon Smiter",
+            "Towering Indrik",
+            "Rubbleback Rhino",
+            "Korozda Monitor",
+            "Arrest",
+            "Savage Surge",
+            "Chorus of Might",
+            "Giant Growth",
+        ],
+    ),
+];
+
+/// The decks a guild can start with: its first deck ("first"), then the five after Wizards' decks.
+pub fn starter_ids(g: Guild) -> Vec<&'static str> {
+    std::iter::once("first")
+        .chain(
+            MORE_STARTERS
+                .iter()
+                .filter(|(k, _, _)| *k == g)
+                .map(|(_, id, _)| *id),
+        )
+        .collect()
+}
+
+/// One of a guild's starting decks by its id; "first" is the guild's first deck.
+pub fn starter_named(cards: &[Card], g: Guild, id: &str) -> Vec<usize> {
+    let Some((_, _, names)) = MORE_STARTERS.iter().find(|(k, i, _)| *k == g && *i == id) else {
+        return starter_deck(cards, g);
+    };
+    names
+        .iter()
+        .filter_map(|n| cards.iter().position(|c| c.name == *n))
+        .collect()
+}
+
 pub fn starter_deck(cards: &[Card], g: Guild) -> Vec<usize> {
     // every name is a card of the region (tested below)
     STARTERS
@@ -378,15 +861,18 @@ pub fn shop_cards(cards: &[Card], city: City, seed: u64) -> Vec<usize> {
 
 /// The armour a city's armourer sells.
 pub fn shop_armour(armoury: &Armoury, city: City) -> Vec<String> {
-    let guilds: [&str; 2] = match city {
-        City::Tenth => ["Rakdos", "Golgari"],
-        City::Prahv => ["Azorius", "Izzet"],
-        City::Vitu => ["Selesnya", "Golgari"],
+    let guilds: &[&str] = match city {
+        City::Tenth => &["Rakdos", "Golgari"],
+        City::Prahv => &["Azorius", "Izzet"],
+        City::Vitu => &["Selesnya", "Golgari"],
+        City::Rix => &["Rakdos"],
+        City::Svogthos => &["Golgari"],
     };
+    // a city's own pieces are sold there and nowhere else
     armoury
         .pieces
         .iter()
-        .filter(|p| guilds.contains(&p.guild.as_str()))
+        .filter(|p| p.city == city.id() || (p.city.is_empty() && guilds.contains(&p.guild.as_str())))
         .map(|p| p.id.clone())
         .collect()
 }
@@ -447,6 +933,45 @@ mod tests {
             assert!(d.iter().all(|&i| cards[i].identity & !g.colours() == 0));
             assert_eq!(starter_lands(&cards, g).len(), 3);
         }
+    }
+
+    #[test]
+    fn each_guild_has_six_starting_decks_of_twelve_of_its_cards_with_one_rare_at_most() {
+        let cards = for_tests();
+        for g in Guild::ALL {
+            let ids = starter_ids(g);
+            assert_eq!(ids.len(), 6, "{g:?}");
+            for id in ids {
+                let d = starter_named(&cards, g, id);
+                assert_eq!(
+                    d.len(),
+                    STARTER_DECK,
+                    "{g:?} {id}: a name is not a card of the region"
+                );
+                assert!(
+                    d.iter().all(|&i| cards[i].identity & !g.colours() == 0),
+                    "{g:?} {id}: off colour"
+                );
+                let rares = d
+                    .iter()
+                    .filter(|&&i| matches!(cards[i].rarity, 'r' | 'm'))
+                    .count();
+                assert!(rares <= 1, "{g:?} {id}: {rares} rares");
+                let creatures = d
+                    .iter()
+                    .filter(|&&i| cards[i].is(ty::CREATURE) || cards[i].is(ty::PLANESWALKER))
+                    .count();
+                assert!(creatures >= 6, "{g:?} {id}: {creatures} creatures");
+                assert!(
+                    d.iter().all(|&i| d.iter().filter(|&&j| j == i).count() <= 2),
+                    "{g:?} {id}: three of a card"
+                );
+            }
+        }
+        // the first deck is the guild's own; an id that is not one gives it too
+        let first = starter_deck(&cards, Guild::Rakdos);
+        assert_eq!(starter_named(&cards, Guild::Rakdos, "first"), first);
+        assert_ne!(starter_named(&cards, Guild::Rakdos, "raid"), first);
     }
 
     #[test]

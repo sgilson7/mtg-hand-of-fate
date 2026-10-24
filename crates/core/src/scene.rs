@@ -65,6 +65,17 @@ fn terrain_top(t: Terrain) -> Rgb {
     })
 }
 
+/// The ground of a tile wearing its terrain's second look (T24).
+fn terrain_top_alternate(t: Terrain) -> Rgb {
+    hex(match t {
+        Terrain::Plains => "#dcd9b4",
+        Terrain::Island => "#8fae96",
+        Terrain::Swamp => "#4d5650",
+        Terrain::Mountain => "#9a7462",
+        Terrain::Forest => "#679e5a",
+    })
+}
+
 fn guild_tint(g: Guild) -> Rgb {
     hex(match g {
         Guild::Azorius => "#d6e2f0",
@@ -138,7 +149,12 @@ fn board_statics(s: &Session, w: &World) -> Batch {
     );
     for (&p, t) in &w.tiles {
         let c = tile_centre(p);
-        let top = t.guild.map(guild_tint).unwrap_or_else(|| terrain_top(t.terrain));
+        let alt = crate::world::alternate(w.seed, p);
+        let top = match (t.guild, alt) {
+            (Some(g), _) => guild_tint(g),
+            (None, true) => terrain_top_alternate(t.terrain),
+            (None, false) => terrain_top(t.terrain),
+        };
         let size = TILE * 97 / 100;
         b.solid(
             Mesh::Cube,
@@ -186,6 +202,38 @@ fn board_statics(s: &Session, w: &World) -> Batch {
                     model_h(s, &mut b, name, c.add(v3(-ONE / 2, 0, -ONE / 2)), 0, ONE * 3 / 2);
                 }
                 match t.terrain {
+                    Terrain::Forest if alt => model_h(
+                        s,
+                        &mut b,
+                        "forest_conifers",
+                        c.add(v3(ONE / 4, 0, ONE / 4)),
+                        seed * 300,
+                        ONE * 13 / 10,
+                    ),
+                    Terrain::Mountain if alt => model_h(
+                        s,
+                        &mut b,
+                        "mountain_crags",
+                        c.add(v3(ONE / 4, 0, ONE / 5)),
+                        seed * fx::TURN / 4,
+                        ONE * 13 / 10,
+                    ),
+                    Terrain::Swamp if alt => model(
+                        s,
+                        &mut b,
+                        "swamp_fungus",
+                        c.add(v3(ONE / 5, 0, ONE / 4)),
+                        seed * 400,
+                        ONE * 7 / 10,
+                    ),
+                    Terrain::Plains if alt => model(
+                        s,
+                        &mut b,
+                        "plains_arch",
+                        c.add(v3(ONE / 5, 0, ONE / 3)),
+                        seed * fx::TURN / 4,
+                        ONE * 6 / 10,
+                    ),
                     Terrain::Forest => {
                         model_h(
                             s,
@@ -259,10 +307,23 @@ fn board_statics(s: &Session, w: &World) -> Batch {
                                 .map(|n| n.terrain == Terrain::Island)
                                 .unwrap_or(false)
                         });
-                        match (ew, ns) {
-                            (true, _) => model(s, &mut b, "canal_straight", c, 0, ONE),
-                            (false, true) => model(s, &mut b, "canal_straight", c, fx::TURN / 4, ONE),
-                            _ => model(s, &mut b, "canal_pool", c, 0, ONE),
+                        let yaw = match (ew, ns) {
+                            (true, _) => {
+                                model(s, &mut b, "canal_straight", c, 0, ONE);
+                                0
+                            }
+                            (false, true) => {
+                                model(s, &mut b, "canal_straight", c, fx::TURN / 4, ONE);
+                                fx::TURN / 4
+                            }
+                            _ => {
+                                model(s, &mut b, "canal_pool", c, 0, ONE);
+                                0
+                            }
+                        };
+                        // the second look: a skiff moored on the water
+                        if alt {
+                            model(s, &mut b, "island_skiff", c, yaw, ONE * 8 / 10);
                         }
                     }
                 }
@@ -348,7 +409,7 @@ fn hero_spot(s: &Session) -> V3 {
 
 pub fn camera_for(s: &Session) -> Camera {
     match &s.screen {
-        Screen::Title | Screen::NewGame => {
+        Screen::Title | Screen::NewGame | Screen::Starter { .. } => {
             let t = (s.now / 1000 % 60_000) as i32;
             let yaw = (t as i64 * fx::TURN as i64 / 60_000) as i32;
             let r = 22 * ONE;
@@ -1019,6 +1080,13 @@ fn draw_city(s: &Session, b: &mut Batch) {
     for (name, at, yaw, h) in place {
         model_h(s, b, name, at, yaw, h);
     }
+    // a guild's city shows its guild's tower over the roofs (T27)
+    if let Screen::City { city, .. } = &s.screen {
+        if let Some(g) = city.guild() {
+            let name = format!("tower_{}", g.name().to_lowercase());
+            model_h(s, b, &name, v3(0, 0, -9 * ONE), 0, ONE * 9 / 2);
+        }
+    }
     let k = fx::div(ONE * 16 / 10, s.look.height("hero").max(ONE / 10));
     draw_hero(
         s,
@@ -1174,7 +1242,7 @@ pub fn build(s: &mut Session) {
             | Screen::Land { .. }
             | Screen::Lair
     ) && s.world.is_some();
-    if board || matches!(screen, Screen::Title | Screen::NewGame) {
+    if board || matches!(screen, Screen::Title | Screen::NewGame | Screen::Starter { .. }) {
         if s.statics_dirty || s.statics.parts.is_empty() {
             let world = match &s.world {
                 Some(w) => w.clone(),
@@ -1263,6 +1331,7 @@ mod tests {
         let mut s = crate::session::for_tests();
         s.act("game.new", "").unwrap();
         s.act("game.guild", "Izzet").unwrap();
+        s.act("starter.start", "").unwrap();
         s.act("result.next", "").unwrap();
         s.act("city.leave", "").unwrap();
         build(&mut s);

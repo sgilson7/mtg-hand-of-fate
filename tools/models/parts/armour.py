@@ -672,7 +672,86 @@ def selesnya_feet():
     return mirror(one)
 
 
+# ------------------------------------- T27: the two new cities' own gear
+# Rix Maadi's and Svogthos's armourers sell their guild's cut in the city's
+# own colours: Rix Maadi's in the embers of its caverns, Svogthos's in bone
+# and deep violet, each with a flourish of its own.
+
+def recolour(parts, table):
+    out = []
+    for q in parts:
+        q = dict(q)
+        q["c"] = table.get(q["c"], q["c"])
+        out.append(q)
+    return out
+
+
+RIX = {R_BLACK: "#3a1a14", R_BLACK_L: "#5a2a1a", R_RED: "#f08a2a", R_RED_D: "#b0401a",
+       R_SPIKE: "#e9c46a", R_IRON: "#6a5a50", R_BONE: "#f3d9a0"}
+FLAME, EMBER = "#ffb040", "#ff6a20"
+
+
+def flame(x, y, z, h, n="body"):
+    return [part("cone", (x, y + h / 2, z), (h * 0.5, h, h * 0.5), EMBER, n=n, g=700),
+            part("cone", (x, y + h * 0.45, z), (h * 0.3, h * 0.7, h * 0.3), FLAME, n=n, g=900)]
+
+
+def rix_head():
+    out = recolour(rakdos_head(), RIX)
+    for z in (-10, -3, 4):
+        out += flame(0, 34, z, 9)                                        # a crest of flame
+    return out
+
+
+def rix_chest():
+    out = recolour(rakdos_chest(), RIX)
+    out += [ball(3.5, EMBER, x, y, fz(x, y) + 1.5, g=800) for x, y in ((-10, 46), (10, 46), (0, 30))]  # ember studs
+    out += mirror(flame(-38, 64, 0, 10))
+    return out
+
+
+def rix_hands():
+    out = recolour(rakdos_hands(), RIX)
+    out += mirror([ball(4, FLAME, -13, 21, 7, 1, 1, 0.5, g=900)])           # glowing palms
+    return out
+
+
+def rix_feet():
+    out = recolour(rakdos_feet(), RIX)
+    out += mirror(flame(-11, 1, -14, 8))                                  # sparks at the heel
+    return out
+
+
+SVOG = {G_SHELL: "#4a3a5a", G_SHELL_D: "#2c2238", G_SHELL_L: "#6a5a7a", G_BROWN: "#3a2e30",
+        G_BONE: "#e8dcc0", G_CAP: "#7a9a3a", G_CAP2: "#c8b060", G_SPORE: "#9af0e0"}
+SPORE = "#9af0e0"
+
+
+def svogthos_head():
+    out = recolour(golgari_head(), SVOG)
+    out += [ball(2.2, SPORE, x, y, z, g=900) for x, y, z in ((-12, 34, 4), (9, 38, -2), (2, 42, 6), (-4, 36, -9))]
+    return out
+
+
+def svogthos_chest():
+    out = recolour(golgari_chest(), SVOG)
+    out += [box(3, 14, 3, G_BONE, x, 40, fz(x, 40) + 1) for x in (-12, -6, 0, 6, 12)]  # ribs of bone
+    return out
+
+
+def svogthos_hands():
+    out = recolour(golgari_hands(), SVOG)
+    out += mirror([ball(2, SPORE, -13, 30, 4, g=900), ball(1.6, SPORE, -17, 25, 6, g=900)])
+    return out
+
+
+def svogthos_feet():
+    out = recolour(golgari_feet(), SVOG)
+    out += mirror([ball(2, SPORE, -11, 30, 8, g=900), ball(1.5, SPORE, -15, 22, 6, g=900)])
+    return out
+
+
 MODELS = {}
-for g in ("wanderer", "azorius", "izzet", "rakdos", "golgari", "selesnya"):
+for g in ("wanderer", "azorius", "izzet", "rakdos", "golgari", "selesnya", "rix", "svogthos"):
     for slot in ("head", "chest", "hands", "feet"):
         MODELS[f"armour_{g}_{slot}"] = globals()[f"{g}_{slot}"]()

@@ -1224,6 +1224,91 @@ def pedestal():
     return out
 
 
+
+# ------------------------------------------ T24: a second look per terrain
+
+def plains_arch():
+    """A ruined triumphal arch over old paving, grass in the cracks."""
+    out = []
+    for i, (x, z) in enumerate(((-52, -30), (-18, -36), (16, -30), (50, -38), (-40, 8), (-4, 2), (32, 10), (-20, 40), (20, 44))):
+        out.append(box(32, 4, 30, (MARBLE, MARBLE_D)[i % 2], x, 2, z, t=(0, 0, (i * 37) % 60 - 30)))
+    for s in (-1, 1):
+        out.append(box(26, 118, 30, MARBLE, s * 40, 59, -12))
+        out.append(box(32, 10, 36, MARBLE_D, s * 40, 5, -12))
+        out.append(box(32, 8, 36, MARBLE_D, s * 40, 122, -12))
+    # the lintel stands on one pier; its other end has fallen
+    out.append(box(62, 18, 32, MARBLE, -22, 135, -12, t=(0, 20, 0)))
+    out.append(part("chunk", (40, 10, 34), (34, 18, 26), MARBLE_D, t=(0, 0, 70)))
+    out.append(part("chunk", (62, 7, 16), (18, 12, 16), MARBLE))
+    out.append(box(30, 8, 8, "#2f6fc0", -40, 100, 4))
+    for x, z in ((-70, 30), (-30, -60), (66, -50), (8, 26), (-56, -8), (54, 52)):
+        out.append(ball(7, "#86a856", x, 4, z, 1.4, 0.6, 1))
+    return out
+
+
+def island_skiff():
+    """A moored skiff on the canal, a mooring post and a lamp on the bank."""
+    hull, deck = "#6e4a32", "#a07a52"
+    out = [
+        part("cyl", (0, 8, 0), (84, 12, 28), hull),
+        part("cyl", (0, 13, 0), (72, 3, 22), deck),
+        part("cone", (46, 9, 0), (16, 10, 24), hull, t=(0, 250, 0)),
+        part("cone", (-46, 9, 0), (16, 10, 24), hull, t=(0, -250, 0)),
+        box(10, 3, 22, "#5a3a26", -10, 16, 0),
+        box(10, 3, 22, "#5a3a26", 18, 16, 0),
+        bar("cyl", (-30, 14, 0), (-56, 30, 4), 2, "#5a3a26"),
+        cyl(4, 34, "#5a4a42", -40, 0, 66),
+        bar("cyl", (-40, 28, 66), (-30, 14, 10), 1.2, "#ccb684"),
+        cyl(3, 70, "#3a3a46", 52, 0, 70),
+        box(14, 14, 14, "#ffd68c", 52, 76, 70),
+    ]
+    out[-1]["g"] = 700
+    return out
+
+
+def swamp_fungus():
+    """A Golgari fungus garden: giant glowing caps over mud and roots."""
+    mud = "#3a3230"
+    out = [part("blob", (0, 1, 0), (170, 8, 150), mud)]
+    for x, z, h, r, c in ((-30, -20, 96, 34, "#8a5aa0"), (34, 12, 70, 26, "#b98a3a"), (-4, 46, 48, 20, "#6a9a5a"),
+                          (54, -42, 40, 16, "#8a5aa0"), (-60, 34, 34, 14, "#b98a3a")):
+        out.append(cyl(r / 4, h, "#e6dcc8", x, 0, z, mesh="frustum"))
+        out.append(ball(r, c, x, h, z, 1, 0.42, 1, g=300))
+        out.append(ball(r * 0.6, "#e6dcc8", x, h - r * 0.22, z, 1, 0.2, 1))
+    for a in (0.4, 1.8, 3.1, 4.4, 5.6):
+        out.append(bar("cyl", (-30, 6, -20), (-30 + 56 * math.cos(a), 1, -20 + 56 * math.sin(a)), 5, "#4a3f44"))
+    for x, z in ((70, 50), (-70, -50), (10, -64)):
+        out.append(part("rock", (x, 6, z), (24, 12, 20), "#4a4046"))
+    return out
+
+
+def mountain_crags():
+    """Red-rock spires without snow, scree at their feet."""
+    out = []
+    for x, z, w, h, c, r in ((-26, -18, 34, 150, RED_ROCK, 4), (24, -30, 26, 110, RED_ROCK_D, -6),
+                             (40, 28, 22, 84, RED_ROCK_L, 8), (-44, 36, 20, 66, RED_ROCK_D, -4), (2, 20, 18, 48, RED_ROCK, 10)):
+        out.append(part("chunk", (x, h / 2 - 4, z), (w, h, w * 0.9), c, t=(0, tt(r), (x * 13) % 200)))
+        out.append(part("cone", (x, h - 2, z), (w * 0.9, 26, w * 0.8), c, t=(0, tt(r), 0)))
+    for x, z, s, c in ((60, -60, 16, RED_ROCK_D), (-70, -50, 14, RED_ROCK_L), (-10, 66, 15, RED_ROCK),
+                       (70, 54, 12, RED_ROCK_D), (-66, 4, 11, RED_ROCK), (12, -66, 10, RED_ROCK_L)):
+        out.append(part("rock", (x, 5, z), (2 * s, 1.1 * s, 2 * s), c, t=(0, 0, (x * 7) % 200)))
+    return out
+
+
+def forest_conifers():
+    """Three tall conifers among ferns."""
+    out = []
+    for x, z, h in ((-30, -24, 160), (34, -6, 130), (-6, 40, 104)):
+        out.append(cyl(6, h * 0.35, TRUNK, x, 0, z))
+        for i, f in enumerate((0.25, 0.5, 0.72)):
+            w = (1.05 - f) * h * 0.55
+            out.append(part("cone", (x, h * f + h * 0.12, z), (w, h * 0.34, w), ("#2f6a3a", "#3a7a44", "#468a4e")[i]))
+    for x, z in ((60, 50), (-64, 30), (54, -56), (-50, -66), (10, 70), (70, -10)):
+        for k in range(3):
+            a = k * 2.1 + x * 0.1
+            out.append(ball(9, LEAF[k], x + 8 * math.cos(a), 5, z + 8 * math.sin(a), 1.3, 0.5, 0.8, t=(0, 0, tt(-math.degrees(a)))))
+    return out
+
 MODELS = {
     "chum_house": chum_house(),
     "chum_hall": chum_hall(),
@@ -1245,6 +1330,11 @@ MODELS = {
     "dead_tree": dead_tree(),
     "swamp_pool": swamp_pool(),
     "plains_columns": plains_columns(),
+    "plains_arch": plains_arch(),
+    "island_skiff": island_skiff(),
+    "swamp_fungus": swamp_fungus(),
+    "mountain_crags": mountain_crags(),
+    "forest_conifers": forest_conifers(),
     "canal_straight": canal_straight(),
     "canal_pool": canal_pool(),
     "tower_azorius": tower_azorius(),

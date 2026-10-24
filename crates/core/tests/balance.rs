@@ -182,3 +182,31 @@ fn a_starting_deck_beats_most_tier_one_foes_and_few_tier_three() {
     );
     assert!(pct(by_tier[2]) <= 50, "tier three: {:?}", by_tier[2]);
 }
+
+#[test]
+fn every_starting_deck_beats_most_tier_one_foes() {
+    // each guild's six decks (T25) against every tier-one foe, twice each
+    let c = cards();
+    let mut weak = Vec::new();
+    for guild in tool_core::world::Guild::ALL {
+        let lands = encounter::starter_lands(&c, guild);
+        let names: Vec<&str> = lands.iter().map(|&l| c[l].name.as_str()).collect();
+        for id in encounter::starter_ids(guild) {
+            let me = side(&c, encounter::starter_named(&c, guild, id), 18, &names);
+            let (mut won, mut played) = (0, 0);
+            for (f, k) in c.iter().enumerate() {
+                if !k.is(content::ty::CREATURE) || k.tier() != 1 {
+                    continue;
+                }
+                let foe = |s: u64| encounter::foe(&c, f, &[], &mut Rng::new(s));
+                won += rate(&c, &me, &foe, 2);
+                played += 2;
+            }
+            println!("{guild:?} {id}: {won} of {played}");
+            if won * 100 < played * 60 {
+                weak.push(format!("{guild:?} {id}: {won} of {played}"));
+            }
+        }
+    }
+    assert!(weak.is_empty(), "{weak:?}");
+}

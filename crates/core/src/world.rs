@@ -145,15 +145,21 @@ pub enum City {
     Tenth,
     Prahv,
     Vitu,
+    /// Rix Maadi, the Rakdos city (T27).
+    Rix,
+    /// Svogthos, the Golgari city (T27).
+    Svogthos,
 }
 
 impl City {
-    pub const ALL: [City; 3] = [City::Tenth, City::Prahv, City::Vitu];
+    pub const ALL: [City; 5] = [City::Tenth, City::Prahv, City::Vitu, City::Rix, City::Svogthos];
     pub fn id(self) -> &'static str {
         match self {
             City::Tenth => "tenth",
             City::Prahv => "prahv",
             City::Vitu => "vitu",
+            City::Rix => "rix",
+            City::Svogthos => "svogthos",
         }
     }
     pub fn from_id(s: &str) -> Option<City> {
@@ -164,6 +170,8 @@ impl City {
             City::Tenth => None,
             City::Prahv => Some(Guild::Azorius),
             City::Vitu => Some(Guild::Selesnya),
+            City::Rix => Some(Guild::Rakdos),
+            City::Svogthos => Some(Guild::Golgari),
         }
     }
 }
@@ -214,8 +222,8 @@ pub fn chunk_plan(c: Pos) -> (Option<Guild>, Option<Feature>) {
         (1, -1) => (Some(Guild::Izzet), Some(Feature::Lair)),
         (1, 0) => (Some(Guild::Izzet), None),
         (1, 1) => (Some(Guild::Rakdos), None),
-        (0, 1) => (Some(Guild::Rakdos), None),
-        (-1, 1) => (Some(Guild::Golgari), None),
+        (0, 1) => (Some(Guild::Rakdos), Some(Feature::City(City::Rix))),
+        (-1, 1) => (Some(Guild::Golgari), Some(Feature::City(City::Svogthos))),
         (-1, 0) => (Some(Guild::Selesnya), Some(Feature::City(City::Vitu))),
         (-1, -1) => (Some(Guild::Selesnya), None),
         _ => (None, None),
@@ -242,6 +250,20 @@ pub fn ring(c: Pos) -> i32 {
 
 /// Tiles from the start to the edge of each band of difficulty (T20).
 pub const BAND: i32 = 5;
+
+/// One tile in this many wears its terrain's second look (T24).
+pub const ALTERNATE_ONE_IN: u64 = 3;
+
+/// Whether the tile at p wears its terrain's second look: fixed by the seed
+/// and the place, so a tile keeps its look for the whole game.
+pub fn alternate(seed: u64, p: Pos) -> bool {
+    let mut h = seed ^ 0x9E37_79B9_7F4A_7C15;
+    for v in [p.0, p.1] {
+        h = (h ^ v as u32 as u64).wrapping_mul(0x100_0000_01B3);
+        h ^= h >> 29;
+    }
+    h.is_multiple_of(ALTERNATE_ONE_IN)
+}
 
 /// Which band of difficulty a tile is in: 0 within `BAND` tiles of the start
 /// (as the crow flies), 1 within twice that, and so on outward.
@@ -352,6 +374,22 @@ impl World {
     }
 
     /// Where a city or the lair is, if its chunk exists.
+    /// A game saved before a chunk's city was planned gets the city now, at
+    /// the chunk's centre, with the lands attached there kept (T27).
+    pub fn settle_cities(&mut self) {
+        for &c in &self.chunks {
+            let (_, Some(f @ Feature::City(_))) = chunk_plan(c) else {
+                continue;
+            };
+            if let Some(t) = self.tiles.get_mut(&chunk_centre(c)) {
+                if t.feature != f {
+                    t.feature = f;
+                    t.pool.clear();
+                }
+            }
+        }
+    }
+
     pub fn find(&self, f: Feature) -> Option<Pos> {
         self.tiles.iter().find(|(_, t)| t.feature == f).map(|(p, _)| *p)
     }
@@ -577,15 +615,18 @@ mod tests {
         b.add_chunk((1, 1), &cards);
         b.add_chunk((1, 0), &cards);
         assert_eq!(a.tiles, b.tiles);
-        // two chunks of one guild's quarter still differ: each has its own chance
-        let south = generate(11, (0, 1), &cards);
-        let south_east = generate(11, (1, 1), &cards);
+        // two chunks with the same plan still differ: each has its own chance
+        // (beyond the region, where no guild or place is planned; since T27
+        // the Rakdos quarter's two chunks differ by Rix Maadi alone)
+        assert_eq!(chunk_plan((2, 0)), chunk_plan((2, 1)));
+        let one = generate(11, (2, 0), &cards);
+        let other = generate(11, (2, 1), &cards);
         let layout = |t: &[(Pos, Tile)]| {
             t.iter()
                 .map(|(_, t)| (t.terrain, t.feature, t.guild))
                 .collect::<Vec<_>>()
         };
-        assert_ne!(layout(&south), layout(&south_east));
+        assert_ne!(layout(&one), layout(&other));
     }
 
     #[test]
@@ -654,5 +695,54 @@ mod tests {
         // from (0, 0): (1, 1) is 2 steps, (2, 2) is 4
         assert_eq!(w.lands_in_reach((0, 0), 2).len(), 1);
         assert_eq!(w.lands_in_reach((0, 0), 4).len(), 2);
+    }
+
+    #[test]
+    fn about_a_third_of_tiles_wear_the_second_look_and_keep_it() {
+        let cards = crate::content::for_tests();
+        let w = World::new(5, &cards);
+        let mut by = std::collections::BTreeMap::new();
+        for (&p, t) in &w.tiles {
+            let e = by.entry(t.terrain).or_insert((0, 0));
+            if alternate(w.seed, p) {
+                e.0 += 1;
+            }
+            e.1 += 1;
+            assert_eq!(alternate(w.seed, p), alternate(w.seed, p));
+        }
+        let (alt, all) = by.values().fold((0, 0), |a, b| (a.0 + b.0, a.1 + b.1));
+        assert!(alt * 4 > all && alt * 5 < all * 2, "{alt} of {all}");
+        // the look follows the seed: another game lays it out differently
+        assert!(w
+            .tiles
+            .keys()
+            .any(|&p| alternate(w.seed, p) != alternate(w.seed + 1, p)));
+    }
+
+    #[test]
+    fn rix_maadi_and_svogthos_stand_in_their_guilds_chunks_and_an_old_save_gets_them() {
+        let cards = crate::content::for_tests();
+        let mut w = World::new(9, &cards);
+        for c in [(0, 1), (-1, 1)] {
+            w.add_chunk(c, &cards);
+        }
+        assert_eq!(
+            w.tile(chunk_centre((0, 1))).unwrap().feature,
+            Feature::City(City::Rix)
+        );
+        assert_eq!(
+            w.tile(chunk_centre((-1, 1))).unwrap().feature,
+            Feature::City(City::Svogthos)
+        );
+        assert_eq!(City::Rix.guild(), Some(Guild::Rakdos));
+        // a save from before T27: the centre was an ordinary tile
+        let at = chunk_centre((0, 1));
+        let t = w.tiles.get_mut(&at).unwrap();
+        t.feature = Feature::Cards;
+        t.pool = vec![0];
+        w.settle_cities();
+        let t = w.tile(at).unwrap();
+        assert_eq!(t.feature, Feature::City(City::Rix));
+        assert!(t.pool.is_empty());
     }
 }
