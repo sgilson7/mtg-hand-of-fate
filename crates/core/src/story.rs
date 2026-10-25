@@ -2,7 +2,8 @@
 //! District (`data/stories/*.json`, checked by `tools/stories/check.py`).
 //! A creature's story wraps its fight; an enchantment's or artifact's is a
 //! scene with two or three choices; an instant's or sorcery's is a magic
-//! scene; a land's is a short find. Outcomes are effects this module names
+//! scene; a land's is a short find; a planeswalker's is a meeting with a
+//! patron, whose choices are its loyalty abilities and a challenge. Outcomes are effects this module names
 //! and `session.rs` applies, and fate draws: Hand of Fate's four cards,
 //! shown face up, turned and shuffled, and one picked.
 
@@ -24,6 +25,24 @@ pub enum Effect {
     PoolCard(bool),
     Style((String, i32)),
     QuestStart(String),
+    /// Jace's two piles: one card face up, two face down, and you take one pile.
+    Piles(bool),
+    /// Vraska names a creature on a tile near you, to be beaten in time.
+    Contract(bool),
+    /// The strongest creature near you is turned to stone; its card is yours.
+    Petrify(bool),
+    /// The next fights' foes start at half life.
+    Assassins(i32),
+    /// Rare cards of your guild's colours.
+    Rares(i32),
+    /// A mark on this tile: "shrine" or "hex".
+    Enchant(String),
+    /// A device on this tile that pays gold each time you step onto it.
+    Install(bool),
+    /// Opens peaks and canals next to you: one, or all of them.
+    Open(i32),
+    /// Rebuilds the razed tiles next to you and here.
+    Rebuild(bool),
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Deserialize)]
@@ -58,6 +77,10 @@ pub struct Choice {
     pub text: String,
     #[serde(default, deserialize_with = "need")]
     pub needs: Option<Need>,
+    /// A patron's choice: which of its loyalty abilities this is. Its change
+    /// in loyalty comes from the card's rules.
+    #[serde(default)]
+    pub ability: Option<usize>,
     pub outcome: Outcome,
 }
 
@@ -216,6 +239,19 @@ mod tests {
             assert_eq!(s.kind, c.kind().name(), "{}", c.name);
             if matches!(c.kind(), Kind::Story | Kind::Magic) {
                 assert!((2..=3).contains(&s.choices.len()), "{}", c.name);
+            }
+            if c.kind() == Kind::Patron {
+                // each loyalty ability once, and a challenge
+                let mut abilities: Vec<usize> = s.choices.iter().filter_map(|x| x.ability).collect();
+                abilities.sort();
+                assert_eq!(abilities, vec![0, 1, 2], "{}", c.name);
+                assert!(
+                    s.choices
+                        .iter()
+                        .any(|x| x.ability.is_none() && x.outcome.effects.contains(&Effect::Fight(true))),
+                    "{}",
+                    c.name
+                );
             }
         }
     }

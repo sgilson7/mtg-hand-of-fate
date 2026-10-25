@@ -8,9 +8,17 @@ Write each entry as a `### Term` heading, then one or two plain sentences, then 
 
 How well you talk your way through Ravnica. It comes from your armour, lowers prices, and opens some story choices.
 
+### Contract
+
+A job a patron sets on the map: beat a named creature on a named tile within {steps} steps. Vraska pays gold and Golgari standing; a lapsed contract costs health and loyalty.
+
 ### Deck
 
 The cards you fight with, chosen from your collection. Lands are never in it: they live on the map and make your land pile.
+
+### Device
+
+An artifact set up on a tile. It pays gold each time you step onto that tile, until its uses run out.
 
 ### District
 
@@ -34,6 +42,14 @@ How much harm you can take. Your most is the sum of your armour and a base, and 
 
 Not: hit points
 
+### Held instant
+
+An instant kept for later instead of read. You hold one at a time and cast it to answer a bad fate draw, slip past a creature, or detain Rakdos.
+
+### Hex
+
+A curse an enchantment leaves on a tile. It costs health each time you step onto that tile, until its uses run out, and it leaves you at least one health.
+
 ### Land pile
 
 The lands a side may play in a fight, face up beside its deck: one a turn, any of them. Yours are the lands within Reach, made up to {pile} with basics of your deck's colours.
@@ -48,6 +64,10 @@ A creature Rakdos leaves holding a tile he razed in the Riot. It fights harder t
 
 What a game is played for, chosen before the guild: the Dracogenius, which ends with Niv-Mizzet, or the Riot, which ends with Rakdos beaten or New Prahv fallen.
 
+### Patron
+
+A planeswalker met on the map. Its loyalty abilities are offers of help that move its loyalty, which it keeps between meetings; you can also challenge it to a fight.
+
 ### Pool
 
 The cards a tile can turn up. When you step onto a tile not yet drawn, one card from its pool is drawn.
@@ -61,6 +81,10 @@ Not: range
 ### Region
 
 The part of the map one guardian rules: three by three chunks of five by five tiles.
+
+### Shrine
+
+A blessing an enchantment leaves on a tile. It heals you each time you step onto that tile, until its uses run out.
 
 ### Standing
 

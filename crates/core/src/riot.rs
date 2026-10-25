@@ -15,6 +15,8 @@ use crate::world::{chunk_centre, chunk_of, chunk_plan, Pos};
 /// Player steps to each of his, and to each once the Calliope is silenced.
 pub const EVERY: u32 = 3;
 pub const EVERY_SLOWED: u32 = 4;
+/// Player steps he waits when a held instant detains him (T38).
+pub const DETAIN_STEPS: u32 = 6;
 /// Where he sets out from (Rix Maadi) and what he means to raze (New Prahv).
 pub const START: Pos = (0, 5);
 pub const TARGET: Pos = (0, -5);
@@ -83,6 +85,9 @@ pub struct Riot {
     /// Minions left on tiles of chunks not made yet, placed when they are.
     pub pending: Vec<(Pos, usize)>,
     pub ended: Option<Ending>,
+    /// Player steps he waits, detained by a held instant (T38).
+    #[serde(default)]
+    pub detained: u32,
 }
 
 impl Riot {
@@ -95,6 +100,7 @@ impl Riot {
             weakened: false,
             pending: Vec::new(),
             ended: None,
+            detained: 0,
         }
     }
     pub fn pos(&self) -> Pos {

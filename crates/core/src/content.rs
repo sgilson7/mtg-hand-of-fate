@@ -28,6 +28,8 @@ pub enum Kind {
     Magic,
     /// A land: attach it to a tile you have visited.
     Land,
+    /// A planeswalker: a patron you meet, whose loyalty buys help.
+    Patron,
 }
 
 impl Kind {
@@ -37,6 +39,7 @@ impl Kind {
             Kind::Story => "story",
             Kind::Magic => "magic",
             Kind::Land => "land",
+            Kind::Patron => "patron",
         }
     }
 }
@@ -69,8 +72,10 @@ pub struct Card {
 
 impl Card {
     pub fn kind(&self) -> Kind {
-        // a planeswalker is met as a fight, like a creature
-        if self.types & (ty::CREATURE | ty::PLANESWALKER) != 0 {
+        // a planeswalker is met as a patron, not fought on sight
+        if self.is(ty::PLANESWALKER) {
+            Kind::Patron
+        } else if self.is(ty::CREATURE) {
             Kind::Creature
         } else if self.types & ty::LAND != 0 {
             Kind::Land
@@ -241,6 +246,8 @@ mod tests {
         assert_eq!(k("Mizzium Mortars"), Kind::Magic);
         assert_eq!(k("Cancel"), Kind::Magic);
         assert_eq!(k("Izzet Guildgate"), Kind::Land);
+        assert_eq!(k("Jace, Architect of Thought"), Kind::Patron);
+        assert_eq!(k("Vraska the Unseen"), Kind::Patron);
     }
 
     #[test]

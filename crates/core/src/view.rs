@@ -174,6 +174,7 @@ fn readings(s: &Session, c: usize, at: Pos) -> Value {
             ],
         ),
         Kind::Land => s.s("reading.tier.land"),
+        Kind::Patron => s.f("reading.tier.patron", &[("n", s.loyalty_of(c).to_string())]),
         _ => s.f("reading.tier.story", &[("tier", tier.to_string())]),
     };
     let r = &k.rules;
@@ -222,7 +223,7 @@ fn hud(s: &Session) -> Value {
     let p = s.player();
     let a = &s.armoury;
     let lands: usize = s.world().tiles.values().map(|t| t.lands.len()).sum();
-    json!({
+    let mut v = json!({
         "id": "hud", "place": "tl", "heading": s.s(&format!("guild.{}", s.guild.name())),
         "meter": {"value": p.health, "max": p.max_health(a), "label": s.f("hud.health", &[("n", p.health.to_string()), ("max", p.max_health(a).to_string())])},
         "rows": [
@@ -235,7 +236,20 @@ fn hud(s: &Session) -> Value {
             [s.s("hud.lands"), lands.to_string()],
         ],
         "actions": [action(s.s("hud.open_deck"), "deck.open", "", true)],
-    })
+    });
+    if let Some(h) = p.held {
+        v["rows"]
+            .as_array_mut()
+            .expect("rows")
+            .push(json!([s.s("hud.held"), s.cards[h].name.clone()]));
+    }
+    if p.assassins > 0 {
+        v["rows"].as_array_mut().expect("rows").push(json!([
+            s.s("hud.assassins"),
+            s.f("hud.assassins_n", &[("n", p.assassins.to_string())])
+        ]));
+    }
+    v
 }
 
 fn quests_panel(s: &Session) -> Value {
@@ -272,6 +286,22 @@ fn quests_panel(s: &Session) -> Value {
             ]),
         );
     }
+    if let Some(c) = &p.contract {
+        let left = c.by.saturating_sub(p.steps);
+        rows.insert(
+            0,
+            json!([
+                s.s("quest.contract"),
+                s.f(
+                    "contract.row",
+                    &[
+                        ("card", s.cards[c.creature].name.clone()),
+                        ("n", left.to_string())
+                    ]
+                )
+            ]),
+        );
+    }
     json!({"id": "quests", "place": "tr", "heading": s.s("quest.heading"), "rows": rows})
 }
 
@@ -299,6 +329,9 @@ fn tile_panel(s: &Session) -> Value {
         _ if t.minion.is_some() => lines.push(s.s("tile.razed")),
         _ if t.cleared => lines.push(s.s("tile.cleared")),
         _ => {}
+    }
+    if let Some(m) = t.mark {
+        lines.push(mark_text(s, m));
     }
     if !t.lands.is_empty() {
         let names: Vec<String> = t.lands.iter().map(|&l| s.cards[l].name.clone()).collect();
@@ -335,9 +368,26 @@ fn tile_panel(s: &Session) -> Value {
                 &[("guild", g.name().to_string()), ("terrain", place)],
             );
         }
+        let what = match n.mark {
+            Some(m) => format!("{what} · {}", s.s(&format!("mark.{}", m.kind.id()))),
+            None => what,
+        };
         rows.push(json!([s.s(&format!("dir.{dir}")), format!("{place} · {what}")]));
     }
     json!({"id": "tile", "place": "bl", "heading": heading, "lines": lines, "rows": rows})
+}
+
+/// A mark as a line: what it is, what it does, and its uses left.
+fn mark_text(s: &Session, m: crate::world::Mark) -> String {
+    let n = match m.kind {
+        crate::world::MarkKind::Shrine => crate::world::SHRINE_HEAL,
+        crate::world::MarkKind::Hex => crate::world::HEX_HARM,
+        crate::world::MarkKind::Device => crate::world::DEVICE_GOLD,
+    };
+    s.f(
+        &format!("mark.{}.text", m.kind.id()),
+        &[("n", n.to_string()), ("left", m.left.to_string())],
+    )
 }
 
 fn labels_board(s: &Session) -> Vec<Value> {
@@ -458,6 +508,7 @@ fn result_panel(s: &Session, lines: &[String], next: &Next) -> Value {
         Next::City(_) => s.s("result.city"),
         Next::Victory => s.s("result.victory"),
         Next::Board => s.s("result.continue"),
+        Next::Piles { .. } => s.s("result.piles"),
     };
     json!({"id": "result", "place": "center", "kind": "paper", "lines": lines, "actions": [action(label, "result.next", "", true)]})
 }
@@ -485,11 +536,18 @@ fn story_panel(s: &Session, card: usize) -> Value {
                     &[("good", (f.faces[0] + f.faces[1]).to_string()), ("bad", (f.faces[2] + f.faces[3]).to_string())],
                 )
             });
-            let sub = [need, gamble.unwrap_or_default()].into_iter().filter(|x| !x.is_empty()).collect::<Vec<_>>().join(" · ");
-            json!({"key": (i + 1).to_string(), "text": c.text, "sub": sub, "enabled": s.can_choose(c), "act": "story.choose", "value": i.to_string()})
+            let loyalty = c.ability.and_then(|a| s.ability_change(card, a)).map(|n| {
+                s.f(if n >= 0 { "need.loyalty_up" } else { "need.loyalty_down" }, &[("n", n.abs().to_string())])
+            });
+            let sub = [loyalty.unwrap_or_default(), need, gamble.unwrap_or_default()].into_iter().filter(|x| !x.is_empty()).collect::<Vec<_>>().join(" · ");
+            json!({"key": (i + 1).to_string(), "text": c.text, "sub": sub, "enabled": s.can_choose(card, c), "act": "story.choose", "value": i.to_string()})
         })
         .collect();
-    let tag = s.s(&format!("story.tag.{}", k.kind().name()));
+    let tag = if k.kind() == Kind::Patron {
+        s.f("story.tag.patron", &[("n", s.loyalty_of(card).to_string())])
+    } else {
+        s.s(&format!("story.tag.{}", k.kind().name()))
+    };
     json!({"id": "story", "place": "center-right", "kind": "paper", "eyebrow": tag, "heading": st.title, "text": st.text, "choices": choices})
 }
 
@@ -1614,13 +1672,36 @@ pub fn ui(s: &mut Session) -> Value {
                         "",
                         true,
                     ));
+                    if let Some(h) = s.player().held {
+                        actions.push(action(
+                            s.f("draw.slip", &[("card", s.cards[h].name.clone())]),
+                            "draw.slip",
+                            "",
+                            true,
+                        ));
+                    }
                 }
                 Kind::Land => actions.push(action(s.s("draw.claim"), "draw.claim", "", true)),
+                Kind::Patron => actions.push(action(s.s("draw.meet"), "draw.read", "", true)),
                 _ => actions.push(action(s.s("draw.read"), "draw.read", "", true)),
             }
+            if k.is(crate::content::ty::INSTANT) {
+                let label = match s.player().held {
+                    Some(h) => s.f("draw.keep_instead", &[("card", s.cards[h].name.clone())]),
+                    None => s.s("draw.keep"),
+                };
+                actions.push(action(label, "draw.keep", "", true));
+            }
+            let contract = s
+                .player()
+                .contract
+                .as_ref()
+                .filter(|c| c.at == *at && c.creature == *card)
+                .is_some();
             let minion = s.world().tile(*at).and_then(|t| t.minion) == Some(*card);
             let text = match (k.kind(), story) {
                 (Kind::Creature, _) if minion => s.f("riot.minion_text", &[("card", k.name.clone())]),
+                (Kind::Creature, _) if contract => s.f("contract.text", &[("card", k.name.clone())]),
                 (Kind::Creature, Some(st)) => st.intro.clone(),
                 (Kind::Land, Some(st)) => st.text.clone(),
                 _ => String::new(),
@@ -1657,7 +1738,18 @@ pub fn ui(s: &mut Session) -> Value {
                     json!({"label": if up { s.s(f.key()) } else { String::new() }, "up": up, "good": f.good(), "act": "fate.pick", "value": i.to_string(), "enabled": *shuffled && picked.is_none()})
                 })
                 .collect();
-            let (text, actions) = if *shuffled {
+            let held = s.player().held;
+            let bad = picked.map(|i| !faces[i].good()).unwrap_or(false);
+            let (text, actions) = if let (Some(h), true) = (held, bad) {
+                let name = s.cards[h].name.clone();
+                (
+                    s.f("fate.answer_text", &[("card", name.clone())]),
+                    vec![
+                        action(s.f("fate.answer", &[("card", name)]), "fate.answer", "", true),
+                        action(s.s("fate.accept"), "fate.accept", "", true),
+                    ],
+                )
+            } else if *shuffled {
                 (s.s("fate.pick_text"), vec![])
             } else {
                 (
@@ -1776,7 +1868,34 @@ pub fn ui(s: &mut Session) -> Value {
                 "text": s.s("riot.met"),
                 "lines": [s.f("riot.odds", &[("life", life.to_string()), ("deck", encounter::RAKDOS_LIST.iter().map(|x| x.1).sum::<usize>().to_string()), ("lands", lands.to_string())])],
                 "actions": [action(s.s("riot.fight"), "riot.fight", "", true), action(s.s("riot.leave"), "riot.leave", "", true)]}));
+            if let Some(h) = s.player().held {
+                let a = action(
+                    s.f(
+                        "riot.detain",
+                        &[
+                            ("card", s.cards[h].name.clone()),
+                            ("n", crate::riot::DETAIN_STEPS.to_string()),
+                        ],
+                    ),
+                    "riot.detain",
+                    "",
+                    true,
+                );
+                if let Some(acts) = panels.last_mut().and_then(|v| v["actions"].as_array_mut()) {
+                    acts.insert(1, a);
+                }
+            }
             "rakdos"
+        }
+        Screen::Piles { card, piles } => {
+            panels.push(json!({"id": "drawn", "place": "left", "kind": "card", "cards": piles[0].iter().map(|&c| face(s, c, "lg")).collect::<Vec<_>>()}));
+            let choices = vec![
+                json!({"key": "1", "text": s.s("piles.up"), "sub": piles[0].iter().map(|&c| s.cards[c].name.clone()).collect::<Vec<_>>().join(", "), "enabled": !piles[0].is_empty(), "act": "piles.pick", "value": "0"}),
+                json!({"key": "2", "text": s.s("piles.down"), "sub": s.f("piles.down_n", &[("n", piles[1].len().to_string())]), "enabled": !piles[1].is_empty(), "act": "piles.pick", "value": "1"}),
+            ];
+            panels.push(json!({"id": "story", "place": "center-right", "kind": "paper", "eyebrow": s.f("story.tag.patron", &[("n", s.loyalty_of(*card).to_string())]),
+                "heading": s.s("piles.heading"), "text": s.s("piles.text"), "choices": choices}));
+            "piles"
         }
         Screen::Victory => {
             let ending = s

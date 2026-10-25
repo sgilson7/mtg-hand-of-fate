@@ -133,6 +133,29 @@ pub struct Player {
     /// Steps taken this game: the Riot's grade (T32).
     #[serde(default)]
     pub steps: u32,
+    /// Each patron's loyalty, by card number, kept between meetings (T37).
+    #[serde(default)]
+    pub loyalty: BTreeMap<String, i32>,
+    /// Vraska's contract, while it runs.
+    #[serde(default)]
+    pub contract: Option<Contract>,
+    /// Fights left whose foe starts at half life (Vraska's assassins).
+    #[serde(default)]
+    pub assassins: u32,
+    /// The instant kept for later (T38): one at a time.
+    #[serde(default)]
+    pub held: Option<usize>,
+}
+
+/// A creature to beat on a named tile before a step count runs out.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct Contract {
+    pub at: Pos,
+    pub creature: usize,
+    /// The step by which it must be beaten.
+    pub by: u32,
+    /// The patron who set it, by card number.
+    pub from: String,
 }
 
 impl Player {
@@ -159,6 +182,10 @@ impl Player {
             guardian_beaten: false,
             fights_won: 0,
             steps: 0,
+            loyalty: BTreeMap::new(),
+            contract: None,
+            assassins: 0,
+            held: None,
         };
         pl.health = pl.max_health(armoury);
         pl

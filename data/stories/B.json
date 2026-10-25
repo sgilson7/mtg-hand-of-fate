@@ -112,7 +112,7 @@
      "fate": {"faces": [1, 2, 1, 0],
       "huge_success": {"text": "You muzzle it with your cloak. The scream breaks into a curse you can carry, and you learn where the performer came from.", "effects": [{"health": 2}, {"quest_start": "festival"}, {"take": true}]},
       "success": {"text": "You stop the scream and catch the curse in a jar. The crowd tells you where the performer went.", "effects": [{"quest_start": "festival"}, {"take": true}]},
-      "failure": {"text": "The shriek drives you off the stage, ears ringing.", "effects": [{"health": -3}]}}}},
+      "failure": {"text": "The shriek drives you off the stage, ears ringing. The curse soaks into the street behind you.", "effects": [{"health": -3}, {"enchant": "hex"}]}}}},
    {"text": "Ask the crowd who started it", "needs": {"charisma": 2},
     "outcome": {"text": "A drunk reveler points you to a Rakdos district and hands you a cursed bell.", "effects": [{"quest_start": "festival"}, {"take": true}]}},
    {"text": "Get away from the noise",

@@ -124,9 +124,11 @@ fn a_bot_can_play_the_first_region_to_the_guardian() {
             Screen::Draw { .. } => s.act("first", "").unwrap(),
             Screen::Story { card, .. } => {
                 let st = s.stories[&s.cards[card].number].clone();
-                let i = st.choices.iter().position(|c| s.can_choose(c)).unwrap_or(0);
+                let i = st.choices.iter().position(|c| s.can_choose(card, c)).unwrap_or(0);
                 s.act("story.choose", &i.to_string()).unwrap();
             }
+            Screen::Piles { .. } => s.act("piles.pick", "0").unwrap(),
+            Screen::Fate { picked: Some(_), .. } => s.act("fate.accept", "").unwrap(),
             Screen::Fate { shuffled, .. } => {
                 if shuffled {
                     s.act("fate.pick", "0").unwrap();

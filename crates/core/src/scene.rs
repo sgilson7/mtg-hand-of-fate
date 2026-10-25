@@ -348,6 +348,15 @@ fn board_statics(s: &Session, w: &World) -> Batch {
                 }
             }
         }
+        // a story card's mark (T39), at the tile's back corner
+        if let Some(m) = t.mark {
+            let name = match m.kind {
+                crate::world::MarkKind::Shrine => "chum_shrine",
+                crate::world::MarkKind::Hex => "dead_tree",
+                crate::world::MarkKind::Device => "lamp",
+            };
+            model_h(s, &mut b, name, c.add(v3(-ONE / 2, 0, ONE / 2)), 0, ONE * 4 / 5);
+        }
         // a visited tile carries a thin gold frame
         if t.visited {
             let gold = hex("#f2c14e");
@@ -1379,6 +1388,7 @@ pub fn build(s: &mut Session) {
         Screen::Board
             | Screen::Draw { .. }
             | Screen::Story { .. }
+            | Screen::Piles { .. }
             | Screen::Fate { .. }
             | Screen::Result { .. }
             | Screen::Land { .. }

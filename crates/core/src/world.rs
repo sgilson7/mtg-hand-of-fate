@@ -32,6 +32,55 @@ pub const OBSTACLES: usize = 2;
 /// Lands a tile can hold; a city holds more.
 pub const LANDS_PER_TILE: usize = 1;
 pub const LANDS_PER_CITY: usize = 3;
+/// A mark's uses (T39): a shrine heals, a hex harms, a device pays gold,
+/// each time you step onto its tile, until its uses run out.
+pub const SHRINE_USES: u32 = 5;
+pub const SHRINE_HEAL: i32 = 2;
+pub const HEX_USES: u32 = 3;
+pub const HEX_HARM: i32 = 2;
+pub const DEVICE_USES: u32 = 3;
+pub const DEVICE_GOLD: i32 = 3;
+/// Every neighbour: what an overloaded opening reaches.
+pub const NEIGHBOURS: [Pos; 4] = [(0, -1), (1, 0), (0, 1), (-1, 0)];
+
+/// What a story card left on a tile (T39).
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+pub enum MarkKind {
+    /// An enchantment's blessing: heals.
+    Shrine,
+    /// An enchantment's curse: harms.
+    Hex,
+    /// An installed artifact: pays gold.
+    Device,
+}
+
+impl MarkKind {
+    pub fn id(self) -> &'static str {
+        match self {
+            MarkKind::Shrine => "shrine",
+            MarkKind::Hex => "hex",
+            MarkKind::Device => "device",
+        }
+    }
+    pub fn from_id(s: &str) -> Option<MarkKind> {
+        [MarkKind::Shrine, MarkKind::Hex, MarkKind::Device]
+            .into_iter()
+            .find(|m| m.id() == s)
+    }
+    pub fn uses(self) -> u32 {
+        match self {
+            MarkKind::Shrine => SHRINE_USES,
+            MarkKind::Hex => HEX_USES,
+            MarkKind::Device => DEVICE_USES,
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+pub struct Mark {
+    pub kind: MarkKind,
+    pub left: u32,
+}
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 pub enum Terrain {
@@ -195,6 +244,9 @@ pub struct Tile {
     /// The minion he left holding it, until it is beaten.
     #[serde(default)]
     pub minion: Option<usize>,
+    /// A shrine, hex or device a story card left here (T39).
+    #[serde(default)]
+    pub mark: Option<Mark>,
 }
 
 impl Tile {
@@ -411,6 +463,11 @@ impl World {
     pub fn riot_step(&mut self, cards: &[Card]) -> Option<Pos> {
         let seed = self.seed;
         let r = self.riot.as_mut().filter(|r| r.roaming())?;
+        if r.detained > 0 {
+            // a held instant detained him (T38): he waits out the steps
+            r.detained -= 1;
+            return None;
+        }
         r.clock += 1;
         if r.clock < r.every() || r.left() == 0 {
             return None;
@@ -438,6 +495,69 @@ impl World {
             }
         }
         Some(to)
+    }
+
+    /// Puts a mark on a tile, with its full uses.
+    pub fn mark(&mut self, p: Pos, kind: MarkKind) {
+        if let Some(t) = self.tiles.get_mut(&p) {
+            t.mark = Some(Mark {
+                kind,
+                left: kind.uses(),
+            });
+        }
+    }
+
+    /// Stepping onto a marked tile spends one use; the last use takes the
+    /// mark away. Returns what acted.
+    pub fn use_mark(&mut self, p: Pos) -> Option<MarkKind> {
+        let t = self.tiles.get_mut(&p)?;
+        let m = t.mark.as_mut()?;
+        let kind = m.kind;
+        m.left = m.left.saturating_sub(1);
+        if m.left == 0 {
+            t.mark = None;
+        }
+        Some(kind)
+    }
+
+    /// A sorcery opens peaks and canals next to `p`, the first `n` of them
+    /// in the order north, east, south, west: each becomes open ground,
+    /// already cleared. Returns how many opened.
+    pub fn open_around(&mut self, p: Pos, n: usize) -> usize {
+        let mut opened = 0;
+        for d in NEIGHBOURS {
+            if opened >= n {
+                break;
+            }
+            let q = (p.0 + d.0, p.1 + d.1);
+            if let Some(t) = self.tiles.get_mut(&q) {
+                if matches!(t.feature, Feature::Peak | Feature::Canal) {
+                    t.feature = Feature::Cards;
+                    t.pool.clear();
+                    t.cleared = true;
+                    opened += 1;
+                }
+            }
+        }
+        opened
+    }
+
+    /// Rebuilds razed tiles here and next to `p`: the minion goes and the
+    /// tile is whole again, its pool still gone. Returns how many.
+    pub fn rebuild_around(&mut self, p: Pos) -> usize {
+        let mut n = 0;
+        for d in std::iter::once((0, 0)).chain(NEIGHBOURS) {
+            let q = (p.0 + d.0, p.1 + d.1);
+            if let Some(t) = self.tiles.get_mut(&q) {
+                if t.razed {
+                    t.razed = false;
+                    t.minion = None;
+                    t.cleared = true;
+                    n += 1;
+                }
+            }
+        }
+        n
     }
 
     /// Stepping onto `p`: any chunk beyond an edge it touches is added.
@@ -538,6 +658,7 @@ pub fn generate(seed: u64, c: Pos, cards: &[Card]) -> Vec<(Pos, Tile)> {
                     lands: Vec::new(),
                     razed: false,
                     minion: None,
+                    mark: None,
                 },
             )
         })

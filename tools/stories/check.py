@@ -11,7 +11,12 @@ import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 STOCK = ["delve", "tapestry", "realm", "robust", "seamless", "elevate", "it is worth noting", "crucially", "leverage", "underscore", "landscape", "game-changer", "empower"]
-EFFECTS = {"take": bool, "fight": bool, "leave": bool, "gold": int, "supplies": int, "health": int, "pool_card": bool, "style": list, "quest_start": str}
+EFFECTS = {"take": bool, "fight": bool, "leave": bool, "gold": int, "supplies": int, "health": int, "pool_card": bool, "style": list, "quest_start": str,
+           "piles": bool, "contract": bool, "petrify": bool, "assassins": int, "rares": int,
+           "enchant": str, "install": bool, "open": int, "rebuild": bool}
+MARKS = {"shrine", "hex"}
+# a patron's effects belong to patrons; the map effects to story and magic cards
+PATRON_ONLY = {"piles", "contract", "petrify", "assassins", "rares"}
 RANGES = {"gold": (-25, 30), "supplies": (-4, 6), "health": (-6, 6)}
 NEEDS = {"charisma": (1, 5), "style": (1, 5), "gold": (5, 25), "supplies": (1, 4)}
 GUILDS = {"Azorius", "Izzet", "Rakdos", "Golgari", "Selesnya"}
@@ -21,8 +26,10 @@ QUESTS = {q["id"] for q in json.loads((ROOT / "data" / "quests.json").read_text(
 
 def kind_of(c):
     t = c["types"]
-    # a planeswalker is met as a fight, like a creature
-    if "Creature" in t or "Planeswalker" in t:
+    # a planeswalker is met as a patron (T37)
+    if "Planeswalker" in t:
+        return "patron"
+    if "Creature" in t:
         return "creature"
     if "Land" in t:
         return "land"
@@ -83,6 +90,12 @@ def outcome_problems(where, o, depth=0):
             out.append(f"{where}: style is [guild, 1 or 2]")
         if k == "quest_start" and v not in QUESTS:
             out.append(f"{where}: no quest {v}")
+        if k == "enchant" and v not in MARKS:
+            out.append(f"{where}: enchant is one of {sorted(MARKS)}")
+        if k == "open" and v not in (1, 4):
+            out.append(f"{where}: open is 1, or 4 for every neighbour")
+        if k in ("assassins", "rares") and not 1 <= v <= 3:
+            out.append(f"{where}: {k} {v} outside (1, 3)")
     return out
 
 
@@ -111,6 +124,24 @@ def check_entry(c, s):
             out += text_problems(f"{where}.{f}", s.get(f))
     elif k == "land":
         out += text_problems(f"{where}.text", s.get("text"))
+    elif k == "patron":
+        for f in ("title", "text", "win", "lose"):
+            out += text_problems(f"{where}.{f}", s.get(f))
+        ch = s.get("choices")
+        if not (isinstance(ch, list) and 3 <= len(ch) <= 4):
+            return out + [f"{where}: three or four choices"]
+        if sorted(x["ability"] for x in ch if "ability" in x) != [0, 1, 2]:
+            out.append(f"{where}: each of the three loyalty abilities once")
+        fights = False
+        for i, x in enumerate(ch):
+            out += text_problems(f"{where}.choices[{i}].text", x.get("text"))
+            o = x.get("outcome") or {}
+            if "ability" in x and "fate" in o:
+                out.append(f"{where}.choices[{i}]: a loyalty ability has no fate draw")
+            out += outcome_problems(f"{where}.choices[{i}]", o)
+            fights |= "ability" not in x and any(k2 == "fight" for k2, _ in effects_in(o))
+        if not fights:
+            out.append(f"{where}: no choice challenges the patron")
     else:
         out += text_problems(f"{where}.title", s.get("title"))
         out += text_problems(f"{where}.text", s.get("text"))
@@ -134,6 +165,9 @@ def check_entry(c, s):
                         out.append(f"{where}.choices[{i}].needs: {nk} outside {NEEDS[nk]}")
             out += outcome_problems(f"{where}.choices[{i}]", x.get("outcome"))
             effs = list(effects_in(x.get("outcome") or {}))
+            for k2, _ in effs:
+                if k2 in PATRON_ONLY:
+                    out.append(f"{where}.choices[{i}]: {k2} is a patron's effect")
             takes |= any(k2 in ("take", "fight") for k2, _ in effs)
             quest |= any(k2 == "quest_start" and v2 == STARTERS.get(n) for k2, v2 in effs)
         if not takes:
