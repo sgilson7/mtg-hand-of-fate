@@ -48,13 +48,6 @@ The rules in `CLAUDE.md` under "Rules agreed for this project" (MTG-1 to MTG-11)
 
 ## Open for the person
 
-- R10.2: what each loyalty ability does on the map (Jace +1, −8; Vraska −3, −7), and the assassins halving Niv-Mizzet and Rakdos too.
-- R10.3: Jace's split, one known card or two unknown.
-- R10.5: a contract's numbers: 3 to 6 steps away, 15 steps, 15 gold and 1 Golgari standing, 3 health and 2 loyalty when it lapses.
-- R10.6: what a held instant answers, and that keeping one costs you the card.
-- R10.7: the shrine, hex and device, their amounts and uses, drawn with existing models.
-- R10.9: the fourteen stories changed, five Leave choices among them.
-- R10.11: read the new strings and the two patron stories.
 - R5.3 is superseded by T37: a planeswalker is now met as a patron.
 - R9.1 to R9.3: the broken outlines, the rings inside tree crowns, and the card being read covering the left panel's buttons in a fight, left as they are in T36, since the person chose no style changes.
 - R1.1: whether and how the game may use Wizards' card text and art in public (MTG-Q1). The person asked for a public page; the Fan Content notice is the only safeguard.
