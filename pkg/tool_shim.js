@@ -450,7 +450,7 @@ async function __wbg_init(module_or_path) {
     }
 
     if (module_or_path === undefined) {
-        module_or_path = new URL('tool_shim_bg.wasm?v=1d6c1571bc89', import.meta.url);
+        module_or_path = new URL('tool_shim_bg.wasm?v=51c028d63d86', import.meta.url);
     }
     const imports = __wbg_get_imports();
 
