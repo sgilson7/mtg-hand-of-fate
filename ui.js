@@ -75,6 +75,8 @@ export function makeUi(root, labelRoot, act) {
   function button(a, cls) {
     const b = make("button", cls || "act", a.label);
     b.disabled = !a.enabled;
+    // the main button (T35): what Space does, marked by whether it is needed
+    if (a.main) b.classList.add("main", `main-${a.main}`);
     if (a.key) b.dataset.key = a.key;
     if (a.sub) b.append(make("small", "", a.sub));
     if (a.card) withPop(b, a.card);
@@ -92,6 +94,9 @@ export function makeUi(root, labelRoot, act) {
   function cardFace(f) {
     const c = make("div", `card ${f.size || "md"} ${f.frame.split(" ").map((x) => "f-" + x).join(" ")}`);
     if (f.dim) c.classList.add("dim");
+    if (f.playable) c.classList.add("playable");
+    if (f.rare) c.classList.add(`r-${f.rare}`);
+    c.dataset.name = f.name;
     const name = make("div", "nm");
     name.append(make("span", "nm-t", f.name));
     const cost = make("span", "cost");
@@ -159,6 +164,12 @@ export function makeUi(root, labelRoot, act) {
       const h = make("h2", "", p.heading);
       mark(h);
       box.append(h);
+    }
+    if (p.phases) {
+      // the turn's phases in a strip (T35), the one the game is in marked
+      const strip = make("ol", "phases");
+      p.phases.forEach((ph) => strip.append(make("li", ph.now ? "now" : "", ph.label)));
+      box.append(strip);
     }
     if (p.meter) {
       const m = make("div", "meter");
@@ -292,8 +303,12 @@ export function makeUi(root, labelRoot, act) {
     return box;
   }
 
+  // A rising number keeps its element from one redraw to the next, under
+  // the key the core gives it, so its animation runs on to its end.
+  let floats = new Map();
   function label(l) {
-    const n = make("div", `lbl ${l.hot ? "hot" : ""} ${l.quest ? "quest" : ""}`);
+    if (l.key !== undefined && floats.has(l.key)) return floats.get(l.key);
+    const n = make("div", `lbl ${l.hot ? "hot" : ""} ${l.quest ? "quest" : ""} ${l.float ? `float float-${l.float}` : ""}`);
     n.append(make("span", "", l.text));
     if (l.sub) n.append(make("small", "", l.sub));
     n.style.setProperty("--x", l.x);
@@ -301,11 +316,43 @@ export function makeUi(root, labelRoot, act) {
     return n;
   }
 
+  // A card cast from the hand flies to the stack (T35, after MTG Arena):
+  // it starts where it stood in the hand before the redraw and glides to
+  // its place on the stack. The stylesheet's "flying" animation moves it;
+  // this only says from where.
+  const rects = (sel) => {
+    const m = new Map();
+    root.querySelectorAll(sel).forEach((c) => m.set(c.dataset.name, c.getBoundingClientRect()));
+    return m;
+  };
+  function fly(fromHand, onStack) {
+    root.querySelectorAll("#panel-stack .card").forEach((c) => {
+      const from = fromHand.get(c.dataset.name);
+      if (!from || onStack.has(c.dataset.name)) return;
+      const to = c.getBoundingClientRect();
+      c.style.setProperty("--from-x", `${from.left - to.left}px`);
+      c.style.setProperty("--from-y", `${from.top - to.top}px`);
+      c.style.setProperty("--from-k", from.width / to.width);
+      c.classList.add("flying");
+    });
+  }
+
   return {
     draw(view) {
       hints = view.hints || [];
+      const fromHand = rects("#panel-hand .card");
+      const onStack = rects("#panel-stack .card");
       root.replaceChildren(...view.panels.map(panel));
-      labelRoot.replaceChildren(...view.labels.map(label));
+      fly(fromHand, onStack);
+      const labels = view.labels.map(label);
+      const kept = new Map();
+      view.labels.forEach((l, i) => { if (l.key !== undefined) kept.set(l.key, labels[i]); });
+      floats = kept;
+      // a kept number stays where it is in the page, since taking it out
+      // and putting it back would start its animation again
+      const stay = new Set(kept.values());
+      [...labelRoot.children].forEach((n) => { if (!stay.has(n)) n.remove(); });
+      labels.forEach((n) => { if (!n.isConnected) labelRoot.append(n); });
       keepBars();
       popAt();
     },

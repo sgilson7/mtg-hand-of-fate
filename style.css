@@ -235,3 +235,61 @@ body[data-screen="battle"] #panel-hand .card.sm:first-child { transform-origin: 
 #panel-starters .choice { padding: 7px 10px; font-size: 16px; }
 #panel-starters .choice small { font-size: 12.5px; }
 #panel-starters { font-size: 15px; }
+
+/* T35, after MTG Arena: the hand, the stack, the turn, the main button,
+   card frames and damage. Times and sizes live here, never in the page's
+   code. */
+:root { --can: #8cc8ff; --must: #f2994e; }
+/* a card cast from the hand: it starts where it stood there (the page sets --from-*) */
+#panel-stack .card.flying { transform-origin: 0 0; animation: fly 0.42s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+@keyframes fly { from { transform: translate(var(--from-x), var(--from-y)) scale(var(--from-k)); } to { transform: none; } }
+
+/* a card you can cast glows; under the pointer it leans back a little, as a card held up */
+#panel-hand .card.playable { box-shadow: 0 0 0 2px var(--can), 0 0 16px 2px rgba(140, 200, 255, 0.55), 0 10px 26px rgba(10, 6, 16, 0.5); animation: canpulse 1.8s ease-in-out infinite alternate; }
+@keyframes canpulse { from { box-shadow: 0 0 0 2px var(--can), 0 0 10px 1px rgba(140, 200, 255, 0.35), 0 10px 26px rgba(10, 6, 16, 0.5); } to { box-shadow: 0 0 0 2px var(--can), 0 0 20px 4px rgba(140, 200, 255, 0.65), 0 10px 26px rgba(10, 6, 16, 0.5); } }
+body[data-screen="battle"] #panel-hand .card.sm { transition: scale 0.16s cubic-bezier(0.2, 0.8, 0.2, 1), translate 0.16s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.16s ease-out; }
+body[data-screen="battle"] #panel-hand .card.sm:hover { transform: perspective(900px) rotateX(5deg); animation: none; }
+body[data-screen="battle"] #panel-hand .card.sm:last-child { transform-origin: 100% 100%; }
+/* the card being read grows on its own; the rest keep their height */
+body[data-screen="battle"] #panel-hand .cards { align-items: flex-end; }
+
+/* the stack as a pile: the top card largest and in front, each under it offset */
+#panel-stack { overflow: visible; }
+#panel-stack .cards { flex-direction: row-reverse; justify-content: flex-start; align-items: center; padding: 4px 6px 4px 0; }
+#panel-stack .card { position: relative; transition: none; }
+#panel-stack .card + .card { margin-right: -104px; }
+#panel-stack .card:nth-child(1) { z-index: 6; width: 184px; box-shadow: 0 0 0 2px var(--gold), 0 14px 30px rgba(10, 6, 16, 0.6); }
+#panel-stack .card:nth-child(2) { z-index: 5; } #panel-stack .card:nth-child(3) { z-index: 4; }
+#panel-stack .card:nth-child(4) { z-index: 3; } #panel-stack .card:nth-child(5) { z-index: 2; }
+#panel-stack .card:nth-child(n+2) { filter: brightness(0.82); }
+
+/* the turn's phases, the one the game is in lit */
+.phases { list-style: none; margin: 0; padding: 0; display: flex; gap: 3px; }
+.phases li { flex: 1 1 auto; min-width: 0; text-align: center; font: 600 11px var(--hud); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); padding: 3px 2px; border-radius: 4px; background: rgba(255, 255, 255, 0.06); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: background 0.25s, color 0.25s; }
+.phases li.now { background: var(--must); color: var(--ink); }
+
+/* the main button: large; blue when it only passes, orange when the game needs your answer */
+.act.main { font-size: 18px; padding: 10px 22px; border-radius: 8px; box-shadow: 0 4px 14px rgba(10, 6, 16, 0.4); transition: filter 0.15s, translate 0.15s; }
+.act.main-optional:not(:disabled) { background: var(--can); }
+.act.main-required:not(:disabled) { background: var(--must); }
+.act.main:hover:not(:disabled) { translate: 0 -1px; }
+
+/* card frames: a bevel round the face, shade under each band, the rarity in its set colour, a slow shine on rares */
+.card .face { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), inset 0 -2px 5px rgba(0, 0, 0, 0.35), inset 0 0 0 1px rgba(0, 0, 0, 0.35); overflow: hidden; }
+.card .nm, .card .ty, .card .pt { box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.7); }
+.card .art { box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4); }
+.card.r-u .rar { color: #6f7f8c; font-weight: 700; }
+.card.r-r .rar { color: #a8821e; font-weight: 700; }
+.card.r-m .rar { color: #c8501e; font-weight: 700; }
+.card.r-r .face::after, .card.r-m .face::after { content: ""; position: absolute; inset: 0; background: linear-gradient(115deg, transparent 38%, rgba(255, 255, 255, 0.28) 50%, transparent 62%); background-size: 260% 100%; animation: shine 5.5s ease-in-out infinite; pointer-events: none; }
+.card.r-m .face::after { background-image: linear-gradient(115deg, transparent 38%, rgba(255, 196, 140, 0.34) 50%, transparent 62%); }
+@keyframes shine { 0%, 55% { background-position: 130% 0; } 100% { background-position: -30% 0; } }
+
+/* damage rises from what it hit and fades */
+.lbl.float { background: none; border: 0; padding: 0; z-index: 2; max-width: none; }
+.lbl.float-damage { font: 800 30px var(--hud); color: #ff5a48; -webkit-text-stroke: 5px #fff4e0; paint-order: stroke fill; text-shadow: 0 3px 0 #2b1020, 0 0 10px rgba(0, 0, 0, 0.45); animation: rise 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s both; }
+@keyframes rise { from { opacity: 0; translate: -50% -60%; scale: 0.6; } 25% { opacity: 1; scale: 1.15; } to { opacity: 0; translate: -50% -260%; scale: 1; } }
+
+@media (prefers-reduced-motion: reduce) {
+  #panel-hand .card.playable, .card .face::after, .lbl.float-damage, #panel-stack .card.flying { animation: none !important; }
+}
