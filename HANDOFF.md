@@ -126,6 +126,8 @@ The rules in `CLAUDE.md` under "Rules agreed for this project" (MTG-1 to MTG-11)
 
 2026-10-25, T35 and T36: `./scripts/check.sh` ended `BROWSER CHECK PASSED in chromium, firefox, webkit` and `BUILDER CHECK PASSED`; `./scripts/count-tests.sh`: 176 passed, 0 failed; `scripts/break_tests.py`: 104 of 104 caught (one break, the second main phase, was first missed because the test worked its expectation out with the function under test; the test now states it by hand). A live look (Playwright, build from the working tree) showed the glow on castable cards, a cast card flying to the stack, the stack's arc to its target, the turn strip, the main button and a damage number rising, with no page errors. A dying or entering creature was not caught on a screenshot; its timing is tested in the core.
 
+2026-10-25, T36 deploy: main pushed; `dist/` built from f732e50 committed onto gh-pages by hand (a3e2d37, an ordinary push, R2.17); the live `build.txt` reads `1d6c1571bc89 f732e50`; the browser check against the live address ended `BROWSER CHECK PASSED in chromium, firefox, webkit`.
+
 ## The next action
 
 The person plays a fight on the live page to judge T36's Arena changes; their requests become `TRIAGE.md` rows.
