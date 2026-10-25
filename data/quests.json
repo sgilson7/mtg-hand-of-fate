@@ -1,5 +1,5 @@
 {
- "_about": "Quests for the first region. Each step names where it is done: a city by id, a district by guild, the lair, or a fight won in a district of a guild. Rewards are given when the last step is done. Read by the core (quest.rs); text is in data/strings.json under quest.<id>.",
+ "_about": "Quests for the first region. A quest starts with a new game (new_game), from a card's story (card:N), or when taken up at a city's hall (hall:<city>). Each step names where it is done: a city by id, a district by guild, the lair, or a fight won in a district of a guild. Rewards are given when the last step is done. Read by the core (quest.rs); text is in data/strings.json under quest.<id>.",
  "quests": [
   {"id": "dracogenius", "guild": "Izzet", "starts": "new_game",
    "steps": [{"at": "city", "city": "tenth"}, {"at": "city", "city": "prahv"}, {"at": "lair"}],
@@ -48,6 +48,18 @@
    "reward": {"armour": "selesnya_chest", "style": ["Selesnya", 2], "gold": 15}},
   {"id": "blessing", "guild": "Selesnya", "starts": "card:150",
    "steps": [{"at": "city", "city": "vitu"}, {"at": "district", "guild": "Selesnya"}, {"at": "win_in_district", "guild": "Selesnya"}],
-   "reward": {"armour": "selesnya_feet", "style": ["Selesnya", 2], "gold": 15}}
+   "reward": {"armour": "selesnya_feet", "style": ["Selesnya", 2], "gold": 15}},
+  {"id": "encore", "guild": "Rakdos", "starts": "hall:rix",
+   "steps": [{"at": "district", "guild": "Rakdos"}, {"at": "win_in_district", "guild": "Rakdos"}, {"at": "city", "city": "rix"}],
+   "reward": {"armour": "rix_feet", "style": ["Rakdos", 2], "gold": 10}},
+  {"id": "debt", "guild": "Rakdos", "starts": "hall:rix",
+   "steps": [{"at": "city", "city": "tenth"}, {"at": "win_in_district", "guild": "Selesnya"}, {"at": "city", "city": "rix"}],
+   "reward": {"style": ["Rakdos", 2], "gold": 25}},
+  {"id": "harvest", "guild": "Golgari", "starts": "hall:svogthos",
+   "steps": [{"at": "district", "guild": "Golgari"}, {"at": "win_in_district", "guild": "Golgari"}, {"at": "city", "city": "svogthos"}],
+   "reward": {"armour": "svogthos_head", "style": ["Golgari", 2], "gold": 10}},
+  {"id": "relic", "guild": "Golgari", "starts": "hall:svogthos",
+   "steps": [{"at": "city", "city": "vitu"}, {"at": "win_in_district", "guild": "Azorius"}, {"at": "city", "city": "svogthos"}],
+   "reward": {"style": ["Golgari", 2], "gold": 25}}
  ]
 }
