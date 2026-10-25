@@ -48,6 +48,7 @@ The rules in `CLAUDE.md` under "Rules agreed for this project" (MTG-1 to MTG-11)
 
 ## Open for the person
 
+- R9.4: the art pass's direction (T35), MTG-Q14 to MTG-Q17 in the journal's art page: the style, smooth or faceted shapes, the panels' look, the hand's layout. The analysis and the findings R9.1 to R9.3 are written; nothing in the game has changed for T35 yet.
 - R1.1: whether and how the game may use Wizards' card text and art in public (MTG-Q1). The person asked for a public page; the Fan Content notice is the only safeguard.
 - R1.3: the rules of the childhood grid game (MTG-Q3).
 - R1.10: read the story text and labels the agent wrote for the mockup.
@@ -124,5 +125,7 @@ The rules in `CLAUDE.md` under "Rules agreed for this project" (MTG-1 to MTG-11)
 2026-10-24, T29 to T34 deploy: main pushed; `dist/` built from 7164ccf committed onto gh-pages by hand (0f94374, an ordinary push, R2.17); the live `build.txt` reads `b4669bd9210d 7164ccf`; the browser check against the live address ended `BROWSER CHECK PASSED in chromium, firefox, webkit`. The website's tile and page for the game (T29, T30) are in the website's own repository and deploy.
 
 ## The next action
+
+The person answers MTG-Q14 to MTG-Q17 (T35); then a first look at the chosen style (palette, sky, closed and tinted outlines, smooth round shapes) for them to judge before the animation and interface work.
 
 The person plays MVP 2's fights on the live page and answers MTG-Q2 and Q3; their requests become `TRIAGE.md` rows.
