@@ -4,7 +4,7 @@ Stage 9, written by the agent. `C5 Consolidate in your own words`. A fresh sessi
 
 ## What this is
 
-Tenth District (a working title): a Hand of Fate–style deck-building adventure on Ravnica's grid with 108 Return to Ravnica cards, for the browser. This MVP is the first region, from a new game in the Tenth District to the fight with Niv-Mizzet in Nivix; since T10 the pool is all of Return to Ravnica (254 cards, the first 108 first). Since MVP 2 (TRIAGE T1) every fight is a game of Magic the player plays against a computer opponent, with a land pile instead of lands in the deck. It is public at https://sgilson7.github.io/mtg-hand-of-fate/ (built from 4a08d8f, T14 to T22), source at https://github.com/sgilson7/mtg-hand-of-fate.
+Tenth District (a working title): a Hand of Fate–style deck-building adventure on Ravnica's grid with 108 Return to Ravnica cards, for the browser. This MVP is the first region, from a new game in the Tenth District to the fight with Niv-Mizzet in Nivix; since T10 the pool is all of Return to Ravnica (254 cards, the first 108 first). Since MVP 2 (TRIAGE T1) every fight is a game of Magic the player plays against a computer opponent, with a land pile instead of lands in the deck. It is public at https://sgilson7.github.io/mtg-hand-of-fate/ (built from b420f5e, T23 to T28), source at https://github.com/sgilson7/mtg-hand-of-fate.
 
 ## Rules that hold it up
 
@@ -109,6 +109,8 @@ The rules in `CLAUDE.md` under "Rules agreed for this project" (MTG-1 to MTG-11)
 2026-10-24, T14 to T22 deploy: `dist/` built from 4a08d8f pushed to gh-pages by hand (R2.17); the live `build.txt` reads `6d1f4375d1dd 4a08d8f`; the browser check against the live address ended `BROWSER CHECK PASSED in chromium, firefox, webkit`.
 
 2026-10-24, T23 to T28: `./scripts/check.sh` ended `BROWSER CHECK PASSED in chromium, firefox, webkit` and `BUILDER CHECK PASSED`; `./scripts/count-tests.sh`: 154 passed, 0 failed; `scripts/break_tests.py`: 68 of 68 caught. The browser check now chooses Ral's deck before the opening, and waits for the deck panel to redraw before reading it. A live look (Playwright, build from the working tree) showed the deck window, the deck choice, the second terrain looks, Rix Maadi's hall and armourer, and the whole log, with no page errors.
+
+2026-10-24, T23 to T28 deploy: main pushed; `dist/` built from b420f5e committed onto gh-pages by hand (0179c59, an ordinary push, R2.17); the live `build.txt` reads `8107cb816ced b420f5e`; the browser check against the live address ended `BROWSER CHECK PASSED in chromium, firefox, webkit`.
 
 ## The next action
 
