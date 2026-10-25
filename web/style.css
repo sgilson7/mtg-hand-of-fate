@@ -1,4 +1,4 @@
-/* Tenth District. After Protection of the Spheres' HUD: dark violet glass,
+/* Ravnica Digest. After Protection of the Spheres' HUD: dark violet glass,
    a gold accent, a condensed face; cards in Magic's frame colours with the
    text as real text. The 3D view fills the window behind the panels. */
 :root {
@@ -194,6 +194,8 @@ body[data-screen="deck"] .place-br { top: 14px; bottom: auto; }
 .lbl > * { overflow: hidden; text-overflow: ellipsis; }
 .lbl.hot { background: var(--gold); color: var(--ink); max-width: none; z-index: 1; }
 .lbl.hot small { color: var(--ink); }
+/* a quest's next place (T33): its name and how far it is, never cut short */
+.lbl.quest { max-width: none; }
 
 @media (max-width: 760px) {
   .place-tr, .place-bl { display: none; }

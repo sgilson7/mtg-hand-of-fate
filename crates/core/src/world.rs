@@ -20,6 +20,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::content::{ty, Card};
 use crate::mana::{self, B, G, R, U, W};
+use crate::riot::{self, Place, Riot};
 use crate::rng::Rng;
 
 pub const CHUNK: i32 = 5;
@@ -138,6 +139,8 @@ pub enum Feature {
     Canal,
     /// The guardian's lair.
     Lair,
+    /// A place of the Riot (T34).
+    Place(Place),
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
@@ -186,6 +189,12 @@ pub struct Tile {
     pub cleared: bool,
     /// Land cards attached here.
     pub lands: Vec<usize>,
+    /// Rakdos came through (T32): the pool is gone.
+    #[serde(default)]
+    pub razed: bool,
+    /// The minion he left holding it, until it is beaten.
+    #[serde(default)]
+    pub minion: Option<usize>,
 }
 
 impl Tile {
@@ -212,6 +221,9 @@ pub struct World {
     pub seed: u64,
     pub chunks: BTreeSet<Pos>,
     pub tiles: BTreeMap<Pos, Tile>,
+    /// The second mission's state, in a game of that mission (T32).
+    #[serde(default)]
+    pub riot: Option<Riot>,
 }
 
 /// What a chunk leans to, and what fixed place sits at its centre.
@@ -228,6 +240,14 @@ pub fn chunk_plan(c: Pos) -> (Option<Guild>, Option<Feature>) {
         (-1, -1) => (Some(Guild::Selesnya), None),
         _ => (None, None),
     }
+}
+
+/// Where a city or the lair stands in the region: its chunk's centre.
+pub fn spot_of(f: Feature) -> Option<Pos> {
+    (-REGION..=REGION)
+        .flat_map(|x| (-REGION..=REGION).map(move |y| (x, y)))
+        .find(|&c| chunk_plan(c).1 == Some(f))
+        .map(chunk_centre)
 }
 
 pub fn chunk_of(p: Pos) -> Pos {
@@ -332,6 +352,7 @@ impl World {
             seed,
             chunks: BTreeSet::new(),
             tiles: BTreeMap::new(),
+            riot: None,
         };
         w.add_chunk((0, 0), cards);
         if let Some(t) = w.tiles.get_mut(&(0, 0)) {
@@ -349,12 +370,74 @@ impl World {
         if !in_region(c) || self.chunks.contains(&c) {
             return false;
         }
-        let tiles = generate(self.seed, c, cards);
+        let tiles = self.made(c, cards);
+        if let Some(r) = self.riot.as_mut() {
+            r.pending.retain(|(p, _)| chunk_of(*p) != c);
+        }
         for (p, t) in tiles {
             self.tiles.insert(p, t);
         }
         self.chunks.insert(c);
         true
+    }
+
+    /// A chunk's tiles as they are made in this game: with the Riot's places
+    /// and the minions he left there before it was made.
+    pub fn made(&self, c: Pos, cards: &[Card]) -> Vec<(Pos, Tile)> {
+        let mut tiles = generate(self.seed, c, cards);
+        let Some(r) = &self.riot else {
+            return tiles;
+        };
+        for (p, t) in tiles.iter_mut() {
+            if let Some(place) = Place::ALL.into_iter().find(|x| x.spot() == *p) {
+                t.feature = Feature::Place(place);
+                t.guild = None;
+                t.pool.clear();
+            }
+            if let Some(&(_, m)) = r.pending.iter().find(|(q, _)| q == p) {
+                if t.feature == Feature::Cards {
+                    t.razed = true;
+                    t.pool.clear();
+                    t.minion = Some(m);
+                }
+            }
+        }
+        tiles
+    }
+
+    /// One of the player's steps in the Riot: his clock runs, and when it
+    /// comes round he moves on to the next tile of his route and razes it.
+    /// Returns where he went, if he moved.
+    pub fn riot_step(&mut self, cards: &[Card]) -> Option<Pos> {
+        let seed = self.seed;
+        let r = self.riot.as_mut().filter(|r| r.roaming())?;
+        r.clock += 1;
+        if r.clock < r.every() || r.left() == 0 {
+            return None;
+        }
+        r.clock = 0;
+        r.at += 1;
+        let to = r.pos();
+        if r.left() == 0 {
+            r.ended = Some(riot::Ending::Fell);
+            return Some(to);
+        }
+        let m = riot::minion_for(cards, seed, to)?;
+        match self.tiles.get_mut(&to) {
+            Some(t) if t.feature == Feature::Cards => {
+                t.razed = true;
+                t.pool.clear();
+                t.cleared = false;
+                t.minion = Some(m);
+            }
+            Some(_) => {}
+            None => {
+                let r = self.riot.as_mut().expect("riot");
+                r.pending.retain(|(p, _)| *p != to);
+                r.pending.push((to, m));
+            }
+        }
+        Some(to)
     }
 
     /// Stepping onto `p`: any chunk beyond an edge it touches is added.
@@ -453,6 +536,8 @@ pub fn generate(seed: u64, c: Pos, cards: &[Card]) -> Vec<(Pos, Tile)> {
                     visited: false,
                     cleared: false,
                     lands: Vec::new(),
+                    razed: false,
+                    minion: None,
                 },
             )
         })
@@ -744,5 +829,54 @@ mod tests {
         let t = w.tile(at).unwrap();
         assert_eq!(t.feature, Feature::City(City::Rix));
         assert!(t.pool.is_empty());
+    }
+
+    #[test]
+    fn rakdos_moves_every_third_step_razing_a_tile_even_before_its_chunk_is_made() {
+        let cards = crate::content::for_tests();
+        let mut w = World::new(9, &cards);
+        let mut r = Riot::new(9);
+        // a road of plain tiles: two in the start chunk, two in the next
+        // chunk east (not made yet), then New Prahv
+        r.route = vec![(0, 5), (1, 1), (3, 1), (4, 1), (0, -5)];
+        w.riot = Some(r);
+        for t in [(1, 1), (3, 1), (4, 1)] {
+            if let Some(t) = w.tiles.get_mut(&t) {
+                t.feature = Feature::Cards;
+            }
+        }
+        assert_eq!(w.riot_step(&cards), None);
+        assert_eq!(w.riot_step(&cards), None);
+        assert_eq!(w.riot_step(&cards), Some((1, 1)));
+        let t = w.tile((1, 1)).unwrap();
+        assert!(t.razed && t.pool.is_empty() && t.minion.is_some());
+        // slowed, he waits four steps
+        w.riot.as_mut().unwrap().slowed = true;
+        for _ in 0..3 {
+            assert_eq!(w.riot_step(&cards), None);
+        }
+        assert_eq!(w.riot_step(&cards), Some((3, 1)));
+        assert!(w.tile((3, 1)).is_none());
+        assert_eq!(w.riot.as_ref().unwrap().pending.len(), 1);
+        w.add_chunk((1, 0), &cards);
+        let t = w.tile((3, 1)).unwrap();
+        assert_eq!(t.feature, Feature::Cards, "seed 9 makes (3, 1) a plain tile");
+        assert!(t.razed && t.minion.is_some() && t.pool.is_empty());
+        assert!(w.riot.as_ref().unwrap().pending.is_empty());
+        // the first mission's world has no Rakdos to move
+        let mut d = World::new(9, &cards);
+        assert_eq!(d.riot_step(&cards), None);
+    }
+
+    #[test]
+    fn the_riots_places_stand_only_in_a_riot_world() {
+        let cards = crate::content::for_tests();
+        let mut w = World::new(2, &cards);
+        w.riot = Some(Riot::new(2));
+        w.add_chunk((-1, -1), &cards);
+        assert_eq!(w.tile((-6, -4)).unwrap().feature, Feature::Place(Place::Column));
+        let mut d = World::new(2, &cards);
+        d.add_chunk((-1, -1), &cards);
+        assert_ne!(d.tile((-6, -4)).unwrap().feature, Feature::Place(Place::Column));
     }
 }

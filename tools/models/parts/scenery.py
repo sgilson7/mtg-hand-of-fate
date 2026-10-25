@@ -1309,6 +1309,81 @@ def forest_conifers():
             out.append(ball(9, LEAF[k], x + 8 * math.cos(a), 5, z + 8 * math.sin(a), 1.3, 0.5, 0.8, t=(0, 0, tt(-math.degrees(a)))))
     return out
 
+def rakdos_calliope():
+    """The Rakdos calliope (T34): a steam organ on a cart, brass pipes, a skull."""
+    red, black, brass = "#9a2a2a", "#2c2426", "#cea24c"
+    out = [
+        box(120, 40, 70, black, 0, 34, 0),
+        box(124, 6, 74, red, 0, 56, 0),
+        box(112, 10, 62, red, 0, 18, 0),
+    ]
+    for s in (-1, 1):
+        for z in (-28, 28):
+            out.append(part("cyl", (s * 44, 16, z), (32, 32, 8), "#5a3a26", t=(0, 250, 0)))
+            out.append(part("cyl", (s * 44, 16, z + s * 0), (10, 10, 10), brass, t=(0, 250, 0)))
+    for i, h in enumerate((70, 92, 112, 128, 112, 92, 70)):
+        x = -48 + i * 16
+        out.append(cyl(6, h, brass, x, 58, -14))
+        out.append(cyl(7, 6, "#a8803a", x, 58 + h - 6, -14))
+        out.append(ball(9, "#e8e0d8", x, 58 + h + 10, -14, 1, 0.8, 1))
+    out.append(ball(16, "#eee2c6", 0, 78, 30))
+    out += [ball(4, black, -6, 80, 44), ball(4, black, 6, 80, 44)]
+    out.append(box(12, 4, 4, black, 0, 70, 44))
+    for x in (-50, 50):
+        out.append(cyl(2, 60, black, x, 58, 30))
+        out.append(part("cone", (x, 124, 30), (10, 16, 10), "#ffa040", g=700))
+    return out
+
+
+def lyev_column():
+    """The Lyev Column (T34): an Azorius arrester's post, a tall white column
+    with a blue lantern of law and a banner."""
+    white, blue, gold = "#f1ebdc", "#2f6fc0", "#cea24c"
+    out = [
+        box(70, 10, 70, "#d9d0bc", 0, 5, 0),
+        box(54, 10, 54, white, 0, 15, 0),
+        cyl(16, 180, white, 0, 20, 0),
+    ]
+    for a in range(8):
+        x, z = 16 * math.cos(a * math.pi / 4), 16 * math.sin(a * math.pi / 4)
+        out.append(cyl(2, 176, "#d9d0bc", x, 22, z))
+    out += [
+        cyl(22, 10, gold, 0, 200, 0),
+        part("gem", (0, 232, 0), (34, 50, 34), blue, g=600),
+        cyl(18, 4, gold, 0, 210, 0),
+        box(4, 90, 4, gold, 26, 110, 0),
+        box(30, 60, 2, blue, 42, 130, 0),
+        box(30, 8, 3, gold, 42, 160, 0),
+        box(10, 10, 3, white, 42, 130, 2),
+    ]
+    return out
+
+
+def razed():
+    """A tile Rakdos has razed (T32): scorched ground, rubble, embers."""
+    out = [part("blob", (0, 1, 0), (176, 6, 170), "#2c2426")]
+    for i, (x, z, w, h) in enumerate(((-40, -30, 40, 26), (30, -44, 30, 18), (46, 26, 36, 22), (-30, 40, 28, 14), (4, 4, 22, 34))):
+        out.append(part("chunk", (x, h / 2, z), (w, h, w * 0.8), ("#5a4a44", "#4a3a36")[i % 2], t=(0, (i * 90) % 200 - 100, i * 47)))
+    for x, z in ((-12, -60), (60, -4), (-64, 6), (20, 58)):
+        out.append(part("rock", (x, 4, z), (14, 8, 12), "#3a2e2c"))
+    for x, z in ((-20, 10), (26, -16), (10, 36), (-48, -8)):
+        out.append(part("cone", (x, 10, z), (10, 18, 10), "#ff7030", g=800))
+    out.append(cyl(3, 50, "#1d1626", 40, 0, -40))
+    out.append(part("cone", (40, 58, -40), (12, 14, 12), "#b23838"))
+    return out
+
+
+def quest_banner():
+    """The banner over a quest's next place (T33): a pole and a gold flag."""
+    gold = "#f2c14e"
+    return [
+        cyl(4, 6, "#3a3a46", 0, 0, 0),
+        cyl(1.5, 120, "#3a3a46", 0, 0, 0),
+        box(36, 22, 2, gold, 18, 106, 0),
+        part("gem", (0, 126, 0), (8, 12, 8), gold, g=500),
+    ]
+
+
 MODELS = {
     "chum_house": chum_house(),
     "chum_hall": chum_hall(),
@@ -1355,4 +1430,8 @@ MODELS = {
     "plaza": plaza(),
     "arena": arena(),
     "pedestal": pedestal(),
+    "rakdos_calliope": rakdos_calliope(),
+    "lyev_column": lyev_column(),
+    "razed": razed(),
+    "quest_banner": quest_banner(),
 }

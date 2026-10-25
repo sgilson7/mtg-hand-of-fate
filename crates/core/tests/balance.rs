@@ -56,10 +56,10 @@ fn side(cards: &[content::Card], deck: Vec<usize>, life: i32, lands: &[&str]) ->
     }
 }
 
-#[test]
-fn the_guardian_beats_a_starting_deck_and_falls_to_a_built_one() {
-    let c = cards();
-    let guardian = |_s: u64| encounter::guardian(&c);
+/// A starting deck, a built blue-red deck and a built green deck: the decks
+/// a player brings to a guardian at the start and late in the region.
+fn three_decks(c: &[content::Card]) -> [SideSetup; 3] {
+    let c = c.to_vec();
     let starter = side(
         &c,
         encounter::starter_deck(&c, tool_core::world::Guild::Izzet),
@@ -142,6 +142,14 @@ fn the_guardian_beats_a_starting_deck_and_falls_to_a_built_one() {
             "Plains",
         ],
     );
+    [starter, built, green]
+}
+
+#[test]
+fn the_guardian_beats_a_starting_deck_and_falls_to_a_built_one() {
+    let c = cards();
+    let guardian = |_s: u64| encounter::guardian(&c);
+    let [starter, built, green] = three_decks(&c);
     let n = 60;
     let a = rate(&c, &starter, &guardian, n);
     let b = rate(&c, &built, &guardian, n);
@@ -151,6 +159,63 @@ fn the_guardian_beats_a_starting_deck_and_falls_to_a_built_one() {
     // the computer plays the player's side here; a person plays it better
     assert!(b >= n / 4 && b <= n * 9 / 10, "a built blue-red deck: {b} of {n}");
     assert!(g >= n / 4 && g <= n * 9 / 10, "a built green deck: {g} of {n}");
+}
+
+#[test]
+fn rakdos_is_as_hard_as_niv_mizzet() {
+    // T32: "he is as diffuclt as niv mizzix". The same three decks against
+    // each; each built deck's rate against Rakdos within a sixth of the games
+    // of its rate against Niv-Mizzet, and a starting deck beats him rarely.
+    let c = cards();
+    let niv = |_s: u64| encounter::guardian(&c);
+    let rakdos = |_s: u64| encounter::rakdos(&c, false);
+    let decks = three_decks(&c);
+    let n = 60;
+    let mut seen = Vec::new();
+    for (i, d) in decks.iter().enumerate() {
+        let a = rate(&c, d, &niv, n);
+        let b = rate(&c, d, &rakdos, n);
+        seen.push((i, a, b));
+    }
+    println!("(deck, beat Niv-Mizzet, beat Rakdos) of {n}: {seen:?}");
+    for &(i, a, b) in &seen {
+        if i == 0 {
+            assert!(b <= n / 10, "a starting deck beat Rakdos {b} of {n}");
+        } else {
+            assert!(
+                a.abs_diff(b) <= n / 6,
+                "deck {i}: Niv-Mizzet lost {a}, Rakdos {b} of {n}"
+            );
+        }
+    }
+}
+
+#[test]
+fn a_minion_is_harder_than_the_same_creature_met_on_the_road() {
+    let c = cards();
+    let mut by = (0, 0, 0);
+    for guild in tool_core::world::Guild::ALL {
+        let lands = encounter::starter_lands(&c, guild);
+        let names: Vec<&str> = lands.iter().map(|&l| c[l].name.as_str()).collect();
+        let me = side(&c, encounter::starter_deck(&c, guild), 18, &names);
+        for f in ["Splatter Thug", "Cobblebrute", "Spawn of Rix Maadi"] {
+            let k = c.iter().position(|x| x.name == f).unwrap();
+            let road = |s: u64| encounter::foe(&c, k, &[], &mut Rng::new(s));
+            let minion = |s: u64| encounter::minion(&c, k, &mut Rng::new(s));
+            by.0 += rate(&c, &me, &road, 4);
+            by.1 += rate(&c, &me, &minion, 4);
+            by.2 += 4;
+        }
+    }
+    println!(
+        "starters: beat the creature {} and its minion {} of {}",
+        by.0, by.1, by.2
+    );
+    assert!(by.1 < by.0, "{by:?}");
+    assert!(
+        by.1 * 100 <= by.2 * 45,
+        "minions lose too often to a starting deck: {by:?}"
+    );
 }
 
 #[test]

@@ -16,10 +16,42 @@ use crate::look::Look;
 use crate::player::{self, Armoury, Player};
 use crate::quest::{self, Happened, Quest};
 use crate::render::{FrameOut, StaticScene};
+use crate::riot::{self, Ending, Place, Riot};
 use crate::rng::Rng;
 use crate::story::{self, Effect, Face, Outcome as StoryOutcome, Story};
 use crate::world::{City, Feature, Guild, Pos, World};
 
+/// The two missions a new game can be (T32).
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Mission {
+    /// Niv-Mizzet in Nivix, with the writ from New Prahv.
+    Dracogenius,
+    /// Stop Rakdos before he razes New Prahv.
+    Riot,
+}
+
+impl Mission {
+    pub const ALL: [Mission; 2] = [Mission::Dracogenius, Mission::Riot];
+    pub fn id(self) -> &'static str {
+        match self {
+            Mission::Dracogenius => "dracogenius",
+            Mission::Riot => "riot",
+        }
+    }
+    pub fn from_id(s: &str) -> Option<Mission> {
+        Mission::ALL.into_iter().find(|m| m.id() == s)
+    }
+    /// What a quest's `starts` says to be begun with this mission's new game.
+    fn starts(self) -> &'static str {
+        match self {
+            Mission::Dracogenius => "new_game",
+            Mission::Riot => "mission:riot",
+        }
+    }
+}
+
+/// The key `quest_marks` gives Rakdos's own mark: no quest has it.
+pub const RAKDOS_MARK: &str = "rakdos";
 /// Microseconds a fight's event stays on screen at speed one.
 pub const EVENT_US: i64 = 450_000;
 /// Microseconds for a step from tile to tile.
@@ -34,6 +66,8 @@ pub type Strings = BTreeMap<String, String>;
 #[derive(Debug, Clone)]
 pub enum Screen {
     Title,
+    /// Which mission a new game is (T32).
+    Mission,
     NewGame,
     /// The guild's starting decks, one of them shown (T25).
     Starter {
@@ -77,6 +111,8 @@ pub enum Screen {
         back: Box<Screen>,
     },
     Lair,
+    /// Face to face with Rakdos on the map (T32).
+    Rakdos,
     Victory,
     Models {
         page: usize,
@@ -177,6 +213,8 @@ pub struct Save {
     pub chunks: Vec<Pos>,
     pub tiles: Vec<(Pos, crate::world::Tile)>,
     pub player: Player,
+    #[serde(default)]
+    pub riot: Option<Riot>,
 }
 
 /// The orders the deck screen offers, the default first.
@@ -193,6 +231,8 @@ pub struct Session {
     pub world: Option<World>,
     pub player: Option<Player>,
     pub guild: Guild,
+    /// The mission the new game being set up will be.
+    pub mission: Mission,
     pub screen: Screen,
     pub rng: Rng,
     pub seed: u64,
@@ -282,6 +322,7 @@ impl Session {
             world: None,
             player: None,
             guild: Guild::Izzet,
+            mission: Mission::Dracogenius,
             screen: Screen::Title,
             rng: Rng::new(seed),
             seed,
@@ -347,7 +388,12 @@ impl Session {
         if let Some(t) = world.tiles.get_mut(&(0, 0)) {
             t.lands = encounter::starter_lands(&self.cards, guild);
         }
-        p.quests.insert("dracogenius".into(), 0);
+        for q in self.quests.iter().filter(|q| q.starts == self.mission.starts()) {
+            p.quests.insert(q.id.clone(), 0);
+        }
+        if self.mission == Mission::Riot {
+            world.riot = Some(Riot::new(seed));
+        }
         self.guild = guild;
         self.world = Some(world);
         self.player = Some(p);
@@ -369,6 +415,7 @@ impl Session {
             seed: s.seed,
             chunks: s.chunks.into_iter().collect(),
             tiles: s.tiles.into_iter().collect(),
+            riot: s.riot,
         };
         world.settle_cities();
         self.seed = s.seed;
@@ -399,6 +446,7 @@ impl Session {
             chunks: w.chunks.iter().copied().collect(),
             tiles: w.tiles.iter().map(|(k, v)| (*k, v.clone())).collect(),
             player: p.clone(),
+            riot: w.riot.clone(),
         };
         self.save_out = serde_json::to_string(&save).ok();
         self.saved = Some(save);
@@ -463,7 +511,75 @@ impl Session {
         if let Some((g, n)) = r.style {
             lines.push(self.f("effect.style", &[("guild", g), ("n", n.to_string())]));
         }
+        if let Some(riot) = self.world.as_mut().and_then(|w| w.riot.as_mut()) {
+            match r.rakdos.as_str() {
+                "slow" => {
+                    riot.slowed = true;
+                    lines.push(self.f("riot.slowed", &[("n", riot::EVERY_SLOWED.to_string())]));
+                }
+                "weaken" => {
+                    riot.weakened = true;
+                    lines.push(self.f("riot.weakened", &[("n", encounter::RAKDOS_WEAKENED.to_string())]));
+                }
+                _ => {}
+            }
+        }
         lines
+    }
+
+    /// Where each quest under way goes next, and Rakdos while he roams
+    /// (T33): the map shows each, greyed, before its tile is found.
+    pub fn quest_marks(&self) -> Vec<(Pos, String)> {
+        let (w, p) = (self.world(), self.player());
+        let mut out = Vec::new();
+        if let Some(r) = w.riot.as_ref().filter(|r| r.roaming()) {
+            // a key no quest has: Rakdos himself, not the Riot quest's next place
+            out.push((r.pos(), RAKDOS_MARK.to_string()));
+        }
+        for q in &self.quests {
+            let Some(step) = p.quests.get(&q.id).and_then(|&d| q.steps.get(d as usize)) else {
+                continue;
+            };
+            let at = match step.at.as_str() {
+                "city" => City::from_id(&step.city).and_then(|c| crate::world::spot_of(Feature::City(c))),
+                "lair" => crate::world::spot_of(Feature::Lair),
+                "place" => Place::from_id(&step.place).map(|x| x.spot()),
+                "district" | "win_in_district" => Guild::from_name(&step.guild)
+                    .and_then(|g| self.nearest_district(g, step.at == "win_in_district")),
+                _ => None,
+            };
+            if let Some(at) = at {
+                out.push((at, q.id.clone()));
+            }
+        }
+        out
+    }
+
+    /// The district of a guild nearest the player, found or not; for a fight,
+    /// one that still has a fight in it.
+    fn nearest_district(&self, g: Guild, fight: bool) -> Option<Pos> {
+        let w = self.world();
+        let at = self.player().pos;
+        let r = crate::world::REGION;
+        let mut tiles: Vec<(Pos, crate::world::Tile)> = Vec::new();
+        for c in (-r..=r).flat_map(|x| (-r..=r).map(move |y| (x, y))) {
+            if w.chunks.contains(&c) {
+                tiles.extend(
+                    w.tiles
+                        .iter()
+                        .filter(|(q, _)| crate::world::chunk_of(**q) == c)
+                        .map(|(q, t)| (*q, t.clone())),
+                );
+            } else {
+                tiles.extend(w.made(c, &self.cards));
+            }
+        }
+        tiles
+            .into_iter()
+            .filter(|(_, t)| t.guild == Some(g))
+            .filter(|(_, t)| !fight || (!t.cleared && (!t.pool.is_empty() || t.minion.is_some())))
+            .min_by_key(|(q, _)| (crate::world::distance(*q, at), q.0, q.1))
+            .map(|(q, _)| q)
     }
 
     // ---------- moving ----------
@@ -504,10 +620,12 @@ impl Session {
         let (p, w) = self.pw();
         p.step(&armoury, tile.terrain);
         p.pos = to;
+        p.steps += 1;
         let grew = w.grow_from(to, &cards);
         if let Some(t) = w.tiles.get_mut(&to) {
             t.visited = true;
         }
+        let moved = w.riot_step(&cards);
         if !grew.is_empty() {
             self.message = self.s("board.grew");
         }
@@ -516,6 +634,29 @@ impl Session {
         if self.player().health <= 0 {
             self.defeat(vec![self.s("board.starved")]);
             return Ok(());
+        }
+        if let Some(r) = self.world().riot.clone() {
+            if r.ended == Some(Ending::Fell) {
+                self.screen = Screen::Result {
+                    lines: vec![self.s("riot.fell")],
+                    next: Next::Victory,
+                };
+                self.write_save();
+                return Ok(());
+            }
+            if moved.is_some() {
+                let m = self.f("riot.moved", &[("n", r.left().to_string())]);
+                self.message = [self.message.clone(), m]
+                    .into_iter()
+                    .filter(|x| !x.is_empty())
+                    .collect::<Vec<_>>()
+                    .join(" ");
+            }
+            if r.roaming() && r.pos() == to {
+                self.write_save();
+                self.screen = Screen::Rakdos;
+                return Ok(());
+            }
         }
         self.arrive(to);
         Ok(())
@@ -547,6 +688,25 @@ impl Session {
             Feature::Lair => {
                 self.write_save();
                 self.screen = Screen::Lair;
+            }
+            Feature::Cards if tile.minion.is_some() => {
+                self.screen = Screen::Draw {
+                    at,
+                    card: tile.minion.expect("minion"),
+                };
+                if !lines.is_empty() {
+                    self.message = lines.join(" ");
+                }
+            }
+            Feature::Place(place) => {
+                let mut all = vec![self.s(&format!("place.{}.text", place.id()))];
+                all.extend(lines);
+                all.extend(self.happened(Happened::AtPlace(place)));
+                self.screen = Screen::Result {
+                    lines: all,
+                    next: Next::Board,
+                };
+                self.write_save();
             }
             Feature::Cards if !tile.cleared && !tile.pool.is_empty() => {
                 let k = (self.rng.next_u64() % tile.pool.len() as u64) as usize;
@@ -610,6 +770,7 @@ impl Session {
     fn clear(&mut self, at: Pos) {
         if let Some(t) = self.world.as_mut().and_then(|w| w.tiles.get_mut(&at)) {
             t.cleared = true;
+            t.minion = None;
         }
         self.statics_dirty = true;
     }
@@ -753,8 +914,13 @@ impl Session {
     }
 
     fn start_fight(&mut self, at: Pos, creature: usize, prize: Option<usize>, guardian: bool) {
-        let mut foe = if guardian {
+        let weakened = self.world().riot.as_ref().map(|r| r.weakened).unwrap_or(false);
+        let mut foe = if guardian && self.cards[creature].name == "Rakdos, Lord of Riots" {
+            encounter::rakdos(&self.cards, weakened)
+        } else if guardian {
             encounter::guardian(&self.cards)
+        } else if self.world().tile(at).and_then(|t| t.minion) == Some(creature) {
+            encounter::minion(&self.cards, creature, &mut self.rng)
         } else {
             let pool = self.world().tile(at).map(|t| t.pool.clone()).unwrap_or_default();
             encounter::foe(&self.cards, creature, &pool, &mut self.rng)
@@ -815,6 +981,31 @@ impl Session {
                 }
                 if let Some(s) = &story {
                     lines.push(s.win.clone());
+                }
+                if f.guardian && self.cards[f.creature].name == "Rakdos, Lord of Riots" {
+                    let steps = self.player().steps;
+                    if let Some(r) = self.world.as_mut().and_then(|w| w.riot.as_mut()) {
+                        r.ended = Some(Ending::Beaten { steps });
+                    }
+                    lines.push(self.gain_card(f.creature));
+                    lines.extend(self.happened(Happened::BeatRakdos));
+                    // the mission ends with him, whatever step its quest was at
+                    if let Some(n) = self.quests.iter().find(|q| q.id == "riot").map(|q| q.steps.len()) {
+                        self.player
+                            .as_mut()
+                            .expect("player")
+                            .quests
+                            .insert("riot".into(), n as u8);
+                    }
+                    let grade = self.s(&format!("riot.grade.{}", riot::grade(steps)));
+                    lines.push(self.f("riot.beaten", &[("steps", steps.to_string()), ("grade", grade)]));
+                    self.statics_dirty = true;
+                    self.screen = Screen::Result {
+                        lines,
+                        next: Next::Victory,
+                    };
+                    self.write_save();
+                    return;
                 }
                 if f.guardian {
                     self.player.as_mut().expect("player").guardian_beaten = true;
@@ -889,7 +1080,14 @@ impl Session {
                 .map_err(|_| format!("\"{v}\" is not a number."))
         };
         match name {
-            "game.new" => self.screen = Screen::NewGame,
+            "game.new" => self.screen = Screen::Mission,
+            "mission.choose" => {
+                if !value.is_empty() {
+                    self.mission =
+                        Mission::from_id(value).ok_or_else(|| format!("There is no mission \"{value}\"."))?;
+                }
+                self.screen = Screen::NewGame;
+            }
             // Enter: the screen's main action
             "first" => {
                 let next = match &self.screen {
@@ -1203,7 +1401,19 @@ impl Session {
                 let at = self.player().pos;
                 self.start_fight(at, niv, None, true);
             }
-            "lair.leave" | "victory.continue" => self.screen = Screen::Board,
+            "riot.fight" => {
+                if !matches!(self.screen, Screen::Rakdos) {
+                    return Ok(());
+                }
+                let me = self
+                    .cards
+                    .iter()
+                    .position(|c| c.name == "Rakdos, Lord of Riots")
+                    .unwrap_or(0);
+                let at = self.player().pos;
+                self.start_fight(at, me, None, true);
+            }
+            "lair.leave" | "victory.continue" | "riot.leave" => self.screen = Screen::Board,
             // cities
             "city.room" => {
                 if let Screen::City { city, .. } = self.screen.clone() {
@@ -2009,5 +2219,241 @@ mod tests {
         let p = s.player();
         assert_eq!(p.worn["chest"], "azorius_chest");
         assert_eq!(p.gold, 60);
+    }
+
+    fn riot() -> Session {
+        let mut s = for_tests();
+        s.act("game.new", "").unwrap();
+        assert!(matches!(s.screen, Screen::Mission));
+        s.act("mission.choose", "riot").unwrap();
+        s.act("game.guild", "Izzet").unwrap();
+        s.act("starter.start", "").unwrap();
+        s.screen = Screen::Board;
+        s
+    }
+
+    /// Rakdos's road made short for a test: from `first`, then each of `rest`.
+    fn road(s: &mut Session, first: Pos, rest: &[Pos]) {
+        let r = s.world.as_mut().unwrap().riot.as_mut().unwrap();
+        r.route = std::iter::once(first).chain(rest.iter().copied()).collect();
+        r.at = 0;
+        r.clock = 0;
+    }
+
+    fn win_the_fight(s: &mut Session) {
+        let Screen::Battle(f) = &mut s.screen else {
+            panic!("no fight")
+        };
+        f.duel.outcome = Some(Outcome::Won);
+        f.shown = f.duel.events.len().saturating_sub(1);
+        s.act("battle.done", "").unwrap();
+    }
+
+    #[test]
+    fn the_riot_begins_with_rakdos_at_rix_maadi_and_its_own_three_quests() {
+        let s = riot();
+        let r = s.world().riot.as_ref().unwrap();
+        assert_eq!(r.pos(), (0, 5));
+        assert!(r.roaming());
+        let q = &s.player().quests;
+        // the Tenth District step is met as the game begins
+        assert_eq!(q.get("riot"), Some(&1));
+        assert_eq!(q.get("calliope"), Some(&0));
+        assert_eq!(q.get("column"), Some(&0));
+        assert!(!q.contains_key("dracogenius"));
+        let d = started();
+        assert!(d.world().riot.is_none());
+        assert_eq!(d.player().quests.get("dracogenius"), Some(&1));
+        assert!(!d.player().quests.contains_key("riot"));
+    }
+
+    #[test]
+    fn stepping_onto_rakdos_faces_him_and_beating_him_grades_the_steps() {
+        let mut s = riot();
+        road(&mut s, (1, 0), &[(2, 0), (3, 0), (0, -5)]);
+        s.act("move", "e").unwrap();
+        assert!(matches!(s.screen, Screen::Rakdos));
+        assert!(s.ui_json().contains("Fight Rakdos"));
+        s.act("riot.fight", "").unwrap();
+        let Screen::Battle(f) = &s.screen else {
+            panic!("no fight")
+        };
+        assert!(f.guardian);
+        assert_eq!(s.cards[f.creature].name, "Rakdos, Lord of Riots");
+        assert_eq!(f.duel.s[1].life, 12);
+        win_the_fight(&mut s);
+        // one step taken: grade A
+        let Screen::Result { lines, next } = &s.screen else {
+            panic!("no result")
+        };
+        assert!(matches!(next, Next::Victory));
+        assert!(
+            lines.iter().any(|l| l == "Rakdos is beaten in 1 steps: grade A."),
+            "{lines:?}"
+        );
+        assert_eq!(
+            s.world().riot.as_ref().unwrap().ended,
+            Some(Ending::Beaten { steps: 1 })
+        );
+        assert_eq!(s.player().quests.get("riot"), Some(&3));
+        s.act("result.next", "").unwrap();
+        assert!(s.ui_json().contains("Rakdos falls: grade A"));
+        // he is gone from the map: no more moves, no mark
+        s.act("victory.continue", "").unwrap();
+        assert!(s.quest_marks().iter().all(|(_, q)| q != RAKDOS_MARK));
+    }
+
+    #[test]
+    fn leaving_rakdos_keeps_the_game_on_the_board() {
+        let mut s = riot();
+        road(&mut s, (1, 0), &[(2, 0), (0, -5)]);
+        s.act("move", "e").unwrap();
+        s.act("riot.leave", "").unwrap();
+        assert!(matches!(s.screen, Screen::Board));
+    }
+
+    #[test]
+    fn rakdos_reaching_new_prahv_loses_the_riot() {
+        let mut s = riot();
+        road(&mut s, (0, 4), &[(0, -5)]);
+        s.world.as_mut().unwrap().riot.as_mut().unwrap().clock = 2;
+        s.act("move", "e").unwrap();
+        let Screen::Result { lines, next } = &s.screen else {
+            panic!("no result")
+        };
+        assert_eq!(lines, &vec![s.s("riot.fell")]);
+        assert!(matches!(next, Next::Victory));
+        s.act("result.next", "").unwrap();
+        assert!(s.ui_json().contains("New Prahv has fallen"));
+        assert_eq!(s.world().riot.as_ref().unwrap().ended, Some(Ending::Fell));
+    }
+
+    #[test]
+    fn the_lyev_columns_mark_brings_rakdos_to_eight_life() {
+        let mut s = riot();
+        road(&mut s, (1, 0), &[(0, -5)]);
+        s.world.as_mut().unwrap().riot.as_mut().unwrap().weakened = true;
+        s.act("move", "e").unwrap();
+        s.act("riot.fight", "").unwrap();
+        let Screen::Battle(f) = &s.screen else {
+            panic!("no fight")
+        };
+        assert_eq!(f.duel.s[1].life, 8);
+    }
+
+    #[test]
+    fn jamming_the_calliope_slows_rakdos_to_one_move_in_four() {
+        let mut s = riot();
+        s.world.as_mut().unwrap().add_chunk((1, 1), &s.cards.clone());
+        assert_eq!(
+            s.world().tile((6, 4)).unwrap().feature,
+            Feature::Place(Place::Calliope)
+        );
+        s.player.as_mut().unwrap().quests.insert("calliope".into(), 2);
+        s.player.as_mut().unwrap().pos = (5, 4);
+        s.go((6, 4)).unwrap();
+        let Screen::Result { lines, .. } = &s.screen else {
+            panic!("no result")
+        };
+        assert_eq!(lines[0], s.s("place.calliope.text"));
+        assert!(
+            lines.iter().any(|l| l.contains("once every 4 of your steps")),
+            "{lines:?}"
+        );
+        let r = s.world().riot.as_ref().unwrap();
+        assert!(r.slowed);
+        assert_eq!(r.every(), 4);
+        // the first mission has no calliope
+        let mut d = started();
+        d.world.as_mut().unwrap().add_chunk((1, 1), &d.cards.clone());
+        assert_ne!(
+            d.world().tile((6, 4)).unwrap().feature,
+            Feature::Place(Place::Calliope)
+        );
+    }
+
+    #[test]
+    fn a_minion_on_a_razed_tile_fights_with_eighteen_life_and_beating_it_frees_the_tile() {
+        let mut s = riot();
+        road(&mut s, (0, 7), &[(1, 7), (0, -5)]);
+        let thug = s.cards.iter().position(|c| c.name == "Splatter Thug").unwrap();
+        {
+            let t = s.world.as_mut().unwrap().tiles.get_mut(&(1, 0)).unwrap();
+            t.razed = true;
+            t.minion = Some(thug);
+            t.pool.clear();
+            t.cleared = false;
+        }
+        s.act("move", "e").unwrap();
+        assert!(matches!(s.screen, Screen::Draw { card, .. } if card == thug));
+        assert!(s
+            .ui_json()
+            .contains("Rakdos's minion: it brings 18 life and 7 lands"));
+        s.act("draw.fight", "").unwrap();
+        let Screen::Battle(f) = &s.screen else {
+            panic!("no fight")
+        };
+        assert_eq!(f.duel.s[1].life, 18);
+        win_the_fight(&mut s);
+        let t = s.world().tile((1, 0)).unwrap();
+        assert_eq!(t.minion, None);
+        assert!(t.cleared && t.razed);
+        assert!(s.player().collection.contains(&thug));
+    }
+
+    #[test]
+    fn a_quests_next_place_is_marked_before_it_is_found_and_nothing_else_is_shown() {
+        let mut s = started();
+        s.screen = Screen::Board;
+        let tiles = s.world().tiles.len();
+        // the Dracogenius's next step is New Prahv, two chunks north
+        let marks = s.quest_marks();
+        assert!(marks.contains(&((0, -5), "dracogenius".to_string())), "{marks:?}");
+        assert!(s.world().tile((0, -5)).is_none());
+        assert_eq!(s.world().tiles.len(), tiles);
+        s.act("resize", "1280,720,1").unwrap();
+        let ui: Value = serde_json::from_str(&s.ui_json()).unwrap();
+        let label = ui["labels"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .find(|l| l["text"] == "New Prahv")
+            .expect("a label for New Prahv")
+            .clone();
+        // it lies past the top of the view, so its label is held on screen,
+        // and says how far it is: five steps north
+        let y = label["y"].as_i64().unwrap();
+        assert!((80..=940).contains(&y), "{label}");
+        assert_eq!(label["sub"], "The Dracogenius · 5 steps away");
+        // a district step points at a district of that guild, as it will be made
+        s.player.as_mut().unwrap().quests.insert("lantern".into(), 0);
+        let (at, _) = s
+            .quest_marks()
+            .into_iter()
+            .find(|(_, q)| q == "lantern")
+            .expect("a mark for the lantern");
+        let c = crate::world::chunk_of(at);
+        s.world.as_mut().unwrap().add_chunk(c, &s.cards.clone());
+        assert_eq!(s.world().tile(at).unwrap().guild, Some(Guild::Izzet));
+        // the Riot marks Rakdos wherever he is
+        let r = riot();
+        let marks = r.quest_marks();
+        assert!(marks.contains(&((0, 5), RAKDOS_MARK.to_string())), "{marks:?}");
+        // and the Riot quest's own next place, New Prahv, apart from him
+        assert!(marks.contains(&((0, -5), "riot".to_string())), "{marks:?}");
+        assert!(r.quests.iter().all(|q| q.id != RAKDOS_MARK));
+        // the Riot and the Lyev Column both go to New Prahv next, five steps
+        // north of the start: one label
+        let mut r = r;
+        r.act("resize", "1280,720,1").unwrap();
+        let ui: Value = serde_json::from_str(&r.ui_json()).unwrap();
+        let prahv: Vec<&Value> = ui["labels"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .filter(|l| l["text"] == "New Prahv")
+            .collect();
+        assert_eq!(prahv.len(), 1, "{prahv:?}");
+        assert_eq!(prahv[0]["sub"], "The Riot, The Lyev Column · 5 steps away");
     }
 }

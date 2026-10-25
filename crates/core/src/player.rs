@@ -130,6 +130,9 @@ pub struct Player {
     pub last_city: Pos,
     pub guardian_beaten: bool,
     pub fights_won: u32,
+    /// Steps taken this game: the Riot's grade (T32).
+    #[serde(default)]
+    pub steps: u32,
 }
 
 impl Player {
@@ -155,6 +158,7 @@ impl Player {
             last_city: (0, 0),
             guardian_beaten: false,
             fights_won: 0,
+            steps: 0,
         };
         pl.health = pl.max_health(armoury);
         pl

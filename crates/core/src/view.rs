@@ -155,7 +155,15 @@ fn readings(s: &Session, c: usize, at: Pos) -> Value {
     let k = &s.cards[c];
     let kind = s.s(&format!("reading.kind.{}", k.kind().name()));
     let tier = k.tier();
+    let minion = s.world().tile(at).and_then(|t| t.minion) == Some(c);
     let mv = match k.kind() {
+        Kind::Creature if minion => s.f(
+            "reading.tier.minion",
+            &[
+                ("life", encounter::MINION_LIFE.to_string()),
+                ("lands", encounter::FOE_LANDS[2].to_string()),
+            ],
+        ),
         Kind::Creature => s.f(
             "reading.tier.creature",
             &[
@@ -251,6 +259,18 @@ fn quests_panel(s: &Session) -> Value {
         };
         rows.push(json!([name, state]));
     }
+    if let Some(r) = s.world().riot.as_ref().filter(|r| r.roaming()) {
+        rows.insert(
+            0,
+            json!([
+                s.s("riot.rakdos"),
+                s.f(
+                    "riot.left",
+                    &[("n", r.left().to_string()), ("every", r.every().to_string())]
+                )
+            ]),
+        );
+    }
     json!({"id": "quests", "place": "tr", "heading": s.s("quest.heading"), "rows": rows})
 }
 
@@ -274,6 +294,8 @@ fn tile_panel(s: &Session) -> Value {
     match t.feature {
         Feature::City(c) => lines.push(s.s(&format!("city.{}", c.id()))),
         Feature::Lair => lines.push(s.s("tile.lair")),
+        Feature::Place(p) => lines.push(s.s(&format!("place.{}", p.id()))),
+        _ if t.minion.is_some() => lines.push(s.s("tile.razed")),
         _ if t.cleared => lines.push(s.s("tile.cleared")),
         _ => {}
     }
@@ -291,6 +313,14 @@ fn tile_panel(s: &Session) -> Value {
             Feature::Lair => s.s("tile.lair"),
             Feature::Peak => s.s("tile.peak"),
             Feature::Canal => s.s("tile.canal"),
+            Feature::Place(p) => s.s(&format!("place.{}", p.id())),
+            Feature::Cards if n.minion.is_some() => s.f(
+                "tile.minion",
+                &[(
+                    "card",
+                    n.minion.map(|m| s.cards[m].name.clone()).unwrap_or_default(),
+                )],
+            ),
             Feature::Cards if n.cleared || n.pool.is_empty() => s.s("tile.cleared"),
             Feature::Cards => {
                 let names: Vec<String> = n.pool.iter().map(|&c| s.cards[c].name.clone()).collect();
@@ -312,10 +342,15 @@ fn tile_panel(s: &Session) -> Value {
 fn labels_board(s: &Session) -> Vec<Value> {
     let mut out = Vec::new();
     let w = s.world();
+    let marks = s.quest_marks();
     for (p, t) in &w.tiles {
+        if marks.iter().any(|(q, _)| q == p) {
+            continue;
+        }
         let (key, sub) = match t.feature {
             Feature::City(c) => (format!("city.{}", c.id()), s.s("label.city")),
             Feature::Lair => ("tile.lair".to_string(), s.s("label.lair")),
+            Feature::Place(pl) => (format!("place.{}", pl.id()), s.s("label.place")),
             _ => continue,
         };
         out.push((scene::tile_point(*p, 2), s.s(&key), sub, false));
@@ -325,6 +360,30 @@ fn labels_board(s: &Session) -> Vec<Value> {
         .into_iter()
         .filter_map(|(pt, text, sub, hot)| place(s, pt, text, sub, hot))
         .collect();
+    // each quest's next place, found or not, held at the screen's edge when
+    // it is off it (T33); and Rakdos (T32)
+    // two quests bound for one place share its label
+    let mut places: Vec<(Pos, Vec<String>)> = Vec::new();
+    for (p, quest) in marks {
+        match places.iter_mut().find(|(q, _)| *q == p) {
+            Some((_, qs)) => qs.push(quest),
+            None => places.push((p, vec![quest])),
+        }
+    }
+    for (p, quests) in places {
+        let away = crate::world::distance(p, you).to_string();
+        let rakdos = quests.iter().any(|q| q == crate::session::RAKDOS_MARK);
+        let (text, what) = if rakdos {
+            (s.s("riot.rakdos"), s.s("label.rakdos"))
+        } else {
+            let names: Vec<String> = quests.iter().map(|q| s.s(&format!("quest.{q}"))).collect();
+            (mark_name(s, p), names.join(", "))
+        };
+        let sub = s.f("label.away", &[("what", what), ("n", away)]);
+        if let Some(v) = place_held(s, scene::tile_point(p, 2), text, sub, rakdos) {
+            labels.push(v);
+        }
+    }
     if let Some(v) = place(
         s,
         scene::tile_point(you, 1),
@@ -336,6 +395,48 @@ fn labels_board(s: &Session) -> Vec<Value> {
     }
     labels
 }
+
+/// What a quest's next place is called before it is found: a city, the
+/// lair, a place of the Riot, or a guild's district.
+fn mark_name(s: &Session, p: Pos) -> String {
+    let w = s.world();
+    for c in crate::world::City::ALL {
+        if crate::world::spot_of(Feature::City(c)) == Some(p) {
+            return s.s(&format!("city.{}", c.id()));
+        }
+    }
+    if crate::world::spot_of(Feature::Lair) == Some(p) {
+        return s.s("tile.lair");
+    }
+    if let Some(pl) = crate::riot::Place::ALL.into_iter().find(|x| x.spot() == p) {
+        return s.s(&format!("place.{}", pl.id()));
+    }
+    let guild = w.tile(p).and_then(|t| t.guild).or_else(|| {
+        w.made(crate::world::chunk_of(p), &s.cards)
+            .into_iter()
+            .find(|(q, _)| *q == p)
+            .and_then(|(_, t)| t.guild)
+    });
+    match guild {
+        Some(g) => s.f("label.district", &[("guild", g.name().to_string())]),
+        None => s.s("label.quest"),
+    }
+}
+
+/// A label kept on screen: a point off it is held at the nearest edge.
+fn place_held(s: &Session, pt: V3, text: String, sub: String, hot: bool) -> Option<Value> {
+    let m = scene::camera_for(s).matrix(geom_aspect(s));
+    let (x, y) = geom::project(&m, pt)?;
+    let ((xl, xh), (yl, yh)) = LABEL_EDGE;
+    Some(
+        json!({"x": x.clamp(xl, xh), "y": y.clamp(yl, yh), "text": text, "sub": sub, "hot": hot, "quest": true}),
+    )
+}
+
+/// How near the screen's edges (thousandths, across then down) a held
+/// label's anchor may stand: a label is centred across its anchor and
+/// stands above it.
+const LABEL_EDGE: ((i32, i32), (i32, i32)) = ((140, 860), (80, 940));
 
 fn place(s: &Session, pt: V3, text: String, sub: String, hot: bool) -> Option<Value> {
     let m = scene::camera_for(s).matrix(geom_aspect(s));
@@ -1364,6 +1465,16 @@ pub fn ui(s: &mut Session) -> Value {
                 "lines": [s.s("title.notice")]}));
             "title"
         }
+        Screen::Mission => {
+            let choices: Vec<Value> = crate::session::Mission::ALL
+                .iter()
+                .enumerate()
+                .map(|(i, m)| json!({"key": (i + 1).to_string(), "text": s.s(&format!("mission.{}", m.id())), "sub": s.s(&format!("mission.{}.sub", m.id())), "enabled": true, "act": "mission.choose", "value": m.id()}))
+                .collect();
+            panels.push(json!({"id": "missions", "place": "center", "kind": "paper", "heading": s.s("mission.heading"), "text": s.s("mission.text"), "choices": choices,
+                "actions": [action(s.s("mission.back"), "screen.show", "title", true)]}));
+            "mission"
+        }
         Screen::NewGame => {
             let choices: Vec<Value> = Guild::ALL
                 .iter()
@@ -1388,7 +1499,7 @@ pub fn ui(s: &mut Session) -> Value {
                 "text": s.s("starter.text"), "choices": choices}));
             panels.push(json!({"id": "starterdeck", "place": "main", "heading": s.s(&format!("starter.{g}.{}", ids[*pick])),
                 "cards": deck.iter().map(|&c| face(s, c, "sm")).collect::<Vec<_>>(),
-                "actions": [action(s.s("starter.start"), "starter.start", "", true), action(s.s("starter.back"), "game.new", "", true)]}));
+                "actions": [action(s.s("starter.start"), "starter.start", "", true), action(s.s("starter.back"), "mission.choose", "", true)]}));
             "starter"
         }
         Screen::Board => {
@@ -1416,7 +1527,9 @@ pub fn ui(s: &mut Session) -> Value {
                 Kind::Land => actions.push(action(s.s("draw.claim"), "draw.claim", "", true)),
                 _ => actions.push(action(s.s("draw.read"), "draw.read", "", true)),
             }
+            let minion = s.world().tile(*at).and_then(|t| t.minion) == Some(*card);
             let text = match (k.kind(), story) {
+                (Kind::Creature, _) if minion => s.f("riot.minion_text", &[("card", k.name.clone())]),
                 (Kind::Creature, Some(st)) => st.intro.clone(),
                 (Kind::Land, Some(st)) => st.text.clone(),
                 _ => String::new(),
@@ -1552,9 +1665,49 @@ pub fn ui(s: &mut Session) -> Value {
                 "actions": [action(s.s("lair.climb"), "lair.climb", "", open), action(s.s("lair.leave"), "lair.leave", "", true)]}));
             "lair"
         }
+        Screen::Rakdos => {
+            panels.push(hud(s));
+            let me = s
+                .cards
+                .iter()
+                .position(|c| c.name == "Rakdos, Lord of Riots")
+                .unwrap_or(0);
+            let weakened = s.world().riot.as_ref().map(|r| r.weakened).unwrap_or(false);
+            let life = encounter::RAKDOS_LIFE - if weakened { encounter::RAKDOS_WEAKENED } else { 0 };
+            let lands = s
+                .world()
+                .lands_in_reach(s.player().pos, s.player().reach(&s.armoury))
+                .len();
+            panels.push(
+                json!({"id": "drawn", "place": "center-left", "kind": "card", "cards": [face(s, me, "lg")]}),
+            );
+            panels.push(json!({"id": "lair", "place": "center-right", "kind": "paper", "eyebrow": s.s("riot.eyebrow"), "heading": s.s("riot.rakdos"),
+                "text": s.s("riot.met"),
+                "lines": [s.f("riot.odds", &[("life", life.to_string()), ("deck", encounter::RAKDOS_LIST.iter().map(|x| x.1).sum::<usize>().to_string()), ("lands", lands.to_string())])],
+                "actions": [action(s.s("riot.fight"), "riot.fight", "", true), action(s.s("riot.leave"), "riot.leave", "", true)]}));
+            "rakdos"
+        }
         Screen::Victory => {
-            panels.push(json!({"id": "victory", "place": "center", "kind": "title", "heading": s.s("victory.heading"), "text": s.s("victory.text"),
-                "actions": [action(s.s("victory.continue"), "victory.continue", "", true)]}));
+            let ending = s
+                .world
+                .as_ref()
+                .and_then(|w| w.riot.as_ref())
+                .and_then(|r| r.ended);
+            let (heading, text) = match ending {
+                Some(crate::riot::Ending::Beaten { steps }) => (
+                    s.f(
+                        "riot.won.heading",
+                        &[("grade", s.s(&format!("riot.grade.{}", crate::riot::grade(steps))))],
+                    ),
+                    s.f("riot.won.text", &[("steps", steps.to_string())]),
+                ),
+                Some(crate::riot::Ending::Fell) => (s.s("riot.lost.heading"), s.s("riot.lost.text")),
+                None => (s.s("victory.heading"), s.s("victory.text")),
+            };
+            panels.push(
+                json!({"id": "victory", "place": "center", "kind": "title", "heading": heading, "text": text,
+                "actions": [action(s.s("victory.continue"), "victory.continue", "", true)]}),
+            );
             "victory"
         }
         Screen::Models { page } => {

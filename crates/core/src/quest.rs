@@ -2,9 +2,13 @@
 //! district of a guild, by winning a fight in such a district, or at the
 //! lair. The main quest, the Dracogenius, starts with a new game and ends
 //! with the guardian; each guild has one, started by one of its cards.
+//! The second mission's quests (T32, T34) start with its new game
+//! (`mission:riot`), and add two kinds of step: at one of its places, and
+//! Rakdos beaten; and a reward that slows or weakens him.
 
 use serde::Deserialize;
 
+use crate::riot::Place;
 use crate::world::{City, Guild};
 
 #[derive(Debug, Clone, PartialEq, Eq, Deserialize)]
@@ -14,6 +18,8 @@ pub struct Step {
     pub city: String,
     #[serde(default)]
     pub guild: String,
+    #[serde(default)]
+    pub place: String,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Deserialize, Default)]
@@ -24,6 +30,9 @@ pub struct Reward {
     pub armour: String,
     #[serde(default)]
     pub style: Option<(String, i32)>,
+    /// What it does to Rakdos in the Riot: "slow" or "weaken".
+    #[serde(default)]
+    pub rakdos: String,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Deserialize)]
@@ -45,6 +54,7 @@ pub fn parse(json: &str) -> Result<Vec<Quest>, String> {
         serde_json::from_str(json).map_err(|e| format!("The quests could not be read: {e}"))?;
     for q in &f.quests {
         let starts = q.starts == "new_game"
+            || q.starts == "mission:riot"
             || q.starts.strip_prefix("card:").is_some()
             || q.starts
                 .strip_prefix("hall:")
@@ -60,7 +70,8 @@ pub fn parse(json: &str) -> Result<Vec<Quest>, String> {
             let ok = match s.at.as_str() {
                 "city" => City::from_id(&s.city).is_some(),
                 "district" | "win_in_district" => Guild::from_name(&s.guild).is_some(),
-                "lair" => true,
+                "lair" | "rakdos" => true,
+                "place" => Place::from_id(&s.place).is_some(),
                 _ => false,
             };
             if !ok {
@@ -69,6 +80,12 @@ pub fn parse(json: &str) -> Result<Vec<Quest>, String> {
                     q.id
                 ));
             }
+        }
+        if !["", "slow", "weaken"].contains(&q.reward.rakdos.as_str()) {
+            return Err(format!(
+                "The quest \"{}\" does something to Rakdos this game does not know.",
+                q.id
+            ));
         }
     }
     Ok(f.quests)
@@ -81,6 +98,8 @@ pub enum Happened {
     InDistrict(Guild),
     WonInDistrict(Guild),
     AtLair,
+    AtPlace(Place),
+    BeatRakdos,
 }
 
 impl Step {
@@ -90,6 +109,8 @@ impl Step {
             ("district", Happened::InDistrict(g)) => g.name() == self.guild,
             ("win_in_district", Happened::WonInDistrict(g)) => g.name() == self.guild,
             ("lair", Happened::AtLair) => true,
+            ("place", Happened::AtPlace(p)) => p.id() == self.place,
+            ("rakdos", Happened::BeatRakdos) => true,
             _ => false,
         }
     }
@@ -100,9 +121,16 @@ mod tests {
     use super::*;
 
     #[test]
-    fn twenty_quests_of_three_steps_three_from_cards_for_each_guild_and_two_at_each_new_hall() {
+    fn twenty_three_quests_of_three_steps_three_from_cards_for_each_guild_two_at_each_new_hall_three_for_the_riot(
+    ) {
         let q = parse(include_str!("../../../data/quests.json")).unwrap();
-        assert_eq!(q.len(), 20);
+        assert_eq!(q.len(), 23);
+        let riot: Vec<&str> = q
+            .iter()
+            .filter(|q| q.starts == "mission:riot")
+            .map(|q| q.id.as_str())
+            .collect();
+        assert_eq!(riot, vec!["riot", "calliope", "column"], "T32, T34");
         for c in ["rix", "svogthos"] {
             let at = q.iter().filter(|q| q.starts == format!("hall:{c}")).count();
             assert_eq!(at, 2, "{c}: two quests in its hall (T27)");
@@ -127,6 +155,27 @@ mod tests {
         assert!(!lantern.steps[0].met_by(Happened::InDistrict(Guild::Rakdos)));
         assert!(!lantern.steps[0].met_by(Happened::WonInDistrict(Guild::Izzet)));
         assert!(lantern.steps[2].met_by(Happened::AtCity(City::Prahv)));
+    }
+
+    #[test]
+    fn the_riots_quests_slow_and_weaken_rakdos_and_end_with_him() {
+        let q = parse(include_str!("../../../data/quests.json")).unwrap();
+        let get = |id: &str| q.iter().find(|q| q.id == id).unwrap().clone();
+        assert_eq!(get("calliope").reward.rakdos, "slow");
+        assert_eq!(get("column").reward.rakdos, "weaken");
+        assert!(get("riot").steps[2].met_by(Happened::BeatRakdos));
+        assert!(!get("riot").steps[2].met_by(Happened::AtLair));
+        let c = get("calliope");
+        assert!(c.steps[0].met_by(Happened::AtPlace(Place::Calliope)));
+        assert!(!c.steps[0].met_by(Happened::AtPlace(Place::Column)));
+        let bad = include_str!("../../../data/quests.json").replacen("\"weaken\"", "\"banish\"", 1);
+        assert!(parse(&bad).unwrap_err().contains("column"));
+        let nowhere = include_str!("../../../data/quests.json").replacen(
+            "\"place\": \"column\"",
+            "\"place\": \"atlantis\"",
+            1,
+        );
+        assert!(parse(&nowhere).unwrap_err().contains("column"));
     }
 
     #[test]

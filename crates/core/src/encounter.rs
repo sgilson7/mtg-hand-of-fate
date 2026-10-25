@@ -9,7 +9,7 @@
 
 use crate::content::{ty, Card};
 use crate::duel::SideSetup;
-use crate::mana::{self, R, U};
+use crate::mana::{self, B, R, U};
 use crate::player::{Armoury, Player};
 use crate::rng::Rng;
 use crate::rules;
@@ -142,6 +142,89 @@ pub fn guardian(cards: &[Card]) -> SideSetup {
         in_play: vec![niv],
         perks: 0,
     }
+}
+
+/// Rakdos's forty (T32), chosen by hand to stand with Niv-Mizzet's: like his,
+/// mostly spells, removal and burn, two of the best, with fourteen creatures.
+/// Rakdos makes each creature cheaper by the life you lost that turn, so a
+/// deck of creatures behind him came down free and won nearly every game
+/// (SECOND-ORDER R8.4). Every name is a black, red or Rakdos card (tested).
+pub const RAKDOS_LIST: [(&str, usize); 33] = [
+    ("Rakdos Cackler", 2),
+    ("Gore-House Chainwalker", 1),
+    ("Ash Zealot", 1),
+    ("Thrill-Kill Assassin", 1),
+    ("Splatter Thug", 1),
+    ("Dead Reveler", 1),
+    ("Guttersnipe", 2),
+    ("Hellhole Flailer", 1),
+    ("Cobblebrute", 1),
+    ("Spawn of Rix Maadi", 1),
+    ("Bloodfray Giant", 1),
+    ("Ogre Jailbreaker", 1),
+    ("Annihilating Fire", 2),
+    ("Auger Spree", 2),
+    ("Dreadbore", 1),
+    ("Rakdos Charm", 2),
+    ("Ultimate Price", 1),
+    ("Mizzium Mortars", 2),
+    ("Electrickery", 1),
+    ("Street Spasm", 1),
+    ("Launch Party", 1),
+    ("Explosive Impact", 1),
+    ("Skull Rend", 1),
+    ("Mind Rot", 2),
+    ("Goblin Rally", 1),
+    ("Traitorous Instinct", 1),
+    ("Assassin's Strike", 1),
+    ("Stab Wound", 1),
+    ("Rakdos Keyrune", 1),
+    ("Shrieking Affliction", 1),
+    ("Pyroconvergence", 1),
+    ("Dynacharge", 1),
+    ("Cremate", 1),
+];
+/// Less than Niv-Mizzet's 16: Rakdos hits harder (`balance.rs`).
+pub const RAKDOS_LIFE: i32 = 12;
+/// Life the Lyev Column's quest takes from him (T34).
+pub const RAKDOS_WEAKENED: i32 = 4;
+/// A minion of his fights as a tier-three foe with this much life (T32).
+pub const MINION_LIFE: i32 = 18;
+
+/// Rakdos, Lord of Riots, in play from the start, and his forty.
+pub fn rakdos(cards: &[Card], weakened: bool) -> SideSetup {
+    let me = cards
+        .iter()
+        .position(|c| c.name == "Rakdos, Lord of Riots")
+        .unwrap_or(0);
+    let mut deck = Vec::new();
+    for (name, n) in RAKDOS_LIST {
+        if let Some(i) = cards.iter().position(|c| c.name == name) {
+            deck.extend(std::iter::repeat_n(i, n));
+        }
+    }
+    SideSetup {
+        name: cards[me].name.clone(),
+        life: RAKDOS_LIFE - if weakened { RAKDOS_WEAKENED } else { 0 },
+        deck,
+        lands: {
+            let mut l = basics_for(cards, B | R, GUARDIAN_LANDS - 2);
+            let gate = cards.iter().position(|c| c.name == "Rakdos Guildgate");
+            l.extend(gate.into_iter().chain(gate));
+            l
+        },
+        in_play: vec![me],
+        perks: 0,
+    }
+}
+
+/// A minion Rakdos left on a razed tile: whatever its size, a tier-three
+/// foe's lands and more life than one.
+pub fn minion(cards: &[Card], creature: usize, rng: &mut Rng) -> SideSetup {
+    let mut f = foe(cards, creature, &[], rng);
+    f.life = MINION_LIFE;
+    f.lands = basics_for(cards, B | R, FOE_LANDS[2]);
+    f
 }
 
 /// The player's side of a fight at `at`.
@@ -918,6 +1001,39 @@ mod tests {
             .iter()
             .all(|&i| g.deck.iter().filter(|&&j| j == i).count() <= 2));
         assert_eq!(cards[g.in_play[0]].name, "Niv-Mizzet, Dracogenius");
+    }
+
+    #[test]
+    fn rakdos_has_forty_black_and_red_cards_twelve_life_and_the_column_takes_four() {
+        let cards = for_tests();
+        let g = rakdos(&cards, false);
+        assert_eq!(g.deck.len(), 40);
+        assert_eq!(g.life, 12);
+        assert_eq!(rakdos(&cards, true).life, 8);
+        assert_eq!(g.lands.len(), 7);
+        assert!(g
+            .deck
+            .iter()
+            .all(|&i| cards[i].identity & !(B | R) == 0 && cards[i].identity != 0));
+        assert!(g
+            .deck
+            .iter()
+            .all(|&i| g.deck.iter().filter(|&&j| j == i).count() <= 2));
+        assert_eq!(cards[g.in_play[0]].name, "Rakdos, Lord of Riots");
+        let names: Vec<&str> = g.lands.iter().map(|&l| cards[l].name.as_str()).collect();
+        assert_eq!(names.iter().filter(|n| **n == "Rakdos Guildgate").count(), 2);
+    }
+
+    #[test]
+    fn a_minion_fights_with_eighteen_life_and_seven_lands_whatever_its_size() {
+        let cards = for_tests();
+        let small = crate::content::find(&cards, "Splatter Thug");
+        let f = minion(&cards, small, &mut Rng::new(3));
+        assert_eq!(f.in_play, vec![small]);
+        assert_eq!(f.life, 18);
+        assert_eq!(f.lands.len(), 7);
+        // a plain foe of the same card: tier two, 12 life, five lands
+        assert_eq!(foe(&cards, small, &[], &mut Rng::new(3)).life, 12);
     }
 
     #[test]

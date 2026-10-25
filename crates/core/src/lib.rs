@@ -18,6 +18,7 @@ pub mod mesh;
 pub mod player;
 pub mod quest;
 pub mod render;
+pub mod riot;
 pub mod rng;
 pub mod rules;
 pub mod scene;

@@ -211,6 +211,8 @@ fn a_bot_can_play_the_first_region_to_the_guardian() {
                 }
             }
             Screen::Starter { .. } => s.act("starter.start", "").unwrap(),
+            Screen::Mission => s.act("mission.choose", "dracogenius").unwrap(),
+            Screen::Rakdos => s.act("riot.leave", "").unwrap(),
             Screen::Title | Screen::NewGame | Screen::Deck { .. } | Screen::Models { .. } => {
                 s.act("screen.show", "board").unwrap()
             }

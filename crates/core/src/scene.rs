@@ -151,6 +151,7 @@ fn board_statics(s: &Session, w: &World) -> Batch {
         let c = tile_centre(p);
         let alt = crate::world::alternate(w.seed, p);
         let top = match (t.guild, alt) {
+            _ if t.razed => hex("#4a3a36"),
             (Some(g), _) => guild_tint(g),
             (None, true) => terrain_top_alternate(t.terrain),
             (None, false) => terrain_top(t.terrain),
@@ -189,6 +190,14 @@ fn board_statics(s: &Session, w: &World) -> Batch {
                 model_h(s, &mut b, "nivix", c, 0, ONE * 3);
             }
             Feature::Peak => model_h(s, &mut b, "peak", c, seed * fx::TURN / 4, ONE * 2),
+            Feature::Place(place) => model_h(s, &mut b, place.model(), c, 0, ONE * 2),
+            Feature::Cards if t.razed => {
+                model(s, &mut b, "razed", c, seed * fx::TURN / 4, ONE * 9 / 10);
+                if let Some(m) = t.minion {
+                    let name = format!("c{}", s.cards[m].number);
+                    model_h(s, &mut b, &name, c, fx::TURN / 2, ONE * 11 / 10);
+                }
+            }
             Feature::Canal => model(s, &mut b, "canal_pool", c, 0, ONE),
             Feature::Cards => {
                 if let Some(g) = t.guild {
@@ -372,7 +381,46 @@ fn board_statics(s: &Session, w: &World) -> Batch {
             }
         }
     }
+    if s.player.is_some() {
+        quest_marks(s, w, &mut b);
+    }
     b
+}
+
+/// Each quest's next place (T33): a grey tile where it is not found yet and
+/// a banner over it; Rakdos where he stands (T32).
+fn quest_marks(s: &Session, w: &World, b: &mut Batch) {
+    let grey = hex("#a8a29a");
+    for (p, quest) in s.quest_marks() {
+        let c = tile_centre(p);
+        if !w.tiles.contains_key(&p) {
+            let size = TILE * 97 / 100;
+            b.solid(
+                Mesh::Cube,
+                c.add(v3(0, -SLAB / 2, 0)),
+                &upright(size, SLAB, size),
+                side_of(grey),
+            );
+            b.solid(
+                Mesh::Ground,
+                c.add(v3(0, ONE / 200, 0)),
+                &upright(size, ONE, size),
+                grey,
+            );
+        }
+        if quest == crate::session::RAKDOS_MARK {
+            model_h(s, b, "c187", c, fx::TURN / 2, ONE * 16 / 10);
+        } else {
+            model_h(
+                s,
+                b,
+                "quest_banner",
+                c.add(v3(-ONE * 6 / 10, 0, -ONE * 6 / 10)),
+                0,
+                ONE * 13 / 10,
+            );
+        }
+    }
 }
 
 fn board_camera(s: &Session, focus: V3) -> Camera {
@@ -409,7 +457,7 @@ fn hero_spot(s: &Session) -> V3 {
 
 pub fn camera_for(s: &Session) -> Camera {
     match &s.screen {
-        Screen::Title | Screen::NewGame | Screen::Starter { .. } => {
+        Screen::Title | Screen::Mission | Screen::NewGame | Screen::Starter { .. } => {
             let t = (s.now / 1000 % 60_000) as i32;
             let yaw = (t as i64 * fx::TURN as i64 / 60_000) as i32;
             let r = 22 * ONE;
@@ -1228,6 +1276,7 @@ pub fn build(s: &mut Session) {
                 room: Room::Armourer,
                 ..
             } | Screen::Lair
+                | Screen::Rakdos
                 | Screen::Victory
         );
     out.viewport(0, 0, w, h, &cam, &if dark { dark_mood() } else { mood() });
@@ -1241,8 +1290,14 @@ pub fn build(s: &mut Session) {
             | Screen::Result { .. }
             | Screen::Land { .. }
             | Screen::Lair
+            | Screen::Rakdos
     ) && s.world.is_some();
-    if board || matches!(screen, Screen::Title | Screen::NewGame | Screen::Starter { .. }) {
+    if board
+        || matches!(
+            screen,
+            Screen::Title | Screen::Mission | Screen::NewGame | Screen::Starter { .. }
+        )
+    {
         if s.statics_dirty || s.statics.parts.is_empty() {
             let world = match &s.world {
                 Some(w) => w.clone(),
@@ -1309,7 +1364,17 @@ pub fn build(s: &mut Session) {
             Screen::City { .. } => draw_city(s, &mut b),
             Screen::Deck { .. } => draw_deck(s, &mut b),
             Screen::Models { page } => draw_models(s, &mut b, *page),
-            Screen::Victory => model_h(s, &mut b, "c183", V3::ZERO, 0, 4 * ONE),
+            Screen::Victory => {
+                let riot = s.world.as_ref().and_then(|w| w.riot.as_ref()).is_some();
+                model_h(
+                    s,
+                    &mut b,
+                    if riot { "c187" } else { "c183" },
+                    V3::ZERO,
+                    0,
+                    4 * ONE,
+                )
+            }
             _ => {}
         }
     }

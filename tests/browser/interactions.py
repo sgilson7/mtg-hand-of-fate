@@ -1,9 +1,9 @@
 """The game's browser interactions, run by check.py in every engine.
 
 check.py has already loaded the page, waited for it to report ready, and let
-it idle. This plays the opening the way a person would: start a new game as
-the Izzet with Ral's deck, read the opening, enter the Tenth District, leave it, and take a
-step. Expected values are worked out by hand from the data, never copied from
+it idle. This plays the opening the way a person would: start a new game of
+the Riot as the Izzet with Ral's deck, read the opening, enter the Tenth
+District, leave it, and find Rakdos marked on the map. Expected values are worked out by hand from the data, never copied from
 the game's output: the starting health is the armour's base 10 plus the
 wanderer's hood 2, coat 4, wraps 0 and boots 2, which is 18.
 """
@@ -19,6 +19,9 @@ def run(page, check, engine):
     check(page.get_attribute("body", "data-screen") == "title", "the game opens on its title screen")
     check(STRINGS["title"] in page.inner_text("#panel-title"), "the title from data/strings.json is drawn")
     page.get_by_role("button", name=STRINGS["title.new"]).click()
+    page.wait_for_selector("body[data-screen='mission']")
+    check(page.locator(".choice").count() == 2, "two missions are offered")
+    page.get_by_role("button", name=STRINGS["mission.riot"], exact=False).first.click()
     page.wait_for_selector("body[data-screen='newgame']")
     check(page.locator(".choice").count() == 5, "five guilds are offered")
     page.get_by_role("button", name=STRINGS["guild.Izzet"]).click()
@@ -42,3 +45,10 @@ def run(page, check, engine):
     page.wait_for_selector("body[data-screen='board']")
     check("12 / 20" in page.inner_text("#panel-hud"), "the Izzet starting deck holds twelve cards")
     check(page.inner_text("#message") == "", "no error message is shown")
+    # the Riot: Rakdos sets out from Rix Maadi, five steps south, and the
+    # quests panel says how far he is from New Prahv (his road is ten or more)
+    quests = page.inner_text("#panel-quests")
+    check(STRINGS["riot.rakdos"] in quests and STRINGS["quest.riot"] in quests, "the quests panel names Rakdos and the Riot")
+    labels = page.inner_text("body")
+    away = STRINGS["label.away"].replace("{what}", STRINGS["label.rakdos"]).replace("{n}", "5")
+    check(away in labels, "Rakdos is marked on the map, five steps away")

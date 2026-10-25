@@ -4,7 +4,7 @@ Stage 9, written by the agent. `C5 Consolidate in your own words`. A fresh sessi
 
 ## What this is
 
-Tenth District (a working title): a Hand of Fate–style deck-building adventure on Ravnica's grid with 108 Return to Ravnica cards, for the browser. This MVP is the first region, from a new game in the Tenth District to the fight with Niv-Mizzet in Nivix; since T10 the pool is all of Return to Ravnica (254 cards, the first 108 first). Since MVP 2 (TRIAGE T1) every fight is a game of Magic the player plays against a computer opponent, with a land pile instead of lands in the deck. It is public at https://sgilson7.github.io/mtg-hand-of-fate/ (built from b420f5e, T23 to T28), source at https://github.com/sgilson7/mtg-hand-of-fate.
+Ravnica Digest (named by the person in T31; Tenth District until then): a Hand of Fate–style deck-building adventure on Ravnica's grid with 108 Return to Ravnica cards, for the browser. This MVP is the first region, from a new game in the Tenth District to the fight with Niv-Mizzet in Nivix; since T10 the pool is all of Return to Ravnica (254 cards, the first 108 first). Since MVP 2 (TRIAGE T1) every fight is a game of Magic the player plays against a computer opponent, with a land pile instead of lands in the deck. Since T32 a new game is one of two missions: the Dracogenius, or the Riot, where Rakdos razes his way across the map to New Prahv and beating him is graded by the steps taken (`riot.rs`). It is public at https://sgilson7.github.io/mtg-hand-of-fate/ (built from b420f5e, T23 to T28), source at https://github.com/sgilson7/mtg-hand-of-fate.
 
 ## Rules that hold it up
 
@@ -49,11 +49,10 @@ The rules in `CLAUDE.md` under "Rules agreed for this project" (MTG-1 to MTG-11)
 ## Open for the person
 
 - R1.1: whether and how the game may use Wizards' card text and art in public (MTG-Q1). The person asked for a public page; the Fan Content notice is the only safeguard.
-- R1.2: the game's public name (MTG-Q2).
 - R1.3: the rules of the childhood grid game (MTG-Q3).
 - R1.10: read the story text and labels the agent wrote for the mockup.
 - R2.10: read the cards whose text this game can only partly honour (Street Sweeper, Ash Zealot, the keyrunes, Faerie Impostor).
-- R2.11: the working title "Tenth District" and the Fan Content notice on the title screen.
+- R2.11: the Fan Content notice on the title screen (the title is now Ravnica Digest).
 - R2.12: read the agent-written strings and the 108 stories.
 - R2.13: decide whether the weaker TikZ pictures get a second pass (MTG-Q12).
 - R2.17: set `git config user.name` (and email) so `scripts/publish.sh` can commit the page.
@@ -79,6 +78,14 @@ The rules in `CLAUDE.md` under "Rules agreed for this project" (MTG-1 to MTG-11)
 - R7.5: supplies at six for 2 gold.
 - R7.6: Rix Maadi and Svogthos: where they stand, their gear, their quests.
 - R7.10: read the new strings.
+- R8.1: the Riot's shape: a mission chosen before the guild, Rakdos's road through six chunks, one move in three steps, New Prahv falling.
+- R8.2: grades by steps taken: A to 70, B to 100, C to 130, D beyond.
+- R8.3: razed tiles and minions: 18 life and 7 lands, black or red creatures of 3 to 5.
+- R8.5: the Calliope and the Lyev Column, where they stand and what their quests do to Rakdos.
+- R8.7: which places a quest's grey tile marks.
+- R8.9: the rename touches the title, tab and notice; the address, repository and save key stay.
+- R8.10: read the new strings.
+- R8.11: the website tile: its still, its loop and its page.
 
 ## Mistakes so far
 
@@ -111,6 +118,8 @@ The rules in `CLAUDE.md` under "Rules agreed for this project" (MTG-1 to MTG-11)
 2026-10-24, T23 to T28: `./scripts/check.sh` ended `BROWSER CHECK PASSED in chromium, firefox, webkit` and `BUILDER CHECK PASSED`; `./scripts/count-tests.sh`: 154 passed, 0 failed; `scripts/break_tests.py`: 68 of 68 caught. The browser check now chooses Ral's deck before the opening, and waits for the deck panel to redraw before reading it. A live look (Playwright, build from the working tree) showed the deck window, the deck choice, the second terrain looks, Rix Maadi's hall and armourer, and the whole log, with no page errors.
 
 2026-10-24, T23 to T28 deploy: main pushed; `dist/` built from b420f5e committed onto gh-pages by hand (0179c59, an ordinary push, R2.17); the live `build.txt` reads `8107cb816ced b420f5e`; the browser check against the live address ended `BROWSER CHECK PASSED in chromium, firefox, webkit`.
+
+2026-10-24, T29 to T34: `./scripts/check.sh` ended `BROWSER CHECK PASSED in chromium, firefox, webkit` and `BUILDER CHECK PASSED`; `./scripts/count-tests.sh`: 173 passed, 0 failed; `scripts/break_tests.py`: 95 of 95 caught. The browser check now opens a Riot game and finds Rakdos marked five steps away. A live look (Playwright, build from the working tree) showed the mission choice, New Prahv's grey tile, the Riot on the map with razed tiles and minions, facing and fighting Rakdos, with no page errors.
 
 ## The next action
 
