@@ -6,7 +6,7 @@
 use serde_json::{json, Value};
 
 use crate::content::{ty, Card, Kind};
-use crate::duel::{Action, Ask, Outcome, Target, Then, P};
+use crate::duel::{Action, Ask, Ev, Outcome, Target, Then, P};
 use crate::encounter;
 use crate::geom::{self, V3};
 use crate::mana;
@@ -121,6 +121,7 @@ pub fn face(s: &Session, c: usize, size: &str) -> Value {
         "frame": frame_of(k),
         "art": format!("art/cards/{}.webp", k.number),
         "rarity": s.s(&format!("rarity.{}", k.rarity)),
+        "rare": k.rarity,
         "artist": k.artist,
         "size": size,
     })
@@ -726,6 +727,7 @@ fn battle_panels(s: &Session, f: &crate::session::Fight) -> Vec<Value> {
     let mut panels = vec![json!({
         "id": "sides", "place": "tl",
         "heading": s.f("duel.turn_heading", &[("n", ev.turn.div_ceil(2).to_string()), ("whose", whose), ("step", s.s(step.key()))]),
+        "phases": phase_strip(s, step),
         "lifebars": [life_bar(s, f, 0, s.s("battle.you")), life_bar(s, f, 1, foe_name)],
         "rows": [
             [s.s("duel.your_cards"), s.f("duel.cards_n", &[("hand", snap.hand[0].to_string()), ("library", snap.library[0].to_string()), ("pile", snap.pile[0].to_string())])],
@@ -771,7 +773,10 @@ fn battle_panels(s: &Session, f: &crate::session::Fight) -> Vec<Value> {
                 lines.push(s.f(key, &[("card", name.clone())]));
             }
         }
-        panels.push(json!({"id": "stack", "place": "stack", "heading": s.s("duel.stack"), "cards": cards, "lines": lines}));
+        let heading = s.f("duel.stack_n", &[("n", snap.stack.len().to_string())]);
+        panels.push(
+            json!({"id": "stack", "place": "stack", "heading": heading, "cards": cards, "lines": lines}),
+        );
     }
     let ask = f.asking();
     let acts = d.actions(P);
@@ -791,11 +796,14 @@ fn battle_panels(s: &Session, f: &crate::session::Fight) -> Vec<Value> {
                         .collect();
                     if mine.is_empty() {
                         face["dim"] = json!(true);
-                    } else if mine.len() == 1 {
+                    } else {
+                        face["playable"] = json!(true);
+                    }
+                    if mine.len() == 1 {
                         face["act"] = json!("duel.do");
                         face["value"] = json!(mine[0].0.to_string());
                         face["badge"] = json!(action_label(s, f, mine[0].1));
-                    } else {
+                    } else if mine.len() > 1 {
                         face["actions"] = Value::Array(
                             mine.iter()
                                 .map(|(k, a)| action(action_label(s, f, a), "duel.do", &k.to_string(), true))
@@ -814,11 +822,53 @@ fn battle_panels(s: &Session, f: &crate::session::Fight) -> Vec<Value> {
         })
         .collect();
     panels.push(json!({"id": "hand", "place": "bottom", "cards": hand}));
-    panels.push(controls(s, f, ask, &acts));
+    let mut c = controls(s, f, ask, &acts);
+    // T35, after MTG Arena: the first button is the main one, what Space
+    // does; it says whether the game only waits on you or needs an answer.
+    // Watching the foe play asks nothing, so it has none.
+    let need = match ask {
+        Some(Ask::Priority) => Some("optional"),
+        Some(_) => Some("required"),
+        None => None,
+    };
+    if let (Some(need), Some(first)) = (need, c["actions"].get_mut(0)) {
+        first["main"] = json!(need);
+    }
+    panels.push(c);
     if let Some(p) = s.hovered.and_then(|id| snap.perms.iter().find(|p| p.id == id)) {
         panels.push(peek(s, p));
     }
     panels
+}
+
+/// The phases of a turn, after MTG Arena's strip above the hand (T35): the
+/// one the game is in is marked.
+pub const PHASES: [&str; 5] = ["beginning", "main1", "combat", "main2", "end"];
+
+pub fn phase_of(step: crate::duel::Step) -> &'static str {
+    use crate::duel::Step;
+    match step {
+        Step::Upkeep | Step::Draw => "beginning",
+        Step::Main1 => "main1",
+        Step::Combat
+        | Step::Attackers
+        | Step::Blockers
+        | Step::FirstDamage
+        | Step::Damage
+        | Step::EndCombat => "combat",
+        Step::Main2 => "main2",
+        Step::End | Step::Cleanup => "end",
+    }
+}
+
+fn phase_strip(s: &Session, step: crate::duel::Step) -> Value {
+    let now = phase_of(step);
+    Value::Array(
+        PHASES
+            .iter()
+            .map(|p| json!({"label": s.s(&format!("phase.{p}")), "now": *p == now}))
+            .collect(),
+    )
 }
 
 /// The permanent under the pointer, full size: its card, verbatim, and how
@@ -1162,8 +1212,49 @@ fn battle_labels(s: &Session, f: &crate::session::Fight) -> Vec<Value> {
             out.push(v);
         }
     }
+    // T35, after MTG Arena: damage rises from what it hit as a number. A
+    // number stays for a few events, under its event's number as its key,
+    // so the page keeps the same label rising while the game moves on.
+    let from = f.shown.saturating_sub(DAMAGE_EVENTS - 1);
+    for (i, e) in f.duel.events.iter().enumerate().take(f.shown + 1).skip(from) {
+        let n = e.args.iter().find(|(k, _)| *k == "n").map(|(_, v)| v.clone());
+        let at = match e.ev {
+            Ev::Hit => e.focus.last().and_then(|&id| {
+                scene::battle_spots(s, &e.snap)
+                    .into_iter()
+                    .find(|(_, q)| q.id == id)
+                    .map(|(a, _)| a.add(crate::geom::v3(0, DAMAGE_RISE, 0)))
+            }),
+            Ev::Face => Some(face_point(e.side)),
+            _ => None,
+        };
+        if let (Some(n), Some(at)) = (n, at) {
+            if let Some(mut v) = place(s, at, s.f("duel.damage_float", &[("n", n)]), String::new(), false) {
+                v["float"] = json!("damage");
+                v["key"] = json!(i);
+                out.push(v);
+            }
+        }
+    }
     out
 }
+
+/// Where damage to a player rises: the foe's from behind its side of the
+/// table; the player's from the front edge, since the player stands under
+/// the panels on the left.
+pub fn face_point(side: u8) -> crate::geom::V3 {
+    if side == P as u8 {
+        crate::geom::v3(0, crate::fx::ONE * 2, crate::fx::ONE * 4)
+    } else {
+        scene::side_point(side).add(crate::geom::v3(0, crate::fx::ONE, 0))
+    }
+}
+
+/// How many events a damage number stays on screen for (T35).
+const DAMAGE_EVENTS: usize = 4;
+
+/// How far above a creature's feet its damage number starts.
+const DAMAGE_RISE: crate::fx::Fx = crate::fx::ONE * 2;
 
 fn city_panels(s: &mut Session, city: crate::world::City, room: Room) -> Vec<Value> {
     let name = s.s(&format!("city.{}", city.id()));

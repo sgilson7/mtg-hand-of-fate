@@ -48,7 +48,7 @@ The rules in `CLAUDE.md` under "Rules agreed for this project" (MTG-1 to MTG-11)
 
 ## Open for the person
 
-- R9.4: the art pass's direction (T35), MTG-Q14 to MTG-Q17 in the journal's art page: the style, smooth or faceted shapes, the panels' look, the hand's layout. The analysis and the findings R9.1 to R9.3 are written; nothing in the game has changed for T35 yet.
+- R9.1 to R9.3: the broken outlines, the rings inside tree crowns, and the card being read covering the left panel's buttons in a fight, left as they are in T36, since the person chose no style changes.
 - R1.1: whether and how the game may use Wizards' card text and art in public (MTG-Q1). The person asked for a public page; the Fan Content notice is the only safeguard.
 - R1.3: the rules of the childhood grid game (MTG-Q3).
 - R1.10: read the story text and labels the agent wrote for the mockup.
@@ -124,8 +124,10 @@ The rules in `CLAUDE.md` under "Rules agreed for this project" (MTG-1 to MTG-11)
 
 2026-10-24, T29 to T34 deploy: main pushed; `dist/` built from 7164ccf committed onto gh-pages by hand (0f94374, an ordinary push, R2.17); the live `build.txt` reads `b4669bd9210d 7164ccf`; the browser check against the live address ended `BROWSER CHECK PASSED in chromium, firefox, webkit`. The website's tile and page for the game (T29, T30) are in the website's own repository and deploy.
 
+2026-10-25, T35 and T36: `./scripts/check.sh` ended `BROWSER CHECK PASSED in chromium, firefox, webkit` and `BUILDER CHECK PASSED`; `./scripts/count-tests.sh`: 176 passed, 0 failed; `scripts/break_tests.py`: 104 of 104 caught (one break, the second main phase, was first missed because the test worked its expectation out with the function under test; the test now states it by hand). A live look (Playwright, build from the working tree) showed the glow on castable cards, a cast card flying to the stack, the stack's arc to its target, the turn strip, the main button and a damage number rising, with no page errors. A dying or entering creature was not caught on a screenshot; its timing is tested in the core.
+
 ## The next action
 
-The person answers MTG-Q14 to MTG-Q17 (T35); then a first look at the chosen style (palette, sky, closed and tinted outlines, smooth round shapes) for them to judge before the animation and interface work.
+The person plays a fight on the live page to judge T36's Arena changes; their requests become `TRIAGE.md` rows.
 
 The person plays MVP 2's fights on the live page and answers MTG-Q2 and Q3; their requests become `TRIAGE.md` rows.

@@ -785,6 +785,16 @@ fn draw_battle(s: &Session, b: &mut Batch, f: &crate::session::Fight) {
         } else {
             (0, 0)
         };
+        // T35, after MTG Arena: a creature that dies sinks and shrinks away;
+        // one that enters drops onto the table
+        let (k, pt) = match ev.ev {
+            Ev::Dies if ev.focus.first() == Some(&p.id) => (
+                fx::mul(k, ONE - fx::mul(u, DIE_SHRINK)),
+                pt.sub(v3(0, fx::mul(u, height / 2), 0)),
+            ),
+            Ev::Enter | Ev::Token if ev.focus.first() == Some(&p.id) => (k, pt.add(v3(0, enter_drop(u), 0))),
+            _ => (k, pt),
+        };
         let pose = Pose {
             yaw,
             scale: k,
@@ -819,6 +829,18 @@ fn draw_battle(s: &Session, b: &mut Batch, f: &crate::session::Fight) {
     }
     attachments(s, b, &ev.snap, &spots, phase);
     effects(s, b, ev, &spots, swinger, u);
+    // T35: arcs from the top of the stack to what it aims at, a bright bead
+    // running along each
+    if let Some((_, _, card)) = ev.snap.stack.last() {
+        let rgb = colour_glow(if *card >= 0 {
+            s.cards[*card as usize].colours
+        } else {
+            0
+        });
+        for (from, to) in aim_arcs(&ev.snap, &spots) {
+            arc(b, from, to, phase, rgb);
+        }
+    }
     // the player stands behind their side
     let k = fx::div(ONE * 16 / 10, s.look.height("hero").max(ONE / 10));
     draw_hero(
@@ -893,12 +915,68 @@ fn draw_hero(s: &Session, b: &mut Batch, at: V3, pose: &Pose) {
 
 /// Where a side's spells come from and its life is struck: the player
 /// behind their side, the foe at the far end.
-fn side_point(side: u8) -> V3 {
+pub fn side_point(side: u8) -> V3 {
     if side == 0 {
         v3(-ONE * 66 / 10, ONE * 12 / 10, ONE * 36 / 10)
     } else {
         v3(0, ONE * 12 / 10, -ONE * 42 / 10)
     }
+}
+
+/// How much of its size a dying creature loses as it sinks (T35).
+const DIE_SHRINK: Fx = ONE * 4 / 5;
+/// How high above the table an entering creature starts (T35).
+const ENTER_FROM: Fx = ONE * 3;
+/// The share of the event an entering creature takes to land.
+const ENTER_LAND: Fx = ONE * 2 / 5;
+
+/// How far above its place an entering creature is at `u` through its
+/// event: it falls faster as it comes, and stays down once landed.
+pub fn enter_drop(u: Fx) -> Fx {
+    if u >= ENTER_LAND {
+        return 0;
+    }
+    let left = ONE - fx::div(u, ENTER_LAND);
+    fx::mul(ENTER_FROM, fx::mul(left, left))
+}
+
+/// Each arc the table draws for the top of the stack (T35): from the
+/// permanent whose ability it is, or else its controller's side, to each
+/// permanent and player it aims at.
+pub fn aim_arcs(snap: &Snap, spots: &[(V3, &PermSnap)]) -> Vec<(V3, V3)> {
+    let (Some((side, _, _)), Some(aims)) = (snap.stack.last(), snap.aims.last()) else {
+        return Vec::new();
+    };
+    let at = |id: u32| {
+        spots
+            .iter()
+            .find(|(_, q)| q.id == id)
+            .map(|(a, _)| a.add(v3(0, ONE, 0)))
+    };
+    let from = aims.from.and_then(at).unwrap_or(side_point(*side));
+    aims.perms
+        .iter()
+        .filter_map(|&id| at(id))
+        .chain(aims.players.iter().map(|&p| side_point(p)))
+        .map(|to| (from, to))
+        .collect()
+}
+
+/// An arc of small glows, high in the middle, with one bright bead running
+/// from its start to its end over and over.
+fn arc(b: &mut Batch, from: V3, to: V3, phase: i32, rgb: Rgb) {
+    const BEADS: i32 = 16;
+    let at = |t: Fx| {
+        let lift = fx::mul(fx::mul(t, ONE - t), ONE * 3);
+        from.lerp(to, t).add(v3(0, lift, 0))
+    };
+    for i in 1..BEADS {
+        glow(b, at(ONE * i / BEADS), ONE / 9, rgb, ONE / 2);
+    }
+    let run = (phase * 2).rem_euclid(fx::TURN) * ONE / fx::TURN;
+    glow(b, at(run), ONE * 3 / 10, [ONE, ONE, ONE], ONE * 3 / 4);
+    glow(b, at(run), ONE * 2 / 5, rgb, ONE * 3 / 4);
+    ring(b, to.sub(v3(0, ONE, 0)), ONE, ONE / 3, rgb);
 }
 
 /// A Magic colour's glow.
@@ -1062,6 +1140,21 @@ fn effects(
         Ev::Token | Ev::Enter => {
             if let Some(at) = ev.focus.first().and_then(|&t| at_perm(t)) {
                 ring(b, at.sub(v3(0, ONE, 0)), ONE * 3 / 2, u, hex("#fff6d8"));
+            }
+        }
+        Ev::Dies => {
+            // motes rising and spreading as it goes (T35)
+            if let Some(at) = ev.focus.first().and_then(|&t| at_perm(t)) {
+                for i in 0..8 {
+                    let a = fx::TURN * i / 8 + fx::mul(u, fx::TURN / 4);
+                    let r = ONE / 3 + fx::mul(u, ONE);
+                    let p = at.add(v3(
+                        fx::mul(fx::cos(a), r),
+                        fx::mul(u, ONE * 2),
+                        fx::mul(fx::sin(a), r),
+                    ));
+                    glow(b, p, ONE / 5, hex("#d8d0e8"), ONE - u);
+                }
             }
         }
         Ev::Counter => glow(
@@ -1439,6 +1532,7 @@ mod tests {
             player_hand: vec![],
             perms: vec![mk(1, 0, true, -1), mk(2, 1, false, 1)],
             stack: vec![],
+            aims: vec![],
             step: crate::duel::Step::Damage,
             active: 0,
         };
@@ -1447,5 +1541,73 @@ mod tests {
         let b = spots.iter().find(|(_, p)| p.id == 2).unwrap().0;
         assert_eq!(a.x, b.x);
         assert!(b.z < a.z);
+    }
+
+    #[test]
+    fn the_top_of_the_stack_draws_an_arc_to_each_thing_it_aims_at() {
+        let s = crate::session::for_tests();
+        let mk = |id: u32, side: u8| PermSnap {
+            id,
+            side,
+            card: -1,
+            token: "token_goblin".into(),
+            name: String::new(),
+            power: 1,
+            toughness: 1,
+            damage: 0,
+            tapped: false,
+            attacking: false,
+            blocking: -1,
+            detained: false,
+            creature: true,
+            land: false,
+            attached: -1,
+            counters: 0,
+            fresh: false,
+            loyalty: 0,
+        };
+        let aims =
+            |from: Option<u32>, perms: Vec<u32>, players: Vec<u8>| crate::duel::Aims { from, perms, players };
+        let mut snap = Snap {
+            life: [1, 1],
+            hand: [0, 0],
+            library: [0, 0],
+            grave: [0, 0],
+            pile: [0, 0],
+            player_hand: vec![],
+            perms: vec![mk(1, 0), mk(2, 1)],
+            // bottom: the foe's spell at the player; top: the player's at creature 2
+            stack: vec![(1, "a".into(), -1), (0, "b".into(), -1)],
+            aims: vec![aims(None, vec![], vec![0]), aims(None, vec![2], vec![])],
+            step: crate::duel::Step::Main1,
+            active: 0,
+        };
+        let table = snap.clone();
+        let spots = battle_spots(&s, &table);
+        let at = |id: u32| {
+            spots
+                .iter()
+                .find(|(_, p)| p.id == id)
+                .unwrap()
+                .0
+                .add(v3(0, ONE, 0))
+        };
+        // a spell: from its controller's side, to its target, the top item only
+        assert_eq!(aim_arcs(&snap, &spots), vec![(side_point(0), at(2))]);
+        // an ability: from the permanent whose it is, to a player
+        snap.aims[1] = aims(Some(1), vec![], vec![1]);
+        assert_eq!(aim_arcs(&snap, &spots), vec![(at(1), side_point(1))]);
+        snap.stack.clear();
+        snap.aims.clear();
+        assert!(aim_arcs(&snap, &spots).is_empty());
+    }
+
+    #[test]
+    fn an_entering_creature_falls_from_three_metres_and_lands_two_fifths_in() {
+        assert_eq!(enter_drop(0), 3 * ONE);
+        // halfway to landing it has a quarter of the height left
+        assert_eq!(enter_drop(ONE / 5), 3 * ONE / 4);
+        assert_eq!(enter_drop(ONE * 2 / 5), 0);
+        assert_eq!(enter_drop(ONE), 0);
     }
 }

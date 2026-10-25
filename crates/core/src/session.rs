@@ -2203,6 +2203,156 @@ mod tests {
     }
 
     #[test]
+    fn a_fight_shows_its_phase_its_main_button_and_damage_as_numbers() {
+        let mut s = started();
+        let caracal = s.cards.iter().position(|c| c.name == "Trained Caracal").unwrap();
+        s.world.as_mut().unwrap().tiles.get_mut(&(1, 0)).unwrap().cleared = false;
+        s.screen = Screen::Draw {
+            at: (1, 0),
+            card: caracal,
+        };
+        s.act("draw.fight", "").unwrap();
+        let panel = |v: &serde_json::Value, id: &str| {
+            v["panels"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .find(|p| p["id"] == id)
+                .cloned()
+                .unwrap_or_default()
+        };
+        // waiting on the player's first move, played back to now: the main
+        // button only waits, and each card in the hand is playable or dimmed
+        if let Screen::Battle(f) = &mut s.screen {
+            f.shown = f.duel.events.len() - 1;
+        }
+        let v = crate::view::ui(&mut s);
+        assert_eq!(panel(&v, "controls")["actions"][0]["main"], "optional");
+        // play lands and pass until a card in the hand can be cast: it glows,
+        // and a card that cannot be cast is dimmed
+        let mut seen = false;
+        for _ in 0..60 {
+            let v = crate::view::ui(&mut s);
+            let hand = panel(&v, "hand")["cards"].as_array().cloned().unwrap_or_default();
+            if panel(&v, "controls")["heading"] == s.s("duel.target") {
+                break;
+            }
+            // the game waits on the player's move (a discard asks otherwise)
+            let priority = panel(&v, "controls")["actions"][0]["main"] == "optional";
+            if priority
+                && hand
+                    .iter()
+                    .any(|c| !c["act"].is_null() || !c["actions"].is_null())
+            {
+                for c in &hand {
+                    let castable = !c["act"].is_null() || !c["actions"].is_null();
+                    assert_eq!(c["playable"] == true, castable, "{}", c["name"]);
+                    assert_ne!(c["playable"] == true, c["dim"] == true, "{}", c["name"]);
+                }
+                seen = true;
+                break;
+            }
+            let land = panel(&v, "controls")["list"].as_array().and_then(|l| {
+                l.iter()
+                    .find(|b| b["label"].as_str().unwrap_or("").starts_with("Play"))
+                    .cloned()
+            });
+            match land {
+                Some(b) => s.act("duel.do", b["value"].as_str().unwrap()).unwrap(),
+                None => {
+                    let _ = s.act("duel.ok", "");
+                }
+            }
+            if let Screen::Battle(f) = &mut s.screen {
+                f.shown = f.duel.events.len() - 1;
+            } else {
+                break;
+            }
+        }
+        assert!(seen, "no card in the hand could be cast");
+        if let Screen::Battle(f) = &mut s.screen {
+            f.duel.human = [false, false];
+            f.duel.run();
+        }
+        let n = match &s.screen {
+            Screen::Battle(f) => f.duel.events.len(),
+            _ => panic!("no fight"),
+        };
+        let mut floats = 0;
+        for i in 0..n {
+            if let Screen::Battle(f) = &mut s.screen {
+                f.shown = i;
+            }
+            let (step, ev, dmg) = match &s.screen {
+                Screen::Battle(f) => {
+                    let e = &f.duel.events[i];
+                    let n = e.args.iter().find(|(k, _)| *k == "n").map(|(_, v)| v.clone());
+                    (e.snap.step, e.ev, n)
+                }
+                _ => unreachable!(),
+            };
+            let v = crate::view::ui(&mut s);
+            // one phase is marked, the one the step belongs to
+            let phases = panel(&v, "sides")["phases"].as_array().unwrap().clone();
+            assert_eq!(phases.len(), 5);
+            let now: Vec<usize> = (0..5).filter(|&k| phases[k]["now"] == true).collect();
+            // worked out by hand from Magic's turn: beginning, first main,
+            // combat, second main, end
+            use crate::duel::Step as St;
+            let want = match step {
+                St::Upkeep | St::Draw => 0,
+                St::Main1 => 1,
+                St::Combat | St::Attackers | St::Blockers | St::FirstDamage | St::Damage | St::EndCombat => 2,
+                St::Main2 => 3,
+                St::End | St::Cleanup => 4,
+            };
+            if i + 1 < n {
+                // the last event is the game caught up, whose step is the game's own
+                assert_eq!(now, vec![want], "event {i}");
+                // played back, nothing is asked of the player: no main button
+                assert!(panel(&v, "controls")["actions"][0]["main"].is_null(), "event {i}");
+            }
+            let labels: Vec<&serde_json::Value> = v["labels"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .filter(|l| l["float"] == "damage")
+                .collect();
+            // this event's number, under its own key
+            let own: Vec<&&serde_json::Value> = labels.iter().filter(|l| l["key"] == i).collect();
+            if matches!(ev, Ev::Face) {
+                // a player's damage rises from their side, which is always on screen
+                assert_eq!(own.len(), 1, "event {i}");
+            }
+            if let Some(l) = own.first() {
+                assert!(matches!(ev, Ev::Hit | Ev::Face));
+                assert_eq!(l["text"], format!("−{}", dmg.unwrap()));
+                floats += 1;
+            } else {
+                assert!(!matches!(ev, Ev::Face));
+            }
+            // a number stays four events, then goes
+            for l in &labels {
+                let k = l["key"].as_u64().unwrap() as usize;
+                assert!(k <= i && i - k < 4, "event {i} shows {k}'s number");
+            }
+            if i >= 3 {
+                if let Screen::Battle(f) = &s.screen {
+                    let back = &f.duel.events[i - 3];
+                    if matches!(back.ev, Ev::Face) {
+                        assert!(
+                            labels.iter().any(|l| l["key"] == i - 3),
+                            "event {i}: {}'s number went early",
+                            i - 3
+                        );
+                    }
+                }
+            }
+        }
+        assert!(floats > 0, "no damage was dealt in the whole fight");
+    }
+
+    #[test]
     fn buying_armour_needs_gold_and_standing() {
         let mut s = started();
         s.screen = Screen::City {

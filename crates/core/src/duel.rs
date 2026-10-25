@@ -541,8 +541,21 @@ pub struct Snap {
     /// Each item on the stack: its controller, its name, and the card it
     /// comes from (-1 for none), bottom first.
     pub stack: Vec<(u8, String, i32)>,
+    /// What each item on the stack aims at, bottom first: the table draws
+    /// an arc from the top item's source to each (T35, after MTG Arena).
+    pub aims: Vec<Aims>,
     pub step: Step,
     pub active: u8,
+}
+
+/// Where a stack item comes from and what it aims at.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Default)]
+pub struct Aims {
+    /// The permanent whose ability it is; none for a spell.
+    pub from: Option<u32>,
+    pub perms: Vec<u32>,
+    /// Players aimed at, by side.
+    pub players: Vec<u8>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize)]
@@ -812,6 +825,32 @@ impl Duel {
                         Source::Ability { card, .. } => card,
                     };
                     (i.ctrl as u8, i.name.clone(), card.map(|c| c as i32).unwrap_or(-1))
+                })
+                .collect(),
+            aims: self
+                .stack
+                .iter()
+                .map(|i| Aims {
+                    from: match i.src {
+                        Source::Ability { perm, .. } => Some(perm),
+                        _ => None,
+                    },
+                    perms: i
+                        .targets
+                        .iter()
+                        .filter_map(|t| match t {
+                            Target::Perm(id) => Some(*id),
+                            _ => None,
+                        })
+                        .collect(),
+                    players: i
+                        .targets
+                        .iter()
+                        .filter_map(|t| match t {
+                            Target::Player(side) => Some(*side as u8),
+                            _ => None,
+                        })
+                        .collect(),
                 })
                 .collect(),
             step: self.step,
