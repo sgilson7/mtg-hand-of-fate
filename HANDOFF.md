@@ -131,8 +131,10 @@ The rules in `CLAUDE.md` under "Rules agreed for this project" (MTG-1 to MTG-11)
 
 2026-10-25, T37 to T39: `./scripts/check.sh` ended `BROWSER CHECK PASSED in chromium, firefox, webkit` and `BUILDER CHECK PASSED`; `./scripts/count-tests.sh`: 184 passed, 0 failed; the 27 new planted breaks are all caught, two only after the contract test was tightened (R10.12); the rows for the rest of `tests/breaks.json` were checked to still match after `cargo fmt` but not rerun. A look at the built page (Playwright) showed Jace's meeting, his piles, an instant kept, a contract on the map and a shrine, with no page errors; it found the shrine spending a use at full health, now fixed (R10.13). Not committed to main or deployed.
 
+2026-10-25, T37 to T39 deploy, at the person's word ("deploy asap for my testing"): R10.2 to R10.11 answered with the defaults; main pushed; `dist/` built from fd6a5ce committed onto gh-pages by hand (cabf3f4, an ordinary push, R2.17); the live `build.txt` reads `51c028d63d86 fd6a5ce`; the browser check against the live address ended `BROWSER CHECK PASSED in chromium, firefox, webkit`.
+
 ## The next action
 
-The person reads the journal's Card types on the map page and answers R10.2 to R10.11; deploying T37 to T39 waits on their word. Their requests become `TRIAGE.md` rows.
+The person plays T37 to T39 on the live page; their requests become `TRIAGE.md` rows.
 
 The person plays MVP 2's fights on the live page and answers MTG-Q2 and Q3; their requests become `TRIAGE.md` rows.
