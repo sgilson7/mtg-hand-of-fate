@@ -10,8 +10,10 @@
  "armourer": {"Escape": ["city.room", "menu"]},
  "deck": {"Escape": ["deck.close", ""], "Tab": ["deck.close", ""]},
  "battlelog": {"Escape": ["view.log", "close"], "KeyL": ["view.log", "close"]},
- "starter": {"Digit1": ["starter.look", "0"], "Digit2": ["starter.look", "1"], "Digit3": ["starter.look", "2"], "Digit4": ["starter.look", "3"], "Digit5": ["starter.look", "4"], "Digit6": ["starter.look", "5"], "Enter": ["starter.start", ""], "Escape": ["game.new", ""]},
- "newgame": {"Digit1": ["game.guild", "Azorius"], "Digit2": ["game.guild", "Izzet"], "Digit3": ["game.guild", "Rakdos"], "Digit4": ["game.guild", "Golgari"], "Digit5": ["game.guild", "Selesnya"]},
+ "starter": {"Digit1": ["starter.look", "0"], "Digit2": ["starter.look", "1"], "Digit3": ["starter.look", "2"], "Digit4": ["starter.look", "3"], "Digit5": ["starter.look", "4"], "Digit6": ["starter.look", "5"], "Enter": ["starter.start", ""], "Escape": ["mission.choose", ""]},
+ "mission": {"Digit1": ["mission.choose", "dracogenius"], "Digit2": ["mission.choose", "riot"], "Escape": ["screen.show", "title"]},
+ "rakdos": {"Escape": ["riot.leave", ""]},
+ "newgame": {"Escape": ["game.new", ""], "Digit1": ["game.guild", "Azorius"], "Digit2": ["game.guild", "Izzet"], "Digit3": ["game.guild", "Rakdos"], "Digit4": ["game.guild", "Golgari"], "Digit5": ["game.guild", "Selesnya"]},
  "victory": {"Enter": ["victory.continue", ""]},
  "lair": {"Escape": ["lair.leave", ""]}
 }

@@ -1,5 +1,5 @@
 {
- "_about": "Quests for the first region. A quest starts with a new game (new_game), from a card's story (card:N), or when taken up at a city's hall (hall:<city>). Each step names where it is done: a city by id, a district by guild, the lair, or a fight won in a district of a guild. Rewards are given when the last step is done. Read by the core (quest.rs); text is in data/strings.json under quest.<id>.",
+ "_about": "Quests for the first region. A quest starts with a new game of the first mission (new_game) or of the Riot (mission:riot), from a card's story (card:N), or when taken up at a city's hall (hall:<city>). Each step names where it is done: a city by id, a district by guild, the lair, a fight won in a district of a guild, a place of the Riot by id (calliope, column), or Rakdos beaten (rakdos). A reward's \"rakdos\" slows him (slow) or weakens him (weaken). Rewards are given when the last step is done. Read by the core (quest.rs); text is in data/strings.json under quest.<id>.",
  "quests": [
   {"id": "dracogenius", "guild": "Izzet", "starts": "new_game",
    "steps": [{"at": "city", "city": "tenth"}, {"at": "city", "city": "prahv"}, {"at": "lair"}],
@@ -60,6 +60,15 @@
    "reward": {"armour": "svogthos_head", "style": ["Golgari", 2], "gold": 10}},
   {"id": "relic", "guild": "Golgari", "starts": "hall:svogthos",
    "steps": [{"at": "city", "city": "vitu"}, {"at": "win_in_district", "guild": "Azorius"}, {"at": "city", "city": "svogthos"}],
-   "reward": {"style": ["Golgari", 2], "gold": 25}}
+   "reward": {"style": ["Golgari", 2], "gold": 25}},
+  {"id": "riot", "guild": "Azorius", "starts": "mission:riot",
+   "steps": [{"at": "city", "city": "tenth"}, {"at": "city", "city": "prahv"}, {"at": "rakdos"}],
+   "reward": {"gold": 0}},
+  {"id": "calliope", "guild": "Rakdos", "starts": "mission:riot",
+   "steps": [{"at": "place", "place": "calliope"}, {"at": "win_in_district", "guild": "Rakdos"}, {"at": "place", "place": "calliope"}],
+   "reward": {"gold": 15, "rakdos": "slow"}},
+  {"id": "column", "guild": "Azorius", "starts": "mission:riot",
+   "steps": [{"at": "city", "city": "prahv"}, {"at": "place", "place": "column"}, {"at": "win_in_district", "guild": "Azorius"}],
+   "reward": {"gold": 15, "style": ["Azorius", 2], "rakdos": "weaken"}}
  ]
 }

@@ -2,10 +2,10 @@
 // the time to the core, uploads the draw list it returns to WebGL, and
 // redraws the panels when the core's view changes. Keys and clicks go back
 // as actions. It decides nothing (Builder R6).
-import init, { Game, numbers, mesh, uniforms } from "./pkg/tool_shim.js?v=8107cb816ced";
-import { makeRenderer } from "./gl.js?v=8107cb816ced";
-import { makeUi } from "./ui.js?v=8107cb816ced";
-import { readSave, writeSave } from "./store.js?v=8107cb816ced";
+import init, { Game, numbers, mesh, uniforms } from "./pkg/tool_shim.js?v=b4669bd9210d";
+import { makeRenderer } from "./gl.js?v=b4669bd9210d";
+import { makeUi } from "./ui.js?v=b4669bd9210d";
+import { readSave, writeSave } from "./store.js?v=b4669bd9210d";
 
 const el = (id) => document.getElementById(id);
 const text = async (path) => (await fetch(path)).text();

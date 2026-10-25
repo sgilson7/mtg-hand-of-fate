@@ -40,6 +40,14 @@ The lands a side may play in a fight, face up beside its deck: one a turn, any o
 
 Not: land deck, mana deck
 
+### Minion
+
+A creature Rakdos leaves holding a tile he razed in the Riot. It fights harder than a creature met on the road, and the tile is freed when it is beaten.
+
+### Mission
+
+What a game is played for, chosen before the guild: the Dracogenius, which ends with Niv-Mizzet, or the Riot, which ends with Rakdos beaten or New Prahv fallen.
+
 ### Pool
 
 The cards a tile can turn up. When you step onto a tile not yet drawn, one card from its pool is drawn.
